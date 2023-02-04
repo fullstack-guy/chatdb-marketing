@@ -1,0 +1,31 @@
+---
+name: "deploy"
+
+# yamllint disable-line rule:truthy
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Cloning repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Deploy
+        uses: dokku/github-action@master
+        with:
+          branch: "main"
+          git_push_flags: "--force"
+          git_remote_url: "ssh://dokku@calebfahlgren.com:22/wordbase"
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
