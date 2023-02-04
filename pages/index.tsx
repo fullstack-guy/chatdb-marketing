@@ -7,10 +7,36 @@ import {
   CheckIcon,
   LightningBoltIcon
 } from "@heroicons/react/outline";
+import { NextSeo } from 'next-seo';
 
 export default function Page() {
   return (
     <div>
+      <NextSeo
+        title="Wordbase | The all in one toolkit for educators and students"
+        description="Create quiz questions with ease, craft personalized emails, develop effective learning plans, and build standout resume bullet points. Let our AI technology do the heavy lifting so you can focus on what really matters: teaching and learning."
+        openGraph={{
+          url: 'https://www.wordbase.ai',
+          title: 'Wordbase.ai | The all in one toolkit for educators and students',
+          description: 'Let our AI technology do the heavy lifting so you can focus on what really matters: teaching and learning.',
+          images: [
+            {
+              url: 'https://sparkk-assets.s3.amazonaws.com/ogg.png',
+              width: 800,
+              height: 600,
+              alt: 'Wordbase',
+              type: 'image/jpeg',
+            },
+          ],
+          siteName: 'SiteName',
+        }}
+        additionalLinkTags={[
+          {
+            rel: 'icon',
+            href: 'https://sparkk-assets.s3.amazonaws.com/favicon.ico',
+          },
+        ]}
+      />
       {/* Navbar */}
       <header className="mx-auto max-w-6xl px-8 xl:px-0">
         <nav className="relative relative z-20 flex shrink-0 items-center space-x-2 py-6">
@@ -127,8 +153,7 @@ export default function Page() {
                 Cut out the busy work in the classroom
               </h1>
               <p className="mt-6 max-w-3xl text-xl">
-                The AI assistant that will help you do more!
-              </p>
+                Let AI do the heavy lifting so you can focus on what really matters!</p>
               <form className="mt-6 flex flex-col gap-2 sm:flex-row">
                 <button
                   type="submit"
