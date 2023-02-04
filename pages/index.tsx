@@ -165,7 +165,7 @@ export default function Page() {
             </div>
             <div className="mt-12 rounded-3xl  flex flex-col items-center py-5">
               <video autoPlay muted loop className="h-full w-full object-cover rounded-xl">
-                <source src={"http://sparkk-assets.s3-website-us-east-1.amazonaws.com/demo.mp4"} type="video/mp4" />
+                <source src={"https://sparkk-assets.s3.amazonaws.com/demo.mp4"} type="video/mp4" />
               </video>
             </div>
           </div>
