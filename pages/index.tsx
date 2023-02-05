@@ -159,16 +159,15 @@ export default function Page() {
               <h1 className="mt-8 text-center text-3xl font-semibold text-heading md:max-w-4xl lg:text-5xl xl:text-6xl ">
                 Cut out the busy work in the classroom
               </h1>
-              <p className="mt-6 max-w-3xl text-xl">
+              <p className="mt-6 mb-6 max-w-3xl text-xl">
                 Let AI do the heavy lifting so you can focus on what really matters!</p>
-              <form className="mt-6 flex flex-col gap-2 sm:flex-row">
+              <a href="https://app.wordbase.ai" style={{ textDecoration: "none" }}>
                 <button
-                  type="submit"
                   className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none bg-gradient-to-r from-fuchsia-600 to-orange-700 px-7 py-5 text-sm font-semibold text-white transition duration-200 hover:bg-gradient-to-r hover:from-fuchsia-600 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
                 >
                   Get Started
                 </button>
-              </form>
+              </a>
             </div>
             <div className="mt-12 rounded-3xl  flex flex-col items-center py-5">
               <video ref={videoRef} id="vid" autoPlay muted playsInline loop className="h-full w-full object-cover rounded-xl">
@@ -406,14 +405,15 @@ export default function Page() {
                 <div className="text-sm font-medium">Per Month</div>
                 <h4 className="mt-1 text-4xl font-semibold text-heading">$14.99</h4>
               </div>
-
-              <button
-                type="button"
-                className="mt-6 inline-flex w-full cursor-pointer items-center justify-center rounded-xl border-2 border-muted-3 bg-transparent px-4 py-2.5 text-sm font-semibold  text-text shadow-sm hover:text-heading focus:text-heading focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-text dark:focus:ring-white/80"
-              >
-                Get Started
-                <ArrowRightIcon className="ml-2 h-5 w-5" />
-              </button>
+              <a href="https://app.wordbase.ai/open-checkout" style={{ textDecoration: "none" }}>
+                <button
+                  type="button"
+                  className="mt-6 inline-flex w-full cursor-pointer items-center justify-center rounded-xl border-2 border-muted-3 bg-transparent px-4 py-2.5 text-sm font-semibold  text-text shadow-sm hover:text-heading focus:text-heading focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-text dark:focus:ring-white/80"
+                >
+                  Get Started
+                  <ArrowRightIcon className="ml-2 h-5 w-5" />
+                </button>
+              </a>
 
               <div className="text-medium mt-6 space-y-2 text-sm text-heading">
                 <div className="flex items-start space-x-3">
@@ -452,13 +452,15 @@ export default function Page() {
                 <h4 className="mt-1 text-4xl font-semibold text-heading">Contact Us</h4>
               </div>
 
-              <button
-                type="button"
-                className="mt-6 inline-flex w-full cursor-pointer items-center justify-center rounded-xl border-2 border-muted-3 bg-transparent px-4 py-2.5 text-sm font-semibold  text-text shadow-sm hover:text-heading focus:text-heading focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-text dark:focus:ring-white/80"
-              >
-                Get Started
-                <ArrowRightIcon className="ml-2 h-5 w-5" />
-              </button>
+              <a href="https://tally.so/r/nPRKYx" target="_blank" rel="noreferrer noopener" style={{ textDecoration: "none" }}>
+                <button
+                  type="button"
+                  className="mt-6 inline-flex w-full cursor-pointer items-center justify-center rounded-xl border-2 border-muted-3 bg-transparent px-4 py-2.5 text-sm font-semibold  text-text shadow-sm hover:text-heading focus:text-heading focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-text dark:focus:ring-white/80"
+                >
+                  Contact Us
+                  <ArrowRightIcon className="ml-2 h-5 w-5" />
+                </button>
+              </a>
 
               <div className="text-medium mt-6 space-y-1 text-sm text-heading">
                 <div className="flex items-start space-x-3">
