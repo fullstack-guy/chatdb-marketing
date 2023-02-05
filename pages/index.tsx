@@ -1,6 +1,9 @@
 import { Fragment, useRef, useEffect } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { MenuAlt3Icon } from "@heroicons/react/outline";
+import { registerUmamiScript } from '@parcellab/react-use-umami';
+import useUmami from "@parcellab/react-use-umami";
+
 import {
   LightBulbIcon,
   ArrowRightIcon,
@@ -10,11 +13,18 @@ import {
 import { NextSeo } from 'next-seo';
 
 export default function Page() {
+  const _trackEvt = useUmami('/')
   const videoRef = useRef(null);
 
   useEffect(() => {
-    videoRef.current.play()
+    videoRef.current.play();
+    registerUmamiScript('https://wordbase.ai', 'b69c6679-f334-4fb4-a476-663593d15e95')
   }, [])
+
+  const trackAppLink = (message: string) => {
+    _trackEvt(message, 'click');
+    console.log('Tracked', message);
+  }
 
 
   return (
@@ -47,7 +57,7 @@ export default function Page() {
       {/* Navbar */}
       <header className="mx-auto max-w-6xl px-8 xl:px-0">
         <nav className="relative relative z-20 flex shrink-0 items-center space-x-2 py-6">
-          <a href="#" className="z-10">
+          <a href="#" className="z-10" onClick={() => trackAppLink('App CTA')}>
             {/* Logo */}
             <div className="h-9 text-heading">
               <div className="text-3xl font-bold text-heading">Wordbase</div>
@@ -161,7 +171,7 @@ export default function Page() {
               </h1>
               <p className="mt-6 mb-6 max-w-3xl text-xl">
                 Let AI do the heavy lifting so you can focus on what really matters!</p>
-              <a href="https://app.wordbase.ai" style={{ textDecoration: "none" }}>
+              <a href="https://app.wordbase.ai" style={{ textDecoration: "none" }} onClick={() => trackAppLink('App CTA')}>
                 <button
                   className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none bg-gradient-to-r from-fuchsia-600 to-orange-700 px-7 py-5 text-sm font-semibold text-white transition duration-200 hover:bg-gradient-to-r hover:from-fuchsia-600 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
                 >
@@ -405,7 +415,7 @@ export default function Page() {
                 <div className="text-sm font-medium">Per Month</div>
                 <h4 className="mt-1 text-4xl font-semibold text-heading">$14.99</h4>
               </div>
-              <a href="https://app.wordbase.ai/open-checkout" style={{ textDecoration: "none" }}>
+              <a href="https://app.wordbase.ai/open-checkout" style={{ textDecoration: "none" }} onClick={() => trackAppLink('Stripe Portal')}>
                 <button
                   type="button"
                   className="mt-6 inline-flex w-full cursor-pointer items-center justify-center rounded-xl border-2 border-muted-3 bg-transparent px-4 py-2.5 text-sm font-semibold  text-text shadow-sm hover:text-heading focus:text-heading focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-text dark:focus:ring-white/80"
@@ -452,7 +462,7 @@ export default function Page() {
                 <h4 className="mt-1 text-4xl font-semibold text-heading">Contact Us</h4>
               </div>
 
-              <a href="https://tally.so/r/nPRKYx" target="_blank" rel="noreferrer noopener" style={{ textDecoration: "none" }}>
+              <a href="https://tally.so/r/nPRKYx" target="_blank" rel="noreferrer noopener" style={{ textDecoration: "none" }} onClick={() => trackAppLink('Contact Us')}>
                 <button
                   type="button"
                   className="mt-6 inline-flex w-full cursor-pointer items-center justify-center rounded-xl border-2 border-muted-3 bg-transparent px-4 py-2.5 text-sm font-semibold  text-text shadow-sm hover:text-heading focus:text-heading focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-text dark:focus:ring-white/80"
@@ -495,7 +505,7 @@ export default function Page() {
               We don't spam our friends 🤝. We will only reach out if we have something really cool to share!
             </p>
 
-            <form className="mt-8 flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+            {/* <form className="mt-8 flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
               <div>
                 <label
                   htmlFor="email"
@@ -517,7 +527,7 @@ export default function Page() {
               >
                 Submit
               </button>
-            </form>
+            </form> */}
           </div>
         </section>
       </main>
@@ -621,8 +631,9 @@ export default function Page() {
                   Twitter
                 </a>
                 <a
-                  href="#"
+                  href="https://tally.so/r/nPRKYx"
                   className="block font-semibold text-text hover:text-heading"
+                  onClick={() => trackAppLink('Contact Us')}
                 >
                   Contact
                 </a>
