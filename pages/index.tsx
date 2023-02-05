@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useRef, useEffect } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { MenuAlt3Icon } from "@heroicons/react/outline";
 import {
@@ -10,6 +10,13 @@ import {
 import { NextSeo } from 'next-seo';
 
 export default function Page() {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    videoRef.current.play()
+  }, [])
+
+
   return (
     <div>
       <NextSeo
@@ -17,7 +24,7 @@ export default function Page() {
         description="Create quiz questions with ease, craft personalized emails, develop effective learning plans, and build standout resume bullet points. Let our AI technology do the heavy lifting so you can focus on what really matters: teaching and learning."
         openGraph={{
           url: 'https://www.wordbase.ai',
-          title: 'Wordbase.ai | The all in one toolkit for educators and students',
+          title: 'Wordbase.ai | Let AI do the heavy lifting so you can focus on what really matters!',
           description: 'Let our AI technology do the heavy lifting so you can focus on what really matters: teaching and learning.',
           images: [
             {
@@ -164,7 +171,7 @@ export default function Page() {
               </form>
             </div>
             <div className="mt-12 rounded-3xl  flex flex-col items-center py-5">
-              <video autoPlay muted loop className="h-full w-full object-cover rounded-xl">
+              <video ref={videoRef} id="vid" autoPlay muted loop className="h-full w-full object-cover rounded-xl">
                 <source src={"https://sparkk-assets.s3.amazonaws.com/demo.mp4"} type="video/mp4" />
               </video>
             </div>
