@@ -171,7 +171,7 @@ export default function Page() {
               </form>
             </div>
             <div className="mt-12 rounded-3xl  flex flex-col items-center py-5">
-              <video ref={videoRef} id="vid" autoPlay muted loop className="h-full w-full object-cover rounded-xl">
+              <video ref={videoRef} id="vid" autoPlay muted playsInline loop className="h-full w-full object-cover rounded-xl">
                 <source src={"https://sparkk-assets.s3.amazonaws.com/demo.mp4"} type="video/mp4" />
               </video>
             </div>
