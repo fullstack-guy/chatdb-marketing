@@ -3,6 +3,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { MenuAlt3Icon } from "@heroicons/react/outline";
 import { registerUmamiScript } from '@parcellab/react-use-umami';
 import useUmami from "@parcellab/react-use-umami";
+import { hotjar } from 'react-hotjar';
 
 import {
   LightBulbIcon,
@@ -19,11 +20,12 @@ export default function Page() {
   useEffect(() => {
     videoRef.current.play();
     registerUmamiScript('https://wordbase.ai', 'b69c6679-f334-4fb4-a476-663593d15e95')
+    hotjar.initialize(3353205, 6);
   }, [])
 
   const trackAppLink = (message: string) => {
     _trackEvt(message, 'click');
-    console.log('Tracked', message);
+    hotjar.event(message);
   }
 
 
@@ -56,7 +58,7 @@ export default function Page() {
       />
       {/* Navbar */}
       <header className="mx-auto max-w-6xl px-8 xl:px-0">
-        <nav className="relative relative z-20 flex shrink-0 items-center space-x-2 py-6">
+        <nav className="relative z-20 flex shrink-0 items-center space-x-2 py-6">
           <a href="#" className="z-10" onClick={() => trackAppLink('App CTA')}>
             {/* Logo */}
             <div className="h-9 text-heading">
@@ -505,7 +507,7 @@ export default function Page() {
               We don't spam our friends 🤝. We will only reach out if we have something really cool to share!
             </p>
 
-            {/* <form className="mt-8 flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+            <form className="mt-8 flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
               <div>
                 <label
                   htmlFor="email"
@@ -527,7 +529,7 @@ export default function Page() {
               >
                 Submit
               </button>
-            </form> */}
+            </form>
           </div>
         </section>
       </main>
