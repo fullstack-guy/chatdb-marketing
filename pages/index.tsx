@@ -18,7 +18,7 @@ export default function Page() {
   const videoRef = useRef(null);
 
   useEffect(() => {
-    //videoRef.current.play();
+    videoRef.current.play();
     registerUmamiScript('https://wordbase.ai', 'b69c6679-f334-4fb4-a476-663593d15e95')
     hotjar.initialize(3353205, 6);
   }, [])
