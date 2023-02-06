@@ -18,7 +18,7 @@ export default function Page() {
   const videoRef = useRef(null);
 
   useEffect(() => {
-    videoRef.current.play();
+    //videoRef.current.play();
     registerUmamiScript('https://wordbase.ai', 'b69c6679-f334-4fb4-a476-663593d15e95')
     hotjar.initialize(3353205, 6);
   }, [])
@@ -27,7 +27,6 @@ export default function Page() {
     _trackEvt(message, 'click');
     hotjar.event(message);
   }
-
 
   return (
     <div>
@@ -182,7 +181,7 @@ export default function Page() {
               </a>
             </div>
             <div className="mt-12 rounded-3xl  flex flex-col items-center py-5">
-              <video ref={videoRef} id="vid" autoPlay muted playsInline loop className="h-full w-full object-cover rounded-xl">
+              <video ref={videoRef} id="vid" muted playsInline loop controls className="h-full w-full object-cover rounded-xl">
                 <source src={"https://sparkk-assets.s3.amazonaws.com/demo.mp4"} type="video/mp4" />
               </video>
             </div>
@@ -302,7 +301,7 @@ export default function Page() {
             </p>
 
             <a
-              href="#"
+              href="https://app.wordbase.ai"
               className="mt-6 flex items-center space-x-4 text-lg font-medium"
             >
               <span className="bg-gradient-to-r text-gradient gradient-dusk">
