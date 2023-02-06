@@ -87,12 +87,14 @@ export default function Page() {
             </div>
           </div>
           <div className="z-10">
-            <button
-              type="button"
-              className="hidden cursor-pointer items-center justify-center rounded-xl border-2 border-muted-3 bg-transparent px-4 py-2.5 text-base font-semibold text-text  shadow-sm hover:text-heading focus:text-heading focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-text dark:focus:ring-white/80 md:inline-flex"
-            >
-              Open App
-            </button>
+            <a href="https://app.wordbase.ai" style={{ textDecoration: "none" }} onClick={() => trackAppLink('App CTA')}>
+              <button
+                type="button"
+                className="hidden cursor-pointer items-center justify-center rounded-xl border-2 border-muted-3 bg-transparent px-4 py-2.5 text-base font-semibold text-text  shadow-sm hover:text-heading focus:text-heading focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-text dark:focus:ring-white/80 md:inline-flex"
+              >
+                Open App
+              </button>
+            </a>
           </div>
 
           <Menu as="div" className="relative md:hidden">
@@ -147,12 +149,14 @@ export default function Page() {
                 </Menu.Item>
                 <Menu.Item>
                   {({ active }) => (
-                    <button
-                      className={`${active ? "bg-muted-1 text-heading" : "text-text"
-                        } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold`}
-                    >
-                      Open App
-                    </button>
+                    <a href="https://app.wordbase.ai" style={{ textDecoration: "none" }} onClick={() => trackAppLink('App CTA')}>
+                      <button
+                        className={`${active ? "bg-muted-1 text-heading" : "text-text"
+                          } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold`}
+                      >
+                        Open App
+                      </button>
+                    </a>
                   )}
                 </Menu.Item>
               </Menu.Items>
