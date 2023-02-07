@@ -79,7 +79,7 @@ export default function Page() {
                 Pricing
               </a>
               <a
-                href="#"
+                href="https://blog.wordbase.ai"
                 className="inline-flex cursor-pointer items-center justify-center rounded-xl border-2 border-transparent bg-transparent px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
               >
                 Blog
@@ -139,7 +139,7 @@ export default function Page() {
                 <Menu.Item>
                   {({ active }) => (
                     <a
-                      href="#"
+                      href="https://blog.wordbase.ai"
                       className={`${active ? "bg-muted-1 text-heading" : "text-text"
                         } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold`}
                     >
@@ -172,10 +172,11 @@ export default function Page() {
             <div className="flex flex-col items-center">
 
               <h1 className="mt-8 text-center text-3xl font-semibold text-heading md:max-w-4xl lg:text-5xl xl:text-6xl ">
-                Cut out the busy work in the classroom
+                Say goodbye to tedious tasks in the classroom
               </h1>
               <p className="mt-6 mb-6 max-w-3xl text-xl">
-                Let AI do the heavy lifting so you can focus on what really matters!</p>
+                Say hello to personalized emails, engaging quizzes, and effective learning plans
+              </p>
               <a href="https://app.wordbase.ai" style={{ textDecoration: "none" }} onClick={() => trackAppLink('App CTA')}>
                 <button
                   className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none bg-gradient-to-r from-fuchsia-600 to-orange-700 px-7 py-5 text-sm font-semibold text-white transition duration-200 hover:bg-gradient-to-r hover:from-fuchsia-600 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
@@ -605,7 +606,7 @@ export default function Page() {
               </div>
               <div className="mt-6 space-y-3 font-medium">
                 <a
-                  href="#"
+                  href="https://blog.wordbase.ai"
                   className="block font-semibold text-text hover:text-heading"
                 >
                   Blog
