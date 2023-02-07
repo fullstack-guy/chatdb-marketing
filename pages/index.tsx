@@ -185,7 +185,7 @@ export default function Page() {
               </a>
             </div>
             <div className="mt-12 rounded-3xl  flex flex-col items-center py-5">
-              <video ref={videoRef} id="vid" muted playsInline loop controls className="h-full w-full object-cover rounded-xl">
+              <video ref={videoRef} id="vid" muted playsInline loop className="h-full w-full object-cover rounded-xl">
                 <source src={"https://sparkk-assets.s3.amazonaws.com/demo.mp4"} type="video/mp4" />
               </video>
             </div>
@@ -500,7 +500,7 @@ export default function Page() {
         </section>
 
         {/* CTA section */}
-        <section className="p-8 md:py-20">
+        {/* <section className="p-8 md:py-20">
           <div className="rounded-4xl mx-auto flex max-w-6xl flex-col items-center text-center sm:bg-layer-2 sm:py-12 sm:px-6 md:py-18 lg:px-32 2xl:px-64">
             <h2 className="text-3xl font-semibold text-heading md:text-4xl">
               Stay in touch!
@@ -534,7 +534,7 @@ export default function Page() {
               </button>
             </form>
           </div>
-        </section>
+        </section> */}
       </main>
 
       {/* Footer */}
