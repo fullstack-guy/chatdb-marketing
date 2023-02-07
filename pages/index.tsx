@@ -58,7 +58,7 @@ export default function Page() {
       {/* Navbar */}
       <header className="mx-auto max-w-6xl px-8 xl:px-0">
         <nav className="relative z-20 flex shrink-0 items-center space-x-2 py-6">
-          <a href="#" className="z-10" onClick={() => trackAppLink('App CTA')}>
+          <a href="/" className="z-10" onClick={() => trackAppLink('App CTA')}>
             {/* Logo */}
             <div className="h-9 text-heading">
               <div className="text-3xl font-bold text-heading">Wordbase</div>
@@ -66,18 +66,6 @@ export default function Page() {
           </a>
           <div className="flex-1">
             <div className="absolute inset-y-0 inset-x-0 hidden items-center justify-center space-x-1.5 px-4 md:flex">
-              <a
-                href="#"
-                className="inline-flex cursor-pointer items-center justify-center rounded-xl border-2 border-transparent bg-transparent px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
-              >
-                Features
-              </a>
-              <a
-                href="#"
-                className="inline-flex cursor-pointer items-center justify-center rounded-xl border-2 border-transparent bg-transparent px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
-              >
-                Pricing
-              </a>
               <a
                 href="https://blog.wordbase.ai"
                 className="inline-flex cursor-pointer items-center justify-center rounded-xl border-2 border-transparent bg-transparent px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
@@ -114,28 +102,6 @@ export default function Page() {
               leaveTo="transform opacity-0 scale-95"
             >
               <Menu.Items className="absolute right-0 z-50 mt-2 w-56 origin-top-right rounded-xl bg-layer-3 py-3 shadow-xl focus:outline-none">
-                <Menu.Item>
-                  {({ active }) => (
-                    <a
-                      href="#"
-                      className={`${active ? "bg-muted-1 text-heading" : "text-text"
-                        } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold`}
-                    >
-                      Features
-                    </a>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <a
-                      href="#"
-                      className={`${active ? "bg-muted-1 text-heading" : "text-text"
-                        } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold`}
-                    >
-                      Pricing
-                    </a>
-                  )}
-                </Menu.Item>
                 <Menu.Item>
                   {({ active }) => (
                     <a
