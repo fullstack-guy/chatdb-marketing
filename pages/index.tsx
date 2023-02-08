@@ -3,6 +3,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { MenuAlt3Icon } from "@heroicons/react/outline";
 import { registerUmamiScript } from '@parcellab/react-use-umami';
 import useUmami from "@parcellab/react-use-umami";
+import { Analytics } from '@vercel/analytics/react';
 import { hotjar } from 'react-hotjar';
 
 import {
@@ -624,6 +625,7 @@ export default function Page() {
           </div>
         </div>
       </footer>
+      <Analytics />
     </div >
   );
 }
