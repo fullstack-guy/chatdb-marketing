@@ -133,21 +133,22 @@ export default function Page() {
 
       <main>
         {/* Hero section */}
-        <section className="px-8 pt-6 pb-2 text-center md:py-16">
+        <section className="px-8 pt-6 pb-2 text-left md:py-16">
           <div className="mx-auto max-w-6xl">
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-left">
 
-              <h1 className="mt-8 text-center text-3xl font-semibold text-heading md:max-w-4xl lg:text-5xl xl:text-6xl ">
+              <h1 className="mt-8 text-left text-3xl font-semibold text-heading md:max-w-4xl lg:text-5xl xl:text-6xl ">
                 Say goodbye to tedious tasks in the classroom
               </h1>
               <p className="mt-6 mb-6 max-w-3xl text-xl">
-                Say hello to personalized emails, engaging quizzes, and effective learning plans
+                Say hello to personalized emails, engaging quizzes, and effective learning plans!
               </p>
               <a href="https://app.wordbase.ai" style={{ textDecoration: "none" }} onClick={() => trackAppLink('App CTA')}>
                 <button
-                  className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none bg-gradient-to-r from-fuchsia-600 to-orange-700 px-7 py-5 text-sm font-semibold text-white transition duration-200 hover:bg-gradient-to-r hover:from-fuchsia-600 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
+                  className="inline-flex cursor-pointer items-left justify-left rounded-xl border-none bg-gradient-to-r from-fuchsia-600 to-orange-700 px-7 py-5 text-sm font-semibold text-white transition duration-200 hover:bg-gradient-to-r hover:from-fuchsia-600 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
                 >
                   Get Started
+                  <ArrowRightIcon className="ml-2 h-5 w-5" />
                 </button>
               </a>
             </div>
