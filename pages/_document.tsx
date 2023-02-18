@@ -5,7 +5,7 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head />
-        <body className="dark bg-layer-1 text-text antialiased">
+        <body className="bg-layer-1 text-text antialiased dark">
           <Main />
           <NextScript />
           <svg width="0" height="0">
