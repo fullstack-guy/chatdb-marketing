@@ -2,6 +2,7 @@ import axios from "axios";
 import { Disclosure } from "@headlessui/react";
 import { Toaster, toast } from "react-hot-toast";
 import { useState } from "react";
+import { Analytics } from '@vercel/analytics/react';
 
 import {
   CameraIcon,
@@ -765,6 +766,7 @@ export default function Page() {
         </footer>
       </main>
       <Toaster />
+      <Analytics />
     </div>
   );
 }
