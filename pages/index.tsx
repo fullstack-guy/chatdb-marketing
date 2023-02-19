@@ -224,7 +224,7 @@ export default function Page() {
                 </button>
               </form>
             </div>
-            <div className="mt-12 md:px-2">
+            {/* <div className="mt-12 md:px-2">
               <svg
                 width="auto"
                 height="auto"
@@ -390,7 +390,7 @@ export default function Page() {
                   </linearGradient>
                 </defs>
               </svg>
-            </div>
+            </div> */}
           </div>
         </section>
         <section className="bg-layer-1 p-6 md:p-20">
