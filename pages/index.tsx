@@ -2,13 +2,15 @@ import axios from "axios";
 import { Disclosure } from "@headlessui/react";
 import { Toaster, toast } from "react-hot-toast";
 import { useState } from "react";
-import { Analytics } from '@vercel/analytics/react';
-
+import { Analytics } from "@vercel/analytics/react";
 import {
-  CameraIcon,
-  ChevronDownIcon,
+  TagIcon,
+  ShieldCheckIcon,
+  LightBulbIcon,
 } from "@heroicons/react/outline";
-import { NextSeo } from 'next-seo';
+
+import { CameraIcon, ChevronDownIcon } from "@heroicons/react/outline";
+import { NextSeo } from "next-seo";
 
 export default function Page() {
   const [email, setEmail] = useState("");
@@ -40,24 +42,25 @@ export default function Page() {
         description="The tool that is an expert on your database. Say goodbye to hours
         spent creating the correct query to get the data you need."
         openGraph={{
-          url: 'https://www.chatdb.ai',
-          title: 'ChatDB.ai | The AI Database Assistant for your team',
-          description: 'The tool that is an expert on your database. Say goodbye to hours spent creating the correct query to get the data you need',
+          url: "https://www.chatdb.ai",
+          title: "ChatDB.ai | The AI Database Assistant for your team",
+          description:
+            "The tool that is an expert on your database. Say goodbye to hours spent creating the correct query to get the data you need",
           images: [
             {
-              url: 'https://chatdb-assets.s3.amazonaws.com/ogg.png',
+              url: "https://chatdb-assets.s3.amazonaws.com/ogg.png",
               width: 800,
               height: 600,
-              alt: 'ChatDB',
-              type: 'image/jpeg',
+              alt: "ChatDB",
+              type: "image/jpeg",
             },
           ],
-          siteName: 'ChatDB',
+          siteName: "ChatDB",
         }}
         additionalLinkTags={[
           {
-            rel: 'icon',
-            href: 'https://chatdb-assets.s3.amazonaws.com/favicon.ico',
+            rel: "icon",
+            href: "https://chatdb-assets.s3.amazonaws.com/favicon.ico",
           },
         ]}
       />
@@ -188,14 +191,14 @@ export default function Page() {
           <div className="mx-auto max-w-6xl">
             <div className="flex flex-col items-center">
               <h1 className="mt-5 text-center text-3xl font-semibold text-heading md:max-w-4xl lg:text-5xl xl:text-6xl">
-                Finally, you can ask your database to write SQL for you
+                Finally, you can chat with your database!
               </h1>
               <p className="mt-6 max-w-3xl text-xl">
-                The tool that is an expert on your database. Say goodbye to hours
-                spent creating the correct query to get the data you need.
+                The tool that is an expert on your database. Say goodbye to
+                hours spent creating the correct query to get the data you need.
               </p>
               <form
-                className="mt-6 flex flex-col gap-2 sm:flex-row subscription-form"
+                className="subscription-form mt-6 flex flex-col gap-2 sm:flex-row"
                 method="POST"
                 onSubmit={handleSubmit}
               >
@@ -213,7 +216,7 @@ export default function Page() {
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="block w-72 w-full rounded-xl border-2 border-layer-3 bg-muted-1 px-4 py-2.5 font-semibold text-heading placeholder:text-text/50 focus:border-primary focus:outline-none focus:ring-0 sm:text-sm"
+                    className="block w-72 rounded-xl border-2 border-layer-3 bg-muted-1 px-4 py-2.5 font-semibold text-heading placeholder:text-text/50 focus:border-primary focus:outline-none focus:ring-0 sm:text-sm"
                   />
                 </div>
                 <button
@@ -467,6 +470,14 @@ export default function Page() {
             </div>
           </div>
         </section>
+
+        <section>
+          <div className="w-full my-20">
+            <img src="https://chatdb-assets.s3.amazonaws.com/Features.png" className="mx-auto hidden md:w-[40%] md:block"></img>
+          </div>
+        </section>
+
+        {/* Integrations */}
         <section className="py-8 px-6 sm:py-18">
           <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
             <h2 className="text-4xl font-semibold text-heading md:text-5xl md:leading-tight">
@@ -501,6 +512,83 @@ export default function Page() {
                 />
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Features */}
+
+        <section className="px-8 py-12 md:py-18">
+          <div className="mx-auto max-w-6xl space-y-24 md:space-y-36">
+            <div className="flex flex-col items-center justify-between gap-6 lg:flex-row ">
+              <div className="max-w-md space-y-6 text-center lg:text-left">
+                <span className="inline-flex items-center rounded-full border-2 border-red-200 bg-red-200 px-2 py-1 text-sm font-semibold text-red-600 shadow-sm">
+                  <TagIcon className="mr-1 h-5 w-5" />
+                  Visualizations
+                </span>
+                <h3 className="text-3xl font-semibold text-heading lg:text-4xl">
+                  Schema Visualizer
+                </h3>
+                <p className="text-lg font-medium">
+                  Simplify the complexity of learning how the database tables are related with a sleak visualization that you can reference during your work.
+                </p>
+              </div>
+
+              <div className="max-w-lg">
+                <img
+                  src="https://chatdb-assets.s3.amazonaws.com/SchemaVisualizer.png"
+                  alt=""
+                  className="w-full rounded-lg"
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col items-center justify-between gap-6 lg:flex-row-reverse">
+              <div className="max-w-md space-y-6 text-center lg:text-left">
+                <span className="inline-flex items-center rounded-full border-2 border-green-200 bg-green-200 px-2 py-1 text-sm font-semibold text-green-600 shadow-sm">
+                  <ShieldCheckIcon className="mr-1 h-5 w-5" />
+                  Database Model Snapshot
+                </span>
+                <h3 className="text-3xl font-semibold text-heading lg:text-4xl">
+                  Add new databases in seconds
+                </h3>
+                <p className="text-lg font-medium">
+                  Taking a database snapshot so ChatDB can learn your data model is super simple!
+                </p>
+              </div>
+
+              <div className="max-w-lg">
+                <img
+                  src="https://chatdb-assets.s3.amazonaws.com/Snapshot.gif"
+                  alt=""
+                  className="w-full rounded-lg"
+                />
+              </div>
+            </div>
+
+            {/* <div className="flex flex-col items-center justify-between gap-6 lg:flex-row ">
+              <div className="max-w-md space-y-6 text-center lg:text-left">
+                <span className="inline-flex items-center rounded-full border-2 border-orange-200 bg-orange-200 px-2 py-1 text-sm font-semibold text-orange-600 shadow-sm">
+                  <TagIcon className="mr-1 h-5 w-5" />
+                  Features
+                </span>
+                <h3 className="text-3xl font-semibold text-heading lg:text-4xl">
+                  Lorem ipsum dolor sit amet, consectetur
+                </h3>
+                <p className="text-lg font-medium">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Est,
+                  non nulla iaculis lacus mi. Eu fusce pellentesque mattis
+                  ultricies mauris orci, commodo.
+                </p>
+              </div>
+
+              <div className="max-w-lg">
+                <img
+                  src="https://i.imgur.com/5JzWVvz.png"
+                  alt=""
+                  className="w-full"
+                />
+              </div>
+            </div> */}
           </div>
         </section>
 
@@ -553,7 +641,8 @@ export default function Page() {
                   Give your data context
                 </h3>
                 <p className="text-lg font-medium">
-                  Write a couple notes if needed on any intricacies about your database.
+                  Write a couple notes if needed on any intricacies about your
+                  database.
                 </p>
               </div>
 
