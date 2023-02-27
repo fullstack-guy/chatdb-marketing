@@ -49,8 +49,8 @@ export default function PlanCard({
 
       <p className="mb-5">{description}</p>
       <ul className="mb-10 flex flex-col gap-y-2">
-        {features.map((feature) => (
-          <li className="flex items-center">
+        {features.map((feature, index) => (
+          <li key={index} className="flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="mr-3 h-7 w-7"
