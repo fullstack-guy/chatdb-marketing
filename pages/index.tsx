@@ -306,11 +306,10 @@ export default function Page() {
                   </svg>
                 </div>
                 <h3 className="mt-4 bg-gradient-to-r text-3xl font-semibold text-gradient gradient-sky">
-                  Problem.
+                  Before.
                 </h3>
                 <h3 className="mt-2 text-3xl font-semibold text-heading">
-                  Struggling to find the right SQL query on a complex data
-                  model?
+                  Spend 30 minutes struggling to find the right SQL query 🤔
                 </h3>
 
                 <div className="mt-8 w-full  md:mt-16">
@@ -341,11 +340,10 @@ export default function Page() {
                   </svg>
                 </div>
                 <h3 className="mt-4 bg-gradient-to-r text-3xl font-semibold text-gradient gradient-peach">
-                  Solution.
+                  After with ChatDB.
                 </h3>
                 <h3 className="mt-2 text-3xl font-semibold text-heading">
-                  Our AI learns your data model to generate SQL queries that
-                  work!
+                  Get quick answers to tough questions in seconds 👏
                 </h3>
                 <div className="mt-8 w-full md:mt-16">
                   <img
