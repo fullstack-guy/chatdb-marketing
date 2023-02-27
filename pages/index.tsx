@@ -1,15 +1,15 @@
 import axios from "axios";
-import { Disclosure } from "@headlessui/react";
 import { Toaster, toast } from "react-hot-toast";
 import { useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import {
   TagIcon,
   ShieldCheckIcon,
-  LightBulbIcon,
 } from "@heroicons/react/outline";
+import Navbar from "../components/Navbar";
+import Banner from "../components/Banner";
 
-import { CameraIcon, ChevronDownIcon } from "@heroicons/react/outline";
+import { CameraIcon } from "@heroicons/react/outline";
 import { NextSeo } from "next-seo";
 
 export default function Page() {
@@ -64,138 +64,25 @@ export default function Page() {
           },
         ]}
       />
+
       {/* Navbar */}
-      <header className="mx-auto max-w-6xl px-8 xl:px-0">
-        <nav className="relative z-20 flex shrink-0 items-center space-x-2 py-6">
-          <a href="#" className="z-10">
-            {/* Logo */}
-            <h1 className="text-4xl font-bold text-heading">ChatDB</h1>
-          </a>
-          {/* <div className="flex-1">
-            <div className="absolute inset-y-0 inset-x-0 hidden items-center justify-center space-x-1.5 px-4 md:flex">
-              <a
-                href="#"
-                className="inline-flex cursor-pointer items-center justify-center rounded-xl border-2 border-transparent bg-transparent px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
-              >
-                Link
-              </a>
-              <a
-                href="#"
-                className="inline-flex cursor-pointer items-center justify-center rounded-xl border-2 border-transparent bg-transparent px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
-              >
-                Link
-              </a>
-              <a
-                href="#"
-                className="inline-flex cursor-pointer items-center justify-center rounded-xl border-2 border-transparent bg-transparent px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
-              >
-                Link
-              </a>
-              <a
-                href="#"
-                className="inline-flex cursor-pointer items-center justify-center rounded-xl border-2 border-transparent bg-transparent px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
-              >
-                Link
-              </a>
-            </div>
-          </div> */}
-          {/* <div className="z-10">
-            <button
-              type="button"
-              className="hidden cursor-pointer items-center justify-center rounded-xl border-2 border-muted-3 bg-transparent px-4 py-2.5 text-base font-semibold text-text  shadow-sm hover:text-heading focus:text-heading focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-text dark:focus:ring-white/80 md:inline-flex"
-            >
-              Button
-            </button>
-          </div> */}
-
-          {/* <Menu as="div" className="relative md:hidden">
-            <Menu.Button
-              type="button"
-              className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none border-transparent bg-transparent p-2 font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
-            >
-              <MenuAlt3Icon className="h-5 w-5" />
-            </Menu.Button>
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-100"
-              enterFrom="transform opacity-0 scale-95"
-              enterTo="transform opacity-100 scale-100"
-              leave="transition ease-in duration-75"
-              leaveFrom="transform opacity-100 scale-100"
-              leaveTo="transform opacity-0 scale-95"
-            >
-              <Menu.Items className="absolute right-0 z-50 mt-2 w-56 origin-top-right rounded-xl bg-layer-3 py-3 shadow-xl focus:outline-none">
-                <Menu.Item>
-                  {({ active }) => (
-                    <a
-                      href="#"
-                      className={`${active ? "bg-muted-1 text-heading" : "text-text"
-                        } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold`}
-                    >
-                      Link
-                    </a>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <a
-                      href="#"
-                      className={`${active ? "bg-muted-1 text-heading" : "text-text"
-                        } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold`}
-                    >
-                      Link
-                    </a>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <a
-                      href="#"
-                      className={`${active ? "bg-muted-1 text-heading" : "text-text"
-                        } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold`}
-                    >
-                      Link
-                    </a>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <a
-                      href="#"
-                      className={`${active ? "bg-muted-1 text-heading" : "text-text"
-                        } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold`}
-                    >
-                      Link
-                    </a>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <button
-                      className={`${active ? "bg-muted-1 text-heading" : "text-text"
-                        } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold`}
-                    >
-                      Button
-                    </button>
-                  )}
-                </Menu.Item>
-              </Menu.Items>
-            </Transition>
-          </Menu> */}
-        </nav>
-      </header>
-
+      <Navbar />
       <main>
         {/* Hero section */}
         <section className="px-8 pt-6 pb-2 text-center md:py-16">
           <div className="mx-auto max-w-6xl">
             <div className="flex flex-col items-center">
               <h1 className="mt-5 text-center text-3xl font-semibold text-heading md:max-w-4xl lg:text-5xl xl:text-6xl">
-                Finally, you can chat with your database!
+                Finally, you can <div style={{
+                  display: "inline",
+                  backgroundImage: "linear-gradient(90deg, rgba(244,155,255,1) 0%, rgba(172,152,251,1) 80%);",
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "100% 0.15em",
+                  backgroundPosition: "0 88%",
+                }}>chat</div> with your database!
               </h1>
               <p className="mt-6 max-w-3xl text-xl">
-                The tool that is an expert on your database. Say goodbye to
-                hours spent creating the correct query to get the data you need.
+                The AI tool that knows everything about your database so it can help you generate SQL queries that work!
               </p>
               <form
                 className="subscription-form mt-6 flex flex-col gap-2 sm:flex-row"
@@ -205,7 +92,7 @@ export default function Page() {
                 <div>
                   <label
                     htmlFor="email"
-                    className="sr-only block text-sm font-semibold text-heading"
+                    className="sr-only block text-sm font-semibold border-blue-400 text-heading"
                   >
                     Email
                   </label>
@@ -221,7 +108,8 @@ export default function Page() {
                 </div>
                 <button
                   type="submit"
-                  className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none bg-gradient-to-r from-fuchsia-600 to-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition duration-200 hover:bg-gradient-to-r hover:from-fuchsia-600 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
+                  style={{ background: "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)" }}
+                  className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none px-4 py-2.5 text-sm font-semibold text-white transition duration-200 hover:bg-gradient-to-r hover:from-fuchsia-600 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
                 >
                   Submit
                 </button>
@@ -680,7 +568,7 @@ export default function Page() {
 
         {/* CTA section */}
         <section className="p-8 md:py-20">
-          <div className="rounded-4xl mx-auto flex max-w-6xl flex-col items-center text-center sm:bg-layer-2 sm:py-12 sm:px-6 md:py-18 lg:px-32 2xl:px-64">
+          <div className="rounded-xl mx-auto flex max-w-6xl flex-col items-center text-center sm:bg-layer-2 sm:py-12 sm:px-6 md:py-18 lg:px-32 2xl:px-64">
             <h2 className="text-3xl font-semibold text-heading md:text-4xl">
               Stay in touch and be notified when it is released!
             </h2>
@@ -709,142 +597,12 @@ export default function Page() {
               </div>
               <button
                 type="submit"
-                className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none bg-gradient-to-r from-fuchsia-600 to-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition duration-200 hover:bg-gradient-to-r hover:from-fuchsia-600 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
+                style={{ background: "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)" }}
+                className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none px-4 py-2.5 text-sm font-semibold text-white transition duration-200 hover:bg-gradient-to-r focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
               >
                 Submit
               </button>
             </form>
-          </div>
-        </section>
-
-        {/* FAQ */}
-        <section className="p-8 md:py-20">
-          <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
-            <h2 className="mb-10 text-4xl font-semibold text-heading md:text-5xl md:leading-tight">
-              Frequently Asked Questions
-            </h2>
-            <div className="flex w-96 flex-col space-y-2">
-              <Disclosure>
-                {({ open }) => (
-                  <>
-                    <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
-                      How does the database snapshot work?
-                      <ChevronDownIcon
-                        className={`${open ? "rotate-180 text-heading" : "text-text"
-                          } h-5 w-5`}
-                      />
-                    </Disclosure.Button>
-                    <Disclosure.Panel className="px-4 py-2">
-                      With TempConnect ChatDB connects to your database and
-                      reads the table information. This is a one time snapshot
-                      and ChatDB does not stay connected to your database.
-                      <br></br>
-                      <br></br>
-                      ChatDB only knows the names of the tables and the column
-                      names. It does not access or store any of your data in the
-                      tables.
-                    </Disclosure.Panel>
-                  </>
-                )}
-              </Disclosure>
-
-              <Disclosure>
-                {({ open }) => (
-                  <>
-                    <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
-                      Does it work with queries involving complex joins?
-                      <ChevronDownIcon
-                        className={`${open ? "rotate-180 text-heading" : "text-text"
-                          } h-5 w-5`}
-                      />
-                    </Disclosure.Button>
-                    <Disclosure.Panel className="px-4 py-2">
-                      Yes, it works great for complex problems where you may
-                      have to use multiple tables and relationships.
-                    </Disclosure.Panel>
-                  </>
-                )}
-              </Disclosure>
-
-              <Disclosure>
-                {({ open }) => (
-                  <>
-                    <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
-                      Do you offer technical support?
-                      <ChevronDownIcon
-                        className={`${open ? "rotate-180 text-heading" : "text-text"
-                          } h-5 w-5`}
-                      />
-                    </Disclosure.Button>
-                    <Disclosure.Panel className="px-4 py-2">
-                      Yes, premium plans offer technical support!
-                    </Disclosure.Panel>
-                  </>
-                )}
-              </Disclosure>
-
-              <Disclosure>
-                {({ open }) => (
-                  <>
-                    <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
-                      What are the benefits of using ChatDB?
-                      <ChevronDownIcon
-                        className={`${open ? "rotate-180 text-heading" : "text-text"
-                          } h-5 w-5`}
-                      />
-                    </Disclosure.Button>
-                    <Disclosure.Panel className="px-4 py-2">
-                      Offering ChatDB to your team will improve the employee
-                      onboarding experience, save precious engineering hours,
-                      and make it easier to extract valuable insights from your
-                      data, allowing your team to make more informed decisions
-                      and improve business outcomes.{" "}
-                    </Disclosure.Panel>
-                  </>
-                )}
-              </Disclosure>
-
-              <Disclosure>
-                {({ open }) => (
-                  <>
-                    <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
-                      How secure is the tool? Will it access or modify my data?
-                      <ChevronDownIcon
-                        className={`${open ? "rotate-180 text-heading" : "text-text"
-                          } h-5 w-5`}
-                      />
-                    </Disclosure.Button>
-                    <Disclosure.Panel className="px-4 py-2">
-                      At ChatDB, security is the top priority. We do not modify
-                      or access data in your databases. Additionally, we do not
-                      store your database authentication information or maintain
-                      a connection to your database.
-                    </Disclosure.Panel>
-                  </>
-                )}
-              </Disclosure>
-
-              <Disclosure>
-                {({ open }) => (
-                  <>
-                    <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
-                      How does the tool learn about my database and its schema?
-                      <ChevronDownIcon
-                        className={`${open ? "rotate-180 text-heading" : "text-text"
-                          } h-5 w-5`}
-                      />
-                    </Disclosure.Button>
-                    <Disclosure.Panel className="px-4 py-2">
-                      During the onboarding, you take a Snapshot of your data
-                      model. This is a simple read only query that reads the
-                      names, fields, and data types of the tables in your
-                      database. AI will use this information to create queries
-                      that work with your specific data model!
-                    </Disclosure.Panel>
-                  </>
-                )}
-              </Disclosure>
-            </div>
           </div>
         </section>
         <footer className="flex flex-col items-center pt-10 pb-18">
