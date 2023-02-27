@@ -361,7 +361,7 @@ export default function Page() {
 
         <section>
           <div className="w-full my-20">
-            <img src="https://chatdb-assets.s3.amazonaws.com/Features.png" className="mx-auto hidden md:w-[40%] md:block"></img>
+            <img src="https://chatdb-assets.s3.amazonaws.com/Features.png" className="mx-auto hidden md:w-[50%] md:block"></img>
           </div>
         </section>
 
