@@ -14,7 +14,7 @@ Hello everyone 👋,
 
 As the founder of ChatDB, I am thrilled to share with you the motivation behind building our innovative AI database assistant and how it can be a game-changer for businesses of all sizes.
 
-In today's data-driven world, businesses need quick access to insights buried within their databases to make informed decisions. However, traditional database querying methods can be time-consuming, requiring technical expertise in SQL and a deep understanding of the underlying data structure. 
+In today's data-driven world, businesses need quick access to insights buried within their databases to make informed decisions. However, traditional database querying methods can be time-consuming, requiring technical expertise in SQL and a deep understanding of the underlying data structure.
 
 That's where ChatDB comes in. Our mission is to make database interaction more accessible, efficient, and user-friendly by harnessing the power of AI.
 
@@ -25,7 +25,6 @@ The advantages of using ChatDB for your business are manifold:
 2. Enhanced Collaboration: ChatDB empowers team members across all departments to access and analyze data without relying on technical experts, fostering collaboration and data-driven decision-making.
 
 3. Accessibility: The natural language interface breaks down barriers for non-technical users and democratizing access to valuable insights.
-
 
 AI has revolutionized the way we interact with content, but we have just scratched the surface on how it can help us save time and engineering hours in onboarding, solving technical problems, and the time it takes you to find the insights on your data.
 

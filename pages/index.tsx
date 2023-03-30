@@ -2,10 +2,7 @@ import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
 import { useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
-import {
-  TagIcon,
-  ShieldCheckIcon,
-} from "@heroicons/react/outline";
+import { TagIcon, ShieldCheckIcon } from "@heroicons/react/outline";
 import Layout from "../components/Layout";
 import { CameraIcon } from "@heroicons/react/outline";
 
@@ -40,16 +37,24 @@ export default function Page() {
           <div className="mx-auto max-w-6xl">
             <div className="flex flex-col items-center">
               <h1 className="mt-5 text-center text-3xl font-semibold text-heading md:max-w-4xl lg:text-5xl xl:text-6xl">
-                Finally, you can <div style={{
-                  display: "inline",
-                  backgroundImage: "linear-gradient(90deg, rgba(244,155,255,1) 0%, rgba(172,152,251,1) 80%);",
-                  backgroundRepeat: "no-repeat",
-                  backgroundSize: "100% 0.15em",
-                  backgroundPosition: "0 88%",
-                }}>chat</div> with your database!
+                Finally, you can{" "}
+                <div
+                  style={{
+                    display: "inline",
+                    backgroundImage:
+                      "linear-gradient(90deg, rgba(244,155,255,1) 0%, rgba(172,152,251,1) 80%)",
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "100% 0.15em",
+                    backgroundPosition: "0 88%",
+                  }}
+                >
+                  chat
+                </div>{" "}
+                with your database!
               </h1>
               <p className="mt-6 max-w-3xl text-xl">
-                The AI tool that knows everything about your database so it can help you generate SQL queries that work!
+                The AI tool that knows everything about your database so it can
+                help you generate SQL queries that work!
               </p>
               <form
                 className="subscription-form mt-6 flex flex-col gap-2 sm:flex-row"
@@ -59,7 +64,7 @@ export default function Page() {
                 <div>
                   <label
                     htmlFor="email"
-                    className="sr-only block text-sm font-semibold border-blue-400 text-heading"
+                    className="sr-only block border-blue-400 text-sm font-semibold text-heading"
                   >
                     Email
                   </label>
@@ -75,7 +80,10 @@ export default function Page() {
                 </div>
                 <button
                   type="submit"
-                  style={{ background: "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)" }}
+                  style={{
+                    background:
+                      "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)",
+                  }}
                   className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none px-4 py-2.5 text-sm font-semibold text-white transition duration-200 hover:bg-gradient-to-r hover:from-fuchsia-600 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
                 >
                   Submit
@@ -325,8 +333,11 @@ export default function Page() {
         </section>
 
         <section>
-          <div className="w-full my-20">
-            <img src="https://chatdb-assets.s3.amazonaws.com/Features.png" className="mx-auto hidden md:w-[50%] md:block"></img>
+          <div className="my-20 w-full">
+            <img
+              src="https://chatdb-assets.s3.amazonaws.com/Features.png"
+              className="mx-auto hidden md:block md:w-[50%]"
+            ></img>
           </div>
         </section>
 
@@ -382,7 +393,9 @@ export default function Page() {
                   Schema Visualizer
                 </h3>
                 <p className="text-lg font-medium">
-                  Simplify the complexity of learning how the database tables are related with a sleak visualization that you can reference during your work.
+                  Simplify the complexity of learning how the database tables
+                  are related with a sleak visualization that you can reference
+                  during your work.
                 </p>
               </div>
 
@@ -405,7 +418,8 @@ export default function Page() {
                   Add new databases in seconds
                 </h3>
                 <p className="text-lg font-medium">
-                  Taking a database snapshot so ChatDB can learn your data model is super simple!
+                  Taking a database snapshot so ChatDB can learn your data model
+                  is super simple!
                 </p>
               </div>
 
@@ -533,7 +547,7 @@ export default function Page() {
 
         {/* CTA section */}
         <section className="p-8 md:py-20">
-          <div className="rounded-xl mx-auto flex max-w-6xl flex-col items-center text-center sm:bg-layer-2 sm:py-12 sm:px-6 md:py-18 lg:px-32 2xl:px-64">
+          <div className="mx-auto flex max-w-6xl flex-col items-center rounded-xl text-center sm:bg-layer-2 sm:py-12 sm:px-6 md:py-18 lg:px-32 2xl:px-64">
             <h2 className="text-3xl font-semibold text-heading md:text-4xl">
               Stay in touch and be notified when it is released!
             </h2>
@@ -562,7 +576,10 @@ export default function Page() {
               </div>
               <button
                 type="submit"
-                style={{ background: "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)" }}
+                style={{
+                  background:
+                    "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)",
+                }}
                 className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none px-4 py-2.5 text-sm font-semibold text-white transition duration-200 hover:bg-gradient-to-r focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
               >
                 Submit

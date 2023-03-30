@@ -5,7 +5,7 @@ import "@fontsource/inter/600.css";
 import "@fontsource/inter/700.css";
 
 import { ClerkProvider } from "@clerk/nextjs";
-import { hotjar } from 'react-hotjar';
+import { hotjar } from "react-hotjar";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 
@@ -14,7 +14,7 @@ export default function MyApp({ Component, pageProps }) {
 
   useEffect(() => {
     hotjar.initialize(3430108, 6);
-  }, [router.events])
+  }, [router.events]);
   return (
     <ClerkProvider {...pageProps}>
       <Component {...pageProps} />
