@@ -1,29 +1,69 @@
 import Link from 'next/link'
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from 'react';
-import { ChevronDownIcon, MenuAlt3Icon } from "@heroicons/react/outline";
+import { MenuAlt3Icon } from "@heroicons/react/outline";
+import { useRouter } from 'next/router';
+import {
+    SignedIn,
+    SignedOut,
+    SignInButton,
+    UserButton
+} from "@clerk/nextjs";
 
 
 const Navbar = () => {
+    const router = useRouter();
+
+    // Check if the current route is the dashboard route
+    const isOnDashboard = router.pathname === '/dashboard';
+
     return (
-        <header className="mx-auto max-w-6xl px-8 xl:px-0">
-            <nav className="relative z-20 flex shrink-0 items-center space-x-2 py-6">
+        <header className="mx-auto max-w-7xl px-6 xl:px-0">
+            <nav className="relative z-20 flex justify-between items-center py-6">
                 <Link href="/">
                     <a className="z-10">
                         {/* Logo */}
                         <h1 className="text-4xl font-bold text-heading">ChatDB</h1>
                     </a>
                 </Link>
-                <div className="flex-1">
-                    <div className="absolute inset-y-0 inset-x-0 hidden items-center justify-end space-x-1.5 px-4 md:flex">
-                        <Link href="/pricing">
-                            <a
-                                className="inline-flex cursor-pointer items-center justify-between rounded-xl border-2 border-transparent bg-transparent px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
-                            >
-                                Pricing
-                            </a>
-                        </Link>
-                    </div>
+                <div className="hidden md:flex items-center">
+                    <Link href="/pricing">
+                        <a
+                            className="cursor-pointer px-4 rounded-lg mx-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
+                        >
+                            Pricing
+                        </a>
+                    </Link>
+                    <SignedIn>
+                        {isOnDashboard ? (
+                            <>
+                                <button
+                                    type="button"
+                                    style={{ background: "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)" }}
+                                    className="inline-flex cursor-pointer mx-4 items-center justify-center rounded-xl px-4 py-2.5 text-base font-semibold text-white shadow-sm hover:bg-primary-accent focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:border-primary disabled:hover:bg-primary disabled:hover:text-white dark:focus:ring-white/80"
+                                >
+                                    Add Database
+                                </button>
+                            </>
+                        ) : (
+                            <Link href="/dashboard">
+                                <a
+                                    className="cursor-pointer px-4 rounded-lg mx-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
+                                >
+                                    Dashboard
+                                </a>
+                            </Link>
+                        )}
+                        <div className="mx-4">
+                            <UserButton />
+                        </div>
+                    </SignedIn>
+                    <SignedOut>
+                        {/* Signed out users get sign in button */}
+                        <div className='cursor-pointer px-4 rounded-lg mx-4 py-2.5 text-base font-semibold hover:bg-heading/5 hover:text-heading focus:bg-heading/5'>
+                            {/* <SignInButton /> */}
+                        </div>
+                    </SignedOut>
                 </div>
                 {/* <div className="z-10">
                     <button

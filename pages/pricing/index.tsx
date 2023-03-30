@@ -1,12 +1,11 @@
-import Navbar from "../../components/Navbar";
+import Layout from "../../components/Layout";
 import Pricing from "../../components/Pricing";
 
 const Page = () => {
     return (
-        <>
-            <Navbar />
+        <Layout>
             <Pricing />
-        </>
+        </Layout >
     );
 }
 

@@ -6,10 +6,8 @@ import {
   TagIcon,
   ShieldCheckIcon,
 } from "@heroicons/react/outline";
-import Navbar from "../components/Navbar";
-
+import Layout from "../components/Layout";
 import { CameraIcon } from "@heroicons/react/outline";
-import { NextSeo } from "next-seo";
 
 export default function Page() {
   const [email, setEmail] = useState("");
@@ -35,37 +33,7 @@ export default function Page() {
     setEmail("");
   };
   return (
-    <div>
-      <NextSeo
-        title="ChatDB | The AI Database Assistant for your team"
-        description="The tool that is an expert on your database. Say goodbye to hours
-        spent creating the correct query to get the data you need."
-        openGraph={{
-          url: "https://www.chatdb.ai",
-          title: "ChatDB.ai | The AI Database Assistant for your team",
-          description:
-            "The tool that is an expert on your database. Say goodbye to hours spent creating the correct query to get the data you need",
-          images: [
-            {
-              url: "https://chatdb-assets.s3.amazonaws.com/ogg.png",
-              width: 800,
-              height: 600,
-              alt: "ChatDB",
-              type: "image/jpeg",
-            },
-          ],
-          siteName: "ChatDB",
-        }}
-        additionalLinkTags={[
-          {
-            rel: "icon",
-            href: "https://chatdb-assets.s3.amazonaws.com/favicon.ico",
-          },
-        ]}
-      />
-
-      {/* Navbar */}
-      <Navbar />
+    <Layout>
       <main>
         {/* Hero section */}
         <section className="px-8 pt-6 pb-2 text-center md:py-16">
@@ -610,7 +578,6 @@ export default function Page() {
         </footer>
       </main>
       <Toaster />
-      <Analytics />
-    </div>
+    </Layout>
   );
 }
