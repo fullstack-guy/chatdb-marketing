@@ -570,12 +570,6 @@ export default function Page() {
             </form>
           </div>
         </section>
-        <footer className="flex flex-col items-center pt-10 pb-18">
-          {/* Logo */}
-          <div className="h-8 text-heading">
-            <h1 className="text-md font-bold text-heading">Copyright ChatDB</h1>
-          </div>
-        </footer>
       </main>
       <Toaster />
     </Layout>

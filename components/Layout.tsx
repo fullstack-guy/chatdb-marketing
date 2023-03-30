@@ -39,7 +39,13 @@ const Layout = ({ children }: LayoutProps) => {
             />
             <div className='h-full'>
                 <Navbar />
-                <main className="main-content">{children}</main>
+                <main className="main-content bg-layer-1">{children}</main>
+                <footer className="flex flex-col bg-layer-1 items-center pt-10 pb-18">
+                    {/* Logo */}
+                    <div className="h-8">
+                        <h1 className="text-md font-bold text-heading">Copyright ChatDB</h1>
+                    </div>
+                </footer>
             </div>
             <Analytics />
         </>

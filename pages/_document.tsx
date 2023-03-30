@@ -3,9 +3,9 @@ import Document, { Html, Head, Main, NextScript } from "next/document";
 export default class MyDocument extends Document {
   render() {
     return (
-      <Html>
+      <Html className="h-full">
         <Head />
-        <body className="h-screen bg-layer-1 text-text antialiased light">
+        <body className="min-h-full h-full bg-layer-1 text-text antialiased light">
           <Main />
           <NextScript />
           <svg width="0" height="0">
