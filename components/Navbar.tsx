@@ -34,16 +34,22 @@ const Navbar = () => {
                             Pricing
                         </a>
                     </Link>
+                    <Link href="/blog">
+                        <a
+                            className="cursor-pointer px-4 rounded-lg mx-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
+                        >
+                            Blog
+                        </a>
+                    </Link>
                     <SignedIn>
                         {isOnDashboard ? (
                             <>
-                                <button
-                                    type="button"
+                                <div
                                     style={{ background: "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)" }}
-                                    className="inline-flex cursor-pointer mx-4 items-center justify-center rounded-xl px-4 py-2.5 text-base font-semibold text-white shadow-sm hover:bg-primary-accent focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:border-primary disabled:hover:bg-primary disabled:hover:text-white dark:focus:ring-white/80"
+                                    className="btn btn-md inline-flex cursor-pointer border-none capitalize mx-4 items-center justify-center rounded-xl px-4 text-base font-semibold text-white shadow-sm hover:bg-primary-accent focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:border-primary disabled:hover:bg-primary disabled:hover:text-white dark:focus:ring-white/80"
                                 >
                                     Add Database
-                                </button>
+                                </div>
                             </>
                         ) : (
                             <Link href="/dashboard">
@@ -65,14 +71,6 @@ const Navbar = () => {
                         </div>
                     </SignedOut>
                 </div>
-                {/* <div className="z-10">
-                    <button
-                        type="button"
-                        className="hidden cursor-pointer items-center justify-center rounded-xl border-2 border-muted-3 bg-transparent px-4 py-2.5 text-base font-semibold text-text  shadow-sm hover:text-heading focus:text-heading focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-text dark:focus:ring-white/80 md:inline-flex"
-                    >
-                        Open App
-                    </button>
-                </div> */}
 
                 <Menu as="div" className="relative md:hidden">
                     <Menu.Button

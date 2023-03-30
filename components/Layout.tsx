@@ -37,7 +37,7 @@ const Layout = ({ children }: LayoutProps) => {
                     },
                 ]}
             />
-            <div className='h-screen'>
+            <div className='h-full'>
                 <Navbar />
                 <main className="main-content">{children}</main>
             </div>

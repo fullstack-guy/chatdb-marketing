@@ -1,4 +1,3 @@
-import Navbar from "../../components/Navbar";
 import fs from "fs";
 import matter from "gray-matter";
 import Link from "next/link";
@@ -28,11 +27,11 @@ export default function Page({ posts }) {
     return (
         <Layout>
             <div className="text-center text-5xl font-bold text-heading">
-                Wordbase Blog
+                ChatDB Blog
             </div>
             <div className="m-10 grid grid-cols-1 p-4 2xl:grid-cols-3 md:p-0 5xl:grid-cols-4">
-                {(posts || []).map(({ slug, frontmatter }) => (
-                    <Link href={`/post/${slug}`}>
+                {(posts || []).map(({ slug, frontmatter }, index) => (
+                    <Link key={index} href={`/post/${slug}`}>
                         <div className="m-auto cursor-pointer">
                             <div
                                 key={slug}
@@ -41,7 +40,6 @@ export default function Page({ posts }) {
                                 <>
                                     <figure className="w-full pt-6 pb-4">
                                         <img
-                                            alt={frontmatter.title}
                                             src={`/${frontmatter.image}`}
                                             className="h-48 w-full rounded-xl object-cover"
                                         />

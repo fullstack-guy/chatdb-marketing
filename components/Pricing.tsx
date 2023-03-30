@@ -16,7 +16,7 @@ export default function Pricing() {
             color="#78E3FC"
             name="Basic"
             description="Get started with the basic plan"
-            features={['1 User', '1 Project', '5 Tables', 'Built with ChatGPT', 'Postgres Connection']}
+            features={['1 User', '1 Project', '5 Tables', 'Backed by ChatGPT', 'Postgres Connection']}
             btnText="Start Free Plan"
           />
           <PlanCard
@@ -24,7 +24,7 @@ export default function Pricing() {
             name="Pro"
             description="Get more advanced"
             price="29.99"
-            features={['1 User', '5 Projects', '50 Tables', 'All Connections', 'Built with GPT4', 'Premium Support']}
+            features={['1 User', '5 Projects', '50 Tables', 'All Connections', 'Backed by GPT4', 'Premium Support']}
             btnText="Become a Pro"
           />
           <PlanCard
@@ -37,7 +37,7 @@ export default function Pricing() {
               'Unlimited Users',
               'Unlimited Projects',
               'All Connections',
-              'Uses GPT4',
+              'Backed by GPT4',
               'Premium Support',
               'Custom Feature Requests',
             ]}
