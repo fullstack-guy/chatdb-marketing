@@ -7,7 +7,6 @@ import {
   ShieldCheckIcon,
 } from "@heroicons/react/outline";
 import Navbar from "../components/Navbar";
-import Banner from "../components/Banner";
 
 import { CameraIcon } from "@heroicons/react/outline";
 import { NextSeo } from "next-seo";
