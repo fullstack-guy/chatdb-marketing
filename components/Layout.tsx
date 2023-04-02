@@ -9,7 +9,7 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <>
+    <div className="bg-layer-1">
       <NextSeo
         title="ChatDB | The AI Database Assistant for your team"
         description="The tool that is an expert on your database. Say goodbye to hours
@@ -37,18 +37,19 @@ const Layout = ({ children }: LayoutProps) => {
           },
         ]}
       />
-      <div className="h-full">
-        <Navbar />
-        <main className="main-content bg-layer-1">{children}</main>
-        <footer className="flex flex-col items-center bg-layer-1 pt-10 pb-18">
-          {/* Logo */}
-          <div className="h-8">
-            <h1 className="text-md font-bold text-heading">Copyright ChatDB</h1>
-          </div>
-        </footer>
+      <div className="h-full max-w-7xl bg-layer-1 mx-auto">
+        <div className="mx-5 xl:mx-0">
+          <Navbar />
+          <main className="main-content bg-layer-1">{children}</main>
+          <footer className="flex flex-col items-center bg-layer-1 pt-10 pb-18">
+            <div className="h-8">
+              <h1 className="text-md font-bold text-heading">Copyright ChatDB</h1>
+            </div>
+          </footer>
+        </div>
       </div>
       <Analytics />
-    </>
+    </div>
   );
 };
 

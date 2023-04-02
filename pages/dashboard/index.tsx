@@ -1,6 +1,6 @@
 import { useUser } from "@clerk/nextjs";
 import Layout from "../../components/Layout";
-import DatabaseCard from "../../components/DatabaseCard";
+import Table from "../../components/dashboard/Table";
 
 export default function Page() {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -13,20 +13,43 @@ export default function Page() {
     return null;
   }
 
+  const databases = [
+    {
+      name: "EventsDB",
+      type: "PostgreSQL",
+      lastUpdated: "Yesterday"
+    },
+    {
+      name: "EventsDB",
+      type: "PostgreSQL",
+      lastUpdated: "Yesterday"
+    },
+    {
+      name: "EventsDB",
+      type: "PostgreSQL",
+      lastUpdated: "Yesterday"
+    },
+    {
+      name: "EventsDB",
+      type: "PostgreSQL",
+      lastUpdated: "Yesterday"
+    }
+  ];
+
   return (
     <Layout>
       <div>
-        <header className="mx-10 px-6 pt-12 pb-6">
-          <h1 className="text-5xl font-bold text-heading">Dashboard</h1>
+        <header className="pt-12 pb-6">
+          <h1 className="text-4xl font-bold text-heading">Overview</h1>
         </header>
 
-        <main className="mx-6 mt-8 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-          <DatabaseCard
-            name="EventsDB"
-            description="The Database that holds Car Events! 🚗"
-            tags={[]}
-            updatedAt={"Yesterday"}
-          />
+        <main className="">
+          {
+            databases.length === 0 ? (<h1>You don't have any databases added.</h1>) : (
+              <Table databases={databases} />
+
+            )
+          }
         </main>
       </div>
     </Layout>

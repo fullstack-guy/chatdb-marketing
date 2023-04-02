@@ -12,7 +12,7 @@ const Navbar = () => {
   const isOnDashboard = router.pathname === "/dashboard";
 
   return (
-    <header className="mx-auto max-w-7xl px-6 xl:px-0">
+    <header className="mx-auto xl:px-0 border-b border-0 border-solid border-b-slate-200">
       <nav className="relative z-20 flex items-center justify-between py-6">
         <Link href="/">
           <a className="z-10">
@@ -21,16 +21,6 @@ const Navbar = () => {
           </a>
         </Link>
         <div className="hidden items-center md:flex">
-          <Link href="/pricing">
-            <a className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text">
-              Pricing
-            </a>
-          </Link>
-          <Link href="/blog">
-            <a className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text">
-              Blog
-            </a>
-          </Link>
           <SignedIn>
             {isOnDashboard ? (
               <>
@@ -51,6 +41,18 @@ const Navbar = () => {
                 </a>
               </Link>
             )}
+          </SignedIn>
+          <Link href="/pricing">
+            <a className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text">
+              Pricing
+            </a>
+          </Link>
+          <Link href="/blog">
+            <a className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text">
+              Blog
+            </a>
+          </Link>
+          <SignedIn>
             <div className="mx-4">
               <UserButton />
             </div>
