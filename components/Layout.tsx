@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import { NextSeo } from "next-seo";
 import { Analytics } from "@vercel/analytics/react";
+import Link from "next/link";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -40,11 +41,24 @@ const Layout = ({ children }: LayoutProps) => {
       <div className="h-full max-w-7xl bg-layer-1 mx-auto">
         <div className="mx-5 xl:mx-0">
           <Navbar />
-          <main className="main-content bg-layer-1">{children}</main>
-          <footer className="flex flex-col items-center bg-layer-1 pt-10 pb-18">
-            <div className="h-8">
-              <h1 className="text-md font-bold text-heading">Copyright ChatDB</h1>
+          <main className="main-content bg-layer-1 flex-grow min-h-[calc(100vh-100px)]">{children}</main>
+          <footer className="footer p-10 text-base-content">
+            <div>
+              <p className="font-bold text-xl">ChatDB</p>
+              <p>The tool you needed for your database!</p>
             </div>
+            <div>
+              <span className="footer-title">Company</span>
+              <Link href="/" className="link link-hover">Home</Link>
+              <Link href="pricing" className="link link-hover">Pricing</Link>
+              <Link href="blog" className="link link-hover">Blog</Link>
+            </div>
+            {/* <div>
+              <span className="footer-title">Legal</span>
+              <a className="link link-hover">Terms of use</a>
+              <a className="link link-hover">Privacy policy</a>
+              <a className="link link-hover">Cookie policy</a>
+            </div> */}
           </footer>
         </div>
       </div>

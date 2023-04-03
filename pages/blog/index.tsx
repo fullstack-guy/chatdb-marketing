@@ -26,7 +26,7 @@ export async function getStaticProps() {
 export default function Page({ posts }) {
   return (
     <Layout>
-      <div className="text-center text-6xl font-bold text-black">Blog</div>
+      <div className="text-center mt-16 text-7xl font-bold text-black">Blog</div>
       <div className="5xl:grid-cols-4 m-10 grid grid-cols-1 p-4 md:p-0 2xl:grid-cols-3">
         {(posts || []).map(({ slug, frontmatter }, index) => (
           <Link key={index} href={`/post/${slug}`}>

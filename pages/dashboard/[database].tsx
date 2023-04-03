@@ -1,7 +1,9 @@
 import Layout from "../../components/Layout";
 import React, { useEffect, useRef, useState } from 'react';
 import { BsDatabase } from 'react-icons/bs';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
+import TableList from "../../components/dashboard/TableList";
+import Sidebar from "../../components/Sidebar";
 
 export default function Page() {
   const router = useRouter();
@@ -9,6 +11,11 @@ export default function Page() {
 
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [activeTab, setActiveTab] = useState('Tables');
+
+  const handleTabClick = (tabName) => {
+    setActiveTab(tabName);
+  };
 
   useEffect(() => {
     const handleKeyDown = (event: any) => {
@@ -39,144 +46,21 @@ export default function Page() {
         { fieldName: 'email', dataType: 'String' },
         { fieldName: 'password', dataType: 'String' },
       ],
-    },
-    {
-      tableName: 'Posts',
-      description: "These posts are matched with a users and are published in the Wall Street Journal.",
-      fields: [
-        { fieldName: 'id', dataType: 'Integer' },
-        { fieldName: 'title', dataType: 'String' },
-        { fieldName: 'content', dataType: 'Text' },
-        { fieldName: 'author_id', dataType: 'Integer' },
-      ],
-    },
-    {
-      tableName: 'Users',
-      fields: [
-        { fieldName: 'id', dataType: 'Integer' },
-        { fieldName: 'username', dataType: 'String' },
-        { fieldName: 'email', dataType: 'String' },
-        { fieldName: 'password', dataType: 'String' },
-      ],
-    },
-    {
-      tableName: 'Posts',
-      fields: [
-        { fieldName: 'id', dataType: 'Integer' },
-        { fieldName: 'title', dataType: 'String' },
-        { fieldName: 'content', dataType: 'Text' },
-        { fieldName: 'author_id', dataType: 'Integer' },
-      ],
-    },
-    {
-      tableName: 'Users',
-      fields: [
-        { fieldName: 'id', dataType: 'Integer' },
-        { fieldName: 'username', dataType: 'String' },
-        { fieldName: 'email', dataType: 'String' },
-        { fieldName: 'password', dataType: 'String' },
-      ],
-    },
-    {
-      tableName: 'Posts',
-      fields: [
-        { fieldName: 'id', dataType: 'Integer' },
-        { fieldName: 'title', dataType: 'String' },
-        { fieldName: 'content', dataType: 'Text' },
-        { fieldName: 'author_id', dataType: 'Integer' },
-      ],
-    },
-    {
-      tableName: 'Users',
-      fields: [
-        { fieldName: 'id', dataType: 'Integer' },
-        { fieldName: 'username', dataType: 'String' },
-        { fieldName: 'email', dataType: 'String' },
-        { fieldName: 'password', dataType: 'String' },
-      ],
-    },
-    {
-      tableName: 'Posts',
-      fields: [
-        { fieldName: 'id', dataType: 'Integer' },
-        { fieldName: 'title', dataType: 'String' },
-        { fieldName: 'content', dataType: 'Text' },
-        { fieldName: 'author_id', dataType: 'Integer' },
-      ],
-    },
-    {
-      tableName: 'Users',
-      fields: [
-        { fieldName: 'id', dataType: 'Integer' },
-        { fieldName: 'username', dataType: 'String' },
-        { fieldName: 'email', dataType: 'String' },
-        { fieldName: 'password', dataType: 'String' },
-      ],
-    },
-    {
-      tableName: 'Posts',
-      fields: [
-        { fieldName: 'id', dataType: 'Integer' },
-        { fieldName: 'title', dataType: 'String' },
-        { fieldName: 'content', dataType: 'Text' },
-        { fieldName: 'author_id', dataType: 'Integer' },
-      ],
-    },
-    {
-      tableName: 'Users',
-      fields: [
-        { fieldName: 'id', dataType: 'Integer' },
-        { fieldName: 'username', dataType: 'String' },
-        { fieldName: 'email', dataType: 'String' },
-        { fieldName: 'password', dataType: 'String' },
-      ],
-    },
-    {
-      tableName: 'Posts',
-      fields: [
-        { fieldName: 'id', dataType: 'Integer' },
-        { fieldName: 'title', dataType: 'String' },
-        { fieldName: 'content', dataType: 'Text' },
-        { fieldName: 'author_id', dataType: 'Integer' },
-      ],
-    },
-    {
-      tableName: 'Users',
-      fields: [
-        { fieldName: 'id', dataType: 'Integer' },
-        { fieldName: 'username', dataType: 'String' },
-        { fieldName: 'email', dataType: 'String' },
-        { fieldName: 'password', dataType: 'String' },
-      ],
-    },
-    {
-      tableName: 'Posts',
-      fields: [
-        { fieldName: 'id', dataType: 'Integer' },
-        { fieldName: 'title', dataType: 'String' },
-        { fieldName: 'content', dataType: 'Text' },
-        { fieldName: 'author_id', dataType: 'Integer' },
-      ],
-    },
-    {
-      tableName: 'Users',
-      fields: [
-        { fieldName: 'id', dataType: 'Integer' },
-        { fieldName: 'username', dataType: 'String' },
-        { fieldName: 'email', dataType: 'String' },
-        { fieldName: 'password', dataType: 'String' },
-      ],
-    },
-    {
-      tableName: 'Posts',
-      fields: [
-        { fieldName: 'id', dataType: 'Integer' },
-        { fieldName: 'title', dataType: 'String' },
-        { fieldName: 'content', dataType: 'Text' },
-        { fieldName: 'author_id', dataType: 'Integer' },
-      ],
-    },
+    }
   ];
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'Tables':
+        return <TableList filteredTables={filteredTables} />;
+      case 'Chat':
+        return <p>Chat content goes here</p>;
+      case 'Settings':
+        return <p>Settings content goes here</p>;
+      default:
+        return <p>Invalid tab selected</p>;
+    }
+  };
 
   const handleSearchInputChange = (event) => {
     setSearchQuery(event.target.value);
@@ -188,7 +72,7 @@ export default function Page() {
 
   return (
     <Layout>
-      <div className="py-12 border-b border-0 border-solid border-b-slate-200">
+      <div className="py-8 border-b border-0 border-solid border-b-slate-200">
         <div className="text-black flex flex-col items-start sm:flex-row sm:justify-between">
           <div>
             <div className="text-left">
@@ -200,64 +84,34 @@ export default function Page() {
             </div>
           </div>
           <div className="mt-4 sm:mt-0">
-            <div className="relative">
-              <input
-                type="text"
-                onChange={handleSearchInputChange}
-                value={searchQuery}
-                ref={searchInputRef}
-                className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-64 py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
-                placeholder="Search"
-              />
-              <p className="absolute top-1/2 transform -translate-y-1/2 right-4 text-xs text-gray-400">
-                <div className="kbd kbd-sm">⌘</div> <div className="kbd kbd-sm">K</div>
-              </p>
+            <div className="mt-4 sm:mt-0 flex items-center">
+              <div className="relative">
+                <input
+                  type="text"
+                  onChange={handleSearchInputChange}
+                  value={searchQuery}
+                  ref={searchInputRef}
+                  className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-64 py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+                  placeholder="Search"
+                />
+                <p className="absolute top-1/2 transform -translate-y-1/2 right-4 text-xs text-gray-400">
+                  <div className="kbd kbd-sm">⌘K</div>
+                </p>
+              </div>
             </div>
           </div>
         </div>
+        <div className="tabs mt-10 tabs-boxed bg-transparent">
+          <a className={`tab text-lg text-black ${activeTab === 'Chat' ? 'tab-active' : ''}`} onClick={() => handleTabClick('Chat')}>Chat</a>
+          <a className={`tab text-lg text-black ${activeTab === 'Tables' ? 'tab-active' : ''}`} onClick={() => handleTabClick('Tables')}>Tables</a>
+          <a className={`tab text-lg text-black ${activeTab === 'Settings' ? 'tab-active' : ''}`} onClick={() => handleTabClick('Settings')}>Settings</a>
+        </div>
       </div>
       <div className="bg-gray-100 py-6 flex flex-col sm:py-8">
-        <div className="relative py-3 sm:mx-auto">
+        <div className="relative w-full py-3 sm:mx-auto">
           <div className="relative px-4 py-8 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
-            <div className="max-w-6xl mx-auto">
-              <div className="flex items-center space-x-5 mb-4">
-              </div>
-              {filteredTables.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
-                  {filteredTables.map((table, tableIndex) => (
-                    <div key={tableIndex} className="border rounded-lg shadow-sm p-4">
-                      <h3 className="text-lg font-semibold text-gray-700 mb-2">{table.tableName}</h3>
-                      {table?.description && (<p className="text-sm text-gray-600 mb-4">{table.description}</p>
-                      )}
-                      <table className="min-w-full divide-y divide-gray-200">
-                        <thead>
-                          <tr>
-                            <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              Field
-                            </th>
-                            <th className="px-6 py-3  bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              Data Type
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                          {table.fields.map((field, fieldIndex) => (
-                            <tr key={fieldIndex}>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900">{field.fieldName}</div>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900">{field.dataType}</div>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  ))}
-                </div>) : (<div className="text-center mt-4 text-gray-700">
-                  No matching tables found.
-                </div>)}
+            <div className="max-w-7xl mx-auto">
+              {renderContent()}
             </div>
           </div>
         </div>

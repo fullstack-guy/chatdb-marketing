@@ -47,7 +47,6 @@ export default function Page() {
           {
             databases.length === 0 ? (<h1>You don't have any databases added.</h1>) : (
               <Table databases={databases} />
-
             )
           }
         </main>
