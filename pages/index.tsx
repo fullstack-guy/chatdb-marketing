@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { TagIcon, ShieldCheckIcon } from "@heroicons/react/outline";
 import Layout from "../components/Layout";
 import { CameraIcon } from "@heroicons/react/outline";
+import Image from "next/image";
 
 export default function Page() {
   const [email, setEmail] = useState("");
@@ -287,11 +288,13 @@ export default function Page() {
                   Spend 30 minutes struggling to find the right SQL query 🤔
                 </h3>
 
-                <div className="mt-8 w-full  md:mt-16">
-                  <img
+                <div className="mt-8 w-full md:mt-16">
+                  <Image
                     alt="slack conversation img"
                     className="rounded-lg"
-                    src="https://chatdb-assets.s3.amazonaws.com/slackimg.png"
+                    height={400}
+                    width={600}
+                    src="/images/slackimg.png"
                   />
                 </div>
               </div>
@@ -321,23 +324,16 @@ export default function Page() {
                   Get quick answers to tough questions in seconds 👏
                 </h3>
                 <div className="mt-8 w-full md:mt-16">
-                  <img
-                    alt="slack conversation img"
+                  <Image
+                    alt="slack conversation image"
                     className="rounded-lg"
-                    src="https://chatdb-assets.s3.amazonaws.com/sqlgenerated.png"
+                    height={400}
+                    width={600}
+                    src="/images/sqlgenerated.png"
                   />
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-
-        <section>
-          <div className="my-20 w-full">
-            <img
-              src="https://chatdb-assets.s3.amazonaws.com/Features.png"
-              className="mx-auto hidden md:block md:w-[50%]"
-            ></img>
           </div>
         </section>
 
@@ -351,28 +347,31 @@ export default function Page() {
               Just plug ChatDB into your existing ecosystem!
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-4 sm:mt-12 md:gap-8">
-              <div className="grid h-16 w-16 place-items-center rounded-2xl bg-layer-2 p-2">
-                <img
+              <div className="relative h-16 w-16 rounded-2xl bg-layer-2 p-2">
+                <Image
                   alt="mongodb logo"
-                  src="https://saasblocks-preview-tdg1-prd.fly.dev/assets/logos/mongodb.png"
+                  layout="fill"
+                  objectFit="contain"
+                  className="absolute"
+                  src="/images/mongodb.png"
                 />
               </div>
-              <div className="grid h-16 w-16 place-items-center rounded-2xl bg-layer-2 p-2">
-                <img
-                  alt="redis logo"
-                  src="https://chatdb-assets.s3.amazonaws.com/redis.png"
+              <div className="relative h-16 w-16 rounded-2xl bg-layer-2 p-2">
+                <Image
+                  alt="mysql logo"
+                  layout="fill"
+                  objectFit="contain"
+                  className="absolute"
+                  src="/images/mysql.png"
                 />
               </div>
-              <div className="grid h-16 w-16 place-items-center rounded-2xl bg-layer-2 p-2">
-                <img
-                  alt="mongodb logo"
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Antu_mysql-workbench.svg/1200px-Antu_mysql-workbench.svg.png"
-                />
-              </div>
-              <div className="grid h-16 w-16 place-items-center rounded-2xl bg-layer-2 p-2">
-                <img
+              <div className="relative h-16 w-16 rounded-2xl bg-layer-2 p-2">
+                <Image
+                  layout="fill"
                   alt="postgres logo"
-                  src="https://chatdb-assets.s3.amazonaws.com/postgres.png"
+                  objectFit="contain"
+                  className="absolute"
+                  src="/images/postgres-img.png"
                 />
               </div>
             </div>
@@ -399,10 +398,12 @@ export default function Page() {
                 </p>
               </div>
 
-              <div className="max-w-lg">
-                <img
-                  src="https://chatdb-assets.s3.amazonaws.com/SchemaVisualizer.png"
-                  alt=""
+              <div className="max-w-lg h-64">
+                <Image
+                  src="/images/SchemaVisualizer.png"
+                  alt="Schema Visualizer Image"
+                  width={500}
+                  height={300}
                   className="w-full rounded-lg"
                 />
               </div>
@@ -426,7 +427,7 @@ export default function Page() {
               <div className="max-w-lg">
                 <img
                   src="https://chatdb-assets.s3.amazonaws.com/Snapshot.gif"
-                  alt=""
+                  alt="Snapshot GIF"
                   className="w-full rounded-lg"
                 />
               </div>
@@ -449,7 +450,7 @@ export default function Page() {
               </div>
 
               <div className="max-w-lg">
-                <img
+                <Image
                   src="https://i.imgur.com/5JzWVvz.png"
                   alt=""
                   className="w-full"

@@ -44,7 +44,7 @@ const Chat = () => {
                     <tbody>
                         {
                             tablesQueries.map((table, index) => (
-                                <tr>
+                                <tr key={index}>
                                     <td className="text-md">{table}</td>
                                 </tr>
                             ))
