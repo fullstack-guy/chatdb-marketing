@@ -38,20 +38,28 @@ const Layout = ({ children }: LayoutProps) => {
           },
         ]}
       />
-      <div className="h-full max-w-7xl bg-layer-1 mx-auto">
+      <div className="mx-auto h-full max-w-7xl bg-layer-1">
         <div className="mx-5 xl:mx-0">
           <Navbar />
-          <main className="main-content bg-layer-1 flex-grow min-h-[calc(100vh-100px)]">{children}</main>
+          <main className="main-content min-h-[calc(100vh-100px)] flex-grow bg-layer-1">
+            {children}
+          </main>
           <footer className="footer p-10 text-base-content">
             <div>
-              <p className="font-bold text-xl">ChatDB</p>
+              <p className="text-xl font-bold">ChatDB</p>
               <p>The tool you needed for your database!</p>
             </div>
             <div>
               <span className="footer-title">Company</span>
-              <Link href="/" className="link link-hover">Home</Link>
-              <Link href="pricing" className="link link-hover">Pricing</Link>
-              <Link href="blog" className="link link-hover">Blog</Link>
+              <Link href="/" className="link-hover link">
+                Home
+              </Link>
+              <Link href="pricing" className="link-hover link">
+                Pricing
+              </Link>
+              <Link href="blog" className="link-hover link">
+                Blog
+              </Link>
             </div>
             {/* <div>
               <span className="footer-title">Legal</span>

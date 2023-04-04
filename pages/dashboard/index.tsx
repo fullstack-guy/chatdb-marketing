@@ -17,23 +17,23 @@ export default function Page() {
     {
       name: "EventsDB",
       type: "PostgreSQL",
-      lastUpdated: "Yesterday"
+      lastUpdated: "Yesterday",
     },
     {
       name: "EventsDB",
       type: "PostgreSQL",
-      lastUpdated: "Yesterday"
+      lastUpdated: "Yesterday",
     },
     {
       name: "EventsDB",
       type: "PostgreSQL",
-      lastUpdated: "Yesterday"
+      lastUpdated: "Yesterday",
     },
     {
       name: "EventsDB",
       type: "PostgreSQL",
-      lastUpdated: "Yesterday"
-    }
+      lastUpdated: "Yesterday",
+    },
   ];
 
   return (
@@ -44,11 +44,11 @@ export default function Page() {
         </header>
 
         <main className="">
-          {
-            databases.length === 0 ? (<h1>You don't have any databases added.</h1>) : (
-              <Table databases={databases} />
-            )
-          }
+          {databases.length === 0 ? (
+            <h1>You don't have any databases added.</h1>
+          ) : (
+            <Table databases={databases} />
+          )}
         </main>
       </div>
     </Layout>

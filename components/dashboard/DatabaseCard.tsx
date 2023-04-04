@@ -1,16 +1,18 @@
-import React from 'react';
-import Link from 'next/link';
+import React from "react";
+import Link from "next/link";
 
 const Card = ({ logo, title, lastUpdated }) => {
   return (
     <Link href={`/dashboard/${title.toLowerCase()}`}>
-      <div className="cursor-pointer flex items-center rounded-lg shadow-md p-4 mb-4 transition duration-300 ease-in-out hover:scale-105">
-        <div className='flex bg-[#0fe0b6] w-20 h-20 rounded-lg overflow-hidden mr-4 items-center justify-center'>
-          <img className="w-10 h-10 m-auto" src={logo} alt={title} />
+      <div className="mb-4 flex cursor-pointer items-center rounded-lg p-4 shadow-md transition duration-300 ease-in-out hover:scale-105">
+        <div className="mr-4 flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg bg-[#0fe0b6]">
+          <img className="m-auto h-10 w-10" src={logo} alt={title} />
         </div>
         <div>
-          <h1 className='mb-2 font-bold text-black text-lg'>{title}</h1>
-          <p className='italic text-sm text-gray-600'>Last Updated: {lastUpdated}</p>
+          <h1 className="mb-2 text-lg font-bold text-black">{title}</h1>
+          <p className="text-sm italic text-gray-600">
+            Last Updated: {lastUpdated}
+          </p>
         </div>
       </div>
     </Link>

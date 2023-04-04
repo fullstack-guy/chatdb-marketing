@@ -12,7 +12,7 @@ const Navbar = () => {
   const isOnDashboard = router.pathname === "/dashboard";
 
   return (
-    <header className="mx-auto xl:px-0 border-b border-0 border-solid border-b-slate-200">
+    <header className="mx-auto border-0 border-b border-solid border-b-slate-200 xl:px-0">
       <nav className="relative z-20 flex items-center justify-between py-6">
         <Link href="/">
           <a className="z-10">
@@ -85,8 +85,9 @@ const Navbar = () => {
                 {({ active }) => (
                   <Link href="/pricing">
                     <a
-                      className={`${active ? "bg-muted-1 text-heading" : "text-text"
-                        } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                      className={`${
+                        active ? "bg-muted-1 text-heading" : "text-text"
+                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                     >
                       Pricing
                     </a>
