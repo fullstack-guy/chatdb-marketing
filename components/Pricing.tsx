@@ -15,13 +15,14 @@ export default function Pricing() {
           <PlanCard
             color="#78E3FC"
             name="Basic"
+            price="9.99"
             description="Get started with the basic plan"
             features={[
               "1 User",
               "1 Project",
-              "5 Tables",
+              "10 Tables",
               "Backed by ChatGPT",
-              "Postgres Connection",
+              "PostgreSQL Connection",
             ]}
             btnText="Start Free Plan"
           />
