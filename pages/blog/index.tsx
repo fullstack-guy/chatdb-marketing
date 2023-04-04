@@ -42,7 +42,9 @@ export default function Page({ posts }) {
                   <figure className="w-full p-6">
                     <Image
                       src={`/${frontmatter.image}`}
-                      className="h-36 w-full rounded-sm object-cover"
+                      width={300}
+                      height={150}
+                      className="rounded-sm object-cover"
                     />
                   </figure>
                   <div className="card-body flex items-center justify-center text-center">
