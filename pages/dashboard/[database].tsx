@@ -83,53 +83,55 @@ export default function Page() {
               <span className="ml-2 text-3xl font-semibold">EventsDB</span>
             </div>
           </div>
-          {
-            activeTab === "Tables" && (
-              <div className="mt-4 sm:mt-0">
-                <div className="mt-4 flex items-center sm:mt-0">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      onChange={handleSearchInputChange}
-                      value={searchQuery}
-                      ref={searchInputRef}
-                      className="focus:ring-primary-600 w-64 flex-1 appearance-none rounded-lg border border-transparent border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 shadow-sm focus:border-transparent focus:outline-none focus:ring-2"
-                      placeholder="Search"
-                    />
-                    <p className="absolute top-1/2 right-4 -translate-y-1/2 transform text-xs text-gray-400">
-                      <div className="kbd kbd-sm">⌘K</div>
-                    </p>
-                  </div>
+          {activeTab === "Tables" && (
+            <div className="mt-4 sm:mt-0">
+              <div className="mt-4 flex items-center sm:mt-0">
+                <div className="relative">
+                  <input
+                    type="text"
+                    onChange={handleSearchInputChange}
+                    value={searchQuery}
+                    ref={searchInputRef}
+                    className="focus:ring-primary-600 w-64 flex-1 appearance-none rounded-lg border border-transparent border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 shadow-sm focus:border-transparent focus:outline-none focus:ring-2"
+                    placeholder="Search"
+                  />
+                  <p className="absolute top-1/2 right-4 -translate-y-1/2 transform text-xs text-gray-400">
+                    <div className="kbd kbd-sm">⌘K</div>
+                  </p>
                 </div>
               </div>
-            )
-          }
+            </div>
+          )}
         </div>
         <div className="tabs tabs-boxed mt-10 bg-transparent">
           <a
-            className={`tab text-lg text-black ${activeTab === "Chat" ? "tab-active" : ""
-              }`}
+            className={`tab text-lg text-black ${
+              activeTab === "Chat" ? "tab-active" : ""
+            }`}
             onClick={() => handleTabClick("Chat")}
           >
             Chat
           </a>
           <a
-            className={`tab text-lg text-black ${activeTab === "Tables" ? "tab-active" : ""
-              }`}
+            className={`tab text-lg text-black ${
+              activeTab === "Tables" ? "tab-active" : ""
+            }`}
             onClick={() => handleTabClick("Tables")}
           >
             Tables
           </a>
           <a
-            className={`tab text-lg text-black ${activeTab === "Flow" ? "tab-active" : ""
-              }`}
+            className={`tab text-lg text-black ${
+              activeTab === "Flow" ? "tab-active" : ""
+            }`}
             onClick={() => handleTabClick("Flow")}
           >
             Flow
           </a>
           <a
-            className={`tab text-lg text-black ${activeTab === "Settings" ? "tab-active" : ""
-              }`}
+            className={`tab text-lg text-black ${
+              activeTab === "Settings" ? "tab-active" : ""
+            }`}
             onClick={() => handleTabClick("Settings")}
           >
             Settings

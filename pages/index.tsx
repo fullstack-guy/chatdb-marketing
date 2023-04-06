@@ -55,7 +55,8 @@ export default function Page() {
               </h1>
               <p className="mt-6 max-w-3xl text-xl">
                 The AI tool that knows everything about your database so it can
-                help you generate SQL queries that work! Think ChatGPT, but trained on your database.
+                help you generate SQL queries that work! Think ChatGPT, but
+                trained on your database.
               </p>
               <form
                 className="subscription-form mt-6 flex flex-col gap-2 sm:flex-row"
@@ -398,7 +399,7 @@ export default function Page() {
                 </p>
               </div>
 
-              <div className="max-w-lg h-64">
+              <div className="h-64 max-w-lg">
                 <Image
                   src="/images/SchemaVisualizer.png"
                   alt="Schema Visualizer Image"

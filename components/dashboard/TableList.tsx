@@ -6,7 +6,10 @@ const TableList = ({ filteredTables }) => {
       {filteredTables.length > 0 ? (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
           {filteredTables.map((table, tableIndex) => (
-            <div key={tableIndex} className="relative rounded-lg border p-4 shadow-sm">
+            <div
+              key={tableIndex}
+              className="relative rounded-lg border p-4 shadow-sm"
+            >
               <div className="absolute top-2 right-2">
                 <button className="text-gray-500 hover:text-gray-700">
                   <BsThreeDots size={20} />

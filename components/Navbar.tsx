@@ -23,17 +23,7 @@ const Navbar = () => {
         <div className="hidden items-center md:flex">
           <SignedIn>
             {isOnDashboard ? (
-              <>
-                <div
-                  style={{
-                    background:
-                      "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)",
-                  }}
-                  className="btn-md btn mx-4 inline-flex cursor-pointer items-center justify-center rounded-xl border-none px-4 text-base font-semibold capitalize text-white shadow-sm hover:bg-primary-accent focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:border-primary disabled:hover:bg-primary disabled:hover:text-white dark:focus:ring-white/80"
-                >
-                  Add Database
-                </div>
-              </>
+              <></>
             ) : (
               <Link href="/dashboard">
                 <a className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text">
