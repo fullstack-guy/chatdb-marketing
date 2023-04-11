@@ -1,6 +1,8 @@
 import { Toaster, toast } from "react-hot-toast";
 import { useState } from "react";
 import Link from "next/link";
+import { useUser } from "@clerk/clerk-react";
+import supabase from "../../../utils/supabaseClient";
 import Layout from "../../../components/Layout";
 
 export default function Page() {
@@ -10,6 +12,28 @@ export default function Page() {
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState(null);
   const [connectionStringError, setConnectionStringError] = useState(null);
+
+  const [databaseInfo, setDatabaseInfo] = useState(null);
+  const { user } = useUser();
+
+  const handleApiResponse = async (data) => {
+    setDatabaseInfo(data);
+
+    const { error } = await supabase
+      .from("user_schemas")
+      .insert([
+        {
+          user_id: user.id,
+          schema_data: data,
+        },
+      ]);
+
+    if (error) {
+      console.error("Error saving data to Supabase:", error);
+    } else {
+      console.log("Data saved to Supabase successfully!");
+    }
+  };
 
   const connectionStringChange = (event) => {
     const result = event.target.value.replace(/^postgres:\/\//, "");
@@ -68,13 +92,10 @@ export default function Page() {
       } else {
         const data = await response.json();
         console.log(data);
+        setDatabaseInfo(data);
 
         toast(
-          "We found Schemas: " +
-            data?.schemas.length +
-            " Tables: " +
-            data?.tables.length +
-            "!",
+          "Successfully Connected",
           {
             icon: "👏",
             style: {
@@ -131,7 +152,7 @@ export default function Page() {
       <div className="m-auto lg:mx-[20%]">
         <div className="w-full text-center">
           <div className="container my-auto mx-auto">
-            <h1 className="mt-10 text-2xl font-bold text-black">
+            <h1 className="mt-10 text-3xl font-bold text-black">
               Take a Snapshot
             </h1>
 
@@ -141,11 +162,11 @@ export default function Page() {
           </div>
           <div className="m-10 items-center justify-center">
             <div className="flex w-full flex-col border-opacity-50">
-              <div className="card rounded-box grid h-full w-full place-items-center bg-gray-300">
+              <div className="bg-white shadow-md rounded-xl p-6">
                 <div className="w-full">
                   <label
                     htmlFor="url"
-                    className="text-md m-2 block font-semibold text-heading"
+                    className="text-xl m-2 block font-semibold text-black"
                   >
                     Name
                   </label>
@@ -163,7 +184,7 @@ export default function Page() {
                   )}
                   <label
                     htmlFor="url"
-                    className="text-md m-2 block font-semibold text-heading"
+                    className="text-xl m-3 block font-semibold text-black"
                   >
                     Connection URL
                   </label>
@@ -179,9 +200,8 @@ export default function Page() {
                       onChange={connectionStringChange}
                     />
                     <span
-                      className={`btn hidden sm:flex ${
-                        connecting && "loading"
-                      } cursor-pointer border-none bg-success font-semibold text-black hover:bg-success`}
+                      className={`btn hidden sm:flex ${connecting && "loading"
+                        } cursor-pointer border-none bg-success font-semibold text-black hover:bg-success`}
                       onClick={connectToDatabase}
                     >
                       {connecting ? (
@@ -211,9 +231,8 @@ export default function Page() {
                   )}
                   <div className="my-2 w-full">
                     <button
-                      className={`btn ${
-                        connecting && "loading"
-                      } mx-auto my-2 flex w-[75%] bg-success font-semibold text-black hover:bg-success sm:hidden`}
+                      className={`btn ${connecting && "loading"
+                        } mx-auto my-2 flex w-[75%] bg-success font-semibold text-black hover:bg-success sm:hidden`}
                       onClick={connectToDatabase}
                     >
                       {connecting ? (
