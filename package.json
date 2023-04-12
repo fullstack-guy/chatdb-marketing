@@ -8,6 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@basis-theory/basis-theory-react": "^1.11.0",
     "@clerk/nextjs": "^4.13.0",
     "@fontsource/inter": "^4.5.11",
     "@headlessui/react": "^1.6.6",

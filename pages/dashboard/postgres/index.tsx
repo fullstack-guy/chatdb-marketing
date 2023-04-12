@@ -1,7 +1,13 @@
 import { Toaster, toast } from "react-hot-toast";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import { useUser } from "@clerk/clerk-react";
+import {
+  BasisTheoryProvider,
+  BasisTheoryApiError,
+  BasisTheoryValidationError,
+  useBasisTheory,
+} from "@basis-theory/basis-theory-react";
 import supabase from "../../../utils/supabaseClient";
 import Layout from "../../../components/Layout";
 
@@ -15,10 +21,8 @@ export default function Page() {
 
   const [databaseInfo, setDatabaseInfo] = useState(null);
   const { user } = useUser();
-
+  const { bt } = useBasisTheory(process.env.NEXT_PUBLIC_BASIS_THEORY_KEY, { elements: true });
   const handleApiResponse = async (data) => {
-    setDatabaseInfo(data);
-
     const { error } = await supabase
       .from("user_schemas")
       .insert([
@@ -32,6 +36,32 @@ export default function Page() {
       console.error("Error saving data to Supabase:", error);
     } else {
       console.log("Data saved to Supabase successfully!");
+      try {
+        const databaseTokens = await bt.tokenize({
+          database_string: "postgres://" + connectionString,
+        });
+        console.log(databaseTokens);
+        const { error } = await supabase
+          .from("user_databases")
+          .insert([{...databaseTokens, user_id: user.id}]);
+        if (error) {
+          console.error("Error saving data to Supabase:", error);
+        } else {
+          console.log("Database string saved to Supabase successfully!");
+        }
+      } catch (error) {
+        if (error instanceof BasisTheoryValidationError) {
+          console.log(error);
+          
+        } else if (error instanceof BasisTheoryApiError) {
+          console.log(error);
+        }
+      }
+      if (error) {
+        console.error("Error saving data to Supabase:", error);
+      } else {
+        console.log("Data saved to Supabase successfully!");
+      }
     }
   };
 
@@ -106,7 +136,7 @@ export default function Page() {
             },
           }
         );
-
+        handleApiResponse(data);
         setConnected(true);
         setConnecting(false);
         return data;
@@ -164,98 +194,101 @@ export default function Page() {
             <div className="flex w-full flex-col border-opacity-50">
               <div className="bg-white shadow-md rounded-xl p-6">
                 <div className="w-full">
-                  <label
-                    htmlFor="url"
-                    className="text-xl m-2 block font-semibold text-black"
-                  >
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="My Fresh Database 🤘"
-                    className="input-bordered input w-[50%] text-black"
-                    value={name}
-                    onChange={handleNameChange}
-                  />
-                  {nameError && (
-                    <p className="mt-1 text-sm font-bold text-red-600">
-                      {nameError}
-                    </p>
-                  )}
-                  <label
-                    htmlFor="url"
-                    className="text-xl m-3 block font-semibold text-black"
-                  >
-                    Connection URL
-                  </label>
-                  <label className="input-group mb-5 justify-center">
-                    <span className="bg-gray-700 px-2 font-semibold text-white">
-                      postgresql://
-                    </span>
+                  <BasisTheoryProvider bt={bt}>
+                    <label
+                      htmlFor="url"
+                      className="text-xl m-2 block font-semibold text-black"
+                    >
+                      Name
+                    </label>
                     <input
                       type="text"
-                      placeholder="localhost:5432/db"
+                      placeholder="My Fresh Database 🤘"
                       className="input-bordered input w-[50%] text-black"
-                      value={connectionString}
-                      onChange={connectionStringChange}
+                      value={name}
+                      onChange={handleNameChange}
                     />
-                    <span
-                      className={`btn hidden sm:flex ${connecting && "loading"
-                        } cursor-pointer border-none bg-success font-semibold text-black hover:bg-success`}
-                      onClick={connectToDatabase}
+                    {nameError && (
+                      <p className="mt-1 text-sm font-bold text-red-600">
+                        {nameError}
+                      </p>
+                    )}
+                    <label
+                      htmlFor="url"
+                      className="text-xl m-3 block font-semibold text-black"
                     >
-                      {connecting ? (
-                        <>Connecting</>
-                      ) : connected ? (
-                        <>
-                          Connected{" "}
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            className=" ml-1 h-6 w-6"
-                          >
-                            <path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                        </>
-                      ) : (
-                        <>Connect</>
-                      )}
-                    </span>
-                  </label>
-                  {connectionStringError && (
-                    <p className="mt-1 text-sm font-bold text-red-600">
-                      {connectionStringError}
-                    </p>
-                  )}
-                  <div className="my-2 w-full">
-                    <button
-                      className={`btn ${connecting && "loading"
-                        } mx-auto my-2 flex w-[75%] bg-success font-semibold text-black hover:bg-success sm:hidden`}
-                      onClick={connectToDatabase}
-                    >
-                      {connecting ? (
-                        <>Connecting</>
-                      ) : connected ? (
-                        <>
-                          Connected{" "}
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            className=" ml-1 h-6 w-6"
-                          >
-                            <path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                        </>
-                      ) : (
-                        <>Connect</>
-                      )}
-                    </button>
-                  </div>
+                      Connection URL
+                    </label>
+                    <label className="input-group mb-5 justify-center">
+                      <span className="bg-gray-700 px-2 font-semibold text-white">
+                        postgresql://
+                      </span>
+                      <input
+                        type="text"
+                        placeholder="localhost:5432/db"
+                        className="input-bordered input w-[50%] text-black"
+                        value={connectionString}
+                        onChange={connectionStringChange}
+                      />
+                      <span
+                        className={`btn hidden sm:flex ${connecting && "loading"
+                          } cursor-pointer border-none bg-success font-semibold text-black hover:bg-success`}
+                        onClick={connectToDatabase}
+                      >
+                        {connecting ? (
+                          <>Connecting</>
+                        ) : connected ? (
+                          <>
+                            Connected{" "}
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              className=" ml-1 h-6 w-6"
+                            >
+                              <path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </>
+                        ) : (
+                          <>Connect</>
+                        )}
+                      </span>
+                    </label>
+                    {connectionStringError && (
+                      <p className="mt-1 text-sm font-bold text-red-600">
+                        {connectionStringError}
+                      </p>
+                    )}
+                    <div className="my-2 w-full">
+                      <button
+                        className={`btn ${connecting && "loading"
+                          } mx-auto my-2 flex w-[75%] bg-success font-semibold text-black hover:bg-success sm:hidden`}
+                        onClick={connectToDatabase}
+                        type="submit"
+                      >
+                        {connecting ? (
+                          <>Connecting</>
+                        ) : connected ? (
+                          <>
+                            Connected{" "}
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke-width="1.5"
+                              stroke="currentColor"
+                              className=" ml-1 h-6 w-6"
+                            >
+                              <path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </>
+                        ) : (
+                          <>Connect</>
+                        )}
+                      </button>
+                    </div>
+                  </BasisTheoryProvider>
                 </div>
               </div>
             </div>
