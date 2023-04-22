@@ -6,6 +6,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+function simplifyDataType(dataType) {
+  const dataTypeMapping = {
+    'character varying': 'text',
+    'timestamp without time zone': 'timestamp',
+  };
+
+  return dataTypeMapping[dataType] || dataType;
+}
+
 app.post("*", async (req, res) => {
   const { connection_string } = req.body;
 
@@ -51,7 +60,7 @@ app.post("*", async (req, res) => {
 
         for (const columnRow of columnRows) {
           databaseInfo[schema][table][columnRow.column_name] = {
-            type: columnRow.data_type,
+            type: simplifyDataType(columnRow.data_type),
             nullable: columnRow.is_nullable === "YES",
           };
         }

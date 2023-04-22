@@ -22,10 +22,10 @@ const TableList = ({ filteredTables }) => {
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead>
                     <tr>
-                      <th className="bg-gray-700 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-100">
+                      <th className="sticky top-0 bg-gray-700 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-100">
                         Field
                       </th>
-                      <th className="bg-gray-700 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-100">
+                      <th className="sticky top-0 bg-gray-700 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-100">
                         Data Type
                       </th>
                     </tr>

@@ -22,45 +22,69 @@ export default function Page() {
   const [databaseInfo, setDatabaseInfo] = useState(null);
   const { user } = useUser();
   const { bt } = useBasisTheory(process.env.NEXT_PUBLIC_BASIS_THEORY_KEY, { elements: true });
+
   const handleApiResponse = async (data) => {
+    // Check if the database already exists
+    const { data: existingDatabases, error: dbError } = await supabase
+      .from("user_databases")
+      .select("*")
+      .eq("user_id", user.id)
+      .eq("database_string", "postgres://" + connectionString);
+
+    if (dbError) {
+      console.error("Error checking for existing databases in Supabase:", dbError);
+      toast.error("Error checking for existing databases in Supabase");
+      return;
+    }
+
+    if (existingDatabases.length > 0) {
+      toast("Database already exists!");
+      return;
+    }
+
+    // Proceed with inserting data if the database doesn't exist
     const { error } = await supabase
       .from("user_schemas")
       .insert([
         {
           user_id: user.id,
           schema_data: data,
+          title: name,
         },
       ]);
 
     if (error) {
       console.error("Error saving data to Supabase:", error);
+      toast.error("Error saving data to Supabase");
     } else {
-      console.log("Data saved to Supabase successfully!");
+      toast.success("Data saved to Supabase successfully!");
       try {
         const databaseTokens = await bt.tokenize({
           database_string: "postgres://" + connectionString,
         });
-        console.log(databaseTokens);
         const { error } = await supabase
           .from("user_databases")
-          .insert([{...databaseTokens, user_id: user.id}]);
+          .insert([{ ...databaseTokens, user_id: user.id }]);
         if (error) {
           console.error("Error saving data to Supabase:", error);
+          toast.error("Error saving database string to Supabase");
         } else {
-          console.log("Database string saved to Supabase successfully!");
+          toast.success("Database string saved to Supabase successfully!");
         }
       } catch (error) {
         if (error instanceof BasisTheoryValidationError) {
           console.log(error);
-          
+          toast.error("BasisTheory Validation Error");
         } else if (error instanceof BasisTheoryApiError) {
           console.log(error);
+          toast.error("BasisTheory API Error");
         }
       }
       if (error) {
         console.error("Error saving data to Supabase:", error);
+        toast.error("Error saving data to Supabase");
       } else {
-        console.log("Data saved to Supabase successfully!");
+        toast.success("Data saved to Supabase successfully!");
       }
     }
   };

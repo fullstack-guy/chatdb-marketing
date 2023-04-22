@@ -2,8 +2,9 @@ import { useUser } from "@clerk/nextjs";
 import Layout from "../../components/Layout";
 import Table from "../../components/dashboard/Table";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import supabase from "../../utils/supabaseClient";
 
 export default function Page() {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -13,7 +14,14 @@ export default function Page() {
     router.push(path);
   };
 
-  // new databases that the user can connect to
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      fetchDatabases();
+    }
+  }, [isLoaded, isSignedIn]);
+
+  const [fetchedDatabases, setFetchedDatabases] = useState([]);
+
   const [newDatabases, setNewDatabases] = useState([
     {
       name: "PostgreSQL",
@@ -23,6 +31,26 @@ export default function Page() {
     },
   ]);
 
+  const fetchDatabases = async () => {
+    const { data, error } = await supabase
+      .from("user_schemas")
+      .select("*")
+      .eq("user_id", user.id);
+
+    if (error) {
+      console.error("Error fetching databases:", error);
+    } else {
+      setFetchedDatabases(data.map(db => ({
+        name: db.title,
+        path: "/dashboard/postgres",
+        selected: false,
+        img: "/images/postgres-icon.png",
+        uuid: db.uuid,
+        created_at: db.created_at,
+      })));
+    }
+  };
+
   if (!isLoaded || !isSignedIn || process.env.NODE_ENV === "production") {
     return null;
   }
@@ -31,29 +59,6 @@ export default function Page() {
     const selectedDatabase = newDatabases.find((db) => db.selected);
     handleNavigation(selectedDatabase.path || "/dashboard");
   };
-
-  const databases = [
-    {
-      name: "EventsDB",
-      type: "PostgreSQL",
-      lastUpdated: "Yesterday",
-    },
-    {
-      name: "EventsDB",
-      type: "PostgreSQL",
-      lastUpdated: "Yesterday",
-    },
-    {
-      name: "EventsDB",
-      type: "PostgreSQL",
-      lastUpdated: "Yesterday",
-    },
-    {
-      name: "EventsDB",
-      type: "PostgreSQL",
-      lastUpdated: "Yesterday",
-    },
-  ];
 
   // set database as selected
   const selectDatabase = (index) => {
@@ -83,10 +88,10 @@ export default function Page() {
           >
             Add Database
           </label>
-          {databases.length === 0 ? (
+          {fetchedDatabases.length === 0 ? (
             <h1>You don't have any databases added.</h1>
           ) : (
-            <Table databases={databases} />
+            <Table databases={fetchedDatabases} />
           )}
         </main>
       </div>
@@ -95,30 +100,30 @@ export default function Page() {
         <label className="modal-box relative w-11/12 max-w-5xl" htmlFor="">
           <h3 className="text-2xl font-bold text-black">Add a Database</h3>
           <div className="my-4">
-            {newDatabases.map((database, index) => (
-              <div
-                key={index}
-                onClick={() => selectDatabase(index)}
-                className={`mb-4 flex cursor-pointer items-center rounded-lg p-4 shadow-md ${
-                  database.selected ? "border-4 border-[#0fe0b6]" : ""
-                }`}
-              >
-                <div className="mr-4 flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg bg-[#0fe0b6]">
-                  <Image
-                    className="m-auto"
-                    width={40}
-                    height={40}
-                    src={database.img}
-                    alt={`${database.name} Image`}
-                  />
+            {newDatabases.length > 0 &&
+              newDatabases.map((database, index) => (
+                <div
+                  key={index}
+                  onClick={() => selectDatabase(index)}
+                  className={`mb-4 flex cursor-pointer items-center rounded-lg p-4 shadow-md ${database.selected ? "border-4 border-[#0fe0b6]" : ""
+                    }`}
+                >
+                  <div className="mr-4 flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg bg-[#0fe0b6]">
+                    <Image
+                      className="m-auto"
+                      width={40}
+                      height={40}
+                      src={database.img}
+                      alt={`${database.name} Image`}
+                    />
+                  </div>
+                  <div>
+                    <h1 className="mb-2 text-xl font-bold text-black">
+                      {database.name}
+                    </h1>
+                  </div>
                 </div>
-                <div>
-                  <h1 className="mb-2 text-xl font-bold text-black">
-                    {database.name}
-                  </h1>
-                </div>
-              </div>
-            ))}
+              ))}
           </div>
           <div className="modal-action">
             <label htmlFor="database-modal" className="btn-ghost btn">

@@ -5,7 +5,8 @@ import DatabaseCard from "./DatabaseCard";
 interface DatabaseObject {
   name: string;
   type: string | undefined;
-  lastUpdated: string;
+  created_at: string;
+  uuid: string;
 }
 
 type DatabaseObjectArray = DatabaseObject[];
@@ -27,7 +28,8 @@ const Table = ({ databases }: Props) => {
           key={index}
           logo={"/images/postgres-icon.png"}
           title={card.name}
-          lastUpdated={card.lastUpdated}
+          uuid={card.uuid}
+          lastUpdated={card.created_at}
         />
       ))}
     </div>
