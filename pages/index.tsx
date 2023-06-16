@@ -1,7 +1,6 @@
 import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
 import { useState } from "react";
-import { Analytics } from "@vercel/analytics/react";
 import { TagIcon, ShieldCheckIcon } from "@heroicons/react/outline";
 import Layout from "../components/Layout";
 import { CameraIcon } from "@heroicons/react/outline";

@@ -16,21 +16,17 @@ interface Props {
 
 const Table = ({ databases }: Props) => {
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-        gridGap: "20px",
-      }}
-    >
+    <div className="flex flex-row flex-wrap justify-center">
       {databases.map((card, index) => (
-        <DatabaseCard
-          key={index}
-          logo={"/images/postgres-icon.png"}
-          title={card.name}
-          uuid={card.uuid}
-          lastUpdated={card.created_at}
-        />
+        <div key={index} className="flex flex-col m-2 w-1/2">
+          <DatabaseCard
+            key={index}
+            logo={"/images/postgres-icon.png"}
+            title={card.name}
+            uuid={card.uuid}
+            lastUpdated={card.created_at}
+          />
+        </div>
       ))}
     </div>
   );

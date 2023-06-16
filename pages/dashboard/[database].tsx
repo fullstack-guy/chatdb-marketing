@@ -26,6 +26,7 @@ export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("Chat");
   const [fetchedDatabase, setFetchedDatabase] = useState<Database | null>(null);
+  const [databaseToken, setDatabaseToken] = useState<string>("");
   const [selectedSchema, setSelectedSchema] = useState("public");
   const [dataModel, setDataModel] = useState([]);
 
@@ -50,9 +51,24 @@ export default function Page() {
     }
   };
 
+  const fetchDatabaseString = async () => {
+    const { data, error } = await supabase
+      .from("user_databases")
+      .select('database_string')
+      .eq("uuid", database); // Assuming you want to fetch for a specific user
+
+    if (error) {
+      console.error("Error fetching connection string:", error);
+      router.push("/dashboard");
+    } else if (data && data.length > 0) {
+      setDatabaseToken(data[0].database_string);
+    }
+  }
+
   useEffect(() => {
     if (isLoaded && isSignedIn) {
       fetchTables();
+      fetchDatabaseString();
     }
   }, [isLoaded, isSignedIn]);
 
@@ -105,7 +121,7 @@ export default function Page() {
       case "Tables":
         return <TableList filteredTables={filteredTables} />;
       case "Chat":
-        return <Chat />;
+        return <Chat database_token={databaseToken} />;
       case "Flow":
         return <p>Flow content goes here</p>;
       case "Settings":

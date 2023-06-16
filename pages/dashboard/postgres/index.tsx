@@ -10,6 +10,7 @@ import {
 } from "@basis-theory/basis-theory-react";
 import supabase from "../../../utils/supabaseClient";
 import Layout from "../../../components/Layout";
+import { v4 as uuidv4 } from 'uuid';
 
 export default function Page() {
   const [connected, setConnected] = useState(false);
@@ -23,48 +24,55 @@ export default function Page() {
   const { user } = useUser();
   const { bt } = useBasisTheory(process.env.NEXT_PUBLIC_BASIS_THEORY_KEY, { elements: true });
 
-  const handleApiResponse = async (data) => {
-    // Check if the database already exists
-    const { data: existingDatabases, error: dbError } = await supabase
-      .from("user_databases")
-      .select("*")
-      .eq("user_id", user.id)
-      .eq("database_string", "postgres://" + connectionString);
+  const handleApiResponse = async (data, user, connectionString, name, toast, bt) => {
+    try {
+      // Check if the database already exists
+      const { data: existingDatabases, error: dbError } = await supabase
+        .from("user_databases")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("database_string", "postgres://" + connectionString);
 
-    if (dbError) {
-      console.error("Error checking for existing databases in Supabase:", dbError);
-      toast.error("Error checking for existing databases in Supabase");
-      return;
-    }
+      if (dbError) {
+        console.error("Error checking for existing databases in Supabase:", dbError);
+        toast.error("Error checking for existing databases in Supabase");
+        return;
+      }
 
-    if (existingDatabases.length > 0) {
-      toast("Database already exists!");
-      return;
-    }
+      if (existingDatabases.length > 0) {
+        toast("Database already exists!");
+        return;
+      }
 
-    // Proceed with inserting data if the database doesn't exist
-    const { error } = await supabase
-      .from("user_schemas")
-      .insert([
-        {
-          user_id: user.id,
-          schema_data: data,
-          title: name,
-        },
-      ]);
+      // Proceed with inserting data if the database doesn't exist
+      const { data: insertedSchemas, error: schemaError } = await supabase
+        .from("user_schemas")
+        .insert([
+          {
+            user_id: user.id,
+            schema_data: data,
+            title: name,
+          },
+        ])
+        .select('uuid'); // Include the 'id' in the response
 
-    if (error) {
-      console.error("Error saving data to Supabase:", error);
-      toast.error("Error saving data to Supabase");
-    } else {
-      toast.success("Data saved to Supabase successfully!");
+      if (schemaError) {
+        console.error("Error saving data to Supabase:", schemaError);
+        toast.error("Error saving data to Supabase");
+        return;
+      }
+
+      const userID = insertedSchemas[0].uuid; // Get the id of the inserted schema
+
       try {
         const databaseTokens = await bt.tokenize({
           database_string: "postgres://" + connectionString,
         });
+
         const { error } = await supabase
           .from("user_databases")
-          .insert([{ ...databaseTokens, user_id: user.id }]);
+          .insert([{ ...databaseTokens, user_id: user.id, uuid: userID }]);
+
         if (error) {
           console.error("Error saving data to Supabase:", error);
           toast.error("Error saving database string to Supabase");
@@ -80,14 +88,12 @@ export default function Page() {
           toast.error("BasisTheory API Error");
         }
       }
-      if (error) {
-        console.error("Error saving data to Supabase:", error);
-        toast.error("Error saving data to Supabase");
-      } else {
-        toast.success("Data saved to Supabase successfully!");
-      }
+    } catch (error) {
+      console.error("Error saving data to Supabase:", error);
+      toast.error("Error saving data to Supabase");
     }
   };
+
 
   const connectionStringChange = (event) => {
     const result = event.target.value.replace(/^postgres:\/\//, "");
@@ -145,7 +151,6 @@ export default function Page() {
         toast.error("There was an error connecting to the database!");
       } else {
         const data = await response.json();
-        console.log(data);
         setDatabaseInfo(data);
 
         toast(
@@ -160,7 +165,7 @@ export default function Page() {
             },
           }
         );
-        handleApiResponse(data);
+        handleApiResponse(data, user, connectionString, name, toast, bt);
         setConnected(true);
         setConnecting(false);
         return data;

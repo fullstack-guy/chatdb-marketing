@@ -22,15 +22,17 @@
     "markdown-it": "^13.0.1",
     "next": "^12.2.1",
     "next-seo": "^5.15.0",
+    "pg": "^8.11.0",
     "react": "^18.2.0",
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.0",
     "react-hotjar": "^5.5.0",
-    "react-icons": "^4.8.0",
+    "react-icons": "^4.9.0",
     "react-player": "^2.11.0",
     "react-syntax-highlighter": "^15.5.0",
-    "reactflow": "^11.7.0"
+    "reactflow": "^11.7.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.2",
