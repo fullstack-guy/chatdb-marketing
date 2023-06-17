@@ -1,4 +1,3 @@
-import Link from "next/link";
 import DatabaseCard from "./DatabaseCard";
 
 // Define the type for the individual database object

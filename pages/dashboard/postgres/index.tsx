@@ -1,5 +1,5 @@
 import { Toaster, toast } from "react-hot-toast";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useUser } from "@clerk/clerk-react";
 import {
@@ -10,19 +10,35 @@ import {
 } from "@basis-theory/basis-theory-react";
 import supabase from "../../../utils/supabaseClient";
 import Layout from "../../../components/Layout";
-import { v4 as uuidv4 } from 'uuid';
+import { useRouter } from "next/router";
+
 
 export default function Page() {
+  const router = useRouter();
+
   const [connected, setConnected] = useState(false);
   const [connecting, setConnecting] = useState(false);
   const [connectionString, setConnectionString] = useState("");
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState(null);
   const [connectionStringError, setConnectionStringError] = useState(null);
+  const [saving, setSaving] = useState(false);
 
   const [databaseInfo, setDatabaseInfo] = useState(null);
   const { user } = useUser();
   const { bt } = useBasisTheory(process.env.NEXT_PUBLIC_BASIS_THEORY_KEY, { elements: true });
+
+  const saveDatabase = async () => {
+    setSaving(true);
+    try {
+      await handleApiResponse(databaseInfo, user, connectionString, name, toast, bt);
+      toast.success("Database saved successfully!");
+    } catch (error) {
+      toast.error("There was an error saving the database!");
+    } finally {
+      setSaving(false);
+    }
+  };
 
   const handleApiResponse = async (data, user, connectionString, name, toast, bt) => {
     try {
@@ -77,7 +93,8 @@ export default function Page() {
           console.error("Error saving data to Supabase:", error);
           toast.error("Error saving database string to Supabase");
         } else {
-          toast.success("Database string saved to Supabase successfully!");
+          toast.success("Woo! You have a new database!");
+          router.push("/dashboard")
         }
       } catch (error) {
         if (error instanceof BasisTheoryValidationError) {
@@ -131,7 +148,7 @@ export default function Page() {
 
     setConnecting(true);
 
-    const url = "http://localhost:3000/api/connect";
+    const url = "http://localhost:3001/api/connect";
     const body = {
       id: "bugatti",
       connection_string: "postgres://" + connectionString,
@@ -165,7 +182,6 @@ export default function Page() {
             },
           }
         );
-        handleApiResponse(data, user, connectionString, name, toast, bt);
         setConnected(true);
         setConnecting(false);
         return data;
@@ -260,25 +276,29 @@ export default function Page() {
                         onChange={connectionStringChange}
                       />
                       <span
-                        className={`btn hidden sm:flex ${connecting && "loading"
+                        className={`btn hidden sm:flex ${connecting || saving ? "loading" : ""
                           } cursor-pointer border-none bg-success font-semibold text-black hover:bg-success`}
-                        onClick={connectToDatabase}
+                        onClick={connected ? saveDatabase : connectToDatabase}
                       >
                         {connecting ? (
                           <>Connecting</>
                         ) : connected ? (
-                          <>
-                            Connected{" "}
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              className=" ml-1 h-6 w-6"
-                            >
-                              <path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                          </>
+                          saving ? (
+                            <>Saving...</>
+                          ) : (
+                            <>
+                              Save{" "}
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                className=" ml-1 h-6 w-6"
+                              >
+                                <path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                            </>
+                          )
                         ) : (
                           <>Connect</>
                         )}

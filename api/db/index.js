@@ -1,43 +1,42 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const { DataSource } = require("typeorm");
-const { OpenAI } = require("langchain/llms/openai");
-const { SqlDatabase } = require("langchain/sql_db");
-const { SqlDatabaseChain } = require("langchain/chains");
-const BasisTheory = require('@basistheory/basis-theory-js');
+const { BasisTheory } = require('@basis-theory/basis-theory-js');
+const { Pool } = require('pg');
 
-const app = express();
-app.use(bodyParser.json());
+module.exports = async (req, res) => {
+    const bt = await new BasisTheory().init(process.env.NEXT_PRIVATE_BASIS_THEORY_KEY);
 
-const basisTheory = new BasisTheory({
-    apiKey: process.env.NEXT_PUBLIC_BASIS_THEORY_KEY
-});
+    if (req.method !== 'POST') {
+        res.status(405).end(); // Method Not Allowed
+        return;
+    }
 
-app.post('*', async (req, res) => {
-    const { query, token } = req.body;
-    process.env.OPENAI_API_KEY = "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"
+    // Extract the query and the connection string token from the request body
+    const { query, connectionStringToken } = req.body;
 
-    // Use Basis Theory to decrypt the token into the original connection string
-    const connectionString = await basisTheory.tokens.retrieve(token);
+    if (!query || !connectionStringToken) {
+        res.status(400).json({ error: 'No query or connection string token provided' });
+        return;
+    }
 
-    const datasource = new DataSource({
-        type: "postgres",
-        url: connectionString,
-    });
+    try {
+        // Use the Basis Theory API to retrieve the real connection string
+        const connectionStringObject = await bt.tokens.retrieve(connectionStringToken);
+        const connectionString = connectionStringObject.data;
 
-    const db = await SqlDatabase.fromDataSourceParams({
-        appDataSource: datasource,
-    });
+        // Initialize the Postgres connection with the retrieved connection string
+        const pool = new Pool({
+            connectionString,
+        });
 
-    // Set up chain
-    const chain = new SqlDatabaseChain({
-        llm: new OpenAI({ temperature: 0 }),
-        database: db,
-        returnDirect: true,
-    });
-
-    const result = await chain.run(query);
-    res.json({ sql: "", message: result });
-});
-
-module.exports = app;
+        // Run the query
+        const result = await pool.query(query);
+        res.status(200).json(result.rows);
+    } catch (err) {
+        console.error(err);
+        // Return the error code and message in the response
+        res.status(500).json({
+            error: 'Failed to run query',
+            errorCode: err.code,
+            errorMessage: err.message
+        });
+    }
+};

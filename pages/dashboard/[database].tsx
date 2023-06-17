@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import TableList from "../../components/dashboard/TableList";
 import Chat from "../../components/dashboard/Chat";
 import supabase from "../../utils/supabaseClient";
+import Settings from "../../components/dashboard/Settings";
 
 interface Database {
   id: number,
@@ -125,7 +126,7 @@ export default function Page() {
       case "Flow":
         return <p>Flow content goes here</p>;
       case "Settings":
-        return <p>Settings content goes here</p>;
+        return <Settings fetchedDatabase={fetchedDatabase} setFetchedDatabase={setFetchedDatabase} database={Array.isArray(database) ? database[0] : database} />;
       default:
         return <p>Invalid tab selected</p>;
     }
