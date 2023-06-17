@@ -15,6 +15,7 @@ function simplifyDataType(dataType) {
   return dataTypeMapping[dataType] || dataType;
 }
 
+
 app.post("*", async (req, res) => {
   const { connection_string } = req.body;
 

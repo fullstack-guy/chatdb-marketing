@@ -1,6 +1,33 @@
-import { BsThreeDots } from "react-icons/bs";
+import React, { useState } from 'react';
+import { BsThreeDots } from 'react-icons/bs';
+import axios from 'axios';
+import TablePreviewModal from './TablePreviewModal';
 
-const TableList = ({ filteredTables }) => {
+const TableList = ({ database_token, filteredTables }) => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [previewTableData, setPreviewTableData] = useState([]);
+  const [selectedTableName, setSelectedTableName] = useState('');
+
+  const openPreviewModal = async (tableData) => {
+    try {
+      const response = await axios.post('/api/preview', {
+        connectionStringToken: database_token,
+        table_name: tableData.tableName
+      });
+      const data = response.data;
+
+      setPreviewTableData(data);
+      setSelectedTableName(tableData.tableName);
+      setModalOpen(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const closePreviewModal = () => {
+    setModalOpen(false);
+  };
+
   return (
     <>
       {filteredTables.length > 0 ? (
@@ -11,7 +38,10 @@ const TableList = ({ filteredTables }) => {
               className="relative rounded-lg border p-4 shadow-sm"
             >
               <div className="absolute top-2 right-2">
-                <button className="text-gray-500 hover:text-gray-700">
+                <button
+                  className="text-gray-500 hover:text-gray-700"
+                  onClick={() => openPreviewModal(table)}
+                >
                   <BsThreeDots size={20} />
                 </button>
               </div>
@@ -35,7 +65,7 @@ const TableList = ({ filteredTables }) => {
                       <tr
                         key={fieldIndex}
                         className={
-                          fieldIndex % 2 === 0 ? "bg-white" : "bg-gray-100"
+                          fieldIndex % 2 === 0 ? 'bg-white' : 'bg-gray-100'
                         }
                       >
                         <td className="whitespace-nowrap px-6 py-3">
@@ -65,6 +95,14 @@ const TableList = ({ filteredTables }) => {
         <div className="mt-4 text-center text-gray-700">
           No matching tables found.
         </div>
+      )}
+      {modalOpen && (
+        <TablePreviewModal
+          isOpen={modalOpen}
+          onClose={closePreviewModal}
+          data={previewTableData}
+          tableName={selectedTableName}
+        />
       )}
     </>
   );
