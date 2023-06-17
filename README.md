@@ -2,11 +2,11 @@
 
 ### Running Locally
 
-**Install Dependencies** 
+**Install Dependencies**
 
 `npm install`
 
-**Install Dependencies - Connect API** 
+**Install Dependencies - Connect API**
 
 ```bash
 cd api/connect/

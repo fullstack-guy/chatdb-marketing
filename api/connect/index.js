@@ -8,8 +8,8 @@ app.use(express.json());
 
 function simplifyDataType(dataType) {
   const dataTypeMapping = {
-    'character varying': 'text',
-    'timestamp without time zone': 'timestamp',
+    "character varying": "text",
+    "timestamp without time zone": "timestamp",
   };
 
   return dataTypeMapping[dataType] || dataType;

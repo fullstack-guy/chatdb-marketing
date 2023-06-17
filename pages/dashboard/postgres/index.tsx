@@ -12,7 +12,6 @@ import supabase from "../../../utils/supabaseClient";
 import Layout from "../../../components/Layout";
 import { useRouter } from "next/router";
 
-
 export default function Page() {
   const router = useRouter();
 
@@ -26,12 +25,21 @@ export default function Page() {
 
   const [databaseInfo, setDatabaseInfo] = useState(null);
   const { user } = useUser();
-  const { bt } = useBasisTheory(process.env.NEXT_PUBLIC_BASIS_THEORY_KEY, { elements: true });
+  const { bt } = useBasisTheory(process.env.NEXT_PUBLIC_BASIS_THEORY_KEY, {
+    elements: true,
+  });
 
   const saveDatabase = async () => {
     setSaving(true);
     try {
-      await handleApiResponse(databaseInfo, user, connectionString, name, toast, bt);
+      await handleApiResponse(
+        databaseInfo,
+        user,
+        connectionString,
+        name,
+        toast,
+        bt
+      );
       toast.success("Database saved successfully!");
     } catch (error) {
       toast.error("There was an error saving the database!");
@@ -40,7 +48,14 @@ export default function Page() {
     }
   };
 
-  const handleApiResponse = async (data, user, connectionString, name, toast, bt) => {
+  const handleApiResponse = async (
+    data,
+    user,
+    connectionString,
+    name,
+    toast,
+    bt
+  ) => {
     try {
       // Check if the database already exists
       const { data: existingDatabases, error: dbError } = await supabase
@@ -50,7 +65,10 @@ export default function Page() {
         .eq("database_string", "postgres://" + connectionString);
 
       if (dbError) {
-        console.error("Error checking for existing databases in Supabase:", dbError);
+        console.error(
+          "Error checking for existing databases in Supabase:",
+          dbError
+        );
         toast.error("Error checking for existing databases in Supabase");
         return;
       }
@@ -70,7 +88,7 @@ export default function Page() {
             title: name,
           },
         ])
-        .select('uuid'); // Include the 'id' in the response
+        .select("uuid"); // Include the 'id' in the response
 
       if (schemaError) {
         console.error("Error saving data to Supabase:", schemaError);
@@ -94,7 +112,7 @@ export default function Page() {
           toast.error("Error saving database string to Supabase");
         } else {
           toast.success("Woo! You have a new database!");
-          router.push("/dashboard")
+          router.push("/dashboard");
         }
       } catch (error) {
         if (error instanceof BasisTheoryValidationError) {
@@ -110,7 +128,6 @@ export default function Page() {
       toast.error("Error saving data to Supabase");
     }
   };
-
 
   const connectionStringChange = (event) => {
     const result = event.target.value.replace(/^postgres:\/\//, "");
@@ -170,18 +187,15 @@ export default function Page() {
         const data = await response.json();
         setDatabaseInfo(data);
 
-        toast(
-          "Successfully Connected",
-          {
-            icon: "👏",
-            style: {
-              borderRadius: "10px",
-              background: "hsl(var(--su))",
-              color: "#fff",
-              fontWeight: "500",
-            },
-          }
-        );
+        toast("Successfully Connected", {
+          icon: "👏",
+          style: {
+            borderRadius: "10px",
+            background: "hsl(var(--su))",
+            color: "#fff",
+            fontWeight: "500",
+          },
+        });
         setConnected(true);
         setConnecting(false);
         return data;
@@ -237,12 +251,12 @@ export default function Page() {
           </div>
           <div className="m-10 items-center justify-center">
             <div className="flex w-full flex-col border-opacity-50">
-              <div className="bg-white shadow-md rounded-xl p-6">
+              <div className="rounded-xl bg-white p-6 shadow-md">
                 <div className="w-full">
                   <BasisTheoryProvider bt={bt}>
                     <label
                       htmlFor="url"
-                      className="text-xl m-2 block font-semibold text-black"
+                      className="m-2 block text-xl font-semibold text-black"
                     >
                       Name
                     </label>
@@ -260,7 +274,7 @@ export default function Page() {
                     )}
                     <label
                       htmlFor="url"
-                      className="text-xl m-3 block font-semibold text-black"
+                      className="m-3 block text-xl font-semibold text-black"
                     >
                       Connection URL
                     </label>
@@ -276,8 +290,9 @@ export default function Page() {
                         onChange={connectionStringChange}
                       />
                       <span
-                        className={`btn hidden sm:flex ${connecting || saving ? "loading" : ""
-                          } cursor-pointer border-none bg-success font-semibold text-black hover:bg-success`}
+                        className={`btn hidden sm:flex ${
+                          connecting || saving ? "loading" : ""
+                        } cursor-pointer border-none bg-success font-semibold text-black hover:bg-success`}
                         onClick={connected ? saveDatabase : connectToDatabase}
                       >
                         {connecting ? (
@@ -311,8 +326,9 @@ export default function Page() {
                     )}
                     <div className="my-2 w-full">
                       <button
-                        className={`btn ${connecting && "loading"
-                          } mx-auto my-2 flex w-[75%] bg-success font-semibold text-black hover:bg-success sm:hidden`}
+                        className={`btn ${
+                          connecting && "loading"
+                        } mx-auto my-2 flex w-[75%] bg-success font-semibold text-black hover:bg-success sm:hidden`}
                         onClick={connectToDatabase}
                         type="submit"
                       >

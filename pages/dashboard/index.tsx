@@ -40,14 +40,16 @@ export default function Page() {
     if (error) {
       console.error("Error fetching databases:", error);
     } else {
-      setFetchedDatabases(data.map(db => ({
-        name: db.title,
-        path: "/dashboard/postgres",
-        selected: false,
-        img: "/images/postgres-icon.png",
-        uuid: db.uuid,
-        created_at: db.created_at,
-      })));
+      setFetchedDatabases(
+        data.map((db) => ({
+          name: db.title,
+          path: "/dashboard/postgres",
+          selected: false,
+          img: "/images/postgres-icon.png",
+          uuid: db.uuid,
+          created_at: db.created_at,
+        }))
+      );
     }
   };
 
@@ -105,8 +107,9 @@ export default function Page() {
                 <div
                   key={index}
                   onClick={() => selectDatabase(index)}
-                  className={`mb-4 flex cursor-pointer items-center rounded-lg p-4 shadow-md ${database.selected ? "border-4 border-[#0fe0b6]" : ""
-                    }`}
+                  className={`mb-4 flex cursor-pointer items-center rounded-lg p-4 shadow-md ${
+                    database.selected ? "border-4 border-[#0fe0b6]" : ""
+                  }`}
                 >
                   <div className="mr-4 flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg bg-[#0fe0b6]">
                     <Image

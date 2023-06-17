@@ -17,7 +17,7 @@ const Table = ({ databases }: Props) => {
   return (
     <div className="flex flex-row flex-wrap justify-center">
       {databases.map((card, index) => (
-        <div key={index} className="flex flex-col m-2 w-1/2">
+        <div key={index} className="m-2 flex w-1/2 flex-col">
           <DatabaseCard
             key={index}
             logo={"/images/postgres-icon.png"}

@@ -75,8 +75,9 @@ const Navbar = () => {
                 {({ active }) => (
                   <Link href="/pricing">
                     <a
-                      className={`${active ? "bg-muted-1 text-heading" : "text-text"
-                        } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                      className={`${
+                        active ? "bg-muted-1 text-heading" : "text-text"
+                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                     >
                       Pricing
                     </a>
