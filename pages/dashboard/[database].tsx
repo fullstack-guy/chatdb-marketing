@@ -7,6 +7,7 @@ import TableList from "../../components/dashboard/TableList";
 import Chat from "../../components/dashboard/Chat";
 import supabase from "../../utils/supabaseClient";
 import Settings from "../../components/dashboard/Settings";
+import DatabaseFlow from "../../components/DatabaseFlow";
 
 interface Database {
   id: number;
@@ -123,7 +124,7 @@ export default function Page() {
       case "Chat":
         return <Chat database_token={databaseToken} />;
       case "Flow":
-        return <p>Flow content goes here</p>;
+        return <DatabaseFlow dbSchema={fetchedDatabase.schema_data} />;
       case "Settings":
         return (
           <Settings

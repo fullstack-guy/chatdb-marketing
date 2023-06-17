@@ -3,46 +3,6 @@ import Modal from 'react-modal';
 import 'react-data-grid/lib/styles.css';
 import DataGrid from 'react-data-grid';
 import { CSVLink } from "react-csv";
-import DatabaseFlow from '../DatabaseFlow';
-
-const dbSchema = {
-    "public": {
-        "Album": {
-            "AlbumId": {
-                "type": "integer",
-                "nullable": false
-            },
-            "Title": {
-                "type": "text",
-                "nullable": false
-            },
-            "ArtistId": {
-                "type": "integer",
-                "nullable": false
-            },
-            "foreignKeys": [
-                {
-                    "column": "ArtistId",
-                    "foreignTableSchema": "public",
-                    "foreignTable": "Artist",
-                    "foreignColumn": "ArtistId"
-                }
-            ]
-        },
-        "Artist": {
-            "ArtistId": {
-                "type": "integer",
-                "nullable": false
-            },
-            "Name": {
-                "type": "text",
-                "nullable": true
-            },
-            "foreignKeys": []
-        }
-    }
-}
-
 
 const TablePreviewModal = ({ isOpen, onClose, data, tableName }) => {
     useEffect(() => {
