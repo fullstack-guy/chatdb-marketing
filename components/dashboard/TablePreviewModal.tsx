@@ -6,13 +6,22 @@ import { CSVLink } from "react-csv";
 
 const TablePreviewModal = ({ isOpen, onClose, data, tableName }) => {
     useEffect(() => {
+        // Keep the original overflow value
+        const originalOverflow = document.body.style.overflow;
+
         // disable body scrolling when modal is open
         if (isOpen) {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = 'auto';
         }
+
+        // Cleanup function
+        return () => {
+            document.body.style.overflow = originalOverflow;
+        };
     }, [isOpen]);
+
     const columns = data.length > 0 ? Object.keys(data[0]).map((key) => ({
         key: key,
         name: key,

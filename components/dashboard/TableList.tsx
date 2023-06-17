@@ -41,7 +41,7 @@ const TableList = ({ database_token, filteredTables }) => {
           {filteredTables.map((table, tableIndex) => (
             <div
               key={table.tableName}
-              className="relative flex items-center rounded-lg border p-4 shadow-sm cursor-pointer transition-colors duration-200"
+              className="relative flex items-center rounded-lg border p-4 shadow-sm cursor-pointer transition-colors duration-200 hover:bg-gray-100 hover:scale-105 transform"
               onClick={() => openPreviewModal(table)}
             >
               <div
