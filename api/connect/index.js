@@ -15,7 +15,6 @@ function simplifyDataType(dataType) {
   return dataTypeMapping[dataType] || dataType;
 }
 
-
 app.post("*", async (req, res) => {
   const { connection_string } = req.body;
 
@@ -64,6 +63,39 @@ app.post("*", async (req, res) => {
             type: simplifyDataType(columnRow.data_type),
             nullable: columnRow.is_nullable === "YES",
           };
+        }
+
+        // Get foreign keys
+        const { rows: foreignKeyRows } = await client.query(
+          `
+          SELECT 
+            kcu.column_name, 
+            ccu.table_schema AS foreign_table_schema,
+            ccu.table_name AS foreign_table_name, 
+            ccu.column_name AS foreign_column_name 
+          FROM 
+            information_schema.table_constraints AS tc 
+            JOIN information_schema.key_column_usage AS kcu
+              ON tc.constraint_name = kcu.constraint_name
+              AND tc.table_schema = kcu.table_schema
+            JOIN information_schema.constraint_column_usage AS ccu
+              ON ccu.constraint_name = tc.constraint_name
+              AND ccu.table_schema = tc.table_schema
+          WHERE tc.constraint_type = 'FOREIGN KEY' AND tc.table_name = $1 AND tc.table_schema = $2
+          `,
+          [table, schema]
+        );
+
+        for (const foreignKeyRow of foreignKeyRows) {
+          if (!databaseInfo[schema][table].foreignKeys) {
+            databaseInfo[schema][table].foreignKeys = [];
+          }
+          databaseInfo[schema][table].foreignKeys.push({
+            column: foreignKeyRow.column_name,
+            foreignTableSchema: foreignKeyRow.foreign_table_schema,
+            foreignTable: foreignKeyRow.foreign_table_name,
+            foreignColumn: foreignKeyRow.foreign_column_name,
+          });
         }
       }
     }
