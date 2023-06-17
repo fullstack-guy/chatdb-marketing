@@ -1,10 +1,58 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Modal from 'react-modal';
 import 'react-data-grid/lib/styles.css';
 import DataGrid from 'react-data-grid';
 import { CSVLink } from "react-csv";
+import DatabaseFlow from '../DatabaseFlow';
+
+const dbSchema = {
+    "public": {
+        "Album": {
+            "AlbumId": {
+                "type": "integer",
+                "nullable": false
+            },
+            "Title": {
+                "type": "text",
+                "nullable": false
+            },
+            "ArtistId": {
+                "type": "integer",
+                "nullable": false
+            },
+            "foreignKeys": [
+                {
+                    "column": "ArtistId",
+                    "foreignTableSchema": "public",
+                    "foreignTable": "Artist",
+                    "foreignColumn": "ArtistId"
+                }
+            ]
+        },
+        "Artist": {
+            "ArtistId": {
+                "type": "integer",
+                "nullable": false
+            },
+            "Name": {
+                "type": "text",
+                "nullable": true
+            },
+            "foreignKeys": []
+        }
+    }
+}
+
 
 const TablePreviewModal = ({ isOpen, onClose, data, tableName }) => {
+    useEffect(() => {
+        // disable body scrolling when modal is open
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    }, [isOpen]);
     const columns = data.length > 0 ? Object.keys(data[0]).map((key) => ({
         key: key,
         name: key,
@@ -36,7 +84,7 @@ const TablePreviewModal = ({ isOpen, onClose, data, tableName }) => {
         <Modal
             isOpen={isOpen}
             onRequestClose={onClose}
-            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-6 max-w-5xl"
+            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-6 max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-7xl"
             overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
             contentLabel="Table Preview"
         >
@@ -66,7 +114,7 @@ const TablePreviewModal = ({ isOpen, onClose, data, tableName }) => {
                 <DataGrid className="rdg-light" columns={columns} rows={rows} />
                 <div className="flex flex-wrap justify-between mt-4 items-center">
                     <div className="text-gray-600 mb-2 md:mb-0">
-                        Showing {rowCount} rows
+                        Showing {rowCount} rows.
                     </div>
                     <div className="flex flex-wrap gap-4">
                         <CSVLink
@@ -86,6 +134,7 @@ const TablePreviewModal = ({ isOpen, onClose, data, tableName }) => {
                     </div>
                 </div>
             </div>
+
         </Modal>
     );
 };

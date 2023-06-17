@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import Modal from "react-modal";
 import supabase from "../../utils/supabaseClient";
+import { Toaster, toast } from "react-hot-toast";
 import { useRouter } from "next/router";
 
 interface SettingsProps {
@@ -24,6 +26,7 @@ const Settings: React.FC<SettingsProps> = ({
   const [newDatabaseName, setNewDatabaseName] = useState<string>(
     fetchedDatabase.title
   );
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewDatabaseName(e.target.value);
@@ -46,30 +49,18 @@ const Settings: React.FC<SettingsProps> = ({
   };
 
   const deleteDatabase = async () => {
-    // First delete from user_schemas
-    const { data: dataSchema, error: errorSchema } = await supabase
-      .from("user_schemas")
-      .delete()
-      .eq("uuid", database);
+    setModalOpen(false); // Close the modal
+    const response = await fetch(`/api/db/delete?database=${database}`, {
+      method: 'DELETE',
+    });
+    const data = await response.json();
 
-    if (errorSchema) {
-      console.error("Error deleting schemas:", errorSchema);
-      return;
-    } else {
-      console.log("Schemas deleted successfully:", dataSchema);
-    }
-
-    // Then delete from user_databases
-    const { data: dataDatabase, error: errorDatabase } = await supabase
-      .from("user_databases")
-      .delete()
-      .eq("uuid", database);
-
-    if (errorDatabase) {
-      console.error("Error deleting database:", errorDatabase);
-    } else {
-      console.log("Database deleted successfully:", dataDatabase);
+    if (response.ok) {
+      console.log("Database, schemas, and token deleted successfully:", data);
       router.push("/dashboard"); // Redirect to dashboard after successful deletion
+    } else {
+      console.error("Error deleting database:", data.error);
+      toast.error('We had an issue deleting your database!')
     }
   };
 
@@ -89,11 +80,36 @@ const Settings: React.FC<SettingsProps> = ({
         Update
       </button>
       <button
-        onClick={deleteDatabase}
+        onClick={() => setModalOpen(true)}
         className="mx-1 inline-block rounded-md bg-red-500 px-4 py-1 text-white hover:bg-red-700"
       >
-        Delete Database
+        Delete Connection
       </button>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={() => setModalOpen(false)}
+        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-16 max-w-xl"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-70"
+        contentLabel="Delete Confirmation Modal"
+      >
+        <h2 className="text-2xl font-bold mb-4 text-center">Confirm Deletion</h2>
+        <p className="mb-8 text-center">Are you sure you want to delete this connection?</p>
+        <div className="flex justify-center space-x-4">
+          <button
+            onClick={deleteDatabase}
+            className="px-4 py-2 rounded-lg bg-red-500 text-white font-semibold hover:bg-red-600"
+          >
+            Confirm
+          </button>
+          <button
+            onClick={() => setModalOpen(false)}
+            className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100"
+          >
+            Cancel
+          </button>
+        </div>
+      </Modal>
+      <Toaster position="bottom-center" />
     </div>
   );
 };
