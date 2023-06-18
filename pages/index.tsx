@@ -4,12 +4,15 @@ import { useState } from "react";
 import { TagIcon, ShieldCheckIcon } from "@heroicons/react/outline";
 import Layout from "../components/Layout";
 import { CameraIcon } from "@heroicons/react/outline";
+import posthog from 'posthog-js';
 import Image from "next/image";
 
 export default function Page() {
   const [email, setEmail] = useState("");
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    posthog.capture('waitlist_signup');
 
     if (email === "") {
       toast.error("Sorry, the email field is blank");
@@ -24,7 +27,6 @@ export default function Page() {
       .catch((error) => {
         console.error("Error:", error);
       });
-    console.log("Sent Email", email);
     // Display a toast message when the form is submitted
     toast.success("Thanks for signing up!");
     setEmail("");

@@ -9,12 +9,36 @@ import { SubscriptionProvider } from "use-stripe-subscription";
 import { hotjar } from "react-hotjar";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import posthog from 'posthog-js'
+
+if (process.env.NODE_ENV === 'production') {
+  posthog.init('phc_XX7yzbdFT45MB5ekwxwcXJ7EQy5bGXeQ57BpuWauzJt', {
+    api_host: 'https://app.posthog.com',
+    loaded: function (posthog) {
+      posthog.identify('[user unique id]')
+    },
+  });
+}
+
 
 export default function MyApp({ Component, pageProps }) {
   const router = useRouter();
 
   useEffect(() => {
     hotjar.initialize(3430108, 6);
+
+    // Track page view in Posthog
+    posthog.capture('$pageview');
+
+    // Listen for page changes
+    router.events.on('routeChangeComplete', url => {
+      posthog.capture('$pageview'); // track page view on route change
+    });
+
+    return () => {
+      // Clean up the listener when the component is unmounted
+      router.events.off('routeChangeComplete', () => posthog.capture('$pageview'));
+    };
   }, [router.events]);
   return (
     <SubscriptionProvider
