@@ -57,7 +57,7 @@ const Navbar = () => {
         <Menu as="div" className="relative md:hidden">
           <Menu.Button
             type="button"
-            className="justify-right inline-flex cursor-pointer items-center rounded-xl border-none border-transparent bg-transparent p-2 font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
+            className="justify-right inline-flex cursor-pointer items-center rounded-xl border-none border-transparent bg-transparent p-2 font-semibold text-text :bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
           >
             <MenuAlt3Icon className="h-5 w-5 text-black" />
           </Menu.Button>
@@ -75,9 +75,8 @@ const Navbar = () => {
                 {({ active }) => (
                   <Link href="/pricing">
                     <a
-                      className={`${
-                        active ? "bg-muted-1 text-heading" : "text-text"
-                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                      className={`${active ? "bg-muted-1 text-heading" : "text-text"
+                        } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                     >
                       Pricing
                     </a>

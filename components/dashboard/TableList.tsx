@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TablePreviewModal from './TablePreviewModal';
 
@@ -13,6 +13,7 @@ const TableList = ({ database_token, filteredTables }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [previewTableData, setPreviewTableData] = useState([]);
   const [selectedTableName, setSelectedTableName] = useState('');
+  const [tableColorIndexes, setTableColorIndexes] = useState({});
 
   const openPreviewModal = async (tableData) => {
     try {
@@ -30,6 +31,16 @@ const TableList = ({ database_token, filteredTables }) => {
     }
   };
 
+  useEffect(() => {
+    const newColorIndexes = { ...tableColorIndexes };
+    filteredTables.forEach((table, tableIndex) => {
+      if (!newColorIndexes[table.tableName]) {
+        newColorIndexes[table.tableName] = tableIndex % colors.length;
+      }
+    });
+    setTableColorIndexes(newColorIndexes);
+  }, [filteredTables]);
+
   const closePreviewModal = () => {
     setModalOpen(false);
   };
@@ -38,7 +49,7 @@ const TableList = ({ database_token, filteredTables }) => {
     <>
       {filteredTables.length > 0 ? (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-          {filteredTables.map((table, tableIndex) => (
+          {filteredTables.map((table) => (
             <div
               key={table.tableName}
               className="relative flex items-center rounded-lg border p-4 shadow-sm cursor-pointer transition-colors duration-200 hover:bg-gray-100 hover:scale-105 transform"
@@ -46,7 +57,7 @@ const TableList = ({ database_token, filteredTables }) => {
             >
               <div
                 className="flex items-center justify-center w-12 h-12 rounded-full mr-4"
-                style={{ backgroundColor: colors[tableIndex % colors.length] }}
+                style={{ backgroundColor: colors[tableColorIndexes[table.tableName]] }}
               >
                 {/* Placeholder for emoji image */}
                 <span className="text-white text-xl"></span>
@@ -71,7 +82,7 @@ const TableList = ({ database_token, filteredTables }) => {
         <TablePreviewModal
           isOpen={modalOpen}
           onClose={closePreviewModal}
-          data={previewTableData}
+          tableRows={previewTableData}
           tableName={selectedTableName}
         />
       )}

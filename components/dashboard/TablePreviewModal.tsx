@@ -4,7 +4,8 @@ import 'react-data-grid/lib/styles.css';
 import DataGrid from 'react-data-grid';
 import { CSVLink } from "react-csv";
 
-const TablePreviewModal = ({ isOpen, onClose, data, tableName }) => {
+const TablePreviewModal = ({ isOpen, onClose, tableRows, tableName }) => {
+
     useEffect(() => {
         // Keep the original overflow value
         const originalOverflow = document.body.style.overflow;
@@ -22,7 +23,7 @@ const TablePreviewModal = ({ isOpen, onClose, data, tableName }) => {
         };
     }, [isOpen]);
 
-    const columns = data.length > 0 ? Object.keys(data[0]).map((key) => ({
+    const columns = tableRows.length > 0 ? Object.keys(tableRows[0]).map((key) => ({
         key: key,
         name: key,
         resizable: true,
@@ -31,12 +32,12 @@ const TablePreviewModal = ({ isOpen, onClose, data, tableName }) => {
         headerRenderer: ({ column }) => (
             <div className="header-cell">
                 <div className="name">{column.name}</div>
-                <div className="data-type">{typeof data[0][column.key]}</div>
+                <div className="data-type">{typeof tableRows[0][column.key]}</div>
             </div>
         ),
     })) : [];
 
-    const rows = data.map((row, rowIndex) => ({
+    const rows = tableRows.map((row, rowIndex) => ({
         id: rowIndex,
         ...row
     }));
