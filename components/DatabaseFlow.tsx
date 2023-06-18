@@ -32,6 +32,7 @@ interface Database {
 interface Schema {
     [schemaName: string]: Database;
 }
+const proOptions = { hideAttribution: true };
 
 function DatabaseFlow({ dbSchema }) {
 
@@ -124,6 +125,7 @@ function DatabaseFlow({ dbSchema }) {
                 nodes={flowNodes}
                 edges={flowEdges}
                 nodeTypes={nodeTypes}
+                proOptions={proOptions}
                 className="bg-teal-50"
             >
                 <MiniMap />
