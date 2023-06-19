@@ -9,6 +9,7 @@ import { SubscriptionProvider } from "use-stripe-subscription";
 import { hotjar } from "react-hotjar";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import { v4 as uuidv4 } from 'uuid'; // Import the UUID generator
 
 export default function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -18,10 +19,17 @@ export default function MyApp({ Component, pageProps }) {
 
     if (process.env.NODE_ENV === 'production') {
       const posthog = require('posthog-js').default;
+
+      let uniqueId;
+      if (typeof window !== 'undefined') { // Check if running in browser environment
+        uniqueId = window.localStorage.getItem('uniqueId') || uuidv4(); // Get the unique ID from local storage, or generate a new one if none exists
+        window.localStorage.setItem('uniqueId', uniqueId); // Store the unique ID in local storage
+      }
+
       posthog.init('phc_XX7yzbdFT45MB5ekwxwcXJ7EQy5bGXeQ57BpuWauzJt', {
         api_host: 'https://app.posthog.com',
         loaded: function (posthog) {
-          posthog.identify('[user unique id]')
+          posthog.identify(uniqueId); // Use the unique ID for the PostHog identify call
         },
       });
 
