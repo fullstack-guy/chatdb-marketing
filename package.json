@@ -37,9 +37,11 @@
     "react-icons": "^4.9.0",
     "react-modal": "^3.16.1",
     "react-player": "^2.11.0",
+    "react-spinners": "^0.13.8",
     "react-syntax-highlighter": "^15.5.0",
     "reactflow": "^11.7.2",
     "scheduler": "^0.23.0",
+    "sql-formatter": "^12.2.3",
     "use-stripe-subscription": "^1.0.6",
     "uuid": "^9.0.0"
   },

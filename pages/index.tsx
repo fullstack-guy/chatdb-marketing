@@ -413,16 +413,11 @@ export default function Page() {
 
             <div className="flex flex-col items-center justify-between gap-6 lg:flex-row-reverse">
               <div className="max-w-md space-y-6 text-center lg:text-left">
-                <span className="inline-flex items-center rounded-full border-2 border-green-200 bg-green-200 px-2 py-1 text-sm font-semibold text-green-600 shadow-sm">
-                  <ShieldCheckIcon className="mr-1 h-5 w-5" />
-                  Database Model Snapshot
-                </span>
                 <h3 className="text-3xl font-semibold text-heading lg:text-4xl">
                   Add new databases in seconds
                 </h3>
                 <p className="text-lg font-medium">
-                  Taking a database snapshot so ChatDB can learn your data model
-                  is super simple!
+                  Connecting to your database shouldn't be hard.
                 </p>
               </div>
 
