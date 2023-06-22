@@ -1,7 +1,7 @@
 // 'use client'
 import { useState, useEffect } from 'react';
-// import ReactDataGrid from 'react-data-grid';
-
+import DataGrid from 'react-data-grid';
+import 'react-data-grid/lib/styles.css';
 import HandleTables from '../handletables/HandleTables'
 // import Queryarea from '../queryarea/Queryarea'
 
@@ -50,12 +50,10 @@ const Mainarea = () => {
     <>
       <Queryarea />
       <HandleTables />
-      {/* <ReactDataGrid
+      <DataGrid
         columns={columns}
-        rowGetter={i => data[i]}
-        rowsCount={data.length}
-        minHeight={488}
-      /> */}
+        rows={data}
+      />
     </>
   )
 }
