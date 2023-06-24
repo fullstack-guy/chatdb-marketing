@@ -1,4 +1,4 @@
- 
+
 "use client"
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-sql";
@@ -12,26 +12,27 @@ function onChange(newValue) {
 }
 
 const Queryarea = () => {
-  
+
   return (
     <AceEditor
-    fontSize={24}
-    mode="sql"
-    theme="chrome"
-    onChange={onChange}
-    width="100%"
-    height="400px"
-    showPrintMargin={false}
-    focus={true}
-    placeholder=""
-    name="UNIQUE_ID_OF_DIV"
-    editorProps={{ $blockScrolling: true }}
-    setOptions={{
-      enableBasicAutocompletion: true,
-      enableLiveAutocompletion: true,
-      enableSnippets: true
-    }}
-  />
+      fontSize={24}
+      style={{ border: '1px solid #ddd' }}
+      mode="sql"
+      theme="chrome"
+      onChange={onChange}
+      width="100%"
+      height="400px"
+      showPrintMargin={false}
+      focus={true}
+      placeholder=""
+      name="UNIQUE_ID_OF_DIV"
+      editorProps={{ $blockScrolling: true }}
+      setOptions={{
+        enableBasicAutocompletion: true,
+        enableLiveAutocompletion: true,
+        enableSnippets: true
+      }}
+    />
   );
 };
 

@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import DataGrid from 'react-data-grid';
 import 'react-data-grid/lib/styles.css';
+import { Resizable } from 're-resizable';
 import HandleTables from '../handletables/HandleTables'
 // import Queryarea from '../queryarea/Queryarea'
 
@@ -48,12 +49,13 @@ const Mainarea = () => {
 
   return (
     <>
-      <Queryarea />
+      <Resizable lockAspectRatio>
+        <Queryarea />
+      </Resizable>
       <HandleTables />
-      <DataGrid
-        columns={columns}
-        rows={data}
-      />
+      <Resizable lockAspectRatio>
+        <DataGrid columns={columns} rows={data} />
+      </Resizable>
     </>
   )
 }

@@ -8,6 +8,7 @@ import Chat from "../../components/dashboard/Chat";
 import supabase from "../../utils/supabaseClient";
 import Settings from "../../components/dashboard/Settings";
 import DatabaseFlow from "../../components/DatabaseFlow";
+import Query from '../../components/dashboard/Query'
 
 interface Database {
   id: number;
@@ -26,7 +27,7 @@ export default function Page() {
 
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState("Chat");
+  const [activeTab, setActiveTab] = useState("Query");
   const [fetchedDatabase, setFetchedDatabase] = useState<Database | null>(null);
   const [databaseToken, setDatabaseToken] = useState<string>("");
   const [selectedSchema, setSelectedSchema] = useState("public");
@@ -119,6 +120,8 @@ export default function Page() {
 
   const renderContent = () => {
     switch (activeTab) {
+      case "Query":
+        return <Query filteredTables={filteredTables} />;
       case "Tables":
         return <TableList database_token={databaseToken} filteredTables={filteredTables} />;
       case "Chat":
@@ -160,6 +163,25 @@ export default function Page() {
                 </span>
               </div>
             </div>
+            {activeTab === "Query" && (
+              <div className="mt-4 sm:mt-0">
+                <div className="mt-4 flex items-center sm:mt-0">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      onChange={handleSearchInputChange}
+                      value={searchQuery}
+                      ref={searchInputRef}
+                      className="focus:ring-primary-600 w-64 flex-1 appearance-none rounded-lg border border-transparent border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 shadow-sm focus:border-transparent focus:outline-none focus:ring-2"
+                      placeholder="Search"
+                    />
+                    <p className="absolute top-1/2 right-4 -translate-y-1/2 transform text-xs text-gray-400">
+                      <div className="kbd kbd-sm">⌘K</div>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
             {activeTab === "Tables" && (
               <div className="mt-4 sm:mt-0">
                 <div className="mt-4 flex items-center sm:mt-0">
@@ -181,6 +203,13 @@ export default function Page() {
             )}
           </div>
           <div className="tabs tabs-boxed mt-10 bg-transparent">
+            <a
+              className={`tab text-lg text-black ${activeTab === "Query" ? "tab-active" : ""
+                }`}
+              onClick={() => handleTabClick("Query")}
+            >
+              Query
+            </a>
             <a
               className={`tab text-lg text-black ${activeTab === "Chat" ? "tab-active" : ""
                 }`}

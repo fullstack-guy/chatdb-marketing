@@ -6,7 +6,7 @@ import ArrowRightIcon from '../../../assets/icons/RightIcon';
 import TableCellIcon from '../../../assets/icons/TableCellIcon';
 import Datasource from '../datasource/Datasource';
 
-const Sidebar = () => {
+const Sidebar = ({ tables }) => {
   const [isTablesDropdownOpen, setTablesDropdownOpen] = useState(false);
   const [isSavedQueriesOpen, setSavedQueriesOpen] = useState(false);
   const [openLists, setOpenLists] = useState([]);
@@ -28,9 +28,9 @@ const Sidebar = () => {
     setSavedQueriesOpen(!isSavedQueriesOpen);
   };
 
-  const renderList = (listName, listLabel) => {
-    const isOpen = openLists.includes(listName);
-    const handleClick = () => toggleList(listName);
+  const renderList = (tableName, tableFields) => {
+    const isOpen = openLists.includes(tableName);
+    const handleClick = () => toggleList(tableName);
     const IconComponent = isOpen ? ArrowDownIcon : ArrowRightIcon;
 
     return (
@@ -42,16 +42,16 @@ const Sidebar = () => {
         >
           <IconComponent className="text-gray-400" fill="none" />
           <TableCellIcon className="ml-3 text-sm font-xs text-gray-400" />
-          <span className="ml-3 text-sm font-xs text-gray-400">{listLabel}</span>
+          <span className="ml-3 text-sm font-xs text-gray-400">{tableName}</span>
         </a>
         {isOpen && (
           <div className="pl-7 m-2">
             <div className="flex items-center">
-              <div className="left-1/2 -ml-0.5 w-0.5 h-12 bg-gray-400"></div>
+              <div className="left-1/2 -ml-0.5 w-0.5 bg-gray-400" style={{ height: tableFields?.length * 20 }}></div>
               <div className="flex flex-col">
-                <span className="ml-3 text-sm font-xs text-gray-400">City</span>
-                <span className="ml-3 text-sm font-xs text-gray-400">Country</span>
-                <span className="ml-3 text-sm font-xs text-gray-400">Postcode</span>
+                {tableFields?.length > 0 && tableFields?.map((field) => (
+                  <span className="ml-3 text-sm font-xs text-gray-400">{field?.fieldName}</span>
+                ))}
               </div>
             </div>
           </div>
@@ -88,10 +88,7 @@ const Sidebar = () => {
 
           {isTablesDropdownOpen && (
             <div className="pl-6">
-              {renderList('users', 'Users')}
-              {renderList('projects', 'Projects')}
-              {renderList('items', 'Items')}
-              {renderList('addresses', 'Addresses')}
+              {tables?.length > 0 && tables?.map((table) => renderList(table?.tableName, table?.fields))}
             </div>
           )}
 

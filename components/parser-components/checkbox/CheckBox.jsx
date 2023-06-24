@@ -17,7 +17,7 @@ const Checkbox = () => {
         onChange={handleCheckboxChange}
         className="form-checkbox h-5 w-5 text-indigo-600 transition duration-150 ease-in-out"
       />
-      <span className="ml-2 text-md     ">Limit to 100 rows</span>
+      <span className="ml-2 text-md">Limit to 100 rows</span>
     </label>
   );
 };
