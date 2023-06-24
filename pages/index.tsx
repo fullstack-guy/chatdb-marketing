@@ -6,13 +6,7 @@ import Layout from "../components/Layout";
 import posthog from 'posthog-js';
 import Image from "next/image";
 import {
-  LightBulbIcon,
-  ViewGridIcon,
-  WifiIcon,
-  ShieldCheckIcon,
-  BellIcon,
-  SunIcon,
-  SparklesIcon,
+  LightBulbIcon
 } from "@heroicons/react/outline";
 
 export default function Page() {

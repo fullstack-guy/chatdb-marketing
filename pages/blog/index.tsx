@@ -36,7 +36,7 @@ export default function Page({ posts }) {
             <div className="m-auto cursor-pointer">
               <div
                 key={slug}
-                className="card mx-auto mb-8 w-full rounded-xl bg-[#323457] p-4 shadow-xl md:w-96"
+                className="card mx-auto mb-8 w-full rounded-xl bg-[#323457] p-4 shadow-xl md:w-96 transition transform hover:scale-105"
               >
                 <>
                   <figure className="w-full p-6">
@@ -51,6 +51,7 @@ export default function Page({ posts }) {
                     <h2 className="card-title text-2xl font-bold text-white">
                       {frontmatter.title}
                     </h2>
+                    <p className="text-white mt-2">{frontmatter.description}</p>
                   </div>
                 </>
               </div>
