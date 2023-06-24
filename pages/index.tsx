@@ -11,6 +11,8 @@ import {
 
 export default function Page() {
   const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -25,14 +27,15 @@ export default function Page() {
       .post("https://api.slapform.com/vKid4Let6", { email: email })
       .then((response) => {
         console.log("Success:", response);
+        toast.success("Thanks for signing up!");
+        setEmail("");
+        setSubmitted(true);
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-    // Display a toast message when the form is submitted
-    toast.success("Thanks for signing up!");
-    setEmail("");
   };
+
   return (
     <Layout>
       <main>
@@ -61,39 +64,43 @@ export default function Page() {
                 help you generate SQL queries that work! Think ChatGPT, but
                 trained on your database.
               </p>
-              <form
-                className="subscription-form mt-6 flex flex-col gap-2 sm:flex-row"
-                method="POST"
-                onSubmit={handleSubmit}
-              >
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="sr-only block border-blue-400 text-sm font-semibold text-heading"
-                  >
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="block w-72 rounded-xl border-2 border-layer-3 bg-muted-1 px-4 py-2.5 font-semibold text-heading placeholder:text-text/50 focus:border-primary focus:outline-none focus:ring-0 sm:text-sm"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  style={{
-                    background:
-                      "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)",
-                  }}
-                  className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none px-4 py-2.5 text-sm font-semibold text-white transition duration-200 hover:bg-gradient-to-r hover:from-fuchsia-600 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
-                >
-                  Submit
-                </button>
-              </form>
+              {
+                // Render the form only if the form has not been submitted
+                !submitted && (
+                  <form
+                    className="subscription-form mt-6 flex flex-col gap-2 sm:flex-row"
+                    method="POST"
+                    onSubmit={handleSubmit}>
+                    <div>
+                      <label
+                        htmlFor="email"
+                        className="sr-only block border-blue-400 text-sm font-semibold text-heading"
+                      >
+                        Email
+                      </label>
+                      <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="block w-72 rounded-xl border-2 border-layer-3 bg-muted-1 px-4 py-2.5 font-semibold text-heading placeholder:text-text/50 focus:border-primary focus:outline-none focus:ring-0 sm:text-sm"
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      style={{
+                        background:
+                          "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)",
+                      }}
+                      className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none px-4 py-2.5 text-sm font-semibold text-white transition duration-200 hover:bg-gradient-to-r hover:from-fuchsia-600 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
+                    >
+                      Submit
+                    </button>
+                  </form>
+                )
+              }
             </div>
             {/* <div className="mt-12 md:px-2">
               <svg
@@ -545,6 +552,6 @@ export default function Page() {
         </section>
       </main>
       <Toaster />
-    </Layout>
+    </Layout >
   );
 }

@@ -27,7 +27,6 @@ module.exports = {
     require("tailwind-children"),
     require("tailwind-saasblocks")({
       themes: {
-        dark: midnightEnvyTheme,
         light: eggshellDelightsTheme,
       },
     }),

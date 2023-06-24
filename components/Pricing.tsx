@@ -1,6 +1,13 @@
+import React, { useState } from 'react';
 import PlanCard from "./PlanCard";
 
 export default function Pricing() {
+  const [isYearlyPricing, setYearlyPricing] = useState(false);
+
+  const handleToggle = () => {
+    setYearlyPricing(!isYearlyPricing);
+  };
+
   return (
     <div className="w-full">
       <div className="m-auto flex flex-col items-center p-4">
@@ -10,12 +17,23 @@ export default function Pricing() {
             Choose the right pricing for you and get started working on your
             project
           </p>
+          <div className="mt-6">
+            <label
+              className="inline-flex items-center cursor-pointer"
+              onClick={handleToggle}
+            >
+              <span className="mr-3">Monthly</span>
+              <input type="checkbox" className="toggle" checked={isYearlyPricing} onChange={handleToggle} />
+              <span className="ml-3">Yearly</span>
+            </label>
+          </div>
         </div>
         <div className="flex flex-col gap-8 p-10 xl:flex-row">
           <PlanCard
             color="#78E3FC"
             name="Basic"
-            price="19.99"
+            monthlyPrice="19.99"
+            annualPrice="190"
             description="Get started with the basic plan"
             features={[
               "1 User",
@@ -25,13 +43,15 @@ export default function Pricing() {
               "Backed by ChatGPT",
               "PostgreSQL Connection",
             ]}
-            btnText="Start Free Plan"
+            btnText="Get Started"
+            isYearlyPricing={isYearlyPricing}
           />
           <PlanCard
             color="#F4D06F"
             name="Pro"
+            monthlyPrice="29.99"
+            annualPrice="290"
             description="Get more advanced"
-            price="29.99"
             features={[
               "1 User",
               "5 Projects",
@@ -42,6 +62,7 @@ export default function Pricing() {
               "Premium Support",
             ]}
             btnText="Become a Pro"
+            isYearlyPricing={isYearlyPricing}
           />
           <PlanCard
             color="#FFB5BA"
@@ -58,6 +79,7 @@ export default function Pricing() {
               "Custom Feature Requests",
             ]}
             btnText="Contact Us"
+            isYearlyPricing={isYearlyPricing}
           />
         </div>
       </div>

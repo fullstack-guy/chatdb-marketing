@@ -21,6 +21,7 @@
     "daisyui": "^2.51.5",
     "elkjs": "^0.8.2",
     "emoji-picker-react": "^4.4.9",
+    "framer-motion": "^10.12.17",
     "gray-matter": "^4.0.3",
     "markdown-it": "^13.0.1",
     "next": "^12.2.1",
