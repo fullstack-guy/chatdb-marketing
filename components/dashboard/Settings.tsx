@@ -51,7 +51,7 @@ const Settings: React.FC<SettingsProps> = ({
   const deleteDatabase = async () => {
     setModalOpen(false); // Close the modal
     const response = await fetch(`/api/db/delete?database=${database}`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
     const data = await response.json();
 
@@ -60,7 +60,7 @@ const Settings: React.FC<SettingsProps> = ({
       router.push("/dashboard"); // Redirect to dashboard after successful deletion
     } else {
       console.error("Error deleting database:", data.error);
-      toast.error('We had an issue deleting your database!')
+      toast.error("We had an issue deleting your database!");
     }
   };
 
@@ -88,22 +88,26 @@ const Settings: React.FC<SettingsProps> = ({
       <Modal
         isOpen={isModalOpen}
         onRequestClose={() => setModalOpen(false)}
-        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-16 max-w-xl"
+        className="fixed left-1/2 top-1/2 max-w-xl -translate-x-1/2 -translate-y-1/2 transform rounded-lg bg-white p-16 shadow-lg"
         overlayClassName="fixed inset-0 bg-black bg-opacity-70"
         contentLabel="Delete Confirmation Modal"
       >
-        <h2 className="text-2xl font-bold mb-4 text-center">Confirm Deletion</h2>
-        <p className="mb-8 text-center">Are you sure you want to delete this connection?</p>
+        <h2 className="mb-4 text-center text-2xl font-bold">
+          Confirm Deletion
+        </h2>
+        <p className="mb-8 text-center">
+          Are you sure you want to delete this connection?
+        </p>
         <div className="flex justify-center space-x-4">
           <button
             onClick={deleteDatabase}
-            className="px-4 py-2 rounded-lg bg-red-500 text-white font-semibold hover:bg-red-600"
+            className="rounded-lg bg-red-500 px-4 py-2 font-semibold text-white hover:bg-red-600"
           >
             Confirm
           </button>
           <button
             onClick={() => setModalOpen(false)}
-            className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100"
+            className="rounded-lg border border-gray-300 px-4 py-2 font-semibold text-gray-700 hover:bg-gray-100"
           >
             Cancel
           </button>

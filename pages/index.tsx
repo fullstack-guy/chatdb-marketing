@@ -3,11 +3,9 @@ import { Toaster, toast } from "react-hot-toast";
 import { useState } from "react";
 import { TagIcon } from "@heroicons/react/outline";
 import Layout from "../components/Layout";
-import posthog from 'posthog-js';
+import posthog from "posthog-js";
 import Image from "next/image";
-import {
-  LightBulbIcon
-} from "@heroicons/react/outline";
+import { LightBulbIcon } from "@heroicons/react/outline";
 
 export default function Page() {
   const [email, setEmail] = useState("");
@@ -16,7 +14,7 @@ export default function Page() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    posthog.capture('waitlist_signup');
+    posthog.capture("waitlist_signup");
 
     if (email === "") {
       toast.error("Sorry, the email field is blank");
@@ -40,7 +38,7 @@ export default function Page() {
     <Layout>
       <main>
         {/* Hero section */}
-        <section className="px-8 pt-6 pb-2 text-center md:py-16">
+        <section className="px-8 pb-2 pt-6 text-center md:py-16">
           <div className="mx-auto max-w-6xl">
             <div className="flex flex-col items-center">
               <h1 className="mt-5 text-center text-3xl font-semibold text-heading md:max-w-4xl lg:text-5xl xl:text-6xl">
@@ -70,7 +68,8 @@ export default function Page() {
                   <form
                     className="subscription-form mt-6 flex flex-col gap-2 sm:flex-row"
                     method="POST"
-                    onSubmit={handleSubmit}>
+                    onSubmit={handleSubmit}
+                  >
                     <div>
                       <label
                         htmlFor="email"
@@ -359,14 +358,26 @@ export default function Page() {
               Master your Database. Without being an Expert.
             </h2>
             <p className="mt-6 text-xl text-text">
-              Ask the questions you want to know without spending half an hour wrangling SQL!
+              Ask the questions you want to know without spending half an hour
+              wrangling SQL!
             </p>
 
             <div className="mt-12 grid grid-cols-1 gap-y-6 md:grid-cols-2 lg:grid-cols-3">
               <div className="p-5 text-center md:p-8">
-                <div className="inline-block rounded-3xl bg-layer-2 py-4 px-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="rgb(51, 51, 61)" className="w-8 h-8">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+                <div className="inline-block rounded-3xl bg-layer-2 px-4 py-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="rgb(51, 51, 61)"
+                    className="h-8 w-8"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"
+                    />
                   </svg>
                 </div>
                 <h3 className="mt-4 text-xl font-semibold text-heading">
@@ -377,9 +388,20 @@ export default function Page() {
                 </p>
               </div>
               <div className="p-5 text-center md:p-8">
-                <div className="inline-block rounded-3xl bg-layer-2 py-4 px-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="rgb(51, 51, 61)" className="w-8 h-8">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" />
+                <div className="inline-block rounded-3xl bg-layer-2 px-4 py-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="rgb(51, 51, 61)"
+                    className="h-8 w-8"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z"
+                    />
                   </svg>
                 </div>
                 <h3 className="mt-4 text-xl font-semibold text-heading">
@@ -390,16 +412,28 @@ export default function Page() {
                 </p>
               </div>
               <div className="p-5 text-center md:p-8">
-                <div className="inline-block rounded-3xl bg-layer-2 py-4 px-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="rgb(51, 51, 61)" className="w-8 h-8">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                <div className="inline-block rounded-3xl bg-layer-2 px-4 py-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="rgb(51, 51, 61)"
+                    className="h-8 w-8"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                    />
                   </svg>
                 </div>
                 <h3 className="mt-4 text-xl font-semibold text-heading">
                   Intelligent Debugging 🧯
                 </h3>
                 <p className="mt-2 text-center text-lg text-text">
-                  ChatDB will automatically help you debug and fix errors in your code!
+                  ChatDB will automatically help you debug and fix errors in
+                  your code!
                 </p>
               </div>
             </div>
@@ -411,7 +445,6 @@ export default function Page() {
         <section className="px-8 py-12 md:py-18">
           <div className="mx-auto max-w-6xl space-y-24 md:space-y-36 lg:space-y-64 xl:space-y-72">
             <div className="flex flex-col items-center justify-between gap-6 lg:flex-row-reverse">
-
               <div className="max-w-md space-y-6 text-center lg:text-left">
                 <span className="inline-flex items-center rounded-full border-2 border-green-200 bg-green-200 px-2 py-1 text-sm font-semibold text-green-600 shadow-sm">
                   <TagIcon className="mr-1 h-5 w-5" />
@@ -421,7 +454,8 @@ export default function Page() {
                   Answers to your questions
                 </h3>
                 <p className="text-lg font-medium">
-                  Ask your database questions in natural language and ChatDB will write the SQL and answer your question!
+                  Ask your database questions in natural language and ChatDB
+                  will write the SQL and answer your question!
                 </p>
               </div>
 
@@ -446,7 +480,8 @@ export default function Page() {
                   Schema Visualizer
                 </h3>
                 <p className="text-lg font-medium">
-                  Database schemas can be complex. We try and make it easy for you to understand how everything is connected.
+                  Database schemas can be complex. We try and make it easy for
+                  you to understand how everything is connected.
                 </p>
               </div>
 
@@ -507,10 +542,9 @@ export default function Page() {
           </div>
         </section>
 
-
         {/* CTA section */}
         <section className="p-8 md:py-20">
-          <div className="mx-auto flex max-w-6xl flex-col items-center rounded-xl text-center sm:bg-layer-2 sm:py-12 sm:px-6 md:py-18 lg:px-32 2xl:px-64">
+          <div className="mx-auto flex max-w-6xl flex-col items-center rounded-xl text-center sm:bg-layer-2 sm:px-6 sm:py-12 md:py-18 lg:px-32 2xl:px-64">
             <h2 className="text-3xl font-semibold text-heading md:text-4xl">
               Stay in touch and be notified when it is released!
             </h2>
@@ -552,6 +586,6 @@ export default function Page() {
         </section>
       </main>
       <Toaster />
-    </Layout >
+    </Layout>
   );
 }

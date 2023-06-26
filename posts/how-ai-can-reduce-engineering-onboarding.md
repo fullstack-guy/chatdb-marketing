@@ -5,12 +5,11 @@ description: "Discover how ChatDB uses AI to transform the onboarding process fo
 image: images/onboarding-thinking.png
 date: "2023-06-21"
 tags:
-    - onboarding
-    - ai
-    - productivity
-    - cost-savings
+  - onboarding
+  - ai
+  - productivity
+  - cost-savings
 ---
-
 
 # Reimagining Onboarding: Accelerating Efficiency with AI
 

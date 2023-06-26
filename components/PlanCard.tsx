@@ -1,5 +1,5 @@
-import React from 'react';
-import posthog from 'posthog-js';
+import React from "react";
+import posthog from "posthog-js";
 
 interface PlanCardProps {
   name: string;
@@ -27,8 +27,8 @@ export default function PlanCard({
   const priceSuffix = isYearlyPricing ? "/year" : "/month";
 
   const handleButtonClick = () => {
-    posthog.capture('pricing_button_clicked');
-  }
+    posthog.capture("pricing_button_clicked");
+  };
 
   return (
     <div
@@ -76,7 +76,11 @@ export default function PlanCard({
         ))}
       </ul>
 
-      <label htmlFor={`${name}_modal`} className="mt-auto rounded-xl bg-black py-3 px-6 text-lg font-medium text-white cursor-pointer" onClick={handleButtonClick}>
+      <label
+        htmlFor={`${name}_modal`}
+        className="mt-auto cursor-pointer rounded-xl bg-black px-6 py-3 text-lg font-medium text-white"
+        onClick={handleButtonClick}
+      >
         {btnText}
       </label>
 
@@ -84,10 +88,12 @@ export default function PlanCard({
       <input type="checkbox" id={`${name}_modal`} className="modal-toggle" />
       <div className="modal">
         <div className="modal-box">
-          <h2 className="mb-4 text-black text-2xl">Stay Tuned!</h2>
+          <h2 className="mb-4 text-2xl text-black">Stay Tuned!</h2>
           <p>It's not ready yet, but stay tuned for updates!</p>
           <div className="modal-action">
-            <label htmlFor={`${name}_modal`} className="btn cursor-pointer">Close</label>
+            <label htmlFor={`${name}_modal`} className="btn cursor-pointer">
+              Close
+            </label>
           </div>
         </div>
       </div>

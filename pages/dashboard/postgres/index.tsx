@@ -238,7 +238,7 @@ export default function Page() {
       {/* Select Options */}
       <div className="m-auto lg:mx-[20%]">
         <div className="w-full text-center">
-          <div className="container my-auto mx-auto">
+          <div className="container mx-auto my-auto">
             <h1 className="mt-10 text-3xl font-bold text-black">
               Take a Snapshot
             </h1>
@@ -288,8 +288,9 @@ export default function Page() {
                         onChange={connectionStringChange}
                       />
                       <span
-                        className={`btn hidden sm:flex ${connecting || saving ? "loading" : ""
-                          } cursor-pointer border-none bg-success font-semibold text-black hover:bg-success`}
+                        className={`btn hidden sm:flex ${
+                          connecting || saving ? "loading" : ""
+                        } cursor-pointer border-none bg-success font-semibold text-black hover:bg-success`}
                         onClick={connected ? saveDatabase : connectToDatabase}
                       >
                         {connecting ? (
@@ -323,8 +324,9 @@ export default function Page() {
                     )}
                     <div className="my-2 w-full">
                       <button
-                        className={`btn ${connecting && "loading"
-                          } mx-auto my-2 flex w-[75%] bg-success font-semibold text-black hover:bg-success sm:hidden`}
+                        className={`btn ${
+                          connecting && "loading"
+                        } mx-auto my-2 flex w-[75%] bg-success font-semibold text-black hover:bg-success sm:hidden`}
                         onClick={connectToDatabase}
                         type="submit"
                       >

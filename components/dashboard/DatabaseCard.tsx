@@ -26,7 +26,7 @@ const Card = ({ logo, title, lastUpdated, uuid }) => {
         </div>
       </Link>
       <Link href={`/dashboard/${uuid}/edit`}>
-        <div className="absolute top-0 right-0 p-4">
+        <div className="absolute right-0 top-0 p-4">
           <BsThreeDots className="h-6 w-6 cursor-pointer text-gray-500 hover:text-black" />
         </div>
       </Link>

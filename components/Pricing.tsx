@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import PlanCard from "./PlanCard";
 
 export default function Pricing() {
@@ -19,11 +19,16 @@ export default function Pricing() {
           </p>
           <div className="mt-6">
             <label
-              className="inline-flex items-center cursor-pointer"
+              className="inline-flex cursor-pointer items-center"
               onClick={handleToggle}
             >
               <span className="mr-3">Monthly</span>
-              <input type="checkbox" className="toggle" checked={isYearlyPricing} onChange={handleToggle} />
+              <input
+                type="checkbox"
+                className="toggle"
+                checked={isYearlyPricing}
+                onChange={handleToggle}
+              />
               <span className="ml-3">Yearly</span>
             </label>
           </div>
