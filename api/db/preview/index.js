@@ -6,11 +6,6 @@ const { ClerkExpressRequireAuth } = require('@clerk/clerk-sdk-node');
 const app = express();
 app.use(express.json());
 
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(401).send('Unauthenticated!');
-});
-
 app.post("*", ClerkExpressRequireAuth(), async (req, res) => {
     const { connectionStringToken, table_name } = req.body;
 
@@ -44,6 +39,11 @@ app.post("*", ClerkExpressRequireAuth(), async (req, res) => {
             message: "An unexpected error occurred: " + e.message,
         });
     }
+});
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(401).json({ "error": 'Unauthenticated!' });
 });
 
 module.exports = app;

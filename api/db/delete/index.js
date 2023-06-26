@@ -1,19 +1,19 @@
+const express = require('express');
 const { createClient } = require('@supabase/supabase-js');
 const axios = require('axios');
+const { ClerkExpressRequireAuth } = require('@clerk/clerk-sdk-node');
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
-import { getAuth } from "@clerk/nextjs/server";
 
 const basisTheoryApiKey = process.env.NEXT_PRIVATE_BASIS_THEORY_KEY;
 
-module.exports = async (req, res) => {
-    const { sessionId } = getAuth(req);
+const app = express();
 
-    if (!sessionId) {
-        return res.status(401).json({ error: "Unauthorized" });
-    }
+app.use(express.json());
 
+app.delete("*", ClerkExpressRequireAuth(), async (req, res) => {
     const database = req.query.database;
 
     // Fetch the database_string token before deleting the record
@@ -24,8 +24,7 @@ module.exports = async (req, res) => {
 
     if (tokenError) {
         console.error("Error fetching database string token:", tokenError);
-        res.status(500).send({ error: tokenError });
-        return;
+        return res.status(500).send({ error: tokenError });
     }
 
     const token = tokenData[0]?.database_string;
@@ -38,8 +37,7 @@ module.exports = async (req, res) => {
 
     if (errorSchema) {
         console.error("Error deleting schemas:", errorSchema);
-        res.status(500).send({ error: errorSchema });
-        return;
+        return res.status(500).send({ error: errorSchema });
     }
 
     // Then delete from user_databases
@@ -50,8 +48,7 @@ module.exports = async (req, res) => {
 
     if (errorDatabase) {
         console.error("Error deleting database:", errorDatabase);
-        res.status(500).send({ error: errorDatabase });
-        return;
+        return res.status(500).send({ error: errorDatabase });
     }
 
     // Now delete the basis theory token
@@ -63,12 +60,18 @@ module.exports = async (req, res) => {
         });
     } catch (err) {
         console.error("Error deleting Basis Theory token:", err);
-        res.status(500).send({ error: err.message });
-        return;
+        return res.status(500).send({ error: err.message });
     }
 
     // If everything is fine, send a success response
     res.status(200).send({
-        message: "Sucess"
+        message: "Success"
     });
-}
+});
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(401).json({ "error": 'Unauthenticated!' });
+});
+
+module.exports = app;

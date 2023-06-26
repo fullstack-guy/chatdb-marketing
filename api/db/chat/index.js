@@ -9,9 +9,8 @@ const { ClerkExpressRequireAuth } = require('@clerk/clerk-sdk-node');
 
 const app = express();
 app.use(express.json());
-app.use(ClerkExpressRequireAuth());
 
-app.post("*", async (req, res) => {
+app.post("*", ClerkExpressRequireAuth(), async (req, res) => {
     // Extract the query and the connection string token from the request body
     const { query, connectionStringToken } = req.body;
 
@@ -58,6 +57,11 @@ app.post("*", async (req, res) => {
             errorMessage: err.message,
         });
     }
+});
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(401).json({ "error": 'Unauthenticated!' });
 });
 
 module.exports = app;
