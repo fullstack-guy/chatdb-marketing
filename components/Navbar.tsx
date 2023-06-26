@@ -14,33 +14,25 @@ const Navbar = () => {
   return (
     <header className="mx-auto border-0 border-b border-solid border-b-slate-200 xl:px-0">
       <nav className="relative z-20 flex items-center justify-between py-6">
-        <Link href="/">
-          <a className="z-10">
-            {/* Logo */}
-            <h1 className="text-4xl font-bold text-heading">ChatDB</h1>
-          </a>
+        <Link href="/" className="z-10">
+          {/* Logo */}
+          <h1 className="text-4xl font-bold text-heading">ChatDB</h1>
         </Link>
         <div className="hidden items-center md:flex">
           <SignedIn>
             {isOnDashboard ? (
               <></>
             ) : (
-              <Link href="/dashboard">
-                <a className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text">
-                  Dashboard
-                </a>
+              <Link href="/dashboard" className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text">
+                Dashboard
               </Link>
             )}
           </SignedIn>
-          <Link href="/pricing">
-            <a className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text">
-              Pricing
-            </a>
+          <Link href="/pricing" className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text">
+            Pricing
           </Link>
-          <Link href="/blog">
-            <a className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text">
-              Blog
-            </a>
+          <Link href="/blog" className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text">
+            Blog
           </Link>
           <SignedIn>
             <div className="mx-4">

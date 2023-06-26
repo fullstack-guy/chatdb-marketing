@@ -33,7 +33,7 @@ export default function Pricing() {
             color="#78E3FC"
             name="Basic"
             monthlyPrice="19.99"
-            annualPrice="190"
+            annualPrice="199.99"
             description="Get started with the basic plan"
             features={[
               "1 User",
@@ -50,7 +50,7 @@ export default function Pricing() {
             color="#F4D06F"
             name="Pro"
             monthlyPrice="29.99"
-            annualPrice="290"
+            annualPrice="299.99"
             description="Get more advanced"
             features={[
               "1 User",
