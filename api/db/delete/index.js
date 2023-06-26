@@ -1,13 +1,19 @@
 const { createClient } = require('@supabase/supabase-js');
 const axios = require('axios');
-
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
+import { getAuth } from "@clerk/nextjs/server";
 
 const basisTheoryApiKey = process.env.NEXT_PRIVATE_BASIS_THEORY_KEY;
 
 module.exports = async (req, res) => {
+    const { sessionId } = getAuth(req);
+
+    if (!sessionId) {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
+
     const database = req.query.database;
 
     // Fetch the database_string token before deleting the record

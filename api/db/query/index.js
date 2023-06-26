@@ -1,13 +1,13 @@
+const express = require('express');
 const { BasisTheory } = require("@basis-theory/basis-theory-js");
 const { Pool } = require("pg");
+const { ClerkExpressRequireAuth } = require('@clerk/clerk-sdk-node');
 
-module.exports = async (req, res) => {
+const app = express();
+app.use(express.json());
+
+app.post("*", ClerkExpressRequireAuth(), async (req, res) => {
     const bt = await new BasisTheory().init(process.env.NEXT_PRIVATE_BASIS_THEORY_KEY);
-
-    if (req.method !== "POST") {
-        res.status(405).end(); // Method Not Allowed
-        return;
-    }
 
     // Extract the query and the connection string token from the request body
     const { query, connectionStringToken } = req.body;
@@ -42,4 +42,6 @@ module.exports = async (req, res) => {
             errorMessage: err.message,
         });
     }
-};
+});
+
+module.exports = app;

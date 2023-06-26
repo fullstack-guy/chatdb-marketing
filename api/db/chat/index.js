@@ -1,22 +1,22 @@
+const express = require("express");
 const { BasisTheory } = require("@basis-theory/basis-theory-js");
 const { Pool } = require("pg");
 const { DataSource } = require("typeorm");
 const { OpenAI } = require("langchain/llms/openai");
 const { SqlDatabase } = require("langchain/sql_db");
 const { SqlDatabaseChain } = require("langchain/chains");
+const { ClerkExpressRequireAuth } = require('@clerk/clerk-sdk-node');
 
-module.exports = async (req, res) => {
-    if (req.method !== "POST") {
-        res.status(405).end(); // Method Not Allowed
-        return;
-    }
+const app = express();
+app.use(express.json());
+app.use(ClerkExpressRequireAuth());
 
+app.post("*", async (req, res) => {
     // Extract the query and the connection string token from the request body
     const { query, connectionStringToken } = req.body;
 
     if (!query || !connectionStringToken) {
-        res.status(400).json({ error: "No query or connection string token provided" });
-        return;
+        return res.status(400).json({ error: "No query or connection string token provided" });
     }
 
     try {
@@ -58,4 +58,6 @@ module.exports = async (req, res) => {
             errorMessage: err.message,
         });
     }
-};
+});
+
+module.exports = app;

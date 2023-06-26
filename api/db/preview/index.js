@@ -1,14 +1,17 @@
 const express = require("express");
-const cors = require("cors");
 const { Pool } = require("pg");
 const { BasisTheory } = require("@basis-theory/basis-theory-js");
+const { ClerkExpressRequireAuth } = require('@clerk/clerk-sdk-node');
 
 const app = express();
-app.use(cors());
 app.use(express.json());
 
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(401).send('Unauthenticated!');
+});
 
-app.post("*", async (req, res) => {
+app.post("*", ClerkExpressRequireAuth(), async (req, res) => {
     const { connectionStringToken, table_name } = req.body;
 
     try {
