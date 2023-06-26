@@ -15,9 +15,9 @@ interface Props {
 
 const Table = ({ databases }: Props) => {
   return (
-    <div className="flex flex-row flex-wrap justify-center">
+    <div className="grid grid-flow-row-dense gap-4 md:grid-cols-2 lg:grid-cols-3">
       {databases.map((card, index) => (
-        <div key={index} className="m-2 flex w-1/2 flex-col">
+        <div key={index}>
           <DatabaseCard
             key={index}
             logo={"/images/postgres-icon.png"}

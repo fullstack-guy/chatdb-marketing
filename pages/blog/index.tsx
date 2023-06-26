@@ -44,7 +44,7 @@ export default function Page({ posts }) {
                       src={`/${frontmatter.image}`}
                       width={300}
                       height={150}
-                      alt='blog image'
+                      alt="blog image"
                       className="rounded-sm object-cover"
                     />
                   </figure>

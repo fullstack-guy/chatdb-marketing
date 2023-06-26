@@ -11,6 +11,7 @@ import {
 import supabase from "../../../utils/supabaseClient";
 import Layout from "../../../components/Layout";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export default function Page() {
   const router = useRouter();
@@ -22,12 +23,19 @@ export default function Page() {
   const [nameError, setNameError] = useState(null);
   const [connectionStringError, setConnectionStringError] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState(null);
 
   const [databaseInfo, setDatabaseInfo] = useState(null);
   const { user } = useUser();
   const { bt } = useBasisTheory(process.env.NEXT_PUBLIC_BASIS_THEORY_KEY, {
     elements: true,
   });
+
+  useEffect(() => {
+    if (connected) {
+      setConnected(false);
+    }
+  }, [connectionString]);
 
   const saveDatabase = async () => {
     setSaving(true);
@@ -130,7 +138,9 @@ export default function Page() {
   };
 
   const connectionStringChange = (event) => {
-    const result = event.target.value.replace(/^postgres:\/\//, "");
+    const result = event.target.value
+      .replace(/^postgres:\/\//, "")
+      .replace(/^postgresql:\/\//, "");
     setConnectionString(result);
   };
 
@@ -181,11 +191,13 @@ export default function Page() {
       });
 
       if (!response.ok) {
+        const errorData = await response.json(); // Parse the response
+        setError(errorData.message); // Set the error message
         setConnecting(false);
-        toast.error("There was an error connecting to the database!");
       } else {
         const data = await response.json();
         setDatabaseInfo(data);
+        setError(null); // Clear any previous error message
 
         toast("Successfully Connected", {
           icon: "👏",
@@ -203,7 +215,7 @@ export default function Page() {
     } catch (error) {
       console.error(error);
       setConnecting(false);
-      toast.error("There was an error connecting to the database!");
+      setError(error.message); // Show network error message
     }
   };
 
@@ -240,7 +252,7 @@ export default function Page() {
         <div className="w-full text-center">
           <div className="container mx-auto my-auto">
             <h1 className="mt-10 text-3xl font-bold text-black">
-              Take a Snapshot
+              Connect your Database
             </h1>
 
             <h1 className="text-sm text-black">
@@ -351,6 +363,11 @@ export default function Page() {
                         )}
                       </button>
                     </div>
+                    {error && (
+                      <p className="mt-1 text-sm font-semibold text-red-600">
+                        {error}
+                      </p>
+                    )}
                   </BasisTheoryProvider>
                 </div>
               </div>
