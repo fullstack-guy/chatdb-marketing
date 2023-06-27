@@ -28,7 +28,7 @@ export default function Contact() {
                 <div className="m-auto flex flex-col items-center p-4">
                     <div className="mb-2 mt-12 text-center">
                         <h1 className="mb-4 text-7xl font-black text-black">Contact Us</h1>
-                        <p className="text-lg">
+                        <p className="text-lg mt-12">
                             We would love to hear from you. Please fill out this form and we will get in touch with you shortly.
                         </p>
                     </div>
