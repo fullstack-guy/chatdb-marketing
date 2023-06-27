@@ -28,7 +28,7 @@ const Sidebar = ({ tables }) => {
     setSavedQueriesOpen(!isSavedQueriesOpen);
   };
 
-  const renderList = (tableName, tableFields) => {
+  const renderList = (tableName, tableFields, key) => {
     const isOpen = openLists.includes(tableName);
     const handleClick = () => toggleList(tableName);
     const IconComponent = isOpen ? ArrowDownIcon : ArrowRightIcon;
@@ -36,6 +36,7 @@ const Sidebar = ({ tables }) => {
     return (
       <>
         <a
+          key={key}
           href="#"
           className="flex items-center text-gray-900 transition duration-75 dark:text-white group"
           onClick={handleClick}
@@ -49,8 +50,8 @@ const Sidebar = ({ tables }) => {
             <div className="flex items-center">
               <div className="left-1/2 -ml-0.5 w-0.5 bg-gray-400" style={{ height: tableFields?.length * 20 }}></div>
               <div className="flex flex-col">
-                {tableFields?.length > 0 && tableFields?.map((field) => (
-                  <span className="ml-3 text-sm font-xs text-gray-400">{field?.fieldName}</span>
+                {tableFields?.length > 0 && tableFields?.map((field, index) => (
+                  <span key={index} className="ml-3 text-sm font-xs text-gray-400">{field?.fieldName}</span>
                 ))}
               </div>
             </div>
@@ -64,7 +65,7 @@ const Sidebar = ({ tables }) => {
     <>
       <aside
         id="separator-sidebar"
-        className="top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 border-r-2 border-stone-300"
+        className="top-0 left-0 z-40 w-64 h-auto transition-transform -translate-x-full sm:translate-x-0 border-r-2 border-stone-300"
         aria-label="Sidebar"
       >
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
@@ -88,7 +89,7 @@ const Sidebar = ({ tables }) => {
 
           {isTablesDropdownOpen && (
             <div className="pl-6">
-              {tables?.length > 0 && tables?.map((table) => renderList(table?.tableName, table?.fields))}
+              {tables?.length > 0 && tables?.map((table, index) => renderList(table?.tableName, table?.fields, index))}
             </div>
           )}
 
