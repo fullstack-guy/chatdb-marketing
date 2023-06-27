@@ -24,93 +24,101 @@ const Query = ({ filteredTables }) => {
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    setTables([...filteredTables])
+    if (filteredTables.length > 0) {
+      setTables([...filteredTables])
+    }
   }, [filteredTables])
 
   const validateQuery = () => {
-    const createTableRegex = /^CREATE\s+TABLE\s+(\w+)\s+\(([\w\s,()]+)\s*(?:\[[^\]]+\])?\)\s*;$/i;
-    const insertIntoRegex = /^INSERT\s+INTO\s+(\w+)\s+\(([\w\s,]+)\)\s+VALUES\s+\(([\w\s,']+)\);$/i;
+       if (query.includes("CREATE") || query.includes("create")) {
+      // Extract table name using regex
+      const tableNameMatch = query.match(/CREATE\s+TABLE\s+(\w+)\s+/i);
+      const tableName = tableNameMatch ? tableNameMatch[1] : '';
 
-    if (query.includes("CREATE") || query.includes("create")) {
-      const match = query.match(createTableRegex);
-      console.log("match create", match);
-      if (match) {
-        const tableName = match[1];
-        const fieldDefinitions = match[2].split(',');
+      const attributesMatch = query.match(/\(([^)]+)\)/);
+      const attributesString = attributesMatch ? attributesMatch[1] : '';
+      const attributes = attributesString.split(',');
 
-        const matchedTable = filteredTables.find(table => table.tableName === tableName);
-        if (!matchedTable) {
-          const newTable = {
-            tableName: tableName,
-            fields: fieldDefinitions.map(field => ({
-              fieldName: field.split(" ")[2],
-              dataType: ''
-            }))
-          };
+      const matchedTable = tables.find(table => table.tableName === tableName);
 
-          setTables(prevTables => [...prevTables, newTable]);
-          console.log("UpdatedTables", tables)
-        } else {
-          // Table already exists, show an error message
-          const errorAnnotation = {
-            row: 0,
-            column: 0,
-            text: `Table '${tableName}' already exists`,
-            type: "error",
-          };
-          setAnnotations([errorAnnotation]);
-        }
+      if (!matchedTable) {
+        const newTable = {
+          tableName: tableName,
+          fields: attributes.map(field => ({
+            fieldName: field.split(" ")[1],
+            dataType: ''
+          }))
+        };
+
+        setTables(prevTables => [...prevTables, newTable]);
+        console.log("UpdatedTables", tables)
+      } else {
+        // Table already exists, show an error message
+        const errorAnnotation = {
+          row: 0,
+          column: 0,
+          text: `Table '${tableName}' already exists`,
+          type: "error",
+        };
+        setAnnotations([errorAnnotation]);
+
       }
     } else if (query.includes("INSERT") || query.includes("insert")) {
-      const match = query.match(insertIntoRegex);
-      console.log("match insert", match);
 
-      if (match) {
-        const tableName = match[1];
-        const fieldNames = match[2].split(',');
-        const fieldValues = match[3].split(',');
+      const insertPattern = /^INSERT\s+INTO\s+(\w+)\s+\(([\w\s,]+)\)\s+VALUES\s+\(([\w\s,']+)\);$/i;
+      const match = query.match(insertPattern);
+      const tableName = match[1];
+      const matchedTable = tables.find(table => table.tableName === tableName);
 
-        console.log("tableName", tableName);
-        console.log("fieldNames", fieldNames);
-        console.log("fieldValues", fieldValues);
+      if (matchedTable) {
+        const attributeNames = match[2].split(',').map(name => name.trim());
+        const attributeValues = match[3].split(',').map(value => value.trim().replace(/'/g, ''));
+        const fields = {
+          [`${attributeNames[0]}`]: attributeValues[0],
+          [`${attributeNames[1]}`]: attributeValues[1],
+          id: tableData.length
+        };
 
         const newRows = [];
-        for (let i = 0; i < fieldNames.length; i++) {
-          const newRow = {id: i};
-
-          const columnName = fieldNames[i].trim();
-          const columnValue = fieldValues[i].trim().replace(/'/g, "");
-          newRow[columnName] = columnValue;
-          newRows.push(newRow);
-        }
-        console.log("newRows", newRows)
+        newRows.push(fields);
 
         setTableData((prevTableData) => [...prevTableData, ...newRows]);
         console.log('updatedTableData', tableData)
 
-        const tableFieldNames = filteredTables.find(field => field.fieldName === fieldNames);
-        console.log("tableFieldNames", tableFieldNames);
+        const dynamicColumns = attributeNames.map(key => {
+          let width = 200; // Default width for other columns
+          let name = key.charAt(0).toUpperCase() + key.slice(1); // Default column name
 
-        if (!tableFieldNames) {
-          const errorAnnotation = {
-            row: 0,
-            column: 0,
-            text: `Field name ${fieldNames} already exists`,
-            type: "error",
+          if (key === 'id') {
+            width = 50;
+            name = ''; // Empty string to hide the heading of the 'ID' column
+          }
+          return {
+            key,
+            name,
+            width
           };
-          setAnnotations([errorAnnotation]);
-          return;
-        }
+        });
+
+        setColumns(dynamicColumns);
+
+      } else {
+        const errorAnnotation = {
+          row: 0,
+          column: 0,
+          text: "Table not found!",
+          type: "error",
+        };
+        setAnnotations([errorAnnotation]);
       }
-    } else {
-      const errorAnnotation = {
-        row: 0,
-        column: 0,
-        text: "Failed to run query",
-        type: "error",
-      };
-      setAnnotations([errorAnnotation]);
     }
+    const errorAnnotation = {
+      row: 0,
+      column: 0,
+      text: "Failed to run query",
+      type: "error",
+    };
+    setAnnotations([errorAnnotation]);
   };
 
   const handleRunQuery = () => {
