@@ -477,7 +477,7 @@ export default function Page() {
                   Visualizations
                 </span>
                 <h3 className="text-3xl font-semibold text-heading lg:text-4xl">
-                  Schema Visualizer
+                  See the layout
                 </h3>
                 <p className="text-lg font-medium">
                   Database schemas can be complex. We try and make it easy for
