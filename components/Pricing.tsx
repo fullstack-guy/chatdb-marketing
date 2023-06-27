@@ -17,20 +17,19 @@ export default function Pricing() {
             Choose the right pricing for you and get started working on your
             project
           </p>
-          <div className="mt-6">
-            <label
-              className="inline-flex cursor-pointer items-center"
-              onClick={handleToggle}
+          <div className="mt-6 flex justify-center space-x-4">
+            <button
+              className={`py-2 px-4 rounded-lg ${!isYearlyPricing ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-500'}`}
+              onClick={() => setYearlyPricing(false)}
             >
-              <span className="mr-3">Monthly</span>
-              <input
-                type="checkbox"
-                className="toggle"
-                checked={isYearlyPricing}
-                onChange={handleToggle}
-              />
-              <span className="ml-3">Yearly</span>
-            </label>
+              Monthly
+            </button>
+            <button
+              className={`py-2 px-4 rounded-lg ${isYearlyPricing ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-500'}`}
+              onClick={() => setYearlyPricing(true)}
+            >
+              Yearly
+            </button>
           </div>
         </div>
         <div className="flex flex-col gap-8 p-10 xl:flex-row">
@@ -47,6 +46,7 @@ export default function Pricing() {
               "Smart Debugging",
               "Backed by ChatGPT",
               "PostgreSQL Connection",
+              "Multiple Schemas"
             ]}
             btnText="Get Started"
             isYearlyPricing={isYearlyPricing}
@@ -62,8 +62,9 @@ export default function Pricing() {
               "5 Projects",
               "50 Tables",
               "Smart Debugging",
+              "Multiple Schemas",
               "All Connections",
-              "Backed by GPT4",
+              "GPT4 Add On",
               "Premium Support",
             ]}
             btnText="Become a Pro"
