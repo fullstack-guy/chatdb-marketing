@@ -82,8 +82,9 @@ const Navbar = () => {
                 {({ active }) => (
                   <Link href="/pricing">
                     <a
-                      className={`${active ? "bg-muted-1 text-heading" : "text-text"
-                        } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                      className={`${
+                        active ? "bg-muted-1 text-heading" : "text-text"
+                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                     >
                       Pricing
                     </a>
@@ -94,8 +95,9 @@ const Navbar = () => {
                 {({ active }) => (
                   <Link href="/blog">
                     <a
-                      className={`${active ? "bg-muted-1 text-heading" : "text-text"
-                        } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                      className={`${
+                        active ? "bg-muted-1 text-heading" : "text-text"
+                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                     >
                       Blog
                     </a>
@@ -106,8 +108,9 @@ const Navbar = () => {
                 {({ active }) => (
                   <Link href="/contact-us">
                     <a
-                      className={`${active ? "bg-muted-1 text-heading" : "text-text"
-                        } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                      className={`${
+                        active ? "bg-muted-1 text-heading" : "text-text"
+                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                     >
                       Contact-Us
                     </a>

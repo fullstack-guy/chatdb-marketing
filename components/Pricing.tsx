@@ -19,13 +19,21 @@ export default function Pricing() {
           </p>
           <div className="mt-6 flex justify-center space-x-4">
             <button
-              className={`py-2 px-4 rounded-lg ${!isYearlyPricing ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-500'}`}
+              className={`rounded-lg px-4 py-2 ${
+                !isYearlyPricing
+                  ? "bg-gray-800 text-white"
+                  : "bg-gray-200 text-gray-500"
+              }`}
               onClick={() => setYearlyPricing(false)}
             >
               Monthly
             </button>
             <button
-              className={`py-2 px-4 rounded-lg ${isYearlyPricing ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-500'}`}
+              className={`rounded-lg px-4 py-2 ${
+                isYearlyPricing
+                  ? "bg-gray-800 text-white"
+                  : "bg-gray-200 text-gray-500"
+              }`}
               onClick={() => setYearlyPricing(true)}
             >
               Yearly
@@ -46,7 +54,7 @@ export default function Pricing() {
               "Smart Debugging",
               "Backed by ChatGPT",
               "PostgreSQL Connection",
-              "Multiple Schemas"
+              "Multiple Schemas",
             ]}
             btnText="Get Started"
             isYearlyPricing={isYearlyPricing}

@@ -26,7 +26,11 @@ export async function getStaticProps() {
 
 export default function Page({ posts }) {
   return (
-    <Layout>
+    <Layout
+      title="ChatDB Blog | Database insights and more"
+      description="Stay up-to-date with the latest news, insights, and tips about databases, AI technology, and ChatDB features from our blog."
+      url="https://www.chatdb.ai/blog"
+    >
       <div className="mt-16 text-center text-7xl font-bold text-black">
         Blog
       </div>

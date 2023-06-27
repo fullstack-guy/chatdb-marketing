@@ -5,20 +5,26 @@ import Link from "next/link";
 
 type LayoutProps = {
   children: React.ReactNode;
+  title?: string;
+  description?: string;
+  url?: string;
 };
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = ({ children, title, description, url }: LayoutProps) => {
+  const defaultTitle = "ChatDB | The AI Database Assistant for your team";
+  const defaultDescription =
+    "The tool that is an expert on your database. Say goodbye to hours spent creating the correct query to get the data you need.";
+  const defaultUrl = "https://www.chatdb.ai";
+
   return (
     <div className="bg-layer-1">
       <NextSeo
-        title="ChatDB | The AI Database Assistant for your team"
-        description="The tool that is an expert on your database. Say goodbye to hours
-        spent creating the correct query to get the data you need."
+        title={title || defaultTitle}
+        description={description || defaultDescription}
         openGraph={{
-          url: "https://www.chatdb.ai",
-          title: "ChatDB.ai | The AI Database Assistant for your team",
-          description:
-            "The tool that is an expert on your database. Say goodbye to hours spent creating the correct query to get the data you need",
+          url: url || defaultUrl,
+          title: title || defaultTitle,
+          description: description || defaultDescription,
           images: [
             {
               url: "https://chatdb-assets.s3.amazonaws.com/ogg.png",
@@ -62,6 +68,12 @@ const Layout = ({ children }: LayoutProps) => {
               </Link>
               <Link href="contact-us" className="link-hover link">
                 Contact Us
+              </Link>
+            </div>
+            <div>
+              <span className="footer-title">Tools</span>
+              <Link href="/csv-viewer" className="link-hover link">
+                CSV Viewer and Editor
               </Link>
             </div>
           </footer>
