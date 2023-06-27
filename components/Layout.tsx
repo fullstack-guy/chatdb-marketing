@@ -72,7 +72,7 @@ const Layout = ({ children, title, description, url }: LayoutProps) => {
             </div>
             <div>
               <span className="footer-title">Tools</span>
-              <Link href="/csv-viewer" className="link-hover link">
+              <Link href="/tools/csv-editor" className="link-hover link">
                 CSV Viewer and Editor
               </Link>
             </div>
