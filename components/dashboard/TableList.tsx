@@ -67,7 +67,7 @@ const TableList = ({ database_token, filteredTables }) => {
     try {
       const response = await axios.post("/api/db/preview", {
         connectionStringToken: database_token,
-        table_name: tableData.tableName,
+        table_name: `"${tableData.schemaName}"."${tableData.tableName}"`,
       });
       const data = response.data;
 
@@ -103,11 +103,15 @@ const TableList = ({ database_token, filteredTables }) => {
     setModalOpen(false);
   };
 
+  const sortedFilteredTables = filteredTables.sort((a, b) => {
+    return a.schemaName.localeCompare(b.schemaName);
+  });
+
   return (
     <>
       {filteredTables.length > 0 ? (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-          {filteredTables.map((table) => (
+          {sortedFilteredTables.map((table) => (
             <div
               key={table.tableName}
               className="relative flex transform cursor-pointer items-center rounded-lg border p-4 shadow-sm transition-colors duration-200 hover:scale-105 hover:bg-gray-100"
@@ -130,11 +134,13 @@ const TableList = ({ database_token, filteredTables }) => {
                   />
                 )}
               </div>
-              <div className="flex flex-col">
-                <h3 className="mb-2 text-xl font-semibold text-black">
+              <div className="flex flex-col space-y-1">
+                <h3 className="text-xl font-semibold text-black">
                   {table.tableName}
                 </h3>
-                <p className="text-sm text-gray-600">{table.description}</p>
+                <span className="inline-flex items-center justify-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
+                  {table.schemaName}
+                </span>
               </div>
             </div>
           ))}

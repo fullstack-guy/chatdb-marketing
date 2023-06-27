@@ -37,9 +37,11 @@ interface Database {
 interface Schema {
   [schemaName: string]: Database;
 }
+
 const proOptions = { hideAttribution: true };
 
 function DatabaseFlow({ dbSchema }) {
+  console.log(dbSchema);
   const dagreGraph = new dagre.graphlib.Graph();
   dagreGraph.setDefaultEdgeLabel(() => ({}));
 
@@ -83,7 +85,7 @@ function DatabaseFlow({ dbSchema }) {
   nodes.forEach((node) => {
     // Adjust these constants as necessary
     const baseNodeWidth = 300; // The minimum width of a node
-    const baseNodeHeight = 20; // The minimum height of a node
+    const baseNodeHeight = 125; // The minimum height of a node
     const columnHeight = 50; // The height each column adds
 
     const columns = node.data.columns.length;
@@ -133,6 +135,9 @@ function DatabaseFlow({ dbSchema }) {
         nodeTypes={nodeTypes}
         proOptions={proOptions}
         className="bg-teal-50"
+        elementsSelectable
+        nodesDraggable
+        fitView
       >
         <MiniMap />
         <Controls />

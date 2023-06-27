@@ -59,11 +59,11 @@ const TablePreviewModal = ({ isOpen, onClose, tableRows, tableName }) => {
     <Modal
       isOpen={isOpen}
       onRequestClose={onClose}
-      className="fixed left-1/2 top-1/2 max-w-sm -translate-x-1/2 -translate-y-1/2 transform rounded-lg bg-white p-6 shadow-lg sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-7xl"
+      className="fixed left-1/2 top-1/2 max-w-5xl -translate-x-1/2 -translate-y-1/2 transform rounded-lg bg-white p-6 shadow-lg sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-7xl"
       overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
       contentLabel="Table Preview"
     >
-      <div className="max-h-full w-full">
+      <div className="max-h-full w-full overflow-x-auto">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-center text-xl font-bold text-black">
             {tableName} Preview
@@ -88,7 +88,7 @@ const TablePreviewModal = ({ isOpen, onClose, tableRows, tableName }) => {
             </svg>
           </button>
         </div>
-        <DataGrid className="rdg-light" columns={columns} rows={rows} />
+        <DataGrid className="rdg-light w-100%" columns={columns} rows={rows} />
         <div className="mt-4 flex flex-wrap items-center justify-between">
           <div className="mb-2 text-gray-600 md:mb-0">
             Showing {rowCount} rows.

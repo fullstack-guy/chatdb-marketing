@@ -77,21 +77,30 @@ export default function Page() {
   function convertJsonToDataModel(json) {
     const dataModel = [];
 
-    const schema = json[selectedSchema];
-    for (const tableName in schema) {
-      const table = schema[tableName];
-      const fields = [];
-      for (const fieldName in table) {
-        const field = table[fieldName];
-        fields.push({
-          fieldName: fieldName,
-          dataType: field.type,
+    for (const schemaName in json) {
+      const schema = json[schemaName];
+      for (const tableName in schema) {
+        const table = schema[tableName];
+        const fields = [];
+        let foreignKeys = []; // Initialize foreignKeys array
+        for (const fieldName in table) {
+          if (fieldName === "foreignKeys") {
+            foreignKeys = table[fieldName]; // Assign foreign keys if they exist
+          } else {
+            const field = table[fieldName];
+            fields.push({
+              fieldName: fieldName,
+              dataType: field.type,
+            });
+          }
+        }
+        dataModel.push({
+          schemaName: schemaName,
+          tableName: tableName,
+          fields: fields,
+          foreignKeys: foreignKeys, // Include foreignKeys in the data model
         });
       }
-      dataModel.push({
-        tableName: tableName,
-        fields: fields,
-      });
     }
 
     return dataModel;
@@ -147,8 +156,10 @@ export default function Page() {
     setSearchQuery(event.target.value);
   };
 
-  const filteredTables = dataModel.filter((table) =>
-    table.tableName.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredTables = dataModel.filter(
+    (table) =>
+      table.tableName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      table.schemaName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (

@@ -27,7 +27,7 @@ app.post("*", ClerkExpressRequireAuth(), async (req, res) => {
     const client = await pool.connect();
 
     const { rows: tableData } = await client.query(
-      `SELECT * FROM "${table_name}" LIMIT 500;`
+      `SELECT * FROM ${table_name} LIMIT 500;`
     );
 
     client.release();
