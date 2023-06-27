@@ -47,6 +47,7 @@ const Layout = ({ children }: LayoutProps) => {
             <div>
               <p className="text-xl font-bold">ChatDB</p>
               <p>The tool you needed for your database!</p>
+              <p>The AI Database Assistant ready to solve your problems.</p>
             </div>
             <div>
               <span className="footer-title">Company</span>
