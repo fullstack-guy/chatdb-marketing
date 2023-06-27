@@ -60,13 +60,10 @@ const Layout = ({ children }: LayoutProps) => {
               <Link href="blog" className="link-hover link">
                 Blog
               </Link>
+              <Link href="contact-us" className="link-hover link">
+                Contact Us
+              </Link>
             </div>
-            {/* <div>
-              <span className="footer-title">Legal</span>
-              <a className="link link-hover">Terms of use</a>
-              <a className="link link-hover">Privacy policy</a>
-              <a className="link link-hover">Cookie policy</a>
-            </div> */}
           </footer>
         </div>
       </div>

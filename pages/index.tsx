@@ -24,7 +24,6 @@ export default function Page() {
     axios
       .post("https://api.slapform.com/vKid4Let6", { email: email })
       .then((response) => {
-        console.log("Success:", response);
         toast.success("Thanks for signing up!");
         setEmail("");
         setSubmitted(true);
