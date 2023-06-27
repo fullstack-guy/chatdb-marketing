@@ -90,6 +90,30 @@ const Navbar = () => {
                   </Link>
                 )}
               </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <Link href="/blog">
+                    <a
+                      className={`${active ? "bg-muted-1 text-heading" : "text-text"
+                        } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                    >
+                      Blog
+                    </a>
+                  </Link>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <Link href="/contact-us">
+                    <a
+                      className={`${active ? "bg-muted-1 text-heading" : "text-text"
+                        } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                    >
+                      Contact-Us
+                    </a>
+                  </Link>
+                )}
+              </Menu.Item>
             </Menu.Items>
           </Transition>
         </Menu>
