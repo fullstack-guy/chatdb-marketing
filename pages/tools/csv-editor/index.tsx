@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import DataGrid from 'react-data-grid';
+import DataGrid from "react-data-grid";
 import { CSVLink } from "react-csv";
 import Papa from "papaparse";
 import Layout from "../../../components/Layout";
@@ -8,7 +8,7 @@ import "react-data-grid/lib/styles.css";
 import "react-contexify/dist/ReactContexify.css";
 import { Toaster, toast } from "react-hot-toast";
 import { useContextMenu, Menu, Item, Separator } from "react-contexify";
-import TextEditor from "../../../components/spreadsheet/TextEditor"
+import TextEditor from "../../../components/spreadsheet/TextEditor";
 
 const Page = () => {
     const [history, setHistory] = useState([]);
@@ -25,8 +25,11 @@ const Page = () => {
         const file = event.target.files[0];
 
         if (file) {
-            if (file.size > 10 * 1024 * 1024) { // 10MB
-                toast.error('File is too large! Please upload a file smaller than 10MB.');
+            if (file.size > 10 * 1024 * 1024) {
+                // 10MB
+                toast.error(
+                    "File is too large! Please upload a file smaller than 10MB."
+                );
                 return;
             }
 
@@ -48,9 +51,9 @@ const Page = () => {
                                 key,
                                 name: key,
                                 editable: true,
-                                width: 'max-content',
+                                width: "max-content",
                                 resizable: true,
-                                renderEditCell: TextEditor
+                                renderEditCell: TextEditor,
                             })),
                         ];
                         setColumns(columns);
@@ -71,15 +74,19 @@ const Page = () => {
         let newRow = {};
         if (data[insertRowIdx]) {
             newRow = Object.fromEntries(
-                Object.keys(data[insertRowIdx]).map(key => [key, ""])
+                Object.keys(data[insertRowIdx]).map((key) => [key, ""])
             );
         } else if (data[insertRowIdx - 1]) {
             newRow = Object.fromEntries(
-                Object.keys(data[insertRowIdx - 1]).map(key => [key, ""])
+                Object.keys(data[insertRowIdx - 1]).map((key) => [key, ""])
             );
         }
 
-        setData([...data.slice(0, insertRowIdx), newRow, ...data.slice(insertRowIdx)]);
+        setData([
+            ...data.slice(0, insertRowIdx),
+            newRow,
+            ...data.slice(insertRowIdx),
+        ]);
     }
 
     const handleDelete = useCallback(
@@ -207,6 +214,8 @@ const Page = () => {
                         />
                     </div>
                 )}
+
+                {/* eslint-disable */}
                 <Menu id={MENU_ID}>
                     <Item id="insert-above" onClick={handleItemClick}>
                         Insert row above
@@ -219,6 +228,7 @@ const Page = () => {
                         Delete row
                     </Item>
                 </Menu>
+                {/* eslint-enable */}
             </div>
             <h2 className="mb-4 mt-20 text-center text-4xl font-bold text-black">
                 What is a CSV file?
@@ -229,7 +239,7 @@ const Page = () => {
                 imported and exported from various applications including, but not
                 limited to databases and spreadsheets.
             </p>
-            <Toaster position='bottom-center' />
+            <Toaster position="bottom-center" />
         </Layout>
     );
 };
