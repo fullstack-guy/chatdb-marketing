@@ -16,26 +16,33 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
   const defaultDescription =
     "The tool that is an expert on your database. Say goodbye to hours spent creating the correct query to get the data you need.";
   const defaultUrl = "https://www.chatdb.ai";
+  const defaultImage = "https://chatdb-assets.s3.amazonaws.com/ogg.png";
 
   return (
     <div className="bg-layer-1">
       <NextSeo
         title={title || defaultTitle}
         description={description || defaultDescription}
+        canonical={url || defaultUrl}
         openGraph={{
           url: url || defaultUrl,
           title: title || defaultTitle,
           description: description || defaultDescription,
           images: [
             {
-              url: oggURL || "https://chatdb-assets.s3.amazonaws.com/ogg.png",
+              url: oggURL || defaultImage,
               width: 800,
               height: 600,
               alt: "ChatDB",
               type: "image/jpeg",
             },
           ],
-          siteName: "ChatDB",
+          site_name: "ChatDB",
+        }}
+        twitter={{
+          handle: "@calebfahlgren",
+          site: "@calebfahlgren",
+          cardType: "summary_large_image",
         }}
         additionalLinkTags={[
           {
