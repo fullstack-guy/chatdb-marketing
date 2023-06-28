@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Layout from "../../components/Layout";
 import * as duckdb from "@duckdb/duckdb-wasm";
 import AceEditor from "react-ace";
 import DataGrid from "react-data-grid";
@@ -144,12 +143,7 @@ const DuckDBComponent = () => {
     };
 
     return (
-        <Layout
-            title="CSV Editor and Viewer | ChatDB"
-            description="Use ChatDB to query, view, and edit your CSV files using SQL. Upload your CSV, write an SQL query, and interact with your data. Easy to use and completely in the browser."
-            url="https://www.chatdb.ai/tools/csv-editor"
-            oggURL="https://www.chatdb.ai/_next/image?url=images/CSVSQL.png&w=1200&q=75"
-        >
+        <>
             <div className="mt-10 flex flex-col items-center p-6">
                 <h1 className="relative mb-4 flex items-center justify-center text-center text-5xl font-bold text-black">
                     Query CSV with SQL
@@ -238,7 +232,7 @@ const DuckDBComponent = () => {
                 </div>
             </div>
             <Toaster position="bottom-center" />
-        </Layout>
+        </>
     );
 };
 
