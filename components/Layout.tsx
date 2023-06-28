@@ -83,6 +83,12 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
               <Link href="/tools/csv-editor" className="link-hover link">
                 CSV Viewer and Editor
               </Link>
+              <Link
+                href="/tools/query-csv-with-sql"
+                className="link-hover link"
+              >
+                Query CSV with SQL
+              </Link>
             </div>
           </footer>
         </div>
