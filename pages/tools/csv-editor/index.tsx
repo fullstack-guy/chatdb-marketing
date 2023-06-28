@@ -7,7 +7,7 @@ import { AiOutlineCloudDownload } from "react-icons/ai";
 import "react-data-grid/lib/styles.css";
 import "react-contexify/dist/ReactContexify.css";
 import { Toaster, toast } from "react-hot-toast";
-import { useContextMenu, Menu, Item, Separator } from "react-contexify";
+import { useContextMenu, Menu, Item, Separator, ItemParams } from "react-contexify";
 import TextEditor from "../../../components/spreadsheet/TextEditor";
 
 const Page = () => {
@@ -105,8 +105,9 @@ const Page = () => {
         e.preventDefault();
     };
 
-    const handleItemClick = ({ event, props, id }) => {
+    const handleItemClick = ({ event, props, data }: ItemParams<any, any>) => {
         const { rowIndex } = props;
+        const id = data;
         switch (id) {
             case "insert-above":
                 insertRow(rowIndex);
@@ -169,7 +170,7 @@ const Page = () => {
             title="CSV Editor and Viewer | ChatDB"
             description="Free online CSV Editor and Viewer by ChatDB. Easily upload, view, and edit your CSV files."
             url="https://www.chatdb.ai/tools/csv-editor"
-            oggURL="https://www.chatdb.ai/_next/image?url=%2Fimages%csv-editor-ogg.png&w=1200&q=75"
+            oggURL="https://www.chatdb.ai/_next/image?url=images/csv-editor-ogg.png&w=1200&q=75"
         >
             <div
                 className="mt-10 flex flex-col items-center p-6"
@@ -215,7 +216,6 @@ const Page = () => {
                     </div>
                 )}
 
-                {/* eslint-disable */}
                 <Menu id={MENU_ID}>
                     <Item id="insert-above" onClick={handleItemClick}>
                         Insert row above
@@ -228,7 +228,6 @@ const Page = () => {
                         Delete row
                     </Item>
                 </Menu>
-                {/* eslint-enable */}
             </div>
             <h2 className="mb-4 mt-20 text-center text-4xl font-bold text-black">
                 What is a CSV file?
