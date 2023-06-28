@@ -22,8 +22,9 @@ const Query = ({ filteredTables }) => {
   const [query, setQuery] = useState('');
   const [tables, setTables] = useState([]);
   const [tableData, setTableData] = useState([]);
-  const [message, setMessage] = useState()
-
+  const [message, setMessage] = useState() // error state
+  const [createTable, setCreateTable] = useState({}) // create table state
+  const [successQuery, setSuccessQuery] = useState({}) // success query state)
   useEffect(() => {
     if (filteredTables.length > 0) {
       setTables([...filteredTables])
@@ -35,38 +36,19 @@ const Query = ({ filteredTables }) => {
       return;
     }
 
-    if (query.includes("CREATE") || query.includes("create")) {
-      // Extract table name using regex
+    if (query.includes("CREATE") || query.includes("CREATE")) {
       const tableNameMatch = query.match(/CREATE\s+TABLE\s+(\w+)\s+/i);
       const tableName = tableNameMatch ? tableNameMatch[1] : '';
 
-      const attributesMatch = query.match(/\(([^)]+)\)/);
-      const attributesString = attributesMatch ? attributesMatch[1] : '';
-      const attributes = attributesString.split(',');
+      setCreateTable({
+        rows: [],
+        rowCount: null,
+        command: "CREATE",
+        message: "null rows affected by CREATE command"
+      })
+    }
 
-      const matchedTable = tables.find(table => table.tableName === tableName);
-
-      if (!matchedTable) {
-        const newTable = {
-          tableName: tableName,
-          fields: attributes.map(field => ({
-            fieldName: field.split(" ")[1],
-            dataType: ''
-          }))
-        };
-
-        setTables(prevTables => [...prevTables, newTable]);
-      } else {
-        // Table already exists, show an error message
-        const errorAnnotation = {
-          row: 0,
-          column: 0,
-          text: `Table '${tableName}' already exists`,
-          type: "error",
-        };
-        setAnnotations([errorAnnotation]);
-      }
-    } else if (query.includes("INSERT") || query.includes("insert")) {
+    else if (query.includes("INSERT") || query.includes("insert")) {
       const insertPattern = /^INSERT\s+INTO\s+(\w+)\s+\(([\w\s,]+)\)\s+VALUES\s+((?:\(\d+,\s+'.+?'\)(?:,\s*)?)+);$/i;
       const match = query.match(insertPattern);
 
@@ -87,9 +69,9 @@ const Query = ({ filteredTables }) => {
         });
 
         const message = {
-          rowCount: 5,
+          rowCount: newRows.length,
           command: "INSERT",
-          message: "5 rows affected by INSERT command",
+          message: `${newRows.length} rows affected by INSERT command$`,
         };
 
         setTableData((prevTableData) => [...prevTableData, ...newRows]);
@@ -102,8 +84,17 @@ const Query = ({ filteredTables }) => {
         }));
 
         setColumns(dynamicColumns);
+        setSuccessQuery(
+          {
+            rows: [...newRows],
+            rowCount: newRows.length,
+            command: "SELECT",
+            message: `${newRows} rows affected by SELECT command`
+          }
+        )
       }
-    } else {
+    }
+    else {
       const message = {
         error: "Failed to run query",
         errorCode: "42601",
@@ -140,6 +131,11 @@ const Query = ({ filteredTables }) => {
             </div>
             <hr className="my-2 w-full" />
             <div className="flex ml-9 mt-3">
+
+              <span className="px-2 font-bold">{`${tableData.length} Rows`}</span>
+            </div>
+            <div className="flex ml-9 mt-3">
+
               <span className="px-2 font-bold">{JSON.stringify(message)}</span>
             </div>
             <hr className="my-2 w-full" />

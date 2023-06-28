@@ -63,7 +63,7 @@ const Sidebar = ({ tables }) => {
 
   const staticTables = [
     {
-      tableName: 'artist',
+      tableName: 'Artist',
       fields: [
         { fieldName: 'ArtistId' },
         { fieldName: 'Name' },
