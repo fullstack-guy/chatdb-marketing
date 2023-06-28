@@ -1,7 +1,7 @@
 ---
 title: "Introducing a Browser-Based SQL Query Console for CSV Files"
 metaTitle: "Browser-Based SQL Query Console for CSV Files by ChatDB"
-description: "ChatDB now offers a convenient, browser-based SQL query console for your CSV files. Upload your CSV, run your SQL query, and discover insights in no time."
+description: "ChatDB now offers a convenient, browser-based SQL query console for your CSV files."
 image: images/duck.png
 date: "2023-06-28"
 tags:

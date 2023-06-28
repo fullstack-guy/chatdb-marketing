@@ -7,6 +7,7 @@ export default authMiddleware({
     "/sign-up(.*)",
     "/pricing",
     "/blog(.*)",
+    "/post(.*)",
     "/contact-us(.*)",
     "/tools(.*)",
   ],
