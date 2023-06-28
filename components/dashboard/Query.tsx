@@ -22,6 +22,7 @@ const Query = ({ filteredTables }) => {
   const [query, setQuery] = useState('');
   const [tables, setTables] = useState([]);
   const [tableData, setTableData] = useState([]);
+  const [message, setMessage] = useState()
 
   useEffect(() => {
     if (filteredTables.length > 0) {
@@ -30,7 +31,11 @@ const Query = ({ filteredTables }) => {
   }, [filteredTables])
 
   const validateQuery = () => {
-       if (query.includes("CREATE") || query.includes("create")) {
+    if (!query) {
+      return;
+    }
+
+    if (query.includes("CREATE") || query.includes("create")) {
       // Extract table name using regex
       const tableNameMatch = query.match(/CREATE\s+TABLE\s+(\w+)\s+/i);
       const tableName = tableNameMatch ? tableNameMatch[1] : '';
@@ -51,7 +56,6 @@ const Query = ({ filteredTables }) => {
         };
 
         setTables(prevTables => [...prevTables, newTable]);
-        console.log("UpdatedTables", tables)
       } else {
         // Table already exists, show an error message
         const errorAnnotation = {
@@ -61,64 +65,54 @@ const Query = ({ filteredTables }) => {
           type: "error",
         };
         setAnnotations([errorAnnotation]);
-
       }
     } else if (query.includes("INSERT") || query.includes("insert")) {
-
-      const insertPattern = /^INSERT\s+INTO\s+(\w+)\s+\(([\w\s,]+)\)\s+VALUES\s+\(([\w\s,']+)\);$/i;
+      const insertPattern = /^INSERT\s+INTO\s+(\w+)\s+\(([\w\s,]+)\)\s+VALUES\s+((?:\(\d+,\s+'.+?'\)(?:,\s*)?)+);$/i;
       const match = query.match(insertPattern);
-      const tableName = match[1];
-      const matchedTable = tables.find(table => table.tableName === tableName);
 
-      if (matchedTable) {
-        const attributeNames = match[2].split(',').map(name => name.trim());
-        const attributeValues = match[3].split(',').map(value => value.trim().replace(/'/g, ''));
-        const fields = {
-          [`${attributeNames[0]}`]: attributeValues[0],
-          [`${attributeNames[1]}`]: attributeValues[1],
-          id: tableData.length
-        };
+      if (match) {
+        const tableName = match[1];
+        const attributeNames = match[2].split(",").map((name) => name.trim());
+        const attributeValues = match[3]
+          .split(/\),\s*/)
+          .map((value) => value.replace(/^\(|'\)|'/g, "").trim());
 
-        const newRows = [];
-        newRows.push(fields);
-
-        setTableData((prevTableData) => [...prevTableData, ...newRows]);
-        console.log('updatedTableData', tableData)
-
-        const dynamicColumns = attributeNames.map(key => {
-          let width = 200; // Default width for other columns
-          let name = key.charAt(0).toUpperCase() + key.slice(1); // Default column name
-
-          if (key === 'id') {
-            width = 50;
-            name = ''; // Empty string to hide the heading of the 'ID' column
-          }
-          return {
-            key,
-            name,
-            width
-          };
+        const newRows = attributeValues.map((values, index) => {
+          const fields: { [key: string]: string } = {};
+          attributeNames.forEach((name, i) => {
+            fields[name] = values.split(",")[i].trim();
+          });
+          fields["id"] = (index + 1).toString();
+          return fields;
         });
 
-        setColumns(dynamicColumns);
-
-      } else {
-        const errorAnnotation = {
-          row: 0,
-          column: 0,
-          text: "Table not found!",
-          type: "error",
+        const message = {
+          rowCount: 5,
+          command: "INSERT",
+          message: "5 rows affected by INSERT command",
         };
-        setAnnotations([errorAnnotation]);
+
+        setTableData((prevTableData) => [...prevTableData, ...newRows]);
+        setMessage(message);
+
+        const dynamicColumns = attributeNames.map((key) => ({
+          key,
+          name: key.charAt(0).toUpperCase() + key.slice(1),
+          width: 200,
+        }));
+
+        setColumns(dynamicColumns);
       }
+    } else {
+      const message = {
+        error: "Failed to run query",
+        errorCode: "42601",
+        errorMessage: "trailing junk after numeric literal at or near \"5f\"",
+      };
+      setColumns([]);
+      setTableData([]);
+      setMessage(message)
     }
-    const errorAnnotation = {
-      row: 0,
-      column: 0,
-      text: "Failed to run query",
-      type: "error",
-    };
-    setAnnotations([errorAnnotation]);
   };
 
   const handleRunQuery = () => {
@@ -128,37 +122,7 @@ const Query = ({ filteredTables }) => {
   const handleQueryChange = (query) => {
     setQuery(query);
     setAnnotations([]);
-  };
-
-  // useEffect(() => {
-  //   fetch("https://rickandmortyapi.com/api/episode/")
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       setData(data.results);
-
-  //       const firstItem = data.results[0];
-  //       const columnKeys = Object.keys(firstItem);
-
-  //       const dynamicColumns = columnKeys.map(key => {
-  //         let width = 200; // Default width for other columns
-  //         let name = key.charAt(0).toUpperCase() + key.slice(1); // Default column name
-
-  //         if (key === 'id') {
-  //           width = 50;
-  //           name = ''; // Empty string to hide the heading of the 'ID' column
-  //         }
-
-  //         return {
-  //           key,
-  //           name,
-  //           width
-  //         };
-  //       });
-
-  //       setColumns(dynamicColumns);
-  //     });
-  // }, []);
-
+  }
 
   return (
     <div className='container shadow-lg m-auto p-3 rounded-lg mt-3 bg-white '>
@@ -176,7 +140,7 @@ const Query = ({ filteredTables }) => {
             </div>
             <hr className="my-2 w-full" />
             <div className="flex ml-9 mt-3">
-              <TickIcon /> <span className="px-2 font-bold">10,000 Rows</span> <span className="text-gray-400"> 103ms</span>
+              <span className="px-2 font-bold">{JSON.stringify(message)}</span>
             </div>
             <hr className="my-2 w-full" />
           </div>

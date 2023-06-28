@@ -61,6 +61,16 @@ const Sidebar = ({ tables }) => {
     );
   };
 
+  const staticTables = [
+    {
+      tableName: 'artist',
+      fields: [
+        { fieldName: 'ArtistId' },
+        { fieldName: 'Name' },
+      ],
+    },
+  ]
+
   return (
     <>
       <aside
@@ -89,7 +99,7 @@ const Sidebar = ({ tables }) => {
 
           {isTablesDropdownOpen && (
             <div className="pl-6">
-              {tables?.length > 0 && tables?.map((table, index) => renderList(table?.tableName, table?.fields, index))}
+              {staticTables?.length > 0 && staticTables?.map((table, index) => renderList(table?.tableName, table?.fields, index))}
             </div>
           )}
 
