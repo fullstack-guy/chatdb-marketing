@@ -37,7 +37,6 @@
     "react-loader-spinner": "^5.3.4",
     "react-modal": "^3.16.1",
     "react-spinners": "^0.13.8",
-    "react-spreadsheet": "^0.8.3",
     "react-syntax-highlighter": "^15.5.0",
     "reactflow": "^11.7.2",
     "sql-formatter": "^12.2.3",

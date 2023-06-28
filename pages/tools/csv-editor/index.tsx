@@ -1,81 +1,123 @@
 import React, { useState, useCallback, useEffect } from "react";
-import Spreadsheet from "react-spreadsheet";
+import DataGrid from 'react-data-grid';
 import { CSVLink } from "react-csv";
 import Papa from "papaparse";
 import Layout from "../../../components/Layout";
 import { AiOutlineCloudDownload } from "react-icons/ai";
-import CustomRowIndicator from "../../../components/spreadsheet/CustomRowIndicator";
+import "react-data-grid/lib/styles.css";
+import "react-contexify/dist/ReactContexify.css";
+import { Toaster, toast } from "react-hot-toast";
+import { useContextMenu, Menu, Item, Separator } from "react-contexify";
+import TextEditor from "../../../components/spreadsheet/TextEditor"
 
 const Page = () => {
-    const initialData = Array.from({ length: 20 }, () =>
-        Array.from({ length: 10 }, () => ({ value: "" }))
-    );
-    const [data, setData] = useState(initialData);
     const [history, setHistory] = useState([]);
+    const [data, setData] = useState([]);
+    const [columns, setColumns] = useState([]);
+    const [redoStack, setRedoStack] = useState([]);
+
+    const MENU_ID = `cell-menu`;
+    const { show } = useContextMenu({
+        id: MENU_ID,
+    });
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
 
         if (file) {
+            if (file.size > 10 * 1024 * 1024) { // 10MB
+                toast.error('File is too large! Please upload a file smaller than 10MB.');
+                return;
+            }
+
             Papa.parse(file, {
+                header: true,
                 complete: function (results) {
-                    const formattedData = results.data.map((row) => {
-                        return Object.keys(row).map((key) => ({ value: row[key] }));
+                    const formattedData = results.data.map((row, idx) => {
+                        let rowData = { "#": idx };
+                        Object.entries(row).forEach(([key, value]) => {
+                            rowData[key] = idx === 0 ? key : value;
+                        });
+                        return rowData;
                     });
-                    setData(formattedData);
-                    setHistory([formattedData]); // set initial state in history
+
+                    // Dynamically generate columns using CSV headers
+                    if (formattedData[0]) {
+                        const columns = [
+                            ...Object.keys(formattedData[0]).map((key) => ({
+                                key,
+                                name: key,
+                                editable: true,
+                                width: 'max-content',
+                                resizable: true,
+                                renderEditCell: TextEditor
+                            })),
+                        ];
+                        setColumns(columns);
+                    }
+
+                    setData(formattedData.slice(1));
                 },
             });
         }
     };
 
-    const handleDataChange = useCallback((newData) => {
-        setData(newData);
-        setHistory((currentHistory) => [newData, ...currentHistory]);
-    }, []);
+    const handleDataChange = (newRows, { indexes, column }) => {
+        setData(data.map((row, i) => (i === indexes[0] ? newRows[0] : row)));
+        setHistory((currentHistory) => [newRows, ...currentHistory]);
+    };
 
-    const handleInsertAbove = useCallback(
-        (row) => {
-            // Insert a new row above the selected row
-            const newData = [
-                ...data.slice(0, row),
-                new Array(data[0].length).fill({ value: "" }), // assumes rows have same length
-                ...data.slice(row),
-            ];
-            setData(newData);
-            setHistory((currentHistory) => [newData, ...currentHistory]);
-        },
-        [data]
-    );
+    function insertRow(insertRowIdx: number) {
+        let newRow = {};
+        if (data[insertRowIdx]) {
+            newRow = Object.fromEntries(
+                Object.keys(data[insertRowIdx]).map(key => [key, ""])
+            );
+        } else if (data[insertRowIdx - 1]) {
+            newRow = Object.fromEntries(
+                Object.keys(data[insertRowIdx - 1]).map(key => [key, ""])
+            );
+        }
 
-    const handleInsertBelow = useCallback(
-        (row) => {
-            // Insert a new row below the selected row
-            const newData = [
-                ...data.slice(0, row + 1),
-                new Array(data[0].length).fill({ value: "" }), // assumes rows have same length
-                ...data.slice(row + 1),
-            ];
-            setData(newData);
-            setHistory((currentHistory) => [newData, ...currentHistory]);
-        },
-        [data]
-    );
+        setData([...data.slice(0, insertRowIdx), newRow, ...data.slice(insertRowIdx)]);
+    }
 
     const handleDelete = useCallback(
-        (row) => {
+        (rowIdx) => {
             // Delete the selected row
-            const newData = data.filter((_, index) => index !== row);
+            const newData = data.filter((_, index) => index !== rowIdx);
             setData(newData);
             setHistory((currentHistory) => [newData, ...currentHistory]);
         },
         [data]
     );
+
+    const displayMenu = (e, row, rowIndex) => {
+        show({ event: e.nativeEvent, props: { row, rowIndex } });
+        e.stopPropagation();
+        e.preventDefault();
+    };
+
+    const handleItemClick = ({ event, props, id }) => {
+        const { rowIndex } = props;
+        switch (id) {
+            case "insert-above":
+                insertRow(rowIndex);
+                break;
+            case "insert-below":
+                insertRow(rowIndex + 1);
+                break;
+            case "delete":
+                handleDelete(rowIndex);
+                break;
+        }
+    };
 
     const undo = useCallback(() => {
         setHistory((currentHistory) => {
             if (currentHistory.length > 1) {
-                const [, ...remainingHistory] = currentHistory;
+                const [lastAction, ...remainingHistory] = currentHistory;
+                setRedoStack((currentRedoStack) => [lastAction, ...currentRedoStack]);
                 setData(remainingHistory[0]);
                 return remainingHistory;
             }
@@ -83,33 +125,44 @@ const Page = () => {
         });
     }, []);
 
+    const redo = useCallback(() => {
+        setRedoStack((currentRedoStack) => {
+            if (currentRedoStack.length > 0) {
+                const [lastRedoAction, ...remainingRedoStack] = currentRedoStack;
+                setData(lastRedoAction);
+                setHistory((currentHistory) => [lastRedoAction, ...currentHistory]);
+                return remainingRedoStack;
+            }
+            return currentRedoStack;
+        });
+    }, []);
+
     const handleKeyDown = useCallback(
         (event) => {
-            if ((event.ctrlKey || event.metaKey) && event.key === "z") {
-                undo();
+            if (event.ctrlKey || event.metaKey) {
+                if (event.key === "z" && !event.shiftKey) {
+                    undo();
+                } else if (event.key === "z" && event.shiftKey) {
+                    redo();
+                }
             }
         },
-        [undo]
+        [undo, redo]
     );
 
     useEffect(() => {
-        const handleKeyDown = (event) => {
-            if ((event.ctrlKey || event.metaKey) && event.key === "z") {
-                undo();
-            }
-        };
-
         document.addEventListener("keydown", handleKeyDown);
         return () => {
             document.removeEventListener("keydown", handleKeyDown);
         };
-    }, [undo]);
+    }, [handleKeyDown]);
 
     return (
         <Layout
             title="CSV Editor and Viewer | ChatDB"
             description="Free online CSV Editor and Viewer by ChatDB. Easily upload, view, and edit your CSV files."
             url="https://www.chatdb.ai/tools/csv-editor"
+            oggURL="https://www.chatdb.ai/_next/image?url=%2Fimages%csv-editor-ogg.png&w=1200&q=75"
         >
             <div
                 className="mt-10 flex flex-col items-center p-6"
@@ -131,7 +184,8 @@ const Page = () => {
                     />
                     {data.length > 0 && (
                         <CSVLink
-                            data={data.map((row) => row.map((cell) => cell.value))}
+                            headers={Object.keys(data[0])}
+                            data={data.map((row) => Object.values(row))}
                             filename="export.csv"
                             className="mt-4 inline-block flex items-center rounded bg-gray-700 px-4 py-2 font-bold text-white hover:bg-gray-900 sm:mt-0"
                         >
@@ -141,35 +195,33 @@ const Page = () => {
                 </div>
                 {data.length > 0 && (
                     <div className="mx-10 mt-10 flex max-h-screen w-full items-center justify-center">
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                maxHeight: "80vh",
-                                overflow: "auto",
-                                width: "100%",
+                        <DataGrid
+                            className="rdg-light"
+                            columns={columns}
+                            rows={data}
+                            onRowsChange={handleDataChange}
+                            onCellContextMenu={({ row }, event) => {
+                                const rowIndex = data.indexOf(row);
+                                displayMenu(event, row, rowIndex);
                             }}
-                        >
-                            <div className="inline-block" style={{ width: "80%" }}>
-                                <Spreadsheet
-                                    data={data}
-                                    onChange={handleDataChange}
-                                    RowIndicator={(props) => (
-                                        <CustomRowIndicator
-                                            {...props}
-                                            onInsertAbove={handleInsertAbove}
-                                            onInsertBelow={handleInsertBelow}
-                                            onDelete={handleDelete}
-                                        />
-                                    )}
-                                />
-                            </div>
-                        </div>
+                        />
                     </div>
                 )}
+                <Menu id={MENU_ID}>
+                    <Item id="insert-above" onClick={handleItemClick}>
+                        Insert row above
+                    </Item>
+                    <Item id="insert-below" onClick={handleItemClick}>
+                        Insert row below
+                    </Item>
+                    <Separator />
+                    <Item id="delete" onClick={handleItemClick}>
+                        Delete row
+                    </Item>
+                </Menu>
             </div>
             <h2 className="mb-4 mt-20 text-center text-4xl font-bold text-black">
-                What is a CSV?
+                What is a CSV file?
             </h2>
             <p className="mb-4 text-center text-lg">
                 CSV (Comma Separated Values) is a simple file format used to store
@@ -177,6 +229,7 @@ const Page = () => {
                 imported and exported from various applications including, but not
                 limited to databases and spreadsheets.
             </p>
+            <Toaster position='bottom-center' />
         </Layout>
     );
 };

@@ -8,9 +8,10 @@ type LayoutProps = {
   title?: string;
   description?: string;
   url?: string;
+  oggURL?: string;
 };
 
-const Layout = ({ children, title, description, url }: LayoutProps) => {
+const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
   const defaultTitle = "ChatDB | The AI Database Assistant for your team";
   const defaultDescription =
     "The tool that is an expert on your database. Say goodbye to hours spent creating the correct query to get the data you need.";
@@ -27,7 +28,7 @@ const Layout = ({ children, title, description, url }: LayoutProps) => {
           description: description || defaultDescription,
           images: [
             {
-              url: "https://chatdb-assets.s3.amazonaws.com/ogg.png",
+              url: oggURL || "https://chatdb-assets.s3.amazonaws.com/ogg.png",
               width: 800,
               height: 600,
               alt: "ChatDB",
@@ -71,7 +72,7 @@ const Layout = ({ children, title, description, url }: LayoutProps) => {
               </Link>
             </div>
             <div>
-              <span className="footer-title">Tools</span>
+              <span className="footer-title">Free Tools</span>
               <Link href="/tools/csv-editor" className="link-hover link">
                 CSV Viewer and Editor
               </Link>
