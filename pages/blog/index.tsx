@@ -40,7 +40,7 @@ export default function Page({ posts }) {
             <div className="m-auto cursor-pointer">
               <div
                 key={slug}
-                className="card mx-auto mb-8 w-full transform rounded-xl bg-[#323457] p-4 shadow-xl transition hover:scale-105 md:w-96"
+                className="card mx-auto mb-8 w-full transform rounded-xl bg-[#323457] p-0 lg:p-4 shadow-xl transition hover:scale-105 md:w-96"
               >
                 <>
                   <figure className="w-full p-6">
@@ -53,10 +53,10 @@ export default function Page({ posts }) {
                     />
                   </figure>
                   <div className="card-body flex items-center justify-center text-center">
-                    <h2 className="card-title text-2xl font-bold text-white">
+                    <h2 className="card-title xl:text-2xl text-md font-bold text-white">
                       {frontmatter.title}
                     </h2>
-                    <p className="mt-2 text-white">{frontmatter.description}</p>
+                    <p className="mt-2 text-sm text-white">{frontmatter.description}</p>
                   </div>
                 </>
               </div>
