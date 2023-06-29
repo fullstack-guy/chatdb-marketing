@@ -11,7 +11,7 @@ const RefreshIcon = ({ props }) => {
             {...props}
         >
             <path
-                class="text-gray-400"
+                className="text-gray-400"
                 fill="none"
                 stroke="currentColor"
                 strokeLinecap="round"
@@ -20,7 +20,7 @@ const RefreshIcon = ({ props }) => {
                 d="M320 146s24.36-12-64-12a160 160 0 10160 160"
             ></path>
             <path
-                class="text-gray-400"
+                className="text-gray-400"
                 fill="none"
                 stroke="currentColor"
                 strokeLinecap="round"

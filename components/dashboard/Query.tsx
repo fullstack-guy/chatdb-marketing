@@ -6,8 +6,8 @@ import Sidebar from '../../components/parser-components/sidebar/Sidebar'
 import 'react-data-grid/lib/styles.css';
 import dynamic from 'next/dynamic';
 import Checkbox from '../parser-components/checkbox/CheckBox';
-import TickIcon from '../../assets/icons/TickIcon';
 import PlayIcon from '../../assets/icons/PlayIcon';
+import { AiOutlineCheckCircle } from "react-icons/ai"
 
 const Queryarea = dynamic(
   () => import('../../components/parser-components/queryarea/Queryarea'),
@@ -15,99 +15,78 @@ const Queryarea = dynamic(
 )
 
 const Query = ({ filteredTables }) => {
-  const [data, setData] = useState([]);
-  const [columns, setColumns] = useState([]);
-
+  const [rows, setRows] = useState([]);
+  const [columns, setColumns] = useState([
+    { key: 'ArtistId', name: 'ArtistId' },
+    { key: 'Name', name: 'Name' }
+  ]);
   const [annotations, setAnnotations] = useState([]);
   const [query, setQuery] = useState('');
-  const [tables, setTables] = useState([]);
-  const [tableData, setTableData] = useState([]);
-  const [message, setMessage] = useState() // error state
-  const [createTable, setCreateTable] = useState({}) // create table state
-  const [successQuery, setSuccessQuery] = useState({}) // success query state)
-  useEffect(() => {
-    if (filteredTables.length > 0) {
-      setTables([...filteredTables])
-    }
-  }, [filteredTables])
+  const [message, setMessage] = useState({
+    error: "Failed to run query",
+    errorCode: "42601",
+    errorMessage: "trailing junk after numeric literal at or near \"5f\""
+  }) // error state
+  const [createTable, setCreateTable] = useState({
+    rows: [],
+    rowCount: null,
+    command: "CREATE",
+    message: "null rows affected by CREATE command"
+  }
+  ) // create table state
 
-  const validateQuery = () => {
-    if (!query) {
-      return;
-    }
+  const [insert, setInsert] = useState({
+    rows: [],
+    rowCount: 1,
+    command: "INSERT",
+    message: "1 rows affected by INSERT command"
+  })  // insert data state
 
-    if (query.includes("CREATE") || query.includes("CREATE")) {
-      const tableNameMatch = query.match(/CREATE\s+TABLE\s+(\w+)\s+/i);
-      const tableName = tableNameMatch ? tableNameMatch[1] : '';
-
-      setCreateTable({
-        rows: [],
-        rowCount: null,
-        command: "CREATE",
-        message: "null rows affected by CREATE command"
-      })
-    }
-
-    else if (query.includes("INSERT") || query.includes("insert")) {
-      const insertPattern = /^INSERT\s+INTO\s+(\w+)\s+\(([\w\s,]+)\)\s+VALUES\s+((?:\(\d+,\s+'.+?'\)(?:,\s*)?)+);$/i;
-      const match = query.match(insertPattern);
-
-      if (match) {
-        const tableName = match[1];
-        const attributeNames = match[2].split(",").map((name) => name.trim());
-        const attributeValues = match[3]
-          .split(/\),\s*/)
-          .map((value) => value.replace(/^\(|'\)|'/g, "").trim());
-
-        const newRows = attributeValues.map((values, index) => {
-          const fields: { [key: string]: string } = {};
-          attributeNames.forEach((name, i) => {
-            fields[name] = values.split(",")[i].trim();
-          });
-          fields["id"] = (index + 1).toString();
-          return fields;
-        });
-
-        const message = {
-          rowCount: newRows.length,
-          command: "INSERT",
-          message: `${newRows.length} rows affected by INSERT command$`,
-        };
-
-        setTableData((prevTableData) => [...prevTableData, ...newRows]);
-        setMessage(message);
-
-        const dynamicColumns = attributeNames.map((key) => ({
-          key,
-          name: key.charAt(0).toUpperCase() + key.slice(1),
-          width: 200,
-        }));
-
-        setColumns(dynamicColumns);
-        setSuccessQuery(
-          {
-            rows: [...newRows],
-            rowCount: newRows.length,
-            command: "SELECT",
-            message: `${newRows} rows affected by SELECT command`
-          }
-        )
+  const [successQuery, setSuccessQuery] = useState({
+    rows: [
+      {
+        ArtistId: 1,
+        Name: "AC/DC"
+      },
+      {
+        ArtistId: 2,
+        Name: "Accept"
+      },
+      {
+        ArtistId: 3,
+        Name: "Aerosmith"
+      },
+      {
+        ArtistId: 4,
+        Name: "Alanis Morissette"
+      },
+      {
+        ArtistId: 5,
+        Name: "Alice In Chains"
       }
-    }
-    else {
-      const message = {
-        error: "Failed to run query",
-        errorCode: "42601",
-        errorMessage: "trailing junk after numeric literal at or near \"5f\"",
-      };
-      setColumns([]);
-      setTableData([]);
-      setMessage(message)
-    }
-  };
+    ],
+    rowCount: 5,
+    command: "SELECT",
+    message: "5 rows affected by SELECT command"
+  }) // success query state)
+
+
+  useEffect(() => {
+
+      let data = []
+      successQuery.rows.forEach((item,index) => {
+          data.push({
+            id: index,
+            ArtistId: item["ArtistId"],
+            Name: item["Name"]
+          })
+      })
+      
+      setRows(data)
+  }, [])
 
   const handleRunQuery = () => {
-    validateQuery();
+    console.log("run query handler");
   };
 
   const handleQueryChange = (query) => {
@@ -118,7 +97,7 @@ const Query = ({ filteredTables }) => {
   return (
     <div className='container shadow-lg m-auto p-3 rounded-lg mt-3 bg-white '>
       <div className='flex'>
-        <Sidebar tables={tables} />
+        <Sidebar />
         <div className='w-4/5'>
           <Queryarea annotations={annotations} onChange={handleQueryChange} />
           <div>
@@ -128,12 +107,16 @@ const Query = ({ filteredTables }) => {
               </button>
 
               <Checkbox />
+
             </div>
             <hr className="my-2 w-full" />
             <div className="flex ml-9 mt-3">
+              <AiOutlineCheckCircle color='green' />
+              <span className="px-2 font-bold">{`${successQuery.rowCount} Rows`}</span>
+              <span className="px-2">{`103ms`}</span>
 
-              <span className="px-2 font-bold">{`${tableData.length} Rows`}</span>
             </div>
+            
             <div className="flex ml-9 mt-3">
 
               <span className="px-2 font-bold">{JSON.stringify(message)}</span>
@@ -148,7 +131,7 @@ const Query = ({ filteredTables }) => {
               right: true,
             }}
           >
-            <DataGrid style={{ width: "100%", height: "100%" }} rows={tableData} columns={columns} />
+            <DataGrid style={{ width: "100%", height: "100%" }} rows={rows} columns={columns} />
           </Resizable>
         </div>
       </div>

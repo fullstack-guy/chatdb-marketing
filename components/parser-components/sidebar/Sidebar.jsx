@@ -1,12 +1,14 @@
 'use client'
 import { useState } from 'react';
 import ArrowDownIcon from '../../../assets/icons/ArrowDownIcon';
-import RefreshIcon from '../../../assets/icons/RefreshIcon';
+import {IoIosRefresh} from 'react-icons/io';
 import ArrowRightIcon from '../../../assets/icons/RightIcon';
 import TableCellIcon from '../../../assets/icons/TableCellIcon';
+import {AiOutlineRight} from 'react-icons/ai'
+import {AiOutlineDown} from 'react-icons/ai'
 import Datasource from '../datasource/Datasource';
 
-const Sidebar = ({ tables }) => {
+const Sidebar = () => {
   const [isTablesDropdownOpen, setTablesDropdownOpen] = useState(false);
   const [isSavedQueriesOpen, setSavedQueriesOpen] = useState(false);
   const [openLists, setOpenLists] = useState([]);
@@ -86,14 +88,14 @@ const Sidebar = ({ tables }) => {
           <div className="flex items-center justify-between pt-4 mt-4 space-y-2 border-t border-gray-200 p-2 text-gray-900 transition duration-75 dark:text-white group">
             <a onClick={toggleTablesDropdown} className="flex items-center hover:cursor-pointer">
               {isTablesDropdownOpen ? (
-                <ArrowDownIcon className="text-gray-400" fill="none" />
-              ) : (
-                <ArrowRightIcon className="text-gray-400" fill="none" />
+                <AiOutlineDown color='gray' fontSize={12} />
+                ) : (
+                  <AiOutlineRight color='gray' fontSize={12}/>
               )}
               <span className="ml-3 text-sm font-medium text-gray-400">TABLES</span>
             </a>
             <a className="ml-auto hover:cursor-pointer">
-              <RefreshIcon />
+              <IoIosRefresh color='gray' />
             </a>
           </div>
 
@@ -109,9 +111,9 @@ const Sidebar = ({ tables }) => {
             onClick={toggleSavedQueries}
           >
             {isSavedQueriesOpen ? (
-              <ArrowDownIcon className="mt-2 text-gray-400" fill="none" />
+              <AiOutlineDown color='gray' fontSize={12} />
             ) : (
-              <ArrowRightIcon className="mt-2 text-gray-400" fill="none" />
+              <AiOutlineRight color='gray' fontSize={12}/>
             )}
             <span className="ml-3 text-sm font-medium text-gray-400">SAVED QUERIES</span>
           </a>

@@ -9,7 +9,7 @@ const HandleTables = () => {
     <div >
         <div className="flex ml-9 ">
 
-      <button class="flex bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 border border-green-700 rounded mr-5">
+      <button className="flex bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 border border-green-700 rounded mr-5">
         <PlayIcon className="text-white" /> Run Query
       </button>
 
