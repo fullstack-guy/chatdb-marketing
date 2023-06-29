@@ -8,7 +8,7 @@ import dynamic from 'next/dynamic';
 import Checkbox from '../parser-components/checkbox/CheckBox';
 import PlayIcon from '../../assets/icons/PlayIcon';
 import { AiOutlineCheckCircle } from "react-icons/ai"
-
+import {FaPlay } from "react-icons/fa"
 const Queryarea = dynamic(
   () => import('../../components/parser-components/queryarea/Queryarea'),
   { ssr: false }
@@ -103,7 +103,7 @@ const Query = ({ filteredTables }) => {
           <div>
             <div className="flex ml-9 pt-2">
               <button onClick={handleRunQuery} disabled={!query.trim()} className={`flex ${query.trim() ? 'bg-green-500 hover:bg-green-700 border-green-700 cursor-pointer' : 'bg-gray-300 cursor-not-allowed'} text-white font-bold py-2 px-4 border rounded mr-5`}>
-                <PlayIcon className="text-white" /> Run Query
+                <FaPlay />   Run Query 
               </button>
 
               <Checkbox />

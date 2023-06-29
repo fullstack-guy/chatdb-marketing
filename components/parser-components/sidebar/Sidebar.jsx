@@ -95,7 +95,7 @@ const Sidebar = () => {
               <span className="ml-3 text-sm font-medium text-gray-400">TABLES</span>
             </a>
             <a className="ml-auto hover:cursor-pointer">
-              <IoIosRefresh color='gray' />
+              <IoIosRefresh color='gray' className='mb-2' fontSize={16} />
             </a>
           </div>
 

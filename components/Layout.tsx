@@ -1,7 +1,6 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import { NextSeo } from "next-seo";
-import { Analytics } from "@vercel/analytics/react";
 import Link from "next/link";
 
 type LayoutProps = {
@@ -70,7 +69,6 @@ const Layout = ({ children }: LayoutProps) => {
           </footer>
         </div>
       </div>
-      <Analytics />
     </div>
   );
 };
