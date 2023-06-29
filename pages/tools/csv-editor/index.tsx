@@ -31,10 +31,10 @@ const Page = () => {
         const file = event.target.files[0];
 
         if (file) {
-            if (file.size > 10 * 1024 * 1024) {
-                // 10MB
+            if (file.size > 100 * 1024 * 1024) {
+                // 100MB
                 toast.error(
-                    "File is too large! Please upload a file smaller than 10MB."
+                    "File is too large! Please upload a file smaller than 100 MB."
                 );
                 return;
             }
