@@ -78,21 +78,30 @@ export default function Page() {
   function convertJsonToDataModel(json) {
     const dataModel = [];
 
-    const schema = json[selectedSchema];
-    for (const tableName in schema) {
-      const table = schema[tableName];
-      const fields = [];
-      for (const fieldName in table) {
-        const field = table[fieldName];
-        fields.push({
-          fieldName: fieldName,
-          dataType: field.type,
+    for (const schemaName in json) {
+      const schema = json[schemaName];
+      for (const tableName in schema) {
+        const table = schema[tableName];
+        const fields = [];
+        let foreignKeys = []; // Initialize foreignKeys array
+        for (const fieldName in table) {
+          if (fieldName === "foreignKeys") {
+            foreignKeys = table[fieldName]; // Assign foreign keys if they exist
+          } else {
+            const field = table[fieldName];
+            fields.push({
+              fieldName: fieldName,
+              dataType: field.type,
+            });
+          }
+        }
+        dataModel.push({
+          schemaName: schemaName,
+          tableName: tableName,
+          fields: fields,
+          foreignKeys: foreignKeys, // Include foreignKeys in the data model
         });
       }
-      dataModel.push({
-        tableName: tableName,
-        fields: fields,
-      });
     }
 
     return dataModel;
@@ -123,7 +132,12 @@ export default function Page() {
       case "Query":
         return <Query filteredTables={filteredTables} />;
       case "Tables":
-        return <TableList database_token={databaseToken} filteredTables={filteredTables} />;
+        return (
+          <TableList
+            database_token={databaseToken}
+            filteredTables={filteredTables}
+          />
+        );
       case "Chat":
         return <Chat database_token={databaseToken} />;
       case "Flow":
@@ -145,8 +159,10 @@ export default function Page() {
     setSearchQuery(event.target.value);
   };
 
-  const filteredTables = dataModel.filter((table) =>
-    table.tableName.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredTables = dataModel.filter(
+    (table) =>
+      table.tableName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      table.schemaName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -191,10 +207,10 @@ export default function Page() {
                       onChange={handleSearchInputChange}
                       value={searchQuery}
                       ref={searchInputRef}
-                      className="focus:ring-primary-600 w-64 flex-1 appearance-none rounded-lg border border-transparent border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 shadow-sm focus:border-transparent focus:outline-none focus:ring-2"
+                      className="focus:ring-primary-600 w-64 flex-1 appearance-none rounded-lg border border-gray-300 border-transparent bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 shadow-sm focus:border-transparent focus:outline-none focus:ring-2"
                       placeholder="Search"
                     />
-                    <p className="absolute top-1/2 right-4 -translate-y-1/2 transform text-xs text-gray-400">
+                    <p className="absolute right-4 top-1/2 -translate-y-1/2 transform text-xs text-gray-400">
                       <div className="kbd kbd-sm">⌘K</div>
                     </p>
                   </div>
@@ -218,22 +234,25 @@ export default function Page() {
               Chat
             </a>
             <a
-              className={`tab text-lg text-black ${activeTab === "Tables" ? "tab-active" : ""
-                }`}
+              className={`tab text-lg text-black ${
+                activeTab === "Tables" ? "tab-active" : ""
+              }`}
               onClick={() => handleTabClick("Tables")}
             >
               Tables
             </a>
             <a
-              className={`tab text-lg text-black ${activeTab === "Flow" ? "tab-active" : ""
-                }`}
+              className={`tab text-lg text-black ${
+                activeTab === "Flow" ? "tab-active" : ""
+              }`}
               onClick={() => handleTabClick("Flow")}
             >
               Flow
             </a>
             <a
-              className={`tab text-lg text-black ${activeTab === "Settings" ? "tab-active" : ""
-                }`}
+              className={`tab text-lg text-black ${
+                activeTab === "Settings" ? "tab-active" : ""
+              }`}
               onClick={() => handleTabClick("Settings")}
             >
               Settings

@@ -19,6 +19,7 @@ I'm back with more exciting news on our journey to redefine the way you interact
 ## Reimagining Database Interaction
 
 Let's face it; the traditional methods of interacting with databases can be cumbersome. Querying data requires a level of expertise that not everyone possesses. Here at ChatDB, we're not just improving database interaction—we're reimagining it. By creating an AI assistant that understands natural language, we're crafting an intuitive and streamlined experience that caters to both technical and non-technical users alike.
+
 ## Building for Everyone
 
 ChatDB is all about inclusivity. While we aim to provide a seamless experience for those already comfortable with databases, our vision doesn't stop there. We want to lower the barrier to entry for non-technical users. With a simple, natural language interface, anyone in your organization—from marketing to product development—can harness the power of your data.

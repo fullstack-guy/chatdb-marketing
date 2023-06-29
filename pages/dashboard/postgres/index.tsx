@@ -11,6 +11,7 @@ import {
 import supabase from "../../../utils/supabaseClient";
 import Layout from "../../../components/Layout";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export default function Page() {
   const router = useRouter();
@@ -22,12 +23,19 @@ export default function Page() {
   const [nameError, setNameError] = useState(null);
   const [connectionStringError, setConnectionStringError] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState(null);
 
   const [databaseInfo, setDatabaseInfo] = useState(null);
   const { user } = useUser();
   const { bt } = useBasisTheory(process.env.NEXT_PUBLIC_BASIS_THEORY_KEY, {
     elements: true,
   });
+
+  useEffect(() => {
+    if (connected) {
+      setConnected(false);
+    }
+  }, [connectionString]);
 
   const saveDatabase = async () => {
     setSaving(true);
@@ -130,7 +138,9 @@ export default function Page() {
   };
 
   const connectionStringChange = (event) => {
-    const result = event.target.value.replace(/^postgres:\/\//, "");
+    const result = event.target.value
+      .replace(/^postgres:\/\//, "")
+      .replace(/^postgresql:\/\//, "");
     setConnectionString(result);
   };
 
@@ -181,11 +191,13 @@ export default function Page() {
       });
 
       if (!response.ok) {
+        const errorData = await response.json(); // Parse the response
+        setError(errorData.message); // Set the error message
         setConnecting(false);
-        toast.error("There was an error connecting to the database!");
       } else {
         const data = await response.json();
         setDatabaseInfo(data);
+        setError(null); // Clear any previous error message
 
         toast("Successfully Connected", {
           icon: "👏",
@@ -203,7 +215,7 @@ export default function Page() {
     } catch (error) {
       console.error(error);
       setConnecting(false);
-      toast.error("There was an error connecting to the database!");
+      setError(error.message); // Show network error message
     }
   };
 
@@ -214,23 +226,21 @@ export default function Page() {
         <ul>
           <li className="text-black">
             <Link href="/dashboard">
-              <a>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="mr-2 h-4 w-4"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"
-                  />
-                </svg>
-                Databases
-              </a>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="mr-2 h-4 w-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"
+                />
+              </svg>
+              Databases
             </Link>
           </li>
           <li className="text-black">Postgres</li>
@@ -240,9 +250,9 @@ export default function Page() {
       {/* Select Options */}
       <div className="m-auto lg:mx-[20%]">
         <div className="w-full text-center">
-          <div className="container my-auto mx-auto">
+          <div className="container mx-auto my-auto">
             <h1 className="mt-10 text-3xl font-bold text-black">
-              Take a Snapshot
+              Connect your Database
             </h1>
 
             <h1 className="text-sm text-black">
@@ -290,8 +300,9 @@ export default function Page() {
                         onChange={connectionStringChange}
                       />
                       <span
-                        className={`btn hidden sm:flex ${connecting || saving ? "loading" : ""
-                          } cursor-pointer border-none bg-success font-semibold text-black hover:bg-success`}
+                        className={`btn hidden sm:flex ${
+                          connecting || saving ? "loading" : ""
+                        } cursor-pointer border-none bg-success font-semibold text-black hover:bg-success`}
                         onClick={connected ? saveDatabase : connectToDatabase}
                       >
                         {connecting ? (
@@ -325,8 +336,9 @@ export default function Page() {
                     )}
                     <div className="my-2 w-full">
                       <button
-                        className={`btn ${connecting && "loading"
-                          } mx-auto my-2 flex w-[75%] bg-success font-semibold text-black hover:bg-success sm:hidden`}
+                        className={`btn ${
+                          connecting && "loading"
+                        } mx-auto my-2 flex w-[75%] bg-success font-semibold text-black hover:bg-success sm:hidden`}
                         onClick={connectToDatabase}
                         type="submit"
                       >
@@ -351,6 +363,11 @@ export default function Page() {
                         )}
                       </button>
                     </div>
+                    {error && (
+                      <p className="mt-1 text-sm font-semibold text-red-600">
+                        {error}
+                      </p>
+                    )}
                   </BasisTheoryProvider>
                 </div>
               </div>

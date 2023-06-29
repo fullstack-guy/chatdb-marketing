@@ -1,18 +1,20 @@
 import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
 import { useState } from "react";
-import { TagIcon, ShieldCheckIcon } from "@heroicons/react/outline";
+import { TagIcon } from "@heroicons/react/outline";
 import Layout from "../components/Layout";
-import { CameraIcon } from "@heroicons/react/outline";
-import posthog from 'posthog-js';
+import posthog from "posthog-js";
 import Image from "next/image";
+import { LightBulbIcon } from "@heroicons/react/outline";
 
 export default function Page() {
   const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    posthog.capture('waitlist_signup');
+    posthog.capture("waitlist_signup");
 
     if (email === "") {
       toast.error("Sorry, the email field is blank");
@@ -22,20 +24,20 @@ export default function Page() {
     axios
       .post("https://api.slapform.com/vKid4Let6", { email: email })
       .then((response) => {
-        console.log("Success:", response);
+        toast.success("Thanks for signing up!");
+        setEmail("");
+        setSubmitted(true);
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-    // Display a toast message when the form is submitted
-    toast.success("Thanks for signing up!");
-    setEmail("");
   };
+
   return (
     <Layout>
       <main>
         {/* Hero section */}
-        <section className="px-8 pt-6 pb-2 text-center md:py-16">
+        <section className="px-8 pb-2 pt-6 text-center md:py-16">
           <div className="mx-auto max-w-6xl">
             <div className="flex flex-col items-center">
               <h1 className="mt-5 text-center text-3xl font-semibold text-heading md:max-w-4xl lg:text-5xl xl:text-6xl">
@@ -59,39 +61,44 @@ export default function Page() {
                 help you generate SQL queries that work! Think ChatGPT, but
                 trained on your database.
               </p>
-              <form
-                className="subscription-form mt-6 flex flex-col gap-2 sm:flex-row"
-                method="POST"
-                onSubmit={handleSubmit}
-              >
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="sr-only block border-blue-400 text-sm font-semibold text-heading"
+              {
+                // Render the form only if the form has not been submitted
+                !submitted && (
+                  <form
+                    className="subscription-form mt-6 flex flex-col gap-2 sm:flex-row"
+                    method="POST"
+                    onSubmit={handleSubmit}
                   >
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="block w-72 rounded-xl border-2 border-layer-3 bg-muted-1 px-4 py-2.5 font-semibold text-heading placeholder:text-text/50 focus:border-primary focus:outline-none focus:ring-0 sm:text-sm"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  style={{
-                    background:
-                      "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)",
-                  }}
-                  className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none px-4 py-2.5 text-sm font-semibold text-white transition duration-200 hover:bg-gradient-to-r hover:from-fuchsia-600 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
-                >
-                  Submit
-                </button>
-              </form>
+                    <div>
+                      <label
+                        htmlFor="email"
+                        className="sr-only block border-blue-400 text-sm font-semibold text-heading"
+                      >
+                        Email
+                      </label>
+                      <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="block w-72 rounded-xl border-2 border-layer-3 bg-muted-1 px-4 py-2.5 font-semibold text-heading placeholder:text-text/50 focus:border-primary focus:outline-none focus:ring-0 sm:text-sm"
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      style={{
+                        background:
+                          "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)",
+                      }}
+                      className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none px-4 py-2.5 text-sm font-semibold text-white transition duration-200 hover:bg-gradient-to-r hover:from-fuchsia-600 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
+                    >
+                      Submit
+                    </button>
+                  </form>
+                )
+              }
             </div>
             {/* <div className="mt-12 md:px-2">
               <svg
@@ -340,50 +347,128 @@ export default function Page() {
         </section>
 
         {/* Integrations */}
-        <section className="py-8 px-6 sm:py-18">
-          <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
-            <h2 className="text-4xl font-semibold text-heading md:text-5xl md:leading-tight">
-              Integrates with your favorite databases.
+        <div className="w-full bg-layer-1 p-6 text-center md:p-20">
+          <div className="mx-auto w-full max-w-6xl">
+            <span className="leading-sm inline-flex items-center rounded-full border-2 border-orange-200 bg-orange-200 px-2 py-0.5 text-xs font-bold uppercase text-orange-600 shadow-sm">
+              <LightBulbIcon className="mr-1 h-5 w-5" />
+              Features
+            </span>
+            <h2 className="mx-auto mt-4 text-center text-2xl font-semibold tracking-tight text-heading md:max-w-2xl md:text-5xl">
+              Master your Database. Without being an Expert.
             </h2>
-            <p className="mx-auto mt-6 max-w-xl text-lg font-medium">
-              Just plug ChatDB into your existing ecosystem!
+            <p className="mt-6 text-xl text-text">
+              Ask the questions you want to know without spending half an hour
+              wrangling SQL!
             </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-4 sm:mt-12 md:gap-8">
-              <div className="relative h-16 w-16 rounded-2xl bg-layer-2 p-2">
-                <Image
-                  alt="mongodb logo"
-                  layout="fill"
-                  objectFit="contain"
-                  className="absolute"
-                  src="/images/mongodb.png"
-                />
+
+            <div className="mt-12 grid grid-cols-1 gap-y-6 md:grid-cols-2 lg:grid-cols-3">
+              <div className="p-5 text-center md:p-8">
+                <div className="inline-block rounded-3xl bg-layer-2 px-4 py-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="rgb(51, 51, 61)"
+                    className="h-8 w-8"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"
+                    />
+                  </svg>
+                </div>
+                <h3 className="mt-4 text-xl font-semibold text-heading">
+                  Easy Onboarding
+                </h3>
+                <p className="mt-2 text-center text-lg text-text">
+                  Packed with tools to slash onboarding time for your employees!
+                </p>
               </div>
-              <div className="relative h-16 w-16 rounded-2xl bg-layer-2 p-2">
-                <Image
-                  alt="mysql logo"
-                  layout="fill"
-                  objectFit="contain"
-                  className="absolute"
-                  src="/images/mysql.png"
-                />
+              <div className="p-5 text-center md:p-8">
+                <div className="inline-block rounded-3xl bg-layer-2 px-4 py-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="rgb(51, 51, 61)"
+                    className="h-8 w-8"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z"
+                    />
+                  </svg>
+                </div>
+                <h3 className="mt-4 text-xl font-semibold text-heading">
+                  Smart Query Assistant 🧠
+                </h3>
+                <p className="mt-2 text-center text-lg text-text">
+                  ChatDB knows your schema, so it can write clean working SQL.
+                </p>
               </div>
-              <div className="relative h-16 w-16 rounded-2xl bg-layer-2 p-2">
-                <Image
-                  layout="fill"
-                  alt="postgres logo"
-                  objectFit="contain"
-                  className="absolute"
-                  src="/images/postgres-img.png"
-                />
+              <div className="p-5 text-center md:p-8">
+                <div className="inline-block rounded-3xl bg-layer-2 px-4 py-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="rgb(51, 51, 61)"
+                    className="h-8 w-8"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                    />
+                  </svg>
+                </div>
+                <h3 className="mt-4 text-xl font-semibold text-heading">
+                  Intelligent Debugging 🧯
+                </h3>
+                <p className="mt-2 text-center text-lg text-text">
+                  ChatDB will automatically help you debug and fix errors in
+                  your code!
+                </p>
               </div>
             </div>
           </div>
-        </section>
+        </div>
 
         {/* Features */}
 
         <section className="px-8 py-12 md:py-18">
-          <div className="mx-auto max-w-6xl space-y-24 md:space-y-36">
+          <div className="mx-auto max-w-6xl space-y-24 md:space-y-36 lg:space-y-64 xl:space-y-72">
+            <div className="flex flex-col items-center justify-between gap-6 lg:flex-row-reverse">
+              <div className="max-w-md space-y-6 text-center lg:text-left">
+                <span className="inline-flex items-center rounded-full border-2 border-green-200 bg-green-200 px-2 py-1 text-sm font-semibold text-green-600 shadow-sm">
+                  <TagIcon className="mr-1 h-5 w-5" />
+                  Powered by ChatGPT
+                </span>
+                <h3 className="text-3xl font-semibold text-heading lg:text-4xl">
+                  Answers to your questions
+                </h3>
+                <p className="text-lg font-medium">
+                  Ask your database questions in natural language and ChatDB
+                  will write the SQL and answer your question!
+                </p>
+              </div>
+
+              <div className="h-72 max-w-lg">
+                <Image
+                  alt="chatgpt ask image"
+                  className="rounded-xl"
+                  height={500}
+                  width={600}
+                  src="/images/Ask.png"
+                />
+              </div>
+            </div>
+
             <div className="flex flex-col items-center justify-between gap-6 lg:flex-row ">
               <div className="max-w-md space-y-6 text-center lg:text-left">
                 <span className="inline-flex items-center rounded-full border-2 border-red-200 bg-red-200 px-2 py-1 text-sm font-semibold text-red-600 shadow-sm">
@@ -391,12 +476,11 @@ export default function Page() {
                   Visualizations
                 </span>
                 <h3 className="text-3xl font-semibold text-heading lg:text-4xl">
-                  Schema Visualizer
+                  See the layout
                 </h3>
                 <p className="text-lg font-medium">
-                  Simplify the complexity of learning how the database tables
-                  are related with a sleak visualization that you can reference
-                  during your work.
+                  Database schemas can be complex. We try and make it easy for
+                  you to understand how everything is connected.
                 </p>
               </div>
 
@@ -404,8 +488,8 @@ export default function Page() {
                 <Image
                   src="/images/SchemaVisualizer.png"
                   alt="Schema Visualizer Image"
-                  width={500}
-                  height={300}
+                  width={600}
+                  height={400}
                   className="w-full rounded-lg"
                 />
               </div>
@@ -413,16 +497,11 @@ export default function Page() {
 
             <div className="flex flex-col items-center justify-between gap-6 lg:flex-row-reverse">
               <div className="max-w-md space-y-6 text-center lg:text-left">
-                <span className="inline-flex items-center rounded-full border-2 border-green-200 bg-green-200 px-2 py-1 text-sm font-semibold text-green-600 shadow-sm">
-                  <ShieldCheckIcon className="mr-1 h-5 w-5" />
-                  Database Model Snapshot
-                </span>
                 <h3 className="text-3xl font-semibold text-heading lg:text-4xl">
                   Add new databases in seconds
                 </h3>
                 <p className="text-lg font-medium">
-                  Taking a database snapshot so ChatDB can learn your data model
-                  is super simple!
+                  Connecting to your database shouldn't be hard.
                 </p>
               </div>
 
@@ -462,95 +541,9 @@ export default function Page() {
           </div>
         </section>
 
-        <section className="py-18">
-          <div className="mx-auto max-w-6xl">
-            <h2 className="text-center text-2xl font-semibold text-heading md:text-3xl">
-              Get it done in 3 easy steps
-            </h2>
-            <p className="mt-4 text-center text-lg font-medium">
-              Get help creating SQL queries in minutes
-            </p>
-            <div className="mt-14 grid gap-6 px-5 md:grid-cols-3 lg:gap-14">
-              <div className="space-y-3 rounded-3xl bg-layer-2 px-4 pt-6 pb-10 text-center">
-                <div className="inline-grid place-content-center rounded-3xl bg-layer-3 p-4">
-                  <CameraIcon className="h-8 w-8 stroke-gradient gradient-lime" />
-                </div>
-                <span className="block text-sm font-semibold uppercase tracking-wide">
-                  Step 1
-                </span>
-                <h3 className="text-xl font-semibold text-heading">
-                  Take a Snapshot
-                </h3>
-                <p className="text-lg font-medium">
-                  Take a snapshot of your db so ChatDB knows about the tables,
-                  fields, and relationships.
-                </p>
-              </div>
-
-              <div className="space-y-3 rounded-3xl bg-layer-2 px-4 pt-6 pb-10 text-center">
-                <div className="inline-grid place-content-center rounded-3xl bg-layer-3 p-4">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="h-8 w-8 stroke-gradient gradient-dusk"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"
-                    />
-                  </svg>
-                </div>
-                <span className="block text-sm font-semibold uppercase tracking-wide">
-                  Step 2
-                </span>
-                <h3 className="text-xl font-semibold text-heading">
-                  Give your data context
-                </h3>
-                <p className="text-lg font-medium">
-                  Write a couple notes if needed on any intricacies about your
-                  database.
-                </p>
-              </div>
-
-              <div className="space-y-3 rounded-3xl bg-layer-2 px-4 pt-6 pb-10 text-center">
-                <div className="inline-grid place-content-center rounded-3xl bg-layer-3 p-4">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="h-8 w-8 stroke-gradient gradient-peach"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"
-                    />
-                  </svg>
-                </div>
-                <span className="block text-sm font-semibold uppercase tracking-wide">
-                  Step 3
-                </span>
-                <h3 className="text-xl font-semibold text-heading">
-                  Chat with your Database
-                </h3>
-                <p className="text-lg font-medium">
-                  Ask ChatGPT to build any query for data you are trying to
-                  find.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* CTA section */}
         <section className="p-8 md:py-20">
-          <div className="mx-auto flex max-w-6xl flex-col items-center rounded-xl text-center sm:bg-layer-2 sm:py-12 sm:px-6 md:py-18 lg:px-32 2xl:px-64">
+          <div className="mx-auto flex max-w-6xl flex-col items-center rounded-xl text-center sm:bg-layer-2 sm:px-6 sm:py-12 md:py-18 lg:px-32 2xl:px-64">
             <h2 className="text-3xl font-semibold text-heading md:text-4xl">
               Stay in touch and be notified when it is released!
             </h2>

@@ -5,30 +5,44 @@ import Link from "next/link";
 
 type LayoutProps = {
   children: React.ReactNode;
+  title?: string;
+  description?: string;
+  url?: string;
+  oggURL?: string;
 };
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
+  const defaultTitle = "ChatDB | The AI Database Assistant for your team";
+  const defaultDescription =
+    "The tool that is an expert on your database. Say goodbye to hours spent creating the correct query to get the data you need.";
+  const defaultUrl = "https://www.chatdb.ai";
+  const defaultImage = "https://chatdb-assets.s3.amazonaws.com/ogg.png";
+
   return (
     <div className="bg-layer-1">
       <NextSeo
-        title="ChatDB | The AI Database Assistant for your team"
-        description="The tool that is an expert on your database. Say goodbye to hours
-        spent creating the correct query to get the data you need."
+        title={title || defaultTitle}
+        description={description || defaultDescription}
+        canonical={url || defaultUrl}
         openGraph={{
-          url: "https://www.chatdb.ai",
-          title: "ChatDB.ai | The AI Database Assistant for your team",
-          description:
-            "The tool that is an expert on your database. Say goodbye to hours spent creating the correct query to get the data you need",
+          url: url || defaultUrl,
+          title: title || defaultTitle,
+          description: description || defaultDescription,
           images: [
             {
-              url: "https://chatdb-assets.s3.amazonaws.com/ogg.png",
+              url: oggURL || defaultImage,
               width: 800,
               height: 600,
               alt: "ChatDB",
               type: "image/jpeg",
             },
           ],
-          siteName: "ChatDB",
+          site_name: "ChatDB",
+        }}
+        twitter={{
+          handle: "@calebfahlgren",
+          site: "@calebfahlgren",
+          cardType: "summary_large_image",
         }}
         additionalLinkTags={[
           {
@@ -47,6 +61,7 @@ const Layout = ({ children }: LayoutProps) => {
             <div>
               <p className="text-xl font-bold">ChatDB</p>
               <p>The tool you needed for your database!</p>
+              <p>The AI Database Assistant ready to solve your problems.</p>
             </div>
             <div>
               <span className="footer-title">Company</span>
@@ -59,13 +74,22 @@ const Layout = ({ children }: LayoutProps) => {
               <Link href="blog" className="link-hover link">
                 Blog
               </Link>
+              <Link href="contact-us" className="link-hover link">
+                Contact Us
+              </Link>
             </div>
-            {/* <div>
-              <span className="footer-title">Legal</span>
-              <a className="link link-hover">Terms of use</a>
-              <a className="link link-hover">Privacy policy</a>
-              <a className="link link-hover">Cookie policy</a>
-            </div> */}
+            <div>
+              <span className="footer-title">Free Tools</span>
+              <Link href="/tools/csv-editor" className="link-hover link">
+                CSV Viewer and Editor
+              </Link>
+              <Link
+                href="/tools/query-csv-with-sql"
+                className="link-hover link"
+              >
+                Query CSV with SQL
+              </Link>
+            </div>
           </footer>
         </div>
       </div>

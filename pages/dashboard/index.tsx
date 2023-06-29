@@ -59,7 +59,9 @@ export default function Page() {
 
   const continueToDatabase = () => {
     const selectedDatabase = newDatabases.find((db) => db.selected);
-    handleNavigation(selectedDatabase.path || "/dashboard");
+    if (selectedDatabase) {
+      handleNavigation(selectedDatabase.path || "/dashboard");
+    }
   };
 
   // set database as selected
@@ -75,21 +77,17 @@ export default function Page() {
   return (
     <Layout>
       <div>
-        <header className="pt-12 pb-6">
+        <header className="flex items-center justify-between pb-6 pt-12">
           <h1 className="text-4xl font-bold text-heading">Overview</h1>
-        </header>
-
-        <main className="">
           <label
             htmlFor="database-modal"
-            style={{
-              background:
-                "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)",
-            }}
-            className="btn-md btn mx-4 inline-flex cursor-pointer items-center justify-center rounded-xl border-none px-4 text-base font-semibold capitalize text-white shadow-sm hover:bg-primary-accent focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:border-primary disabled:hover:bg-primary disabled:hover:text-white dark:focus:ring-white/80"
+            className="btn-md btn mx-4 inline-flex cursor-pointer items-center justify-center rounded-xl border-none px-4 py-1 text-base font-semibold capitalize text-white shadow-sm hover:bg-primary-accent focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:border-primary disabled:hover:bg-primary disabled:hover:text-white dark:focus:ring-white/80"
           >
             Add Database
           </label>
+        </header>
+
+        <main className="">
           {fetchedDatabases.length === 0 ? (
             <h1>You don't have any databases added.</h1>
           ) : (
@@ -100,7 +98,6 @@ export default function Page() {
       <input type="checkbox" id="database-modal" className="modal-toggle" />
       <label htmlFor="database-modal" className="modal cursor-pointer">
         <label className="modal-box relative w-11/12 max-w-5xl" htmlFor="">
-          <h3 className="text-2xl font-bold text-black">Add a Database</h3>
           <div className="my-4">
             {newDatabases.length > 0 &&
               newDatabases.map((database, index) => (

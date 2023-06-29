@@ -1,7 +1,6 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { BsThreeDots } from "react-icons/bs";
 
 const Card = ({ logo, title, lastUpdated, uuid }) => {
   return (
@@ -23,11 +22,6 @@ const Card = ({ logo, title, lastUpdated, uuid }) => {
               Created: {lastUpdated}
             </p> */}
           </div>
-        </div>
-      </Link>
-      <Link href={`/dashboard/${uuid}/edit`}>
-        <div className="absolute top-0 right-0 p-4">
-          <BsThreeDots className="h-6 w-6 cursor-pointer text-gray-500 hover:text-black" />
         </div>
       </Link>
     </div>

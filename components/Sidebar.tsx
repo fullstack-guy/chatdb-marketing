@@ -10,7 +10,7 @@ const Sidebar = () => {
 
   return (
     <div className="flex min-h-screen flex-auto flex-shrink-0 flex-col bg-gray-50 text-gray-800 antialiased">
-      <div className="fixed top-0 left-0 flex h-full w-64 flex-col border-r bg-white">
+      <div className="fixed left-0 top-0 flex h-full w-64 flex-col border-r bg-white">
         <div className="flex h-14 items-center justify-center border-b">
           <div>Sidebar Navigation By iAmine</div>
         </div>

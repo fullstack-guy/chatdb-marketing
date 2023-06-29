@@ -1,10 +1,10 @@
 export default function Banner() {
   return (
-    <div className="relative isolate flex items-center gap-x-6 overflow-hidden bg-gray-50 py-5 px-6 sm:px-3.5 sm:before:flex-1">
+    <div className="relative isolate flex items-center gap-x-6 overflow-hidden bg-gray-50 px-6 py-5 sm:px-3.5 sm:before:flex-1">
       <svg
         viewBox="0 0 577 310"
         aria-hidden="true"
-        className="absolute top-1/2 left-[max(-7rem,calc(50%-52rem))] -z-10 w-[36.0625rem] -translate-y-1/2 transform-gpu blur-2xl"
+        className="absolute left-[max(-7rem,calc(50%-52rem))] top-1/2 -z-10 w-[36.0625rem] -translate-y-1/2 transform-gpu blur-2xl"
       >
         <path
           id="1d77c128-3ec1-4660-a7f6-26c7006705ad"
@@ -29,11 +29,11 @@ export default function Banner() {
       <svg
         viewBox="0 0 577 310"
         aria-hidden="true"
-        className="absolute top-1/2 left-[max(45rem,calc(50%+8rem))] -z-10 w-[36.0625rem] -translate-y-1/2 transform-gpu blur-2xl"
+        className="absolute left-[max(45rem,calc(50%+8rem))] top-1/2 -z-10 w-[36.0625rem] -translate-y-1/2 transform-gpu blur-2xl"
       >
         <use href="#1d77c128-3ec1-4660-a7f6-26c7006705ad" />
       </svg>
-      <div className="flex flex-wrap items-center gap-y-2 gap-x-4">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <p className="text-sm leading-6 text-gray-900">
           <strong className="font-semibold">Launching Soon</strong>
           <svg
