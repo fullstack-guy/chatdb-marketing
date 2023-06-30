@@ -1,9 +1,5 @@
- 
-
 const Savequery = () => {
-  return (
-    <div>Savequery</div>
-  )
-}
+  return <div>Savequery</div>;
+};
 
-export default Savequery
+export default Savequery;

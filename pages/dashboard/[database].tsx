@@ -8,7 +8,7 @@ import Chat from "../../components/dashboard/Chat";
 import supabase from "../../utils/supabaseClient";
 import Settings from "../../components/dashboard/Settings";
 import DatabaseFlow from "../../components/DatabaseFlow";
-import Query from '../../components/dashboard/Query'
+import Query from "../../components/dashboard/Query";
 
 interface Database {
   id: number;
@@ -130,7 +130,12 @@ export default function Page() {
   const renderContent = () => {
     switch (activeTab) {
       case "Query":
-        return <Query filteredTables={filteredTables} />;
+        return (
+          <Query
+            database_token={databaseToken}
+            filteredTables={filteredTables}
+          />
+        );
       case "Tables":
         return (
           <TableList
@@ -188,10 +193,10 @@ export default function Page() {
                       onChange={handleSearchInputChange}
                       value={searchQuery}
                       ref={searchInputRef}
-                      className="focus:ring-primary-600 w-64 flex-1 appearance-none rounded-lg border border-transparent border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 shadow-sm focus:border-transparent focus:outline-none focus:ring-2"
+                      className="focus:ring-primary-600 w-64 flex-1 appearance-none rounded-lg border border-gray-300 border-transparent bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 shadow-sm focus:border-transparent focus:outline-none focus:ring-2"
                       placeholder="Search"
                     />
-                    <p className="absolute top-1/2 right-4 -translate-y-1/2 transform text-xs text-gray-400">
+                    <p className="absolute right-4 top-1/2 -translate-y-1/2 transform text-xs text-gray-400">
                       <div className="kbd kbd-sm">⌘K</div>
                     </p>
                   </div>
@@ -220,15 +225,17 @@ export default function Page() {
           </div>
           <div className="tabs tabs-boxed mt-10 bg-transparent">
             <a
-              className={`tab text-lg text-black ${activeTab === "Query" ? "tab-active" : ""
-                }`}
+              className={`tab text-lg text-black ${
+                activeTab === "Query" ? "tab-active" : ""
+              }`}
               onClick={() => handleTabClick("Query")}
             >
               Query
             </a>
             <a
-              className={`tab text-lg text-black ${activeTab === "Chat" ? "tab-active" : ""
-                }`}
+              className={`tab text-lg text-black ${
+                activeTab === "Chat" ? "tab-active" : ""
+              }`}
               onClick={() => handleTabClick("Chat")}
             >
               Chat

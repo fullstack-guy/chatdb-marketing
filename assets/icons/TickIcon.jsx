@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from "react";
 const TickIcon = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -24,5 +24,5 @@ const TickIcon = (props) => (
       d="m7.75 12 2.83 2.83 5.67-5.66"
     />
   </svg>
-)
-export default TickIcon
+);
+export default TickIcon;

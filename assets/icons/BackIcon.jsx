@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from "react";
 const BackIcon = (props) => (
   <svg
     width={24}
@@ -14,5 +14,5 @@ const BackIcon = (props) => (
     <path stroke="none" d="M0 0h24v24H0z" />
     <path d="m15 6-6 6 6 6" />
   </svg>
-)
-export default BackIcon
+);
+export default BackIcon;

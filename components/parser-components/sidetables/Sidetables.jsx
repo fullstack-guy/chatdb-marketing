@@ -1,9 +1,5 @@
- 
-
 const Sidetables = () => {
-  return (
-    <div>Sidetables</div>
-  )
-}
+  return <div>Sidetables</div>;
+};
 
-export default Sidetables
+export default Sidetables;

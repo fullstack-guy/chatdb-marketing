@@ -1,126 +1,156 @@
-import { useEffect, useState } from 'react';
-import { Resizable } from 're-resizable';
-import DataGrid from 'react-data-grid';
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Resizable } from "re-resizable";
+import DataGrid from "react-data-grid";
+import Sidebar from "../../components/parser-components/sidebar/Sidebar";
+import "react-data-grid/lib/styles.css";
+import dynamic from "next/dynamic";
+import Checkbox from "../parser-components/checkbox/CheckBox";
+import { AiOutlineCheckCircle } from "react-icons/ai";
+import { FaPlay } from "react-icons/fa";
 
-import Sidebar from '../../components/parser-components/sidebar/Sidebar'
-import 'react-data-grid/lib/styles.css';
-import dynamic from 'next/dynamic';
-import Checkbox from '../parser-components/checkbox/CheckBox';
-import PlayIcon from '../../assets/icons/PlayIcon';
-import { AiOutlineCheckCircle } from "react-icons/ai"
-import {FaPlay } from "react-icons/fa"
 const Queryarea = dynamic(
-  () => import('../../components/parser-components/queryarea/Queryarea'),
+  () => import("../../components/parser-components/queryarea/Queryarea"),
   { ssr: false }
-)
+);
 
-const Query = ({ filteredTables }) => {
+const Query = ({ database_token, filteredTables }) => {
   const [rows, setRows] = useState([]);
-  const [columns, setColumns] = useState([
-    { key: 'ArtistId', name: 'ArtistId' },
-    { key: 'Name', name: 'Name' }
-  ]);
+  const [columns, setColumns] = useState([]);
   const [annotations, setAnnotations] = useState([]);
-  const [query, setQuery] = useState('');
-  const [message, setMessage] = useState({
-    error: "Failed to run query",
-    errorCode: "42601",
-    errorMessage: "trailing junk after numeric literal at or near \"5f\""
-  }) // error state
-  const [createTable, setCreateTable] = useState({
-    rows: [],
-    rowCount: null,
-    command: "CREATE",
-    message: "null rows affected by CREATE command"
-  }
-  ) // create table state
-
-  const [insert, setInsert] = useState({
-    rows: [],
-    rowCount: 1,
-    command: "INSERT",
-    message: "1 rows affected by INSERT command"
-  })  // insert data state
-
-  const [successQuery, setSuccessQuery] = useState({
-    rows: [
-      {
-        ArtistId: 1,
-        Name: "AC/DC"
-      },
-      {
-        ArtistId: 2,
-        Name: "Accept"
-      },
-      {
-        ArtistId: 3,
-        Name: "Aerosmith"
-      },
-      {
-        ArtistId: 4,
-        Name: "Alanis Morissette"
-      },
-      {
-        ArtistId: 5,
-        Name: "Alice In Chains"
-      }
-    ],
-    rowCount: 5,
-    command: "SELECT",
-    message: "5 rows affected by SELECT command"
-  }) // success query state)
-
+  const [query, setQuery] = useState("");
+  const [message, setMessage] = useState("");
+  const [executionTime, setExecutionTime] = useState("");
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    if (rows.length > 0) {
+      setColumns(
+        Object.keys(rows[0]).map((key) => {
+          return { key: key, name: key };
+        })
+      );
+    } else {
+      setColumns([]);
+    }
+  }, [rows]);
 
-      let data = []
-      successQuery.rows.forEach((item,index) => {
-          data.push({
-            id: index,
-            ArtistId: item["ArtistId"],
-            Name: item["Name"]
-          })
-      })
-      
-      setRows(data)
-  }, [])
+  const handleRunQuery = async () => {
+    setError(null);
+    setMessage("");
+    setIsLoading(true);
 
-  const handleRunQuery = () => {
-    console.log("run query handler");
+    try {
+      const startTime = Date.now(); // Start time before API call
+      const response = await axios.post("/api/db/query", {
+        connectionStringToken: database_token,
+        query,
+      });
+      const endTime = Date.now(); // End time after API call
+
+      setExecutionTime(endTime - startTime + "ms"); // Time taken to get response
+
+      if (response.data.error) {
+        setError({
+          code: response.data.errorCode,
+          message: response.data.errorMessage
+        });
+        setMessage(`[${response.data.errorCode}] ERROR: ${response.data.errorMessage}`);
+        setRows([]);
+        setColumns([]);
+        return;
+      }
+
+      switch (response.data.command) {
+        case "SELECT":
+          let data = [];
+          setMessage("");
+          response.data.rows.forEach((item, index) => {
+            data.push({
+              id: index,
+              ...item,
+            });
+          });
+          setRows(data);
+          setColumns(
+            Object.keys(data[0]).map((key) => {
+              return { key: key, name: key };
+            })
+          );
+          break;
+        case "INSERT":
+        case "DELETE":
+        case "CREATE":
+          setRows([]);
+          setColumns([]);
+          setMessage(response.data.message);
+          break;
+        default:
+          setMessage("");
+      }
+    } catch (error) {
+      setError({
+        message: `ERROR: ${error.message}`
+      });
+      setMessage(`ERROR: ${error.message}`);
+      if (error.response) {
+        setMessage(`[${error.response.status}] ERROR: ${error.response.data.errorMessage}`);
+      }
+    } finally {
+      setIsLoading(false); // Set loading state to false when API call finishes
+    }
   };
 
   const handleQueryChange = (query) => {
     setQuery(query);
     setAnnotations([]);
-  }
+  };
 
   return (
-    <div className='container shadow-lg m-auto p-3 rounded-lg mt-3 bg-white '>
-      <div className='flex'>
-        <Sidebar />
-        <div className='w-4/5'>
-          <Queryarea annotations={annotations} onChange={handleQueryChange} />
+    <div className="container m-auto mt-3 rounded-lg bg-white p-3 shadow-lg">
+      <div className="flex">
+        <Sidebar filteredTables={filteredTables} />
+        <div className="w-4/5">
+          <Queryarea annotations={annotations} query={query} onChange={handleQueryChange} />
           <div>
-            <div className="flex ml-9 pt-2">
-              <button onClick={handleRunQuery} disabled={!query.trim()} className={`flex ${query.trim() ? 'bg-green-500 hover:bg-green-700 border-green-700 cursor-pointer' : 'bg-gray-300 cursor-not-allowed'} text-white font-bold py-2 px-4 border rounded mr-5`}>
-                <FaPlay />   Run Query 
+            <div className="ml-9 flex pt-2">
+              <button
+                onClick={handleRunQuery}
+                disabled={!query.trim()}
+                className={`
+    flex 
+    items-center 
+    justify-center 
+    space-x-2 
+    ${query.trim() && !isLoading
+                    ? "cursor-pointer bg-gray-500 hover:bg-gray-800"
+                    : "cursor-not-allowed bg-gray-300"
+                  } 
+mr-5 
+rounded 
+border 
+px-4 
+py-2 
+font-bold 
+text-white
+`}
+              >
+                {isLoading ? <div>Loading...</div> : <><FaPlay /><span>Run Query</span></>}
               </button>
-
               <Checkbox />
-
             </div>
             <hr className="my-2 w-full" />
-            <div className="flex ml-9 mt-3">
-              <AiOutlineCheckCircle color='green' />
-              <span className="px-2 font-bold">{`${successQuery.rowCount} Rows`}</span>
-              <span className="px-2">{`103ms`}</span>
-
+            <div className="ml-9 mt-3 flex items-center">
+              {!error && <AiOutlineCheckCircle color="green" className="self-center" />}
+              {!error && <span className="px-2 font-bold">{`${rows.length} Rows`}</span>}
+              <span className="px-2">{executionTime}</span>
             </div>
-            
-            <div className="flex ml-9 mt-3">
-
-              <span className="px-2 font-bold">{JSON.stringify(message)}</span>
-            </div>
+            {message && (
+              <div className="ml-9 mt-3 flex">
+                <span className={`px-2 font-bold ${error ? 'text-red-500' : 'text-green-500'}`}>{message}</span>
+              </div>
+            )}
             <hr className="my-2 w-full" />
           </div>
           <Resizable
@@ -131,12 +161,17 @@ const Query = ({ filteredTables }) => {
               right: true,
             }}
           >
-            <DataGrid style={{ width: "100%", height: "100%" }} rows={rows} columns={columns} />
+            <DataGrid
+              className="rdg-light"
+              style={{ width: "100%", height: "100%" }}
+              rows={rows}
+              columns={columns}
+            />
           </Resizable>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Query;

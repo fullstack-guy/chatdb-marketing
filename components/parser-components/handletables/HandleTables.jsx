@@ -6,20 +6,20 @@ import TickIcon from "../../../assets/icons/TickIcon";
 
 const HandleTables = () => {
   return (
-    <div >
-        <div className="flex ml-9 ">
+    <div>
+      <div className="ml-9 flex ">
+        <button className="mr-5 flex rounded border border-green-700 bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700">
+          <PlayIcon className="text-white" /> Run Query
+        </button>
 
-      <button className="flex bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 border border-green-700 rounded mr-5">
-        <PlayIcon className="text-white" /> Run Query
-      </button>
-
-      <Checkbox />
-        </div>
-    <hr className="my-2"/>
-      <div className="flex ml-9 mt-3">
-       <TickIcon/> <span className="px-2 font-bold">10,000 Rows</span> <span className="text-gray-400"> 103ms</span>
+        <Checkbox />
       </div>
-      <hr className="my-2"/>
+      <hr className="my-2" />
+      <div className="ml-9 mt-3 flex">
+        <TickIcon /> <span className="px-2 font-bold">10,000 Rows</span>{" "}
+        <span className="text-gray-400"> 103ms</span>
+      </div>
+      <hr className="my-2" />
     </div>
   );
 };
