@@ -5,8 +5,6 @@ import * as duckdb from "@duckdb/duckdb-wasm";
 import AceEditor from "react-ace";
 import DataGrid from "react-data-grid";
 import { Toaster, toast } from "react-hot-toast";
-import "ace-builds/src-noconflict/mode-sql";
-import "ace-builds/src-noconflict/theme-monokai";
 import "react-data-grid/lib/styles.css";
 import { BsMagic } from "react-icons/bs";
 import { format } from "sql-formatter";
@@ -194,8 +192,8 @@ const DuckDBComponent = () => {
             cell == null
               ? "null"
               : !Array.isArray(cell)
-              ? cell
-              : "[" +
+                ? cell
+                : "[" +
                 cell
                   .map((value) => (value == null ? "null" : value))
                   .join(", ") +
