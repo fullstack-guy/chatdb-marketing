@@ -69,6 +69,7 @@ const Queryarea = ({ annotations, query, onChange }) => {
           selectOnLineNumbers: true,
           selectionClipboard: true,
           minimap: { enabled: false },
+          selectionHighlight: true,
           showFoldingControls: "mouseover",
           smoothScrolling: true,
           suggestOnTriggerCharacters: true,
