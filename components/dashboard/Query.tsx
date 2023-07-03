@@ -8,11 +8,14 @@ import dynamic from "next/dynamic";
 import Checkbox from "../parser-components/checkbox/CheckBox";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { FaPlay } from "react-icons/fa";
+import { Roboto_Mono } from 'next/font/google'
 
 const Queryarea = dynamic(
   () => import("../../components/parser-components/queryarea/Queryarea"),
   { ssr: false }
 );
+
+const roboto = Roboto_Mono({ subsets: ['latin'] })
 
 const Query = ({ database_token, filteredTables }) => {
   const [rows, setRows] = useState([]);
@@ -124,7 +127,7 @@ const Query = ({ database_token, filteredTables }) => {
     justify-center 
     space-x-2 
     ${query.trim() && !isLoading
-                    ? "cursor-pointer bg-gray-500 hover:bg-gray-800"
+                    ? "cursor-pointer bg-green-500 hover:bg-gray-800"
                     : "cursor-not-allowed bg-gray-300"
                   } 
 mr-5 
@@ -136,7 +139,7 @@ font-bold
 text-white
 `}
               >
-                {isLoading ? <div>Loading...</div> : <><FaPlay /><span>Run Query</span></>}
+                {isLoading ? <div>Loading...</div> : <><FaPlay /><span >Run Query</span></>}
               </button>
               <Checkbox />
             </div>
@@ -162,7 +165,7 @@ text-white
             }}
           >
             <DataGrid
-              className="rdg-light"
+              className={`rdg-light ${roboto.className}`}
               style={{ width: "100%", height: "100%" }}
               rows={rows}
               columns={columns}

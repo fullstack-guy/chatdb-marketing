@@ -24,7 +24,7 @@ const Queryarea = ({ annotations, query, onChange }) => {
         value={query}
         onChange={onChange}
         options={{
-          fontSize: 18,
+          fontSize: 16,
           acceptSuggestionOnCommitCharacter: true,
           acceptSuggestionOnEnter: "on",
           accessibilitySupport: "auto",
