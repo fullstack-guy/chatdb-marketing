@@ -52,6 +52,7 @@
     "react-syntax-highlighter": "^15.5.0",
     "reactflow": "^11.7.2",
     "sql-formatter": "^12.2.3",
+    "tier": "^5.10.0",
     "use-stripe-subscription": "^1.0.6",
     "uuid": "^9.0.0"
   },
