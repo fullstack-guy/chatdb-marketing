@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AiOutlineRight, AiOutlineDown } from "react-icons/ai";
 import { BsTable } from "react-icons/bs";
+import Link from "next/link";
 
 const Sidebar = ({ filteredTables }) => {
   const [openLists, setOpenLists] = useState([]);
@@ -33,7 +34,7 @@ const Sidebar = ({ filteredTables }) => {
 
     return (
       <>
-        <a
+        <Link
           key={key}
           href="#"
           className="group flex items-center text-gray-900 transition duration-75 dark:text-white"
@@ -43,7 +44,7 @@ const Sidebar = ({ filteredTables }) => {
           <span className="text-md font-md ml-3 text-black">
             {tableName}
           </span>
-        </a>
+        </Link>
         {isOpen && (
           <div className="m-2">
             <div className="flex items-center">
@@ -127,7 +128,7 @@ const Sidebar = ({ filteredTables }) => {
         {Object.entries(tablesBySchema).map(([schema, tables]) =>
           renderSchema(schema, tables)
         )}
-        <a
+        <Link
           href="#"
           className="group mt-4 flex items-center space-y-2 border-t border-gray-200 p-2 pt-4 text-gray-900 transition duration-75 dark:text-white"
           onClick={toggleSavedQueries}
@@ -138,7 +139,7 @@ const Sidebar = ({ filteredTables }) => {
             <AiOutlineRight color='gray' fontSize={12} />
           )} */}
           {/* <span className="ml-3 text-md font-medium text-gray-800">SAVED QUERIES</span> */}
-        </a>
+        </Link>
         {/* {isSavedQueriesOpen && (
           <div className="pl-6">
             <div className="flex items-center text-gray-900 transition duration-75 dark:text-white group">

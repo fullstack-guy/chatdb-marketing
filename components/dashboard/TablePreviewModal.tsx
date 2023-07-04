@@ -42,10 +42,22 @@ const TablePreviewModal = ({ isOpen, onClose, tableRows, tableName }) => {
       }))
       : [];
 
-  const rows = tableRows.map((row, rowIndex) => ({
-    id: rowIndex,
-    ...row,
-  }));
+  const rows = tableRows.map((row, rowIndex) => {
+    let newRow = { ...row }; // Make a copy of the row
+    // Loop over each key in the row
+    for (let key in newRow) {
+      // If the value of a key is an object, convert it to a JSON string
+      if (typeof newRow[key] === 'object' && newRow[key] !== null) {
+        newRow[key] = JSON.stringify(newRow[key]);
+      }
+    }
+
+    return {
+      id: rowIndex,
+      ...newRow
+    };
+  });
+
 
   const handleQueryClick = () => {
     onClose();

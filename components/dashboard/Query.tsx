@@ -27,6 +27,37 @@ const Query = ({ database_token, filteredTables }) => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  // State for tab management
+  const [tabs, setTabs] = useState([{ id: 0, name: "Default" }]);
+  const [activeTab, setActiveTab] = useState(0);
+
+  const handleTabClick = (id) => {
+    setActiveTab(id);
+  };
+
+  const handleTabClose = (id) => {
+    const newTabs = tabs.filter((tab) => tab.id !== id);
+    setTabs(newTabs);
+
+    // If the closing tab was active, we need to set a new active tab
+    if (id === activeTab && newTabs.length > 0) {
+      setActiveTab(newTabs[0].id);
+    } else if (newTabs.length === 0) {
+      // If no tabs left, set activeTab to null
+      setActiveTab(null);
+    }
+  };
+
+  const addTab = (name) => {
+    const newTab = { id: Date.now(), name }; // Create a new tab with unique id and name
+    setTabs((prevTabs) => [...prevTabs, newTab]);
+    setActiveTab(newTab.id);
+  };
+
+  const handleTableClick = (tableName) => {
+    addTab(tableName);
+  };
+
   useEffect(() => {
     if (rows.length > 0) {
       setColumns(
@@ -145,8 +176,12 @@ text-white
             </div>
             <hr className="my-2 w-full" />
             <div className="ml-9 mt-3 flex items-center">
-              {!error && <AiOutlineCheckCircle color="green" className="self-center" />}
-              {!error && <span className="px-2 font-bold">{`${rows.length} Rows`}</span>}
+              {rows.length > 0 && !error && (
+                <>
+                  <AiOutlineCheckCircle color="green" className="self-center" />
+                  <span className="px-2 font-bold">{`${rows.length} Rows`}</span>
+                </>
+              )}
               <span className="px-2">{executionTime}</span>
             </div>
             {message && (

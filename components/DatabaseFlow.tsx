@@ -84,7 +84,7 @@ function DatabaseFlow({ dbSchema }) {
 
   nodes.forEach((node) => {
     // Adjust these constants as necessary
-    const baseNodeWidth = 300; // The minimum width of a node
+    const baseNodeWidth = 400; // The minimum width of a node
     const baseNodeHeight = 125; // The minimum height of a node
     const columnHeight = 50; // The height each column adds
 

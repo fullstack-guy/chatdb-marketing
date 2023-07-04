@@ -58,7 +58,7 @@ export default function Page() {
     const { data, error } = await supabase
       .from("user_databases")
       .select("database_string")
-      .eq("uuid", database); // Assuming you want to fetch for a specific user
+      .eq("uuid", database);
 
     if (error) {
       console.error("Error fetching connection string:", error);
@@ -225,41 +225,36 @@ export default function Page() {
           </div>
           <div className="tabs tabs-boxed mt-10 bg-transparent">
             <a
-              className={`tab text-lg text-black ${
-                activeTab === "Query" ? "tab-active" : ""
-              }`}
+              className={`tab text-lg text-black ${activeTab === "Query" ? "tab-active" : ""
+                }`}
               onClick={() => handleTabClick("Query")}
             >
               Query
             </a>
             <a
-              className={`tab text-lg text-black ${
-                activeTab === "Chat" ? "tab-active" : ""
-              }`}
+              className={`tab text-lg text-black ${activeTab === "Chat" ? "tab-active" : ""
+                }`}
               onClick={() => handleTabClick("Chat")}
             >
               Chat
             </a>
             <a
-              className={`tab text-lg text-black ${
-                activeTab === "Tables" ? "tab-active" : ""
-              }`}
+              className={`tab text-lg text-black ${activeTab === "Tables" ? "tab-active" : ""
+                }`}
               onClick={() => handleTabClick("Tables")}
             >
               Tables
             </a>
             <a
-              className={`tab text-lg text-black ${
-                activeTab === "Flow" ? "tab-active" : ""
-              }`}
+              className={`tab text-lg text-black ${activeTab === "Flow" ? "tab-active" : ""
+                }`}
               onClick={() => handleTabClick("Flow")}
             >
               Flow
             </a>
             <a
-              className={`tab text-lg text-black ${
-                activeTab === "Settings" ? "tab-active" : ""
-              }`}
+              className={`tab text-lg text-black ${activeTab === "Settings" ? "tab-active" : ""
+                }`}
               onClick={() => handleTabClick("Settings")}
             >
               Settings
