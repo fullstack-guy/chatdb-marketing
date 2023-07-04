@@ -40,12 +40,12 @@ const Sidebar = ({ filteredTables }) => {
           className="group flex items-center text-gray-900 transition duration-75 dark:text-white"
           onClick={handleClick}
         >
-          <IconComponent className="text-gray-400" size={12} />
+          {/* <IconComponent className="text-gray-400" size={12} /> */}
           <span className="text-md font-md ml-3 text-black">
             {tableName}
           </span>
         </Link>
-        {isOpen && (
+        {/* {isOpen && (
           <div className="m-2">
             <div className="flex items-center">
               <div
@@ -72,7 +72,7 @@ const Sidebar = ({ filteredTables }) => {
               </div>
             </div>
           </div>
-        )}
+        )} */}
       </>
     );
   };
@@ -88,7 +88,6 @@ const Sidebar = ({ filteredTables }) => {
           className="group flex items-center justify-left w-full py-3 px-3 rounded bg-gray-600 my-1 transition duration-75 text-white dark:text-white"
           onClick={handleClick}
         >
-          <IconComponent className="text-white" size={16} />
           <div className="ml-2 flex items-center">
             <BsTable className="mr-2 text-white" />
             <span className="text-md font-medium">{schema}</span>
