@@ -68,13 +68,13 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
               <Link href="/" className="link-hover link">
                 Home
               </Link>
-              <Link href="pricing" className="link-hover link">
+              <Link href="/pricing" className="link-hover link">
                 Pricing
               </Link>
-              <Link href="blog" className="link-hover link">
+              <Link href="/blog" className="link-hover link">
                 Blog
               </Link>
-              <Link href="contact-us" className="link-hover link">
+              <Link href="/contact-us" className="link-hover link">
                 Contact Us
               </Link>
             </div>
