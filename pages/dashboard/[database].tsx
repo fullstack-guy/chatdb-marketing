@@ -3,7 +3,7 @@ import { useUser } from "@clerk/nextjs";
 import React, { useEffect, useRef, useState } from "react";
 import { BsDatabase } from "react-icons/bs";
 import { useRouter } from "next/router";
-import TableList from "../../components/dashboard/TableList";
+import TablePage from "../../components/dashboard/TablePage";
 import Chat from "../../components/dashboard/Chat";
 import supabase from "../../utils/supabaseClient";
 import Settings from "../../components/dashboard/Settings";
@@ -138,7 +138,7 @@ export default function Page() {
         );
       case "Tables":
         return (
-          <TableList
+          <TablePage
             database_token={databaseToken}
             filteredTables={filteredTables}
           />

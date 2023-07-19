@@ -36,7 +36,7 @@ const Sidebar = ({ filteredTables }) => {
       <>
         <Link
           key={key}
-          href="#"
+          href=""
           className="group flex items-center text-gray-900 transition duration-75 dark:text-white"
           onClick={handleClick}
         >
