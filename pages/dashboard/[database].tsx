@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { BsDatabase } from "react-icons/bs";
 import { BiRefresh } from "react-icons/bi";
 import { useRouter } from "next/router";
-import TableList from "../../components/dashboard/TableList";
+import TablePage from "../../components/dashboard/TablePage";
 import Chat from "../../components/dashboard/Chat";
 import supabase from "../../utils/supabaseClient";
 import Settings from "../../components/dashboard/Settings";
@@ -148,7 +148,7 @@ export default function Page() {
     const { data, error } = await supabase
       .from("user_databases")
       .select("database_string")
-      .eq("uuid", database); // Assuming you want to fetch for a specific user
+      .eq("uuid", database);
 
     if (error) {
       console.error("Error fetching connection string:", error);
@@ -221,7 +221,7 @@ export default function Page() {
     switch (activeTab) {
       case "Tables":
         return (
-          <TableList
+          <TablePage
             database_token={databaseToken}
             filteredTables={filteredTables}
           />
@@ -256,7 +256,7 @@ export default function Page() {
   return (
     <Layout>
       {fetchedDatabase && (
-        <div className="border-0 border-b border-solid border-b-slate-200 py-8">
+        <div className="border-0 border-b border-solid border-b-slate-200 py-4">
           <div className="flex flex-col items-start text-black sm:flex-row sm:justify-between">
             <div>
               <div className="text-left">POSTGRESQL</div>
@@ -275,6 +275,25 @@ export default function Page() {
                 </div>
               </div>
             </div>
+            {activeTab === "Query" && (
+              <div className="mt-4 sm:mt-0">
+                <div className="mt-4 flex items-center sm:mt-0">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      onChange={handleSearchInputChange}
+                      value={searchQuery}
+                      ref={searchInputRef}
+                      className="focus:ring-primary-600 w-64 flex-1 appearance-none rounded-lg border border-gray-300 border-transparent bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 shadow-sm focus:border-transparent focus:outline-none focus:ring-2"
+                      placeholder="Search"
+                    />
+                    <p className="absolute right-4 top-1/2 -translate-y-1/2 transform text-xs text-gray-400">
+                      <div className="kbd kbd-sm">⌘K</div>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
             {activeTab === "Tables" && (
               <div className="mt-4 sm:mt-0">
                 <div className="mt-4 flex items-center sm:mt-0">
@@ -295,35 +314,31 @@ export default function Page() {
               </div>
             )}
           </div>
-          <div className="tabs tabs-boxed mt-10 bg-transparent">
+          <div className="tabs tabs-boxed mt-7 bg-transparent p-0">
             <a
-              className={`tab text-lg text-black ${
-                activeTab === "Chat" ? "tab-active" : ""
-              }`}
+              className={`tab text-lg text-black ${activeTab === "Chat" ? "tab-active" : ""
+                }`}
               onClick={() => handleTabClick("Chat")}
             >
               Chat
             </a>
             <a
-              className={`tab text-lg text-black ${
-                activeTab === "Tables" ? "tab-active" : ""
-              }`}
+              className={`tab text-lg text-black ${activeTab === "Tables" ? "tab-active" : ""
+                }`}
               onClick={() => handleTabClick("Tables")}
             >
               Tables
             </a>
             <a
-              className={`tab text-lg text-black ${
-                activeTab === "Flow" ? "tab-active" : ""
-              }`}
+              className={`tab text-lg text-black ${activeTab === "Flow" ? "tab-active" : ""
+                }`}
               onClick={() => handleTabClick("Flow")}
             >
               Flow
             </a>
             <a
-              className={`tab text-lg text-black ${
-                activeTab === "Settings" ? "tab-active" : ""
-              }`}
+              className={`tab text-lg text-black ${activeTab === "Settings" ? "tab-active" : ""
+                }`}
               onClick={() => handleTabClick("Settings")}
             >
               Settings
@@ -331,7 +346,7 @@ export default function Page() {
           </div>
         </div>
       )}
-      <div className="flex flex-col bg-gray-100 py-6 sm:py-8">
+      <div className="flex flex-col bg-gray-100 sm:py-4">
         <div className="relative w-full py-3 sm:mx-auto">
           <div className="relative mx-8 rounded-3xl bg-white px-4 py-8 shadow sm:p-10 md:mx-0">
             <div className="mx-auto max-w-7xl">{renderContent()}</div>

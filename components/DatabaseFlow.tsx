@@ -129,7 +129,7 @@ function DatabaseFlow({ dbSchema }) {
   const [flowEdges, setEdges] = useEdgesState(edges);
 
   return (
-    <div className="m-auto h-[80vh] w-full">
+    <div className="m-auto h-[70vh] w-full">
       <ReactFlow
         nodes={flowNodes}
         edges={flowEdges}

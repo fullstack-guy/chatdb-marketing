@@ -1,7 +1,7 @@
-import { Toaster, toast } from "react-hot-toast";
-import { TailSpin } from "react-loader-spinner";
 import React, { useState, useEffect } from "react";
 import TablePreviewModal from "./TablePreviewModal";
+import { Toaster, toast } from "react-hot-toast";
+import { TailSpin } from "react-loader-spinner";
 import axios from "axios";
 
 const colors = [
@@ -50,7 +50,7 @@ const spinnerColors = [
   "#D1A0A3",
 ];
 
-const TableList = ({ database_token, filteredTables }) => {
+const TableList = ({ database_token, filteredTables, onTableClick }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [previewTableData, setPreviewTableData] = useState([]);
   const [selectedTableName, setSelectedTableName] = useState("");
@@ -71,9 +71,10 @@ const TableList = ({ database_token, filteredTables }) => {
       });
       const data = response.data;
 
+      onTableClick(data, tableData.tableName);
+
       setPreviewTableData(data);
       setSelectedTableName(tableData.tableName);
-      setModalOpen(true);
     } catch (error) {
       if (error.response && error.response.status === 401) {
         toast.error(
