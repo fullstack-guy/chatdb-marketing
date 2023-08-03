@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import TableEditor from './TableEditor';
 import TableList from './TableList';
 
-const TablePage = ({ filteredTables, databaseToken }) => {
+const TablePage = ({ filteredTables, database_token }) => {
     const [tabs, setTabs] = useState([
         { id: 0, type: 'TableList', tableRows: [], tableName: '' }
     ]);
@@ -50,7 +50,7 @@ const TablePage = ({ filteredTables, databaseToken }) => {
             {tabs.length > 0 && tabs[activeTab].type === 'TableEditor' ? (
                 <TableEditor tableRows={tabs[activeTab].tableRows} tableName={tabs[activeTab].tableName} />
             ) : (
-                <TableList database_token={databaseToken} filteredTables={filteredTables} onTableClick={handleTableClick} />
+                <TableList database_token={database_token} filteredTables={filteredTables} onTableClick={handleTableClick} />
             )}
         </div>
     );

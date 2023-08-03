@@ -51,12 +51,6 @@ const TableEditor = ({ tableRows, tableName }) => {
 
     return (
         <div className="max-h-full w-full overflow-x-auto">
-            <div className="mb-4 flex items-center justify-between">
-                <h2 className="text-center text-xl font-bold text-black">
-                    {tableName} Preview
-                </h2>
-            </div>
-
             <DataGrid className={`rdg-light w-100% ${roboto.className}`} columns={columns} rows={rows} />
             <div className="mt-4 flex flex-wrap items-center justify-between">
                 <div className="flex flex-wrap gap-4">

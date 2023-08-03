@@ -8,7 +8,6 @@ import Chat from "../../components/dashboard/Chat";
 import supabase from "../../utils/supabaseClient";
 import Settings from "../../components/dashboard/Settings";
 import DatabaseFlow from "../../components/DatabaseFlow";
-import Query from "../../components/dashboard/Query";
 
 interface Database {
   id: number;
@@ -27,7 +26,7 @@ export default function Page() {
 
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState("Query");
+  const [activeTab, setActiveTab] = useState("Chat");
   const [fetchedDatabase, setFetchedDatabase] = useState<Database | null>(null);
   const [databaseToken, setDatabaseToken] = useState<string>("");
   const [selectedSchema, setSelectedSchema] = useState("public");
@@ -129,13 +128,6 @@ export default function Page() {
 
   const renderContent = () => {
     switch (activeTab) {
-      case "Query":
-        return (
-          <Query
-            database_token={databaseToken}
-            filteredTables={filteredTables}
-          />
-        );
       case "Tables":
         return (
           <TablePage
@@ -224,13 +216,6 @@ export default function Page() {
             )}
           </div>
           <div className="tabs tabs-boxed mt-10 bg-transparent">
-            <a
-              className={`tab text-lg text-black ${activeTab === "Query" ? "tab-active" : ""
-                }`}
-              onClick={() => handleTabClick("Query")}
-            >
-              Query
-            </a>
             <a
               className={`tab text-lg text-black ${activeTab === "Chat" ? "tab-active" : ""
                 }`}
