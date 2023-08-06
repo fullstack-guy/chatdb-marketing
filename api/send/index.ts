@@ -47,6 +47,3 @@ app.post('*', async function (req, res) {
 });
 
 module.exports = app;
-
-
-export { };
