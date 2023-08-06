@@ -82,7 +82,7 @@ const Chat = ({ database_token }) => {
               </MemoizedReactMarkdown>
             </div>
             <h1 className="text-black font-bold text-2xl my-2">SQL Code</h1>
-            <Prism withLineNumbers language="sql">{result.sql}</Prism>
+            <Prism withLineNumbers language="sql">{format(result.sql, { language: 'postgresql' })}</Prism>
             <Toaster position="top-right" />
           </div>
         )

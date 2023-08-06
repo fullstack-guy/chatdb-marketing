@@ -51,24 +51,10 @@ export default function Page() {
           <div className="mx-auto max-w-6xl">
             <div className="flex flex-col items-center">
               <h1 className="mt-5 text-center text-3xl font-semibold text-heading md:max-w-4xl lg:text-5xl xl:text-6xl">
-                Finally, you can{" "}
-                <div
-                  style={{
-                    display: "inline",
-                    backgroundImage:
-                      "linear-gradient(90deg, rgba(244,155,255,1) 0%, rgba(172,152,251,1) 80%)",
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: "100% 0.15em",
-                    backgroundPosition: "0 88%",
-                  }}
-                >
-                  chat
-                </div>{" "}
-                with your database!
+                Your Personal AI Data Analyst
               </h1>
               <p className="mt-6 max-w-3xl text-xl">
-                The AI tool that knows everything about your database so it can
-                help you generate SQL queries that work! Think ChatGPT, but
+                Transforming raw database data into meaningful business intelligence with ease. Think ChatGPT, but
                 trained on your database.
               </p>
               {
@@ -279,9 +265,9 @@ export default function Page() {
             </div> */}
           </div>
         </section>
-        <section className="bg-layer-1 p-6 md:p-20">
-          <div className="mx-auto w-full max-w-6xl">
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <section className="bg-layer-1 p-6 md:p-10">
+          <div className="mx-auto w-full max-w-8xl">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               <div className="rounded-3xl bg-layer-2 p-5 md:px-8 md:py-6">
                 <div className="inline-block rounded-2xl bg-layer-3 p-3">
                   {/* Heroicon name: outline/user-circle */}
@@ -348,7 +334,7 @@ export default function Page() {
                     className="rounded-lg"
                     height={400}
                     width={600}
-                    src="/images/sqlgenerated.png"
+                    src="/images/chatdb-ask-ui.png"
                   />
                 </div>
               </div>
@@ -486,7 +472,7 @@ export default function Page() {
                   Visualizations
                 </span>
                 <h3 className="text-3xl font-semibold text-heading lg:text-4xl">
-                  See the layout
+                  Visualize your data relationships
                 </h3>
                 <p className="text-lg font-medium">
                   Database schemas can be complex. We try and make it easy for
