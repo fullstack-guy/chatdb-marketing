@@ -6,6 +6,7 @@ import Layout from "../components/Layout";
 import posthog from "posthog-js";
 import Image from "next/image";
 import { LightBulbIcon } from "@heroicons/react/outline";
+import supabase from "../utils/supabaseClient";
 
 export default function Page() {
   const [email, setEmail] = useState("");
@@ -21,16 +22,25 @@ export default function Page() {
       return;
     }
 
-    axios
-      .post("https://api.slapform.com/vKid4Let6", { email: email })
-      .then((response) => {
-        toast.success("Thanks for signing up!");
-        setEmail("");
-        setSubmitted(true);
+    supabase
+      .from('waitlist_email')
+      .upsert({ email: email })
+      .then(({ data, error }) => {
+        if (error) {
+          console.error("Error:", error);
+        } else {
+          axios
+            .post(`/api/send`, { email: email })
+            .then((response) => {
+              toast.success("Thanks for signing up!");
+              setEmail("");
+              setSubmitted(true);
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        }
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
   };
 
   return (
@@ -498,17 +508,21 @@ export default function Page() {
             <div className="flex flex-col items-center justify-between gap-6 lg:flex-row-reverse">
               <div className="max-w-md space-y-6 text-center lg:text-left">
                 <h3 className="text-3xl font-semibold text-heading lg:text-4xl">
-                  Add new databases in seconds
+                  Fresh SQL Editor
                 </h3>
                 <p className="text-lg font-medium">
-                  Connecting to your database shouldn't be hard.
+                  Welcome to having an understandable, easy way to query the
+                  database. Don't worry your assistant will work here as well to
+                  help you understand any errors that arise.
                 </p>
               </div>
 
               <div className="max-w-lg">
-                <img
-                  src="https://chatdb-assets.s3.amazonaws.com/Snapshot.gif"
-                  alt="Snapshot GIF"
+                <Image
+                  src="/images/db-client.png"
+                  alt="DB Client Image"
+                  width={600}
+                  height={400}
                   className="w-full rounded-lg"
                 />
               </div>

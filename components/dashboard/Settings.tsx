@@ -92,7 +92,7 @@ const Settings: React.FC<SettingsProps> = ({
         overlayClassName="fixed inset-0 bg-black bg-opacity-70"
         contentLabel="Delete Confirmation Modal"
       >
-        <h2 className="mb-4 text-center text-2xl font-bold">
+        <h2 className="mb-4 text-center text-2xl font-bold text-black">
           Confirm Deletion
         </h2>
         <p className="mb-8 text-center">

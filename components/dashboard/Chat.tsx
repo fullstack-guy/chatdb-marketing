@@ -1,10 +1,18 @@
-import SyntaxHighlighter from "react-syntax-highlighter";
 import { format } from "sql-formatter";
-import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import { FiCopy } from "react-icons/fi";
 import { useState } from "react";
 import { BeatLoader } from "react-spinners";
+import { Prism } from "@mantine/prism";
+import { Toaster, toast } from "react-hot-toast";
+import { FC, memo } from "react";
+import ReactMarkdown, { Options } from "react-markdown";
+import gfm from "remark-gfm"; // this is the plugin required for react-markdown to handle tables
+
+export const MemoizedReactMarkdown: FC<Options> = memo(
+  ReactMarkdown,
+  (prevProps, nextProps) =>
+    prevProps.children === nextProps.children &&
+    prevProps.className === nextProps.className
+);
 
 const Chat = ({ database_token }) => {
   const [query, setQuery] = useState("");
@@ -16,21 +24,27 @@ const Chat = ({ database_token }) => {
       e.preventDefault();
       setIsLoading(true);
 
-      const response = await fetch("/api/db/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query, connectionStringToken: database_token }),
-      });
+      try {
+        const response = await fetch("/api/db/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query, token: database_token }),
+        });
 
-      if (!response.ok) {
-        console.error("Failed to fetch data");
+        if (!response.ok) {
+          // check if response went through
+          throw new Error("Response Error: " + response.status);
+        }
+
+        const data = await response.json();
+
+        setResult(data.result);
         setIsLoading(false);
-        return;
+      } catch (error) {
+        console.error("Fetch Error :-S", error);
+        setIsLoading(false);
+        toast.error("Sorry that is embarrasing. We had an issue 🙈");
       }
-
-      const data = await response.json();
-      setResult(data.result);
-      setIsLoading(false);
     }
   };
 
@@ -53,27 +67,28 @@ const Chat = ({ database_token }) => {
           />
         </div>
       ) : (
-        (result.result || result.sql) && (
+        result.result && (
           <div className="mt-10">
-            <div className="answer-box mb-4 rounded-lg bg-gray-100 p-4">
-              <p className="text-lg font-semibold text-gray-800">
-                {result.result}
-              </p>
-            </div>
-            <div className="mockup-code relative rounded-lg bg-[#282a36] p-4">
-              <div className="absolute right-5 top-5 cursor-pointer text-gray-400 hover:text-gray-200">
-                <CopyToClipboard text={result.sql.trim()}>
-                  <FiCopy size={30} />
-                </CopyToClipboard>
-              </div>
-              <SyntaxHighlighter
-                className="text-md font-bold"
-                language="sql"
-                style={dracula}
+            <div className="answer-box mb-4 rounded-lg p-4">
+              <MemoizedReactMarkdown
+                className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
+                remarkPlugins={[gfm]}
+                components={{
+                  p({ children }) {
+                    return (
+                      <p className="mb-2 text-black last:mb-0">{children}</p>
+                    );
+                  },
+                }}
               >
-                {format(result.sql, { language: "sql" })}
-              </SyntaxHighlighter>
+                {result.result}
+              </MemoizedReactMarkdown>
             </div>
+            <h1 className="my-2 text-2xl font-bold text-black">SQL Code</h1>
+            <Prism withLineNumbers language="sql">
+              {format(result.sql, { language: 'postgresql' })}
+            </Prism>
+            <Toaster position="top-right" />
           </div>
         )
       )}

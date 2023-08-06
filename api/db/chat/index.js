@@ -12,9 +12,9 @@ app.use(express.json());
 
 app.post("*", ClerkExpressRequireAuth(), async (req, res) => {
   // Extract the query and the connection string token from the request body
-  const { query, connectionStringToken } = req.body;
+  const { query, token } = req.body;
 
-  if (!query || !connectionStringToken) {
+  if (!query || !token) {
     return res
       .status(400)
       .json({ error: "No query or connection string token provided" });
@@ -26,9 +26,7 @@ app.post("*", ClerkExpressRequireAuth(), async (req, res) => {
     );
 
     // Use the Basis Theory API to retrieve the real connection string
-    const connectionStringObject = await bt.tokens.retrieve(
-      connectionStringToken
-    );
+    const connectionStringObject = await bt.tokens.retrieve(token);
     const connectionString = connectionStringObject.data; // get raw data from retrieved token
 
     // Initialize the Postgres connection with the retrieved connection string
