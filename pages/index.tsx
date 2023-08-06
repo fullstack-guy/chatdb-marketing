@@ -505,28 +505,6 @@ export default function Page() {
               </div>
             </div>
 
-            <div className="flex flex-col items-center justify-between gap-6 lg:flex-row-reverse">
-              <div className="max-w-md space-y-6 text-center lg:text-left">
-                <h3 className="text-3xl font-semibold text-heading lg:text-4xl">
-                  Fresh SQL Editor
-                </h3>
-                <p className="text-lg font-medium">
-                  Welcome to having an understandable, easy way to query the
-                  database. Don't worry your assistant will work here as well to
-                  help you understand any errors that arise.
-                </p>
-              </div>
-
-              <div className="max-w-lg">
-                <Image
-                  src="/images/db-client.png"
-                  alt="DB Client Image"
-                  width={600}
-                  height={400}
-                  className="w-full rounded-lg"
-                />
-              </div>
-            </div>
 
             {/* <div className="flex flex-col items-center justify-between gap-6 lg:flex-row ">
               <div className="max-w-md space-y-6 text-center lg:text-left">
