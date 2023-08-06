@@ -20,7 +20,6 @@
     "@mantine/prism": "^6.0.15",
     "@monaco-editor/react": "^4.5.1",
     "@supabase/supabase-js": "^2.26.0",
-    "ai": "^2.1.9",
     "apache-arrow": "^12.0.1",
     "axios": "^1.4.0",
     "dagre": "^0.8.5",
