@@ -6,6 +6,7 @@ import Layout from "../components/Layout";
 import posthog from "posthog-js";
 import Image from "next/image";
 import { LightBulbIcon } from "@heroicons/react/outline";
+import supabase from "../utils/supabaseClient";
 
 export default function Page() {
   const [email, setEmail] = useState("");
@@ -21,16 +22,25 @@ export default function Page() {
       return;
     }
 
-    axios
-      .post("https://api.slapform.com/vKid4Let6", { email: email })
-      .then((response) => {
-        toast.success("Thanks for signing up!");
-        setEmail("");
-        setSubmitted(true);
+    supabase
+      .from('waitlist_email')
+      .upsert({ email: email })
+      .then(({ data, error }) => {
+        if (error) {
+          console.error("Error:", error);
+        } else {
+          axios
+            .post(`/api/send`, { email: email })
+            .then((response) => {
+              toast.success("Thanks for signing up!");
+              setEmail("");
+              setSubmitted(true);
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        }
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
   };
 
   return (
@@ -501,7 +511,9 @@ export default function Page() {
                   Fresh SQL Editor
                 </h3>
                 <p className="text-lg font-medium">
-                  Welcome to having an understandable, easy way to query the database. Don't worry your assistant will work here as well to help you understand any errors that arise.
+                  Welcome to having an understandable, easy way to query the
+                  database. Don't worry your assistant will work here as well to
+                  help you understand any errors that arise.
                 </p>
               </div>
 

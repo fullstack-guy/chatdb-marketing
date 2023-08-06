@@ -1,18 +1,18 @@
 import { format } from "sql-formatter";
 import { useState } from "react";
 import { BeatLoader } from "react-spinners";
-import { Prism } from '@mantine/prism';
+import { Prism } from "@mantine/prism";
 import { Toaster, toast } from "react-hot-toast";
-import { FC, memo } from 'react'
-import ReactMarkdown, { Options } from 'react-markdown'
-import gfm from 'remark-gfm'; // this is the plugin required for react-markdown to handle tables
+import { FC, memo } from "react";
+import ReactMarkdown, { Options } from "react-markdown";
+import gfm from "remark-gfm"; // this is the plugin required for react-markdown to handle tables
 
 export const MemoizedReactMarkdown: FC<Options> = memo(
   ReactMarkdown,
   (prevProps, nextProps) =>
     prevProps.children === nextProps.children &&
     prevProps.className === nextProps.className
-)
+);
 
 const Chat = ({ database_token }) => {
   const [query, setQuery] = useState("");
@@ -31,7 +31,8 @@ const Chat = ({ database_token }) => {
           body: JSON.stringify({ query, token: database_token }),
         });
 
-        if (!response.ok) { // check if response went through
+        if (!response.ok) {
+          // check if response went through
           throw new Error("Response Error: " + response.status);
         }
 
@@ -40,9 +41,9 @@ const Chat = ({ database_token }) => {
         setResult(data.result);
         setIsLoading(false);
       } catch (error) {
-        console.error('Fetch Error :-S', error);
+        console.error("Fetch Error :-S", error);
         setIsLoading(false);
-        toast.error('Sorry that is embarrasing. We had an issue 🙈')
+        toast.error("Sorry that is embarrasing. We had an issue 🙈");
       }
     }
   };
@@ -74,15 +75,19 @@ const Chat = ({ database_token }) => {
                 remarkPlugins={[gfm]}
                 components={{
                   p({ children }) {
-                    return <p className="text-black mb-2 last:mb-0">{children}</p>
+                    return (
+                      <p className="mb-2 text-black last:mb-0">{children}</p>
+                    );
                   },
                 }}
               >
                 {result.result}
               </MemoizedReactMarkdown>
             </div>
-            <h1 className="text-black font-bold text-2xl my-2">SQL Code</h1>
-            <Prism withLineNumbers language="sql">{result.sql}</Prism>
+            <h1 className="my-2 text-2xl font-bold text-black">SQL Code</h1>
+            <Prism withLineNumbers language="sql">
+              {format(result.sql, { language: 'postgresql' })}
+            </Prism>
             <Toaster position="top-right" />
           </div>
         )

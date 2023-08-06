@@ -2,12 +2,15 @@ import Layout from "../../components/Layout";
 import { useUser } from "@clerk/nextjs";
 import React, { useEffect, useRef, useState } from "react";
 import { BsDatabase } from "react-icons/bs";
+import { BiRefresh } from "react-icons/bi";
 import { useRouter } from "next/router";
 import TablePage from "../../components/dashboard/TablePage";
 import Chat from "../../components/dashboard/Chat";
 import supabase from "../../utils/supabaseClient";
 import Settings from "../../components/dashboard/Settings";
 import DatabaseFlow from "../../components/DatabaseFlow";
+import { Toaster, toast } from "react-hot-toast";
+import { useBasisTheory } from "@basis-theory/basis-theory-react";
 
 interface Database {
   id: number;
@@ -30,11 +33,17 @@ export default function Page() {
   const [fetchedDatabase, setFetchedDatabase] = useState<Database | null>(null);
   const [databaseToken, setDatabaseToken] = useState<string>("");
   const [selectedSchema, setSelectedSchema] = useState("public");
+  const [refreshing, setRefreshing] = useState(false);
   const [dataModel, setDataModel] = useState([]);
+  const [saving, setSaving] = useState(false);
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
+
+  const { bt } = useBasisTheory(process.env.NEXT_PUBLIC_BASIS_THEORY_KEY, {
+    elements: true,
+  });
 
   const fetchTables = async () => {
     const { data, error } = await supabase
@@ -50,6 +59,88 @@ export default function Page() {
       const db = data[0] as Database;
       setFetchedDatabase(db);
       setDataModel(convertJsonToDataModel(db.schema_data));
+    }
+  };
+
+  const updateDatabase = async (data, user, databaseToken, name, toast) => {
+    try {
+      const { data: existingSchemas, error: schemaError } = await supabase
+        .from("user_schemas")
+        .select("uuid")
+        .eq("user_id", user.id)
+        .eq("title", fetchedDatabase.title);
+
+      if (schemaError) {
+        console.error("Error querying Supabase:", schemaError);
+        toast.error("Error querying Supabase");
+        return;
+      }
+
+      if (existingSchemas.length > 0) {
+        // Found matching schema, now update it
+        const schemaID = existingSchemas[0].uuid; // Get the id of the existing schema
+
+        const { error: databaseError } = await supabase
+          .from("user_schemas")
+          .update({
+            schema_data: data,
+          })
+          .eq("uuid", schemaID);
+
+        if (databaseError) {
+          console.error("Error saving data to database:", databaseError);
+          toast.error("Error saving database string to database");
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        toast.error("No matching schema found!");
+        return false;
+      }
+    } catch (error) {
+      console.error("Error updating data in database:", error);
+      toast.error("Error updating data in database");
+    }
+  };
+
+  const refreshAndSaveDatabase = async () => {
+    setRefreshing(true);
+
+    const url = "/api/connect";
+    const body = {
+      database_token: databaseToken,
+    };
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json(); // Parse the response
+        toast.error(errorData.message);
+        setRefreshing(false);
+      } else {
+        const data = await response.json();
+        try {
+          await updateDatabase(data, user, databaseToken, name, toast);
+          await fetchTables();
+          toast.success("Database refreshed!");
+        } catch (error) {
+          toast.error("There was an error saving the database!");
+        } finally {
+          setSaving(false);
+        }
+        return data;
+      }
+    } catch (error) {
+      setRefreshing(false);
+      toast.error(error.message); // Show network error message
     }
   };
 
@@ -165,15 +256,23 @@ export default function Page() {
   return (
     <Layout>
       {fetchedDatabase && (
-        <div className="border-0 border-b border-solid border-b-slate-200 py-8">
+        <div className="border-0 border-b border-solid border-b-slate-200 py-4">
           <div className="flex flex-col items-start text-black sm:flex-row sm:justify-between">
             <div>
               <div className="text-left">POSTGRESQL</div>
-              <div className="flex items-center text-black">
-                <BsDatabase />
-                <span className="ml-2 text-3xl font-semibold">
-                  {fetchedDatabase.title}
-                </span>
+              <div className="flex items-center justify-between text-black">
+                <div className="flex items-center">
+                  <BsDatabase />
+                  <span className="ml-2 text-3xl font-semibold">
+                    {fetchedDatabase.title}
+                  </span>
+                </div>
+                <div>
+                  <BiRefresh
+                    className="mx-2 cursor-pointer text-2xl"
+                    onClick={refreshAndSaveDatabase}
+                  />
+                </div>
               </div>
             </div>
             {activeTab === "Query" && (
@@ -247,13 +346,14 @@ export default function Page() {
           </div>
         </div>
       )}
-      <div className="flex flex-col bg-gray-100 py-6 sm:py-8">
+      <div className="flex flex-col bg-gray-100 sm:py-4">
         <div className="relative w-full py-3 sm:mx-auto">
           <div className="relative mx-8 rounded-3xl bg-white px-4 py-8 shadow sm:p-10 md:mx-0">
             <div className="mx-auto max-w-7xl">{renderContent()}</div>
           </div>
         </div>
       </div>
+      <Toaster position="bottom-center" />
     </Layout>
   );
 }

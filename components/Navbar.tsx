@@ -99,9 +99,11 @@ const Navbar = () => {
             <Menu.Items className="absolute right-0 z-50 mt-2 w-56 origin-top-right rounded-xl bg-layer-3 py-3 shadow-xl focus:outline-none">
               <Menu.Item>
                 {({ active }) => (
-                  <Link href="/pricing"
-                    className={`${active ? "bg-muted-1 text-heading" : "text-text"
-                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                  <Link
+                    href="/pricing"
+                    className={`${
+                      active ? "bg-muted-1 text-heading" : "text-text"
+                    } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                   >
                     Pricing
                   </Link>
@@ -109,9 +111,11 @@ const Navbar = () => {
               </Menu.Item>
               <Menu.Item>
                 {({ active }) => (
-                  <Link href="/blog"
-                    className={`${active ? "bg-muted-1 text-heading" : "text-text"
-                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                  <Link
+                    href="/blog"
+                    className={`${
+                      active ? "bg-muted-1 text-heading" : "text-text"
+                    } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                   >
                     Blog
                   </Link>
@@ -119,9 +123,11 @@ const Navbar = () => {
               </Menu.Item>
               <Menu.Item>
                 {({ active }) => (
-                  <Link href="/contact-us"
-                    className={`${active ? "bg-muted-1 text-heading" : "text-text"
-                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                  <Link
+                    href="/contact-us"
+                    className={`${
+                      active ? "bg-muted-1 text-heading" : "text-text"
+                    } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                   >
                     Contact-Us
                   </Link>

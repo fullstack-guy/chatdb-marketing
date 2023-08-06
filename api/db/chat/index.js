@@ -26,9 +26,7 @@ app.post("*", ClerkExpressRequireAuth(), async (req, res) => {
     );
 
     // Use the Basis Theory API to retrieve the real connection string
-    const connectionStringObject = await bt.tokens.retrieve(
-      token
-    );
+    const connectionStringObject = await bt.tokens.retrieve(token);
     const connectionString = connectionStringObject.data; // get raw data from retrieved token
 
     // Initialize the Postgres connection with the retrieved connection string

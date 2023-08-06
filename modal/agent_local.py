@@ -20,6 +20,7 @@ from langchain.callbacks.manager import (
     AsyncCallbackManagerForToolRun,
     CallbackManagerForToolRun,
 )
+from langchain.memory import ConversationBufferMemory
 from langchain.sql_database import SQLDatabase
 from langchain.tools.base import BaseTool
 from langchain.chat_models import ChatOpenAI
@@ -34,6 +35,8 @@ import sqlparse
 import io
 import logging
 import requests
+from langchain.agents import initialize_agent
+
 
 # Create Stub and FastAPI instances.
 stub = Stub('db-agent-api')
@@ -99,40 +102,6 @@ class BaseSQLDatabaseTool(BaseModel):
         """Configuration for this pydantic object."""
         arbitrary_types_allowed = True
         extra = Extra.forbid
-
-class ChartingTool(BaseTool):
-    """
-    Tool for creating charts and graphs.
-    """
-    name = "chart_data"
-    description = (
-        "Input to this tool is python code to return an bytes of image of a chart or graph,"
-        " with access to libraries such as matplotlib, seaborn, plotly."
-    )
-    
-    def _run(
-        self, code: str, run_manager: Optional[CallbackManagerForToolRun] = None
-    ) -> bytes:
-        import os
-        os.environ["CODEBOX_API_KEY"] = "sk-4d4eaf9cb67b1128c63e49ce370fd450efe5842cf475aca5"
-        with CodeBox() as codebox:
-            result = codebox.run(code)
-            if result.error:
-                raise Exception(f"Error running code: {result.error}")
-            
-            # The code should return a matplotlib figure
-            fig = result.output
-            buf = BytesIO()
-            fig.savefig(buf, format='png')
-            buf.seek(0)
-            return buf.read()
-
-    async def _arun(
-        self,
-        code: str,
-        run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
-    ) -> bytes:
-        raise NotImplementedError("ChartingTool does not support async")
 
 class QuerySQLDataBaseTool(BaseSQLDatabaseTool, BaseTool):
     """
@@ -205,9 +174,7 @@ class ReadOnlySQLDatabaseToolkit(BaseToolkit):
             InfoSQLDatabaseTool(
                 db=self.db, description=info_sql_database_tool_description
             ),
-            ChartingTool(),
             ListSQLDatabaseTool(db=self.db),
-            QuerySQLCheckerTool(db=self.db, llm=self.llm),
         ]
 
 
@@ -232,61 +199,29 @@ class QueryOutput(BaseModel):
     total_cost: float
     result: str
 
+db = SQLDatabase.from_uri(
+    database_uri=("postgresql://toms_tm4d_user:F89BfEMghHx5YSi5ez7qFrRhQDBA83xP@dpg-cicg6495rnuk9qcao4ug-a.oregon-postgres.render.com/toms_tm4d?sslmode=require")
+)
 
-@web_app.post("/chat_query", response_model=QueryOutput)
-async def run_query(query_input: QueryInput):
-    """
-    FastAPI endpoint to run the SQL query.
-    """
-    
-    try:
-        # Make a request to the Basis Theory API to get the token data
-        response = requests.get(
-            f"https://api.basistheory.com/tokens/{query_input.token}",
-            headers={"BT-API-KEY": get_basis_theory_key()},
-        )
+toolkit = ReadOnlySQLDatabaseToolkit(
+    db=db,
+    llm=OpenAI(model='gpt-4-0613', temperature=0, openai_api_key=get_openai_api_key())
+)
 
-        # Check the response status
-        response.raise_for_status()
+memory = ConversationBufferMemory(memory_key="chat_history")
+agent_chain = create_sql_agent(llm, toolkit, agent=AgentType.OPENAI_FUNCTIONS, verbose=True, memory=memory)
 
-        # Extract token data
-        token_data = response.json()["data"]
-                
-        # Initialize SQLDatabase, Toolkit, and AgentExecutor instances.
-        db = SQLDatabase.from_uri(
-            database_uri=token_data.replace("postgres://", "postgresql://")
-        )
-        
-        toolkit = ReadOnlySQLDatabaseToolkit(
-            db=db,
-            llm=OpenAI(model='gpt-4-0613', temperature=0, openai_api_key=get_openai_api_key())
-        )
-        agent_executor = create_sql_agent(
-            llm=llm,
-            toolkit=toolkit,
-            verbose=True,
-            agent_type=AgentType.OPENAI_FUNCTIONS,
-            return_sql=True
-        )
-        
-        # Execute the query.
-        prompt = query_input.query
-        with get_openai_callback() as cb:
-            result = agent_executor({"input": prompt})
-            return QueryOutput(
-                total_tokens=cb.total_tokens,
-                prompt_tokens=cb.prompt_tokens,
-                completion_tokens=cb.completion_tokens,
-                total_cost=cb.total_cost,
-                result=result["output"],
-            )
-    except Exception:
-        return HTTPException(500, "LLM Error")
 
-@stub.function(image=image)
-@asgi_app()
-def fastapi_app():
-    """
-    ASGI application that returns the FastAPI instance.
-    """
-    return web_app
+# Execute the query.
+while True:
+    prompt = input("> ")
+    with get_openai_callback() as cb:
+        result = agent_chain.run({"input": prompt})
+        # output = (QueryOutput(
+        #     total_tokens=cb.total_tokens,
+        #     prompt_tokens=cb.prompt_tokens,
+        #     completion_tokens=cb.completion_tokens,
+        #     total_cost=cb.total_cost,
+        #     result=result,
+        # ))
+        print (result)

@@ -1,6 +1,5 @@
 import { Resizable } from "re-resizable";
-import Editor from '@monaco-editor/react';
-
+import Editor from "@monaco-editor/react";
 
 const Queryarea = ({ annotations, query, onChange }) => {
   return (
@@ -8,14 +7,13 @@ const Queryarea = ({ annotations, query, onChange }) => {
       className="resizable-container"
       defaultSize={{
         width: "100%",
-        height: 400
+        height: 400,
       }}
       minWidth={100}
       minHeight={100}
       maxWidth={"100%"}
       maxHeight={"100%"}
       enable={{ right: false, bottom: true }}
-
     >
       <Editor
         height="100%"
