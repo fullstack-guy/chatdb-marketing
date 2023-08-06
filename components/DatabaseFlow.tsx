@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import ReactFlow, {
   useNodesState,
   useEdgesState,
@@ -84,7 +84,7 @@ function DatabaseFlow({ dbSchema }) {
 
   nodes.forEach((node) => {
     // Adjust these constants as necessary
-    const baseNodeWidth = 300; // The minimum width of a node
+    const baseNodeWidth = 400; // The minimum width of a node
     const baseNodeHeight = 125; // The minimum height of a node
     const columnHeight = 50; // The height each column adds
 
@@ -104,7 +104,7 @@ function DatabaseFlow({ dbSchema }) {
             id: `${tableName}-${foreignKey.foreignTable}-${idx}`,
             source: tableName,
             target: foreignKey.foreignTable,
-            style: { strokeWidth: 5 },
+            style: { strokeWidth: 5 }
           });
 
           // set edge in dagre graph
@@ -135,7 +135,7 @@ function DatabaseFlow({ dbSchema }) {
         edges={flowEdges}
         nodeTypes={nodeTypes}
         proOptions={proOptions}
-        className="bg-teal-50"
+        className="bg-blue-50"
         elementsSelectable
         nodesDraggable
         fitView

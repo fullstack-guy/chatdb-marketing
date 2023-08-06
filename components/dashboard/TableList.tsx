@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import TablePreviewModal from "./TablePreviewModal";
 import { Toaster, toast } from "react-hot-toast";
 import { TailSpin } from "react-loader-spinner";
+import React, { useState, useEffect } from "react";
+import TablePreviewModal from "./TablePreviewModal";
 import axios from "axios";
 
 const colors = [

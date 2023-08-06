@@ -43,10 +43,12 @@
     "react-hotjar": "^5.5.0",
     "react-icons": "^4.9.0",
     "react-loader-spinner": "^5.3.4",
+    "react-markdown": "^8.0.7",
     "react-modal": "^3.16.1",
     "react-spinners": "^0.13.8",
     "react-syntax-highlighter": "^15.5.0",
     "reactflow": "^11.7.2",
+    "remark-gfm": "^3.0.1",
     "sql-formatter": "^12.2.3",
     "use-stripe-subscription": "^1.0.6",
     "uuid": "^9.0.0"
