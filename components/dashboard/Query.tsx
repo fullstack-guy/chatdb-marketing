@@ -8,14 +8,14 @@ import dynamic from "next/dynamic";
 import Checkbox from "../parser-components/checkbox/CheckBox";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { FaPlay } from "react-icons/fa";
-import { Roboto_Mono } from 'next/font/google'
+import { Roboto_Mono } from "next/font/google";
 
 const Queryarea = dynamic(
   () => import("../../components/parser-components/queryarea/Queryarea"),
   { ssr: false }
 );
 
-const roboto = Roboto_Mono({ subsets: ['latin'] })
+const roboto = Roboto_Mono({ subsets: ["latin"] });
 
 const Query = ({ database_token, filteredTables }) => {
   const [rows, setRows] = useState([]);
@@ -88,9 +88,11 @@ const Query = ({ database_token, filteredTables }) => {
       if (response.data.error) {
         setError({
           code: response.data.errorCode,
-          message: response.data.errorMessage
+          message: response.data.errorMessage,
         });
-        setMessage(`[${response.data.errorCode}] ERROR: ${response.data.errorMessage}`);
+        setMessage(
+          `[${response.data.errorCode}] ERROR: ${response.data.errorMessage}`
+        );
         setRows([]);
         setColumns([]);
         return;
@@ -125,11 +127,13 @@ const Query = ({ database_token, filteredTables }) => {
       }
     } catch (error) {
       setError({
-        message: `ERROR: ${error.message}`
+        message: `ERROR: ${error.message}`,
       });
       setMessage(`ERROR: ${error.message}`);
       if (error.response) {
-        setMessage(`[${error.response.status}] ERROR: ${error.response.data.errorMessage}`);
+        setMessage(
+          `[${error.response.status}] ERROR: ${error.response.data.errorMessage}`
+        );
       }
     } finally {
       setIsLoading(false); // Set loading state to false when API call finishes
@@ -146,7 +150,11 @@ const Query = ({ database_token, filteredTables }) => {
       <div className="flex">
         <Sidebar filteredTables={filteredTables} />
         <div className="w-4/5">
-          <Queryarea annotations={annotations} query={query} onChange={handleQueryChange} />
+          <Queryarea
+            annotations={annotations}
+            query={query}
+            onChange={handleQueryChange}
+          />
           <div>
             <div className="ml-9 flex pt-2">
               <button
@@ -157,10 +165,11 @@ const Query = ({ database_token, filteredTables }) => {
     items-center 
     justify-center 
     space-x-2 
-    ${query.trim() && !isLoading
-                    ? "cursor-pointer bg-green-500 hover:bg-gray-800"
-                    : "cursor-not-allowed bg-gray-300"
-                  } 
+    ${
+      query.trim() && !isLoading
+        ? "cursor-pointer bg-green-500 hover:bg-gray-800"
+        : "cursor-not-allowed bg-gray-300"
+    } 
 mr-5 
 rounded 
 border 
@@ -170,7 +179,14 @@ font-bold
 text-white
 `}
               >
-                {isLoading ? <div>Loading...</div> : <><FaPlay /><span >Run Query</span></>}
+                {isLoading ? (
+                  <div>Loading...</div>
+                ) : (
+                  <>
+                    <FaPlay />
+                    <span>Run Query</span>
+                  </>
+                )}
               </button>
               <Checkbox />
             </div>
@@ -186,7 +202,13 @@ text-white
             </div>
             {message && (
               <div className="ml-9 mt-3 flex">
-                <span className={`px-2 font-bold ${error ? 'text-red-500' : 'text-green-500'}`}>{message}</span>
+                <span
+                  className={`px-2 font-bold ${
+                    error ? "text-red-500" : "text-green-500"
+                  }`}
+                >
+                  {message}
+                </span>
               </div>
             )}
             <hr className="my-2 w-full" />

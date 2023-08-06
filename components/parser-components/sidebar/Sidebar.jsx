@@ -41,9 +41,7 @@ const Sidebar = ({ filteredTables }) => {
           onClick={handleClick}
         >
           {/* <IconComponent className="text-gray-400" size={12} /> */}
-          <span className="text-md font-md ml-3 text-black">
-            {tableName}
-          </span>
+          <span className="text-md font-md ml-3 text-black">{tableName}</span>
         </Link>
         {/* {isOpen && (
           <div className="m-2">
@@ -85,7 +83,7 @@ const Sidebar = ({ filteredTables }) => {
     return (
       <div key={schema}>
         <button
-          className="group flex items-center justify-left w-full py-3 px-3 rounded bg-gray-600 my-1 transition duration-75 text-white dark:text-white"
+          className="justify-left group my-1 flex w-full items-center rounded bg-gray-600 px-3 py-3 text-white transition duration-75 dark:text-white"
           onClick={handleClick}
         >
           <div className="ml-2 flex items-center">
@@ -117,7 +115,7 @@ const Sidebar = ({ filteredTables }) => {
       className="left-0 top-0 z-40 h-auto w-64 -translate-x-full border-r-2 border-stone-300 transition-transform sm:translate-x-0"
       aria-label="Sidebar"
     >
-      <div className="h-full overflow-y-auto bg-gray-50 px-3 py-4 dark:bg-gray-800 d-flex flex-column justify-center">
+      <div className="d-flex flex-column h-full justify-center overflow-y-auto bg-gray-50 px-3 py-4 dark:bg-gray-800">
         <div className="flex flex-col items-center justify-center">
           <span className="mb-3 text-xl font-medium text-gray-800">
             SCHEMAS

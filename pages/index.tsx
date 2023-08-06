@@ -501,7 +501,9 @@ export default function Page() {
                   Fresh SQL Editor
                 </h3>
                 <p className="text-lg font-medium">
-                  Welcome to having an understandable, easy way to query the database. Don't worry your assistant will work here as well to help you understand any errors that arise.
+                  Welcome to having an understandable, easy way to query the
+                  database. Don't worry your assistant will work here as well to
+                  help you understand any errors that arise.
                 </p>
               </div>
 

@@ -278,8 +278,9 @@ export default function Page() {
                         onChange={connectionStringChange}
                       />
                       <span
-                        className={`btn hidden sm:flex ${connecting || saving ? "loading" : ""
-                          } cursor-pointer border-none bg-success font-semibold text-black hover:bg-success`}
+                        className={`btn hidden sm:flex ${
+                          connecting || saving ? "loading" : ""
+                        } cursor-pointer border-none bg-success font-semibold text-black hover:bg-success`}
                         onClick={connected ? saveDatabase : connectToDatabase}
                       >
                         {connecting ? (
@@ -313,8 +314,9 @@ export default function Page() {
                     )}
                     <div className="my-2 w-full">
                       <button
-                        className={`btn ${connecting && "loading"
-                          } mx-auto my-2 flex w-[75%] bg-success font-semibold text-black hover:bg-success sm:hidden`}
+                        className={`btn ${
+                          connecting && "loading"
+                        } mx-auto my-2 flex w-[75%] bg-success font-semibold text-black hover:bg-success sm:hidden`}
                         onClick={connectToDatabase}
                         type="submit"
                       >

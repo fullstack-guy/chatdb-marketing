@@ -25,11 +25,8 @@ app.post("*", async (req, res) => {
     );
 
     // Use the Basis Theory API to retrieve the real connection string
-    const connectionStringObject = await bt.tokens.retrieve(
-      database_token
-    );
+    const connectionStringObject = await bt.tokens.retrieve(database_token);
     connection_string = connectionStringObject.data;
-
   }
 
   const pool = new Pool({
