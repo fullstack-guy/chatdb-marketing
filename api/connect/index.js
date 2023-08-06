@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 const { Pool } = require("pg");
-const { BasisTheory } = require("@basis-theory/basis-theory-js");
 
 const app = express();
 app.use(cors());
@@ -17,17 +16,7 @@ function simplifyDataType(dataType) {
 }
 
 app.post("*", async (req, res) => {
-  let { connection_string, database_token } = req.body;
-
-  if (database_token) {
-    const bt = await new BasisTheory().init(
-      process.env.NEXT_PRIVATE_BASIS_THEORY_KEY
-    );
-
-    // Use the Basis Theory API to retrieve the real connection string
-    const connectionStringObject = await bt.tokens.retrieve(database_token);
-    connection_string = connectionStringObject.data;
-  }
+  const { connection_string } = req.body;
 
   const pool = new Pool({
     connectionString: connection_string,
