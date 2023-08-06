@@ -50,7 +50,7 @@ const spinnerColors = [
   "#D1A0A3",
 ];
 
-const TableList = ({ database_token, filteredTables, onTableClick }) => {
+const TableList = ({ database_token, filteredTables }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [previewTableData, setPreviewTableData] = useState([]);
   const [selectedTableName, setSelectedTableName] = useState("");
@@ -71,10 +71,9 @@ const TableList = ({ database_token, filteredTables, onTableClick }) => {
       });
       const data = response.data;
 
-      onTableClick(data, tableData.tableName);
-
       setPreviewTableData(data);
       setSelectedTableName(tableData.tableName);
+      setModalOpen(true);
     } catch (error) {
       if (error.response && error.response.status === 401) {
         toast.error(
