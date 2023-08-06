@@ -11,7 +11,7 @@ export default function Pricing() {
   return (
     <div className="w-full">
       <div className="m-auto flex flex-col items-center p-4">
-        <div className="mb-2 mt-12 text-center">
+        <div className="mb-20 mt-12 text-center">
           <h1 className="mb-4 text-7xl font-black text-black">Pricing</h1>
           <p className="text-lg">
             Choose the right pricing for you and get started working on your
@@ -19,21 +19,19 @@ export default function Pricing() {
           </p>
           <div className="mt-6 flex justify-center space-x-4">
             <button
-              className={`rounded-lg px-4 py-2 ${
-                !isYearlyPricing
-                  ? "bg-gray-800 text-white"
-                  : "bg-gray-200 text-gray-500"
-              }`}
+              className={`rounded-lg px-4 py-2 ${!isYearlyPricing
+                ? "bg-gray-800 text-white"
+                : "bg-gray-200 text-gray-500"
+                }`}
               onClick={() => setYearlyPricing(false)}
             >
               Monthly
             </button>
             <button
-              className={`rounded-lg px-4 py-2 ${
-                isYearlyPricing
-                  ? "bg-gray-800 text-white"
-                  : "bg-gray-200 text-gray-500"
-              }`}
+              className={`rounded-lg px-4 py-2 ${isYearlyPricing
+                ? "bg-gray-800 text-white"
+                : "bg-gray-200 text-gray-500"
+                }`}
               onClick={() => setYearlyPricing(true)}
             >
               Yearly
@@ -44,13 +42,15 @@ export default function Pricing() {
           <PlanCard
             color="#78E3FC"
             name="Basic"
-            monthlyPrice="19.99"
-            annualPrice="199.99"
+            monthlyPrice="29.99"
+            annualPrice="299.99"
             description="Get started with the basic plan"
             features={[
               "1 User",
-              "1 Project",
-              "10 Tables",
+              "1 Database",
+              "30 Tables",
+              "Unlimited Messages",
+              "Chat with CSV",
               "Smart Debugging",
               "Backed by ChatGPT",
               "PostgreSQL Connection",
@@ -59,7 +59,7 @@ export default function Pricing() {
             btnText="Get Started"
             isYearlyPricing={isYearlyPricing}
           />
-          <PlanCard
+          {/* <PlanCard
             color="#F4D06F"
             name="Pro"
             monthlyPrice="29.99"
@@ -77,7 +77,7 @@ export default function Pricing() {
             ]}
             btnText="Become a Pro"
             isYearlyPricing={isYearlyPricing}
-          />
+          /> */}
           <PlanCard
             color="#FFB5BA"
             name="Business"

@@ -1,5 +1,5 @@
 ---
-title: "The Next Chapter: Building a More Intuitive AI for Your Database"
+title: "Building a More Intuitive AI for Your Database"
 metaTitle: "Building a More Intuitive AI for Your Database"
 description: "A deeper dive into the development and potential of our AI-powered database assistant, ChatDB"
 image: images/building-database.png
