@@ -11,11 +11,11 @@ export default function Pricing() {
   return (
     <div className="w-full">
       <div className="m-auto flex flex-col items-center p-4">
-        <div className="mb-20 mt-12 text-center">
+        <div className="mb-10 mt-12 text-center">
           <h1 className="mb-4 text-7xl font-black text-black">Pricing</h1>
           <p className="text-lg">
             Choose the right pricing for you and get started working on your
-            project
+            project. <br></br>Get your own personal data analyst at the price of a pizza!
           </p>
           <div className="mt-6 flex justify-center space-x-4">
             <button
@@ -38,7 +38,7 @@ export default function Pricing() {
             </button>
           </div>
         </div>
-        <div className="flex flex-col gap-8 p-10 xl:flex-row">
+        <div className="flex flex-col gap-8 xl:flex-row">
           <PlanCard
             color="#78E3FC"
             name="Basic"
@@ -47,11 +47,10 @@ export default function Pricing() {
             description="Get started with the basic plan"
             features={[
               "1 User",
-              "1 Database",
+              "5 Databases",
               "30 Tables",
               "Unlimited Messages",
               "Chat with CSV",
-              "Smart Debugging",
               "Backed by ChatGPT",
               "PostgreSQL Connection",
               "Multiple Schemas",
