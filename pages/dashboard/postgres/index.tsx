@@ -48,7 +48,7 @@ export default function Page() {
         toast,
         bt
       );
-      toast.success("Database saved successfully!");
+      toast.success("Database refreshed!");
     } catch (error) {
       toast.error("There was an error saving the database!");
     } finally {
@@ -65,27 +65,6 @@ export default function Page() {
     bt
   ) => {
     try {
-      // Check if the database already exists
-      const { data: existingDatabases, error: dbError } = await supabase
-        .from("user_databases")
-        .select("*")
-        .eq("user_id", user.id)
-        .eq("database_string", "postgres://" + connectionString);
-
-      if (dbError) {
-        console.error(
-          "Error checking for existing databases in Supabase:",
-          dbError
-        );
-        toast.error("Error checking for existing databases in Supabase");
-        return;
-      }
-
-      if (existingDatabases.length > 0) {
-        toast("Database already exists!");
-        return;
-      }
-
       // Proceed with inserting data if the database doesn't exist
       const { data: insertedSchemas, error: schemaError } = await supabase
         .from("user_schemas")
@@ -177,7 +156,6 @@ export default function Page() {
 
     const url = "/api/connect";
     const body = {
-      id: "bugatti",
       connection_string: "postgres://" + connectionString,
     };
 
@@ -300,9 +278,8 @@ export default function Page() {
                         onChange={connectionStringChange}
                       />
                       <span
-                        className={`btn hidden sm:flex ${
-                          connecting || saving ? "loading" : ""
-                        } cursor-pointer border-none bg-success font-semibold text-black hover:bg-success`}
+                        className={`btn hidden sm:flex ${connecting || saving ? "loading" : ""
+                          } cursor-pointer border-none bg-success font-semibold text-black hover:bg-success`}
                         onClick={connected ? saveDatabase : connectToDatabase}
                       >
                         {connecting ? (
@@ -336,9 +313,8 @@ export default function Page() {
                     )}
                     <div className="my-2 w-full">
                       <button
-                        className={`btn ${
-                          connecting && "loading"
-                        } mx-auto my-2 flex w-[75%] bg-success font-semibold text-black hover:bg-success sm:hidden`}
+                        className={`btn ${connecting && "loading"
+                          } mx-auto my-2 flex w-[75%] bg-success font-semibold text-black hover:bg-success sm:hidden`}
                         onClick={connectToDatabase}
                         type="submit"
                       >
