@@ -3,6 +3,9 @@ import Modal from "react-modal";
 import "react-data-grid/lib/styles.css";
 import DataGrid from "react-data-grid";
 import { CSVLink } from "react-csv";
+import { Roboto_Mono } from "next/font/google";
+
+const roboto = Roboto_Mono({ subsets: ["latin"] });
 
 const TablePreviewModal = ({ isOpen, onClose, tableRows, tableName }) => {
   useEffect(() => {
@@ -25,24 +28,35 @@ const TablePreviewModal = ({ isOpen, onClose, tableRows, tableName }) => {
   const columns =
     tableRows.length > 0
       ? Object.keys(tableRows[0]).map((key) => ({
-          key: key,
-          name: key,
-          resizable: true,
-          sortable: true,
-          width: 120,
-          headerRenderer: ({ column }) => (
-            <div className="header-cell">
-              <div className="name">{column.name}</div>
-              <div className="data-type">{typeof tableRows[0][column.key]}</div>
-            </div>
-          ),
-        }))
+        key: key,
+        name: key,
+        resizable: true,
+        sortable: true,
+        width: 120,
+        headerRenderer: ({ column }) => (
+          <div className="header-cell">
+            <div className="name">{column.name}</div>
+            <div className="data-type">{typeof tableRows[0][column.key]}</div>
+          </div>
+        ),
+      }))
       : [];
 
-  const rows = tableRows.map((row, rowIndex) => ({
-    id: rowIndex,
-    ...row,
-  }));
+  const rows = tableRows.map((row, rowIndex) => {
+    let newRow = { ...row }; // Make a copy of the row
+    // Loop over each key in the row
+    for (let key in newRow) {
+      // If the value of a key is an object, convert it to a JSON string
+      if (typeof newRow[key] === "object" && newRow[key] !== null) {
+        newRow[key] = JSON.stringify(newRow[key]);
+      }
+    }
+
+    return {
+      id: rowIndex,
+      ...newRow,
+    };
+  });
 
   const handleQueryClick = () => {
     onClose();
@@ -88,7 +102,12 @@ const TablePreviewModal = ({ isOpen, onClose, tableRows, tableName }) => {
             </svg>
           </button>
         </div>
-        <DataGrid className="rdg-light w-100%" columns={columns} rows={rows} />
+
+        <DataGrid
+          className={`rdg-light w-100% ${roboto.className}`}
+          columns={columns}
+          rows={rows}
+        />
         <div className="mt-4 flex flex-wrap items-center justify-between">
           <div className="mb-2 text-gray-600 md:mb-0">
             Showing {rowCount} rows.
@@ -110,8 +129,8 @@ const TablePreviewModal = ({ isOpen, onClose, tableRows, tableName }) => {
             </button>
           </div>
         </div>
-      </div>
-    </Modal>
+      </div >
+    </Modal >
   );
 };
 

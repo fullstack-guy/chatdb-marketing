@@ -1,8 +1,8 @@
 import Layout from "../../components/Layout";
 import { useUser } from "@clerk/nextjs";
 import React, { useEffect, useRef, useState } from "react";
-import { BsDatabase } from 'react-icons/bs';
-import { BiRefresh } from 'react-icons/bi';
+import { BsDatabase } from "react-icons/bs";
+import { BiRefresh } from "react-icons/bi";
 import { useRouter } from "next/router";
 import TableList from "../../components/dashboard/TableList";
 import Chat from "../../components/dashboard/Chat";
@@ -10,9 +10,7 @@ import supabase from "../../utils/supabaseClient";
 import Settings from "../../components/dashboard/Settings";
 import DatabaseFlow from "../../components/DatabaseFlow";
 import { Toaster, toast } from "react-hot-toast";
-import {
-  useBasisTheory,
-} from "@basis-theory/basis-theory-react";
+import { useBasisTheory } from "@basis-theory/basis-theory-react";
 
 interface Database {
   id: number;
@@ -69,8 +67,8 @@ export default function Page() {
       const { data: existingSchemas, error: schemaError } = await supabase
         .from("user_schemas")
         .select("uuid")
-        .eq('user_id', user.id)
-        .eq('title', fetchedDatabase.title);
+        .eq("user_id", user.id)
+        .eq("title", fetchedDatabase.title);
 
       if (schemaError) {
         console.error("Error querying Supabase:", schemaError);
@@ -83,16 +81,16 @@ export default function Page() {
         const schemaID = existingSchemas[0].uuid; // Get the id of the existing schema
 
         const { error: databaseError } = await supabase
-          .from('user_schemas')
+          .from("user_schemas")
           .update({
-            schema_data: data
+            schema_data: data,
           })
-          .eq('uuid', schemaID);
+          .eq("uuid", schemaID);
 
         if (databaseError) {
           console.error("Error saving data to database:", databaseError);
           toast.error("Error saving database string to database");
-          return false
+          return false;
         } else {
           return true;
         }
@@ -130,13 +128,7 @@ export default function Page() {
       } else {
         const data = await response.json();
         try {
-          await updateDatabase(
-            data,
-            user,
-            databaseToken,
-            name,
-            toast,
-          );
+          await updateDatabase(data, user, databaseToken, name, toast);
           await fetchTables();
           toast.success("Database refreshed!");
         } catch (error) {
@@ -150,7 +142,7 @@ export default function Page() {
       setRefreshing(false);
       toast.error(error.message); // Show network error message
     }
-  }
+  };
 
   const fetchDatabaseString = async () => {
     const { data, error } = await supabase
@@ -276,7 +268,10 @@ export default function Page() {
                   </span>
                 </div>
                 <div>
-                  <BiRefresh className="text-2xl mx-2 cursor-pointer" onClick={refreshAndSaveDatabase} />
+                  <BiRefresh
+                    className="mx-2 cursor-pointer text-2xl"
+                    onClick={refreshAndSaveDatabase}
+                  />
                 </div>
               </div>
             </div>

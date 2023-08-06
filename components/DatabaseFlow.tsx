@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import ReactFlow, {
   useNodesState,
   useEdgesState,
@@ -104,6 +104,7 @@ function DatabaseFlow({ dbSchema }) {
             id: `${tableName}-${foreignKey.foreignTable}-${idx}`,
             source: tableName,
             target: foreignKey.foreignTable,
+            style: { strokeWidth: 5 },
           });
 
           // set edge in dagre graph
