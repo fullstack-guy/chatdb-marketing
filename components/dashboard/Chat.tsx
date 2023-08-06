@@ -86,7 +86,7 @@ const Chat = ({ database_token }) => {
             </div>
             <h1 className="my-2 text-2xl font-bold text-black">SQL Code</h1>
             <Prism withLineNumbers language="sql">
-              {result.sql}
+              {format(result.sql, { language: 'postgresql' })}
             </Prism>
             <Toaster position="top-right" />
           </div>

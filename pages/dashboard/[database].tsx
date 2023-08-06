@@ -256,7 +256,7 @@ export default function Page() {
   return (
     <Layout>
       {fetchedDatabase && (
-        <div className="border-0 border-b border-solid border-b-slate-200 py-8">
+        <div className="border-0 border-b border-solid border-b-slate-200 py-4">
           <div className="flex flex-col items-start text-black sm:flex-row sm:justify-between">
             <div>
               <div className="text-left">POSTGRESQL</div>
@@ -316,33 +316,29 @@ export default function Page() {
           </div>
           <div className="tabs tabs-boxed mt-10 bg-transparent">
             <a
-              className={`tab text-lg text-black ${
-                activeTab === "Chat" ? "tab-active" : ""
-              }`}
+              className={`tab text-lg text-black ${activeTab === "Chat" ? "tab-active" : ""
+                }`}
               onClick={() => handleTabClick("Chat")}
             >
               Chat
             </a>
             <a
-              className={`tab text-lg text-black ${
-                activeTab === "Tables" ? "tab-active" : ""
-              }`}
+              className={`tab text-lg text-black ${activeTab === "Tables" ? "tab-active" : ""
+                }`}
               onClick={() => handleTabClick("Tables")}
             >
               Tables
             </a>
             <a
-              className={`tab text-lg text-black ${
-                activeTab === "Flow" ? "tab-active" : ""
-              }`}
+              className={`tab text-lg text-black ${activeTab === "Flow" ? "tab-active" : ""
+                }`}
               onClick={() => handleTabClick("Flow")}
             >
               Flow
             </a>
             <a
-              className={`tab text-lg text-black ${
-                activeTab === "Settings" ? "tab-active" : ""
-              }`}
+              className={`tab text-lg text-black ${activeTab === "Settings" ? "tab-active" : ""
+                }`}
               onClick={() => handleTabClick("Settings")}
             >
               Settings
@@ -350,7 +346,7 @@ export default function Page() {
           </div>
         </div>
       )}
-      <div className="flex flex-col bg-gray-100 py-6 sm:py-8">
+      <div className="flex flex-col bg-gray-100 sm:py-4">
         <div className="relative w-full py-3 sm:mx-auto">
           <div className="relative mx-8 rounded-3xl bg-white px-4 py-8 shadow sm:p-10 md:mx-0">
             <div className="mx-auto max-w-7xl">{renderContent()}</div>
