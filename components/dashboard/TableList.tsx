@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import TablePreviewModal from "./TablePreviewModal";
 import { Toaster, toast } from "react-hot-toast";
 import { TailSpin } from "react-loader-spinner";
-import axios from "axios";
 
 const colors = [
   "#FADDB4",
@@ -50,45 +48,9 @@ const spinnerColors = [
   "#D1A0A3",
 ];
 
-const TableList = ({ database_token, filteredTables, onTableClick }) => {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [previewTableData, setPreviewTableData] = useState([]);
-  const [selectedTableName, setSelectedTableName] = useState("");
+const TableList = ({ filteredTables, onTableClick }) => {
   const [tableColorIndexes, setTableColorIndexes] = useState({});
-
-  // table loading state
   const [loadingTable, setLoadingTable] = useState(null);
-  const [error, setError] = useState(null);
-
-  const openPreviewModal = async (tableData) => {
-    setLoadingTable(tableData.tableName);
-    setError(null);
-
-    try {
-      const response = await axios.post("/api/db/preview", {
-        connectionStringToken: database_token,
-        table_name: `"${tableData.schemaName}"."${tableData.tableName}"`,
-      });
-      const data = response.data;
-
-      onTableClick(data, tableData.tableName);
-
-      setPreviewTableData(data);
-      setSelectedTableName(tableData.tableName);
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        toast.error(
-          "Sorry, you we couldn't read from the database. Try refreshing the page."
-        );
-        setError("Unauthorized");
-      } else {
-        toast.error("Sorry, we had an issue querying the database!");
-        setError(error.message);
-      }
-    } finally {
-      setLoadingTable(null);
-    }
-  };
 
   useEffect(() => {
     const newColorIndexes = { ...tableColorIndexes };
@@ -99,10 +61,6 @@ const TableList = ({ database_token, filteredTables, onTableClick }) => {
     });
     setTableColorIndexes(newColorIndexes);
   }, [filteredTables]);
-
-  const closePreviewModal = () => {
-    setModalOpen(false);
-  };
 
   const sortedFilteredTables = filteredTables.sort((a, b) => {
     return a.schemaName.localeCompare(b.schemaName);
@@ -116,7 +74,7 @@ const TableList = ({ database_token, filteredTables, onTableClick }) => {
             <div
               key={table.tableName}
               className="relative flex transform cursor-pointer items-center rounded-lg border p-4 shadow-sm transition-colors duration-200 hover:scale-105 hover:bg-gray-100"
-              onClick={() => openPreviewModal(table)}
+              onClick={() => onTableClick(table.tableName)}
             >
               <div
                 className="mr-4 flex h-12 w-12 items-center justify-center rounded-full"
@@ -150,14 +108,6 @@ const TableList = ({ database_token, filteredTables, onTableClick }) => {
         <div className="mt-4 text-center text-gray-700">
           No matching tables found.
         </div>
-      )}
-      {modalOpen && (
-        <TablePreviewModal
-          isOpen={modalOpen}
-          onClose={closePreviewModal}
-          tableRows={previewTableData}
-          tableName={selectedTableName}
-        />
       )}
       <Toaster position="bottom-center" />
     </>

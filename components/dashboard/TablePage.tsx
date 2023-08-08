@@ -4,7 +4,7 @@ import TableList from './TableList';
 
 const TablePage = ({ filteredTables, database_token }) => {
     const [tabs, setTabs] = useState([
-        { id: 0, type: 'TableList', tableRows: [], tableName: '' }
+        { id: 0, type: 'TableList', tableName: '' }
     ]);
 
     const [activeTab, setActiveTab] = useState(0);
@@ -13,7 +13,7 @@ const TablePage = ({ filteredTables, database_token }) => {
         const newTabId = tabs.length;
         setTabs([
             ...tabs,
-            { id: newTabId, type: 'TableList', tableRows: [], tableName: '' }
+            { id: newTabId, type: 'TableList', tableName: '' }
         ]);
         setActiveTab(newTabId);
     };
@@ -26,10 +26,10 @@ const TablePage = ({ filteredTables, database_token }) => {
         }
     };
 
-    const handleTableClick = (tableRows, tableName) => {
+    const handleTableClick = (tableName) => {
         setTabs(tabs.map(tab =>
             tab.id === activeTab
-                ? { ...tab, type: 'TableEditor', tableRows, tableName }
+                ? { ...tab, type: 'TableEditor', tableName }
                 : tab
         ));
     };
@@ -47,11 +47,22 @@ const TablePage = ({ filteredTables, database_token }) => {
                 ))}
                 <button onClick={addTab}>Add Tab</button>
             </div>
-            {tabs.length > 0 && tabs[activeTab].type === 'TableEditor' ? (
-                <TableEditor tableRows={tabs[activeTab].tableRows} tableName={tabs[activeTab].tableName} />
-            ) : (
-                <TableList database_token={database_token} filteredTables={filteredTables} onTableClick={handleTableClick} />
-            )}
+
+            {tabs.map((tab, index) => {
+                if (tab.type === 'TableEditor') {
+                    return (
+                        <div style={{ display: activeTab === index ? 'block' : 'none' }} key={tab.id}>
+                            <TableEditor tableName={tab.tableName} database_token={database_token} />
+                        </div>
+                    );
+                } else {
+                    return (
+                        <div style={{ display: activeTab === index ? 'block' : 'none' }} key={tab.id}>
+                            <TableList filteredTables={filteredTables} onTableClick={handleTableClick} />
+                        </div>
+                    );
+                }
+            })}
         </div>
     );
 };
