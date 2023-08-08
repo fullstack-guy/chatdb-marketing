@@ -6,61 +6,88 @@ import { FaSortAmountDownAlt, FaSortAmountUpAlt } from "react-icons/fa";
 import { CSVLink } from "react-csv";
 import { Roboto_Mono } from 'next/font/google';
 import { PuffLoader } from "react-spinners";
+import debounce from 'lodash/debounce';
 
 const roboto = Roboto_Mono({ subsets: ['latin'] })
 
+
 const TableEditor = ({ tableName, database_token }) => {
-    const [sortColumn, setSortColumn] = useState(null);
-    const [sortDirection, setSortDirection] = useState(null);
-    const [offset, setOffset] = useState(0);
-    const [limit, setLimit] = useState(500);
-    const [whereClause, setWhereClause] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [tableRows, setTableRows] = useState([]);
     const [columns, setColumns] = useState([]);
 
+    const initialTableEditorState = {
+        sortColumn: null,
+        sortDirection: null,
+        offset: 0,
+        limit: 500,
+        whereClause: ''
+    };
+
+    const [sortColumn, setSortColumn] = useState(initialTableEditorState.sortColumn);
+    const [sortDirection, setSortDirection] = useState(initialTableEditorState.sortDirection);
+    const [offset, setOffset] = useState(initialTableEditorState.offset);
+    const [limit, setLimit] = useState(initialTableEditorState.limit);
+    const [whereClause, setWhereClause] = useState(initialTableEditorState.whereClause);
+
+    //to store TableEditor state in localStorage whenever they change
     useEffect(() => {
-        const fetchData = async () => {
-            setIsLoading(true);
+        localStorage.setItem(`tableEditorState_${tableName}`, JSON.stringify({
+            sortColumn,
+            sortDirection,
+            offset,
+            limit,
+            whereClause
+        }));
+    }, [sortColumn, sortDirection, offset, limit, whereClause, tableName]);
 
-            try {
-                const response = await axios.post("/api/db/preview", {
-                    table_name: tableName,
-                    connectionStringToken: database_token,
-                    order_by: sortColumn ? `${sortColumn} ${sortDirection.toUpperCase()}` : undefined,
-                    offset: offset,
-                    limit: limit,
-                    where_clause: whereClause,
-                });
+    const fetchDataDebounced = debounce(async () => {
+        setIsLoading(true);
 
-                if (response && response.data) {
-                    setTableRows(response.data);
-                    const columns = response.data.length > 0
-                        ? Object.keys(response.data[0]).map((key) => ({
-                            key: key,
-                            name: key,
-                            sortable: true,
-                            editable: key === "id" ? false : true,
-                            headerRenderer: (props) => (
-                                <div onClick={() => handleSort(key, sortDirection === 'asc' ? 'desc' : 'asc')}>
-                                    {props.column.name} {sortDirection && sortColumn === key && (sortDirection === 'asc' ? <FaSortAmountDownAlt /> : <FaSortAmountUpAlt />)}
-                                </div>
-                            ),
-                            resizable: true,
-                            width: 120
-                        }))
-                        : [];
-                    setColumns(columns);
-                }
+        try {
+            const response = await axios.post("/api/db/preview", {
+                table_name: tableName,
+                connectionStringToken: database_token,
+                order_by: sortColumn ? `${sortColumn} ${sortDirection.toUpperCase()}` : undefined,
+                offset: offset,
+                limit: limit,
+                where_clause: whereClause,
+            });
 
-            } catch (err) {
-                console.error(err);
+            if (response && response.data) {
+                setTableRows(response.data);
+                const columns = response.data.length > 0
+                    ? Object.keys(response.data[0]).map((key) => ({
+                        key: key,
+                        name: key,
+                        sortable: true,
+                        editable: key === "id" ? false : true,
+                        headerRenderer: (props) => (
+                            <div onClick={() => handleSort(key, sortDirection === 'asc' ? 'desc' : 'asc')}>
+                                {props.column.name} {sortDirection && sortColumn === key && (sortDirection === 'asc' ? <FaSortAmountDownAlt /> : <FaSortAmountUpAlt />)}
+                            </div>
+                        ),
+                        resizable: true,
+                        width: 120
+                    }))
+                    : [];
+                setColumns(columns);
             }
 
-            setIsLoading(false);
-        };
+        } catch (err) {
+            console.error(err);
+        }
 
-        fetchData();
+        setIsLoading(false);
+    }, 500);  // 500ms delay 
+
+    useEffect(() => {
+        fetchDataDebounced();
+
+        // Clean up: cancel the debounced call if the component is unmounted before the call is made
+        return () => {
+            fetchDataDebounced.cancel();
+        };
     }, [sortColumn, sortDirection, offset, limit, whereClause]);
 
     const handleSort = (columnKey, direction) => {

@@ -1,25 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import TableEditor from './TableEditor';
 import TableList from './TableList';
 import TableTabs from './TableTabs';
 
 const TablePage = ({ filteredTables, database_token }) => {
 
-    const [tabs, setTabs] = useState([]);
+    // Check for tabs in localStorage
+    const initialTabs = JSON.parse(localStorage.getItem('tabs')) || [];
+    const initialActiveTab = JSON.parse(localStorage.getItem('activeTab')) || null;
 
-    const [activeTab, setActiveTab] = useState(null); // initialize to null, to indicate TableList view
+    const [tabs, setTabs] = useState([]);
+    const [activeTab, setActiveTab] = useState(null);
+
+    //to store tabs and activeTab in localStorage whenever they change
+    useEffect(() => {
+        localStorage.setItem('tabs', JSON.stringify(tabs));
+        localStorage.setItem('activeTab', JSON.stringify(activeTab));
+    }, [tabs, activeTab]);
 
     const showTableList = () => {
         setActiveTab(null);
     };
 
     const deleteTab = (id) => {
-        const newTabs = tabs.filter(tab => tab.id !== id);
-        setTabs(newTabs);
-        if (activeTab === id) {
-            setActiveTab(newTabs.length > 0 ? newTabs[newTabs.length - 1].id : null);
-        }
+        setTabs(prevTabs => {
+            const updatedTabs = prevTabs.filter(tab => tab.id !== id);
+
+            // If the active tab is the one being deleted
+            if (activeTab === id) {
+                setActiveTab(updatedTabs.length > 0 ? updatedTabs[updatedTabs.length - 1].id : null);
+            }
+
+            return updatedTabs;
+        });
     };
+
+    // Using a ref to hold the next tab ID
+    const nextTabId = useRef(initialTabs.length);
 
     const handleTableClick = (tableName) => {
         const existingTab = tabs.find(tab => tab.tableName === tableName);
@@ -27,7 +44,7 @@ const TablePage = ({ filteredTables, database_token }) => {
         if (existingTab) {
             setActiveTab(existingTab.id); // This should set only the ID
         } else {
-            const newTabId = tabs.length;
+            const newTabId = nextTabId.current++;
             const newTab = { id: newTabId, type: 'TableEditor', tableName };
             setTabs([...tabs, newTab]);
             setActiveTab(newTabId); // This should set only the ID
