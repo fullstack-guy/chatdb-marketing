@@ -22,19 +22,26 @@ const TablePage = ({ filteredTables, database_token }) => {
         setActiveTab(null);
     };
 
-    const deleteTab = (id) => {
+    const deleteTab = (index) => {
         setTabs(prevTabs => {
-            const updatedTabs = prevTabs.filter(tab => tab.id !== id);
+            if (index < 0 || index >= prevTabs.length) {
+                // Index out of range
+                return prevTabs;
+            }
+
+            // Use the splice method to remove the tab at the given index
+            const updatedTabs = [...prevTabs];
+            updatedTabs.splice(index, 1);
 
             // If the active tab is the one being deleted
-            if (activeTab === id) {
+            const deletedTabId = prevTabs[index].id;
+            if (activeTab === deletedTabId) {
                 setActiveTab(updatedTabs.length > 0 ? updatedTabs[updatedTabs.length - 1].id : null);
             }
 
             return updatedTabs;
         });
     };
-
     // Using a ref to hold the next tab ID
     const nextTabId = useRef(initialTabs.length);
 
