@@ -1,21 +1,16 @@
 import React, { useState } from 'react';
 import TableEditor from './TableEditor';
 import TableList from './TableList';
+import TableTabs from './TableTabs';
 
 const TablePage = ({ filteredTables, database_token }) => {
-    const [tabs, setTabs] = useState([
-        { id: 0, type: 'TableList', tableName: '' }
-    ]);
 
-    const [activeTab, setActiveTab] = useState(0);
+    const [tabs, setTabs] = useState([]);
 
-    const addTab = () => {
-        const newTabId = tabs.length;
-        setTabs([
-            ...tabs,
-            { id: newTabId, type: 'TableList', tableName: '' }
-        ]);
-        setActiveTab(newTabId);
+    const [activeTab, setActiveTab] = useState(null); // initialize to null, to indicate TableList view
+
+    const showTableList = () => {
+        setActiveTab(null);
     };
 
     const deleteTab = (id) => {
@@ -27,38 +22,39 @@ const TablePage = ({ filteredTables, database_token }) => {
     };
 
     const handleTableClick = (tableName) => {
-        setTabs(tabs.map(tab =>
-            tab.id === activeTab
-                ? { ...tab, type: 'TableEditor', tableName }
-                : tab
-        ));
+        const existingTab = tabs.find(tab => tab.tableName === tableName);
+
+        if (existingTab) {
+            setActiveTab(existingTab.id); // This should set only the ID
+        } else {
+            const newTabId = tabs.length;
+            const newTab = { id: newTabId, type: 'TableEditor', tableName };
+            setTabs([...tabs, newTab]);
+            setActiveTab(newTabId); // This should set only the ID
+        }
     };
 
     return (
         <div>
-            <div className="tabs">
-                {tabs.map(tab => (
-                    <div key={tab.id}>
-                        <a className={`tab tab-lifted ${activeTab === tab.id ? 'tab-active' : ''}`}
-                            onClick={() => setActiveTab(tab.id)}>
-                            {tab.type === 'TableEditor' ? tab.tableName : 'Tab ' + (tab.id + 1)}
-                        </a>
-                    </div>
-                ))}
-                <button onClick={addTab}>Add Tab</button>
-            </div>
+            {!!tabs?.length &&
+                <TableTabs
+                    tabs={tabs}
+                    activeTab={activeTab}
+                    handleAddTabs={showTableList}
+                    setActiveTab={setActiveTab}
+                    deleteTab={deleteTab}
+                />
+            }
 
-            {tabs.map((tab, index) => {
+            {activeTab === null &&
+                <TableList filteredTables={filteredTables} onTableClick={handleTableClick} />
+            }
+
+            {tabs.map((tab) => {
                 if (tab.type === 'TableEditor') {
                     return (
-                        <div style={{ display: activeTab === index ? 'block' : 'none' }} key={tab.id}>
+                        <div style={{ display: activeTab === tab.id ? 'block' : 'none' }} key={tab.id}>
                             <TableEditor tableName={tab.tableName} database_token={database_token} />
-                        </div>
-                    );
-                } else {
-                    return (
-                        <div style={{ display: activeTab === index ? 'block' : 'none' }} key={tab.id}>
-                            <TableList filteredTables={filteredTables} onTableClick={handleTableClick} />
                         </div>
                     );
                 }

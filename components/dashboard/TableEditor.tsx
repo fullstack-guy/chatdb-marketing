@@ -99,10 +99,9 @@ const TableEditor = ({ tableName, database_token }) => {
             ) : (
                 <>
                     <DataGrid
-                        className={`rdg-light w-100% ${roboto.className}`}
+                        className={`rdg-light w-full ${roboto.className}`}
                         columns={columns}
                         rows={transformedRows}
-                        style={{ width: '100%' }}
                     />
 
                     <div className="mt-4 flex flex-wrap items-center justify-between">
