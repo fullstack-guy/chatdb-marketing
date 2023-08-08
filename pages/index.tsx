@@ -491,6 +491,33 @@ export default function Page() {
               </div>
             </div>
 
+            {/* Table Viewer */}
+            <div className="flex flex-col items-center justify-between gap-6 lg:flex-row-reverse">
+              <div className="max-w-md space-y-6 text-center lg:text-left">
+                <span className="inline-flex items-center rounded-full border-2 border-green-200 bg-green-200 px-2 py-1 text-sm font-semibold text-green-600 shadow-sm">
+                  <TagIcon className="mr-1 h-5 w-5" />
+                  Simple View
+                </span>
+                <h3 className="text-3xl font-semibold text-heading lg:text-4xl">
+                  Simple Table Viewer
+                </h3>
+                <p className="text-lg font-medium">
+                  No need to use a clunky database client to get a quick view of your data.
+                </p>
+              </div>
+
+              <div className="h-72 max-w-lg">
+                <Image
+                  alt="chatdb table viewer"
+                  className="rounded-xl"
+                  height={400}
+                  width={400}
+                  src="/images/TableViewer.gif"
+                />
+              </div>
+            </div>
+
+
 
             {/* <div className="flex flex-col items-center justify-between gap-6 lg:flex-row ">
               <div className="max-w-md space-y-6 text-center lg:text-left">
