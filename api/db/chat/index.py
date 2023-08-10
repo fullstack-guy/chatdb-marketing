@@ -1,4 +1,3 @@
-from modal import Image, Stub, asgi_app, Secret
 from langchain import OpenAI, SQLDatabase
 from langchain.agents import create_sql_agent
 from langchain.agents import AgentType
@@ -27,35 +26,11 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import sqlparse
-import io
-import logging
 import requests
 
-# Create Stub and FastAPI instances.
-stub = Stub('db-agent-api')
-web_app = FastAPI()
+app = FastAPI()
 
-# Create a new logger and set its level.
-logger = logging.getLogger('agent_executor')
-logger.setLevel(logging.INFO)
-
-# Create a string buffer and set up a stream handler to write into it.
-log_output = io.StringIO()
-stream_handler = logging.StreamHandler(log_output)
-
-# Format the logs in the stream handler to be written as strings.
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-stream_handler.setFormatter(formatter)
-
-# Add the stream handler to your logger.
-logger.addHandler(stream_handler)
-
-# Define the Image we will use. 
-image = Image.debian_slim().pip_install(
-    ['openai', 'pydantic', 'fastapi', 'sqlparse', 'requests','langchain', 'sqlalchemy', 'psycopg2-binary']
-)
-
-web_app.add_middleware(
+app.add_middleware(
     CORSMiddleware,
     allow_origins=['*'],
     allow_credentials=True,
@@ -63,11 +38,9 @@ web_app.add_middleware(
     allow_headers=["*"],
 )
 
-@stub.function(secret=Secret.from_name("basis-theory-key"))
 def get_basis_theory_key():
     return 'key_QuRA9fbFiMu7fEHqeKgyFa'
 
-@stub.function(secret=Secret.from_name("my-openai-secret"))
 def get_openai_api_key():
     return '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'
 
@@ -196,7 +169,7 @@ class QueryOutput(BaseModel):
     result: str
 
 
-@web_app.post("/chat_query", response_model=QueryOutput)
+@app.post("*", response_model=QueryOutput)
 async def run_query(query_input: QueryInput):
     """
     FastAPI endpoint to run the SQL query.
@@ -248,11 +221,3 @@ async def run_query(query_input: QueryInput):
             )
     except Exception as e:
         return HTTPException(500, "LLM Error: " + str(e))
-
-@stub.function(image=image)
-@asgi_app()
-def fastapi_app():
-    """
-    ASGI application that returns the FastAPI instance.
-    """
-    return web_app
