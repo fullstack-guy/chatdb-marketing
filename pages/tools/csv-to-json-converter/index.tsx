@@ -103,8 +103,7 @@ const Page = () => {
     <Layout
       title="Free Online CSV to JSON Converter | ChatDB"
       description="Free online CSV to JSON Converter by ChatDB. Easily upload, view, and transform your CSV files."
-      url="https://www.chatdb.ai/tools/csv-editor"
-      oggURL="https://www.chatdb.ai/_next/image?url=images/csv-editor-ogg.png&w=1200&q=75"
+      url="https://www.chatdb.ai/tools/csv-to-json-converter"
     >
       <div className="mt-10 flex flex-col items-center p-6">
         <h1 className="mb-4 text-5xl font-bold text-black">
@@ -113,7 +112,7 @@ const Page = () => {
         <p className="mb-4 text-center text-lg">
           Upload your csv file and transform it into JSON
         </p>
-        <div className="mb-4 flex w-full max-w-xs flex-col items-start sm:flex-row sm:items-center">
+        <div className="mb-4 flex max-w-xs flex-col items-start sm:flex-row sm:items-center">
           <input
             type="file"
             accept=".csv"
@@ -124,7 +123,7 @@ const Page = () => {
         {data.length > 0 && (
           <>
             <button
-              className="btn-large btn ml-4 mt-4 flex items-center rounded px-4 py-2 font-bold text-white"
+              className="btn-large btn mt-4 flex items-center rounded px-4 py-2 font-bold text-white"
               onClick={() => exportToJSON(data, columns)}
             >
               Download as JSON{" "}

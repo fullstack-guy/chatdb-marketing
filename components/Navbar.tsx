@@ -60,6 +60,12 @@ const Navbar = () => {
               >
                 CSV to JSON Converter
               </Link>
+              <Link
+                href="/tools/sql-formatter"
+                className="mx-2 cursor-pointer rounded-lg px-4 py-2.5 text-center text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
+              >
+                SQL Formatter
+              </Link>
             </ul>
           </div>
           <Link

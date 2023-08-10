@@ -95,6 +95,9 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
               >
                 CSV to JSON Converter
               </Link>
+              <Link href="/tools/sql-formatter" className="link-hover link">
+                SQL Formatter
+              </Link>
             </div>
           </footer>
         </div>

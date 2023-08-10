@@ -61,7 +61,7 @@ const IndexPage = () => {
             >
               CSV Editor tool
             </Link>
-            . It provides an intuitive, easy-to-use interface for viewing and
+            It provides an intuitive, easy-to-use interface for viewing and
             editing your CSV data.
           </p>
         </div>
