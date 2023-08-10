@@ -23,7 +23,7 @@ export default function Page() {
     }
 
     await supabase
-      .from('waitlist_email')
+      .from("waitlist_email")
       .upsert({ email: email })
       .then(({ data, error }) => {
         if (error) {
@@ -40,7 +40,7 @@ export default function Page() {
               console.error("Error:", error);
             });
         }
-      })
+      });
   };
 
   return (
@@ -54,8 +54,9 @@ export default function Page() {
                 Your Personal AI Data Analyst
               </h1>
               <p className="mt-6 max-w-3xl text-xl">
-                Transforming raw database data into meaningful business intelligence with ease. Think ChatGPT, but
-                trained on your database.
+                Transforming raw database data into meaningful business
+                intelligence with ease. Think ChatGPT, but trained on your
+                database.
               </p>
               {
                 // Render the form only if the form has not been submitted
@@ -266,7 +267,7 @@ export default function Page() {
           </div>
         </section>
         <section className="bg-layer-1 p-6 md:p-10">
-          <div className="mx-auto w-full max-w-8xl">
+          <div className="max-w-8xl mx-auto w-full">
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               <div className="rounded-3xl bg-layer-2 p-5 md:px-8 md:py-6">
                 <div className="inline-block rounded-2xl bg-layer-3 p-3">
@@ -502,7 +503,8 @@ export default function Page() {
                   Simple Table Viewer
                 </h3>
                 <p className="text-lg font-medium">
-                  No need to use a clunky database client to get a quick view of your data.
+                  No need to use a clunky database client to get a quick view of
+                  your data.
                 </p>
               </div>
 
@@ -516,8 +518,6 @@ export default function Page() {
                 />
               </div>
             </div>
-
-
 
             {/* <div className="flex flex-col items-center justify-between gap-6 lg:flex-row ">
               <div className="max-w-md space-y-6 text-center lg:text-left">

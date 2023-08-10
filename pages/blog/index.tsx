@@ -39,11 +39,11 @@ export default function Page({ posts }) {
             <div className="card m-auto cursor-pointer">
               <div
                 key={slug}
-                className={`mb-2 w-full p-2 transform rounded-xl shadow-xl transition hover:scale-105 `}
+                className={`mb-2 w-full transform rounded-xl p-2 shadow-xl transition hover:scale-105 `}
               >
                 <>
                   <div className="card-body text-left">
-                    <h2 className="card-title text-2xl text-black font-bold">
+                    <h2 className="card-title text-2xl font-bold text-black">
                       {frontmatter.title}
                     </h2>
                     <p className="mt-2 text-lg">{frontmatter.description}</p>

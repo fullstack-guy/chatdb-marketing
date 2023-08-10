@@ -15,9 +15,9 @@ tags:
 
 Slow SQL queries can bottleneck your data processing, resulting in poor system performance. Let's explore how to optimize SQL queries for efficient data retrieval.
 
-## Avoid SELECT *
+## Avoid SELECT \*
 
-Using `SELECT *` can slow down your query as it retrieves every column from the table. Instead, specify the exact columns you need. 
+Using `SELECT *` can slow down your query as it retrieves every column from the table. Instead, specify the exact columns you need.
 
 For example, instead of:
 
@@ -49,7 +49,7 @@ If you don't need all the data, use the LIMIT clause to restrict the number of r
 For instance, to get only the first 10 employees based on their salary, you could write:
 
 ```sql
-SELECT first_name, last_name, salary 
+SELECT first_name, last_name, salary
 FROM employees
 ORDER BY salary DESC
 LIMIT 10;
@@ -66,4 +66,3 @@ EXPLAIN SELECT * FROM employees WHERE last_name = 'Smith';
 ```
 
 By understanding and implementing these SQL query optimization techniques, you can ensure efficient data retrieval, thereby improving your application's performance and user experience.
-

@@ -43,7 +43,9 @@ const IndexPage = () => {
             How it works
           </h2>
           <p className="mt-6 text-center text-lg">
-            We package an OLAP database that runs in the browser via WebAssembly so that we never touch any of your data. All of your data stays on your machine and never leaves the browser!
+            We package an OLAP database that runs in the browser via WebAssembly
+            so that we never touch any of your data. All of your data stays on
+            your machine and never leaves the browser!
           </p>
         </div>
         <div className="mb-20 w-full px-6">
@@ -59,13 +61,13 @@ const IndexPage = () => {
             >
               CSV Editor tool
             </Link>
-            . It provides an intuitive, easy-to-use interface for viewing and
+            It provides an intuitive, easy-to-use interface for viewing and
             editing your CSV data.
           </p>
         </div>
       </div>
     </Layout>
-  )
+  );
 };
 
 export default IndexPage;
