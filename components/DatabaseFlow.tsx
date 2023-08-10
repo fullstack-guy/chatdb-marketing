@@ -104,7 +104,7 @@ function DatabaseFlow({ dbSchema }) {
             id: `${tableName}-${foreignKey.foreignTable}-${idx}`,
             source: tableName,
             target: foreignKey.foreignTable,
-            style: { strokeWidth: 5 }
+            style: { strokeWidth: 5 },
           });
 
           // set edge in dagre graph

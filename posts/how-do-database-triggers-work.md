@@ -13,7 +13,7 @@ tags:
 
 # A Comprehensive Guide on How Database Triggers Work
 
-Understanding the fundamentals of database management is vital in today's data-driven world. In this comprehensive guide, we'll explore one key aspect: **database triggers**. 
+Understanding the fundamentals of database management is vital in today's data-driven world. In this comprehensive guide, we'll explore one key aspect: **database triggers**.
 
 ## What Are Database Triggers?
 
@@ -25,17 +25,17 @@ Triggers are typically used to enforce complex business rules, validate input da
 
 ## Types of Triggers
 
-There are three main types of triggers: `BEFORE`, `AFTER`, and `INSTEAD OF`. 
+There are three main types of triggers: `BEFORE`, `AFTER`, and `INSTEAD OF`.
 
-- `BEFORE` triggers are fired before the triggering event. 
-- `AFTER` triggers are executed after the triggering event. 
+- `BEFORE` triggers are fired before the triggering event.
+- `AFTER` triggers are executed after the triggering event.
 - `INSTEAD OF` triggers override the triggering event with a custom action.
 
 ## Understanding Trigger Events
 
 Triggers can be associated with `INSERT`, `UPDATE`, or `DELETE` events.
 
-- `INSERT` triggers are activated when a new record is added. 
+- `INSERT` triggers are activated when a new record is added.
 - `UPDATE` triggers are fired when a record is modified.
 - `DELETE` triggers are executed when a record is removed.
 
@@ -48,7 +48,7 @@ CREATE TRIGGER after_insert
 AFTER INSERT ON orders
 FOR EACH ROW
 BEGIN
-   INSERT INTO audit(order_id, user, action) 
+   INSERT INTO audit(order_id, user, action)
    VALUES (NEW.order_id, CURRENT_USER(), 'INSERT');
 END;
 ```

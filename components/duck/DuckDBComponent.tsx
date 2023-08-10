@@ -53,22 +53,29 @@ const DuckDBComponent = () => {
 
   const handleAssistantSubmit = async (event) => {
     event.preventDefault(); // Prevent form from reloading the page
-    const transformedData = tableMetadata.map(({ name, type }) => ({ name, type }));
+    const transformedData = tableMetadata.map(({ name, type }) => ({
+      name,
+      type,
+    }));
 
     try {
-      const response = await fetch('/api/csv', {  // replace with your actual endpoint
-        method: 'POST',
+      const response = await fetch("/api/csv", {
+        // replace with your actual endpoint
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ metadata: transformedData, message: assistantQuery })
+        body: JSON.stringify({
+          metadata: transformedData,
+          message: assistantQuery,
+        }),
       });
       const data = await response.json();
-      console.log(data)
+      console.log(data);
       setAssistantSQL(data.sql);
       setSqlGenerated(true);
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
 
@@ -190,8 +197,8 @@ const DuckDBComponent = () => {
             cell == null
               ? "null"
               : !Array.isArray(cell)
-                ? cell
-                : "[" +
+              ? cell
+              : "[" +
                 cell
                   .map((value) => (value == null ? "null" : value))
                   .join(", ") +
@@ -235,55 +242,57 @@ const DuckDBComponent = () => {
       </p>
       <div className="flex">
         <button
-          className="font-bold my-3 rounded-lg bg-gray-700 px-4 py-2 text-white mr-2"  // Added mr-2 to add spacing between buttons
+          className="my-3 mr-2 rounded-lg bg-gray-700 px-4 py-2 font-bold text-white" // Added mr-2 to add spacing between buttons
           onClick={runQuery}
         >
           Run Query
         </button>
         <button
-          className="my-3 font-bold rounded-lg bg-gray-700 px-4 py-2 text-white"
+          className="my-3 rounded-lg bg-gray-700 px-4 py-2 font-bold text-white"
           onClick={handleAssistantClick}
         >
           <div className="flex">
-            Assistant <BsMagic className="ml-1 my-auto" />
+            Assistant <BsMagic className="my-auto ml-1" />
           </div>
         </button>
       </div>
       {errorMessage && <p className="mt-2 text-red-500">{errorMessage}</p>}
       {data.length > 0 && (
         <div className="w-full overflow-x-scroll">
-          <DataGrid
-            columns={columns}
-            className="rdg-light mt-10"
-            rows={data}
-          />
+          <DataGrid columns={columns} className="rdg-light mt-10" rows={data} />
         </div>
       )}
 
       {modalIsOpen && (
         <div
-          className="fixed z-10 inset-0 overflow-y-auto"
+          className="fixed inset-0 z-10 overflow-y-auto"
           aria-labelledby="modal-title"
           role="dialog"
           aria-modal="true"
         >
-          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+          <div className="flex min-h-screen items-end justify-center px-4 pb-20 pt-4 text-center sm:block sm:p-0">
             <div
               className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
               aria-hidden="true"
             ></div>
 
             <span
-              className="hidden sm:inline-block sm:align-middle sm:h-screen"
+              className="hidden sm:inline-block sm:h-screen sm:align-middle"
               aria-hidden="true"
             >
               &#8203;
             </span>
 
-            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full">
-              <form onSubmit={handleAssistantSubmit} className="modal-box m-auto">
-                <div className="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                  <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+            <div className="inline-block transform overflow-hidden rounded-lg bg-white text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-xl sm:align-middle">
+              <form
+                onSubmit={handleAssistantSubmit}
+                className="modal-box m-auto"
+              >
+                <div className="px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                  <h3
+                    className="text-lg font-medium leading-6 text-gray-900"
+                    id="modal-title"
+                  >
                     Ask the Assistant
                   </h3>
                   <div className="mt-2">
@@ -291,19 +300,18 @@ const DuckDBComponent = () => {
                       type="text"
                       value={assistantQuery}
                       onChange={handleAssistantQueryChange}
-                      className="input input-bordered w-full text-black"
+                      className="input-bordered input w-full text-black"
                     />
                   </div>
-                  {
-                    assistantSQL && (
-                      <div className='mt-4'>
-                        <Prism withLineNumbers language="sql">{format(assistantSQL, { language: 'mysql' })}</Prism>
-                      </div>
-                    )
-                  }
-
+                  {assistantSQL && (
+                    <div className="mt-4">
+                      <Prism withLineNumbers language="sql">
+                        {format(assistantSQL, { language: "mysql" })}
+                      </Prism>
+                    </div>
+                  )}
                 </div>
-                <div className="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <div className="px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <div className="flex">
                     {sqlGenerated && (
                       <>
@@ -315,18 +323,19 @@ const DuckDBComponent = () => {
                             setAssistantQuery("");
                             setAssistantSQL("");
                           }}
-                          className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-black text-base font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black sm:ml-3 sm:w-auto sm:text-sm"
+                          className="inline-flex w-full justify-center rounded-md border border-transparent bg-black px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
                         >
                           Use
-                        </button></>
+                        </button>
+                      </>
                     )}
                     <button
                       type="submit"
                       onClick={handleAssistantSubmit}
-                      className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-black text-base font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black sm:ml-3 sm:w-auto sm:text-sm"
+                      className="inline-flex w-full justify-center rounded-md border border-transparent bg-black px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
                     >
                       Generate
-                      <BsMagic className="ml-1 my-auto" />
+                      <BsMagic className="my-auto ml-1" />
                     </button>
                   </div>
 
@@ -338,7 +347,7 @@ const DuckDBComponent = () => {
                       setSqlGenerated(false);
                     }}
                     type="button"
-                    className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                    className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:mt-0 sm:w-auto sm:text-sm"
                   >
                     Cancel
                   </button>
@@ -346,7 +355,7 @@ const DuckDBComponent = () => {
               </form>
             </div>
           </div>
-        </div >
+        </div>
       )}
       <Toaster position="bottom-center" />
     </>

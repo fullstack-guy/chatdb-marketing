@@ -89,6 +89,12 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
               >
                 Query CSV with SQL
               </Link>
+              <Link
+                href="/tools/csv-to-json-converter"
+                className="link-hover link"
+              >
+                CSV to JSON Converter
+              </Link>
             </div>
           </footer>
         </div>

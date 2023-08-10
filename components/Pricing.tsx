@@ -15,23 +15,26 @@ export default function Pricing() {
           <h1 className="mb-4 text-7xl font-black text-black">Pricing</h1>
           <p className="text-lg">
             Choose the right pricing for you and get started working on your
-            project. <br></br>Get your own personal data analyst at the price of a pizza!
+            project. <br></br>Get your own personal data analyst at the price of
+            a pizza!
           </p>
           <div className="mt-6 flex justify-center space-x-4">
             <button
-              className={`rounded-lg px-4 py-2 ${!isYearlyPricing
-                ? "bg-gray-800 text-white"
-                : "bg-gray-200 text-gray-500"
-                }`}
+              className={`rounded-lg px-4 py-2 ${
+                !isYearlyPricing
+                  ? "bg-gray-800 text-white"
+                  : "bg-gray-200 text-gray-500"
+              }`}
               onClick={() => setYearlyPricing(false)}
             >
               Monthly
             </button>
             <button
-              className={`rounded-lg px-4 py-2 ${isYearlyPricing
-                ? "bg-gray-800 text-white"
-                : "bg-gray-200 text-gray-500"
-                }`}
+              className={`rounded-lg px-4 py-2 ${
+                isYearlyPricing
+                  ? "bg-gray-800 text-white"
+                  : "bg-gray-200 text-gray-500"
+              }`}
               onClick={() => setYearlyPricing(true)}
             >
               Yearly

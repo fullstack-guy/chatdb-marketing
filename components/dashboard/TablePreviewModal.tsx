@@ -28,18 +28,18 @@ const TablePreviewModal = ({ isOpen, onClose, tableRows, tableName }) => {
   const columns =
     tableRows.length > 0
       ? Object.keys(tableRows[0]).map((key) => ({
-        key: key,
-        name: key,
-        resizable: true,
-        sortable: true,
-        width: 120,
-        headerRenderer: ({ column }) => (
-          <div className="header-cell">
-            <div className="name">{column.name}</div>
-            <div className="data-type">{typeof tableRows[0][column.key]}</div>
-          </div>
-        ),
-      }))
+          key: key,
+          name: key,
+          resizable: true,
+          sortable: true,
+          width: 120,
+          headerRenderer: ({ column }) => (
+            <div className="header-cell">
+              <div className="name">{column.name}</div>
+              <div className="data-type">{typeof tableRows[0][column.key]}</div>
+            </div>
+          ),
+        }))
       : [];
 
   const rows = tableRows.map((row, rowIndex) => {
@@ -126,8 +126,8 @@ const TablePreviewModal = ({ isOpen, onClose, tableRows, tableName }) => {
             </button>
           </div>
         </div>
-      </div >
-    </Modal >
+      </div>
+    </Modal>
   );
 };
 
