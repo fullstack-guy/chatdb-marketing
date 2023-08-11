@@ -66,6 +66,8 @@ const TableList = ({ filteredTables, onTableClick }) => {
     return a.schemaName.localeCompare(b.schemaName);
   });
 
+  console.log(filteredTables)
+
   return (
     <>
       {filteredTables.length > 0 ? (
@@ -74,7 +76,7 @@ const TableList = ({ filteredTables, onTableClick }) => {
             <div
               key={table.tableName}
               className="relative flex transform cursor-pointer items-center rounded-lg border p-4 shadow-sm transition-colors duration-200 hover:scale-105 hover:bg-gray-100"
-              onClick={() => onTableClick(table.tableName)}
+              onClick={() => onTableClick(`${table.schemaName}.${table.tableName}`)}
             >
               <div
                 className="mr-4 flex h-12 w-12 items-center justify-center rounded-full"
