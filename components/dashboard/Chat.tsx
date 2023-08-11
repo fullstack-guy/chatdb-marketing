@@ -50,13 +50,18 @@ const Chat = ({ database_token }) => {
 
   return (
     <>
-      <input
-        type="text"
-        onChange={(e) => setQuery(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="Ask anything about your database..."
-        className="input input-lg w-full flex-1 appearance-none rounded-lg border border-gray-300 border-transparent px-4 py-2 text-lg text-black"
-      />
+      <div className="form-control">
+        <input
+          type="text"
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Ask anything about your database..."
+          className="input input-bordered input-primary input-lg w-full flex-1 rounded-lg border px-4 py-6 text-lg text-black"
+        />
+        <label className="label">
+          <span className="label-text-alt">Note: AI assistant only works with the public schema at the moment.</span>
+        </label>
+      </div>
       {isLoading ? (
         <div className="mt-5 flex items-center justify-center">
           <BeatLoader
