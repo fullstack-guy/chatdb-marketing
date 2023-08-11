@@ -56,10 +56,12 @@ const Chat = ({ database_token }) => {
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Ask anything about your database..."
-          className="input input-bordered input-primary input-lg w-full flex-1 rounded-lg border px-4 py-6 text-lg text-black"
+          className="input-bordered input-primary input input-lg w-full flex-1 rounded-lg border px-4 py-6 text-lg text-black"
         />
         <label className="label">
-          <span className="label-text-alt">Note: AI assistant only works with the public schema at the moment.</span>
+          <span className="label-text-alt">
+            Note: AI assistant only works with the public schema at the moment.
+          </span>
         </label>
       </div>
       {isLoading ? (

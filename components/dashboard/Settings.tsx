@@ -28,7 +28,7 @@ const Settings: React.FC<SettingsProps> = ({
     fetchedDatabase.title
   );
   const [isModalOpen, setModalOpen] = useState(false);
-  const [showSample, setShowSample] = useState(false)
+  const [showSample, setShowSample] = useState(false);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewDatabaseName(e.target.value);
@@ -47,23 +47,23 @@ const Settings: React.FC<SettingsProps> = ({
   //fetch show_sample_rows field from user_databases table where uuid matches
   const getDatabaseSampleSetting = async (uuid) => {
     const { data, error } = await supabase
-      .from('user_databases')
-      .select('show_sample')
-      .eq('uuid', uuid);
+      .from("user_databases")
+      .select("show_sample")
+      .eq("uuid", uuid);
 
     if (error) {
       throw error;
     }
 
     return data[0].show_sample;
-  }
+  };
 
   // Update show_sample_rows field in user_databases table where uuid matches
   const updateDatabaseSampleSetting = async (database, newValue) => {
     const { data, error } = await supabase
-      .from('user_databases')
+      .from("user_databases")
       .update({ show_sample: newValue })
-      .eq('uuid', database);
+      .eq("uuid", database);
 
     if (error) {
       toast.error(`We had an issue updating sample setting.`);
@@ -71,7 +71,7 @@ const Settings: React.FC<SettingsProps> = ({
     }
 
     return data;
-  }
+  };
 
   useEffect(() => {
     const updateSetting = async () => {
@@ -115,13 +115,15 @@ const Settings: React.FC<SettingsProps> = ({
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-start px-8 space-y-8">
+    <div className="flex h-full w-full flex-col items-center justify-start space-y-8 px-8">
       {/* Database Settings Section */}
-      <div className="w-full max-w-2xl p-6 bg-white shadow-md rounded-md space-y-4">
-        <h2 className="text-2xl text-black sfont-semibold">Database Settings</h2>
+      <div className="w-full max-w-2xl space-y-4 rounded-md bg-white p-6 shadow-md">
+        <h2 className="sfont-semibold text-2xl text-black">
+          Database Settings
+        </h2>
 
         <div>
-          <label className="text-lg text-black block mb-1">Database Name</label>
+          <label className="mb-1 block text-lg text-black">Database Name</label>
           <div className="flex items-center space-x-2">
             <input
               type="text"
@@ -142,28 +144,32 @@ const Settings: React.FC<SettingsProps> = ({
         <div className="form-control">
           <label className="label cursor-pointer">
             <span className="text-lg text-black">Show Sample</span>
-            <input type="checkbox" checked={showSample} className="checkbox" onChange={() => setShowSample(prev => !prev)} />
+            <input
+              type="checkbox"
+              checked={showSample}
+              className="checkbox"
+              onChange={() => setShowSample((prev) => !prev)}
+            />
           </label>
-          <p className="text-sm text-gray-600 mt-1">
+          <p className="mt-1 text-sm text-gray-600">
             Let AI see sample of 3 rows of data in tables to improve AI results
           </p>
         </div>
       </div>
 
       {/* Usage Section */}
-      <div className="w-full max-w-2xl p-6 shadow-md rounded-md space-y-4">
+      <div className="w-full max-w-2xl space-y-4 rounded-md p-6 shadow-md">
         <UsageChart />
       </div>
 
-
       {/* Danger Zone Section */}
-      <div className="w-full max-w-xl p-6 bg-red-50 shadow-md rounded-md space-y-4">
+      <div className="w-full max-w-xl space-y-4 rounded-md bg-red-50 p-6 shadow-md">
         <h2 className="text-2xl font-semibold text-red-600">Danger Zone</h2>
 
         <div>
           <button
             onClick={() => setModalOpen(true)}
-            className="w-full inline-block rounded-md bg-red-500 px-4 py-1 text-white hover:bg-red-700"
+            className="inline-block w-full rounded-md bg-red-500 px-4 py-1 text-white hover:bg-red-700"
           >
             Delete Connection
           </button>
@@ -202,7 +208,6 @@ const Settings: React.FC<SettingsProps> = ({
       <Toaster position="bottom-center" />
     </div>
   );
-
 };
 
 export default Settings;
