@@ -66,8 +66,6 @@ const TableList = ({ filteredTables, onTableClick }) => {
     return a.schemaName.localeCompare(b.schemaName);
   });
 
-  console.log(filteredTables);
-
   return (
     <>
       {filteredTables.length > 0 ? (

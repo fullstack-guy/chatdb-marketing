@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Modal from "react-modal";
 import supabase from "../../utils/supabaseClient";
 import { Toaster, toast } from "react-hot-toast";
@@ -34,15 +34,21 @@ const Settings: React.FC<SettingsProps> = ({
     setNewDatabaseName(e.target.value);
   };
 
-  // Fetch the show_sample value when the component mounts
+  const showSampleRef = useRef(null);  // This ref will hold the initial value of showSample
+
   useEffect(() => {
-    const fetchSetting = async () => {
-      const result = await getDatabaseSampleSetting(database);
-      setShowSample(result);
+    const fetchAndUpdateSetting = async () => {
+      if (showSampleRef.current === null) { // If it's the initial load
+        const result = await getDatabaseSampleSetting(database);
+        setShowSample(result);
+        showSampleRef.current = result;  // Store the initial value in the ref
+      } else if (showSample !== showSampleRef.current) {  // If the value has changed after the initial load
+        await updateDatabaseSampleSetting(database, showSample);
+      }
     };
 
-    fetchSetting();
-  }, [database]);
+    fetchAndUpdateSetting();
+  }, [database, showSample]);
 
   //fetch show_sample_rows field from user_databases table where uuid matches
   const getDatabaseSampleSetting = async (uuid) => {
@@ -73,14 +79,6 @@ const Settings: React.FC<SettingsProps> = ({
     return data;
   };
 
-  useEffect(() => {
-    const updateSetting = async () => {
-      await updateDatabaseSampleSetting(database, showSample);
-    };
-
-    updateSetting();
-  }, [showSample]);
-
   const updateDatabaseName = async () => {
     const { data, error } = await supabase
       .from("user_schemas")
@@ -106,7 +104,6 @@ const Settings: React.FC<SettingsProps> = ({
     const data = await response.json();
 
     if (response.ok) {
-      console.log("Database, schemas, and token deleted successfully:", data);
       router.push("/dashboard"); // Redirect to dashboard after successful deletion
     } else {
       console.error("Error deleting database:", data.error);
@@ -122,19 +119,19 @@ const Settings: React.FC<SettingsProps> = ({
           Database Settings
         </h2>
 
-        <div>
+        <div className="form-control">
           <label className="mb-1 block text-lg text-black">Database Name</label>
-          <div className="flex items-center space-x-2">
+          <div className="input-group flex items-center">
             <input
               type="text"
               value={newDatabaseName}
               onChange={handleNameChange}
-              className="focus:shadow-outline-blue flex-grow rounded-md px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-300 focus:outline-none"
+              className="focus:shadow-outline-blue input input-bordered flex-grow rounded-md px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-300 focus:outline-none"
               placeholder="Database Name"
             />
             <button
               onClick={updateDatabaseName}
-              className="inline-block rounded-md border border-black px-4 py-1 text-black"
+              className="btn rounded-md border border-black px-4 py-1 text-white"
             >
               Update
             </button>
@@ -151,7 +148,7 @@ const Settings: React.FC<SettingsProps> = ({
               onChange={() => setShowSample((prev) => !prev)}
             />
           </label>
-          <p className="mt-1 text-sm text-gray-600">
+          <p className="mt-1 text-md">
             Let AI see sample of 3 rows of data in tables to improve AI results
           </p>
         </div>

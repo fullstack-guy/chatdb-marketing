@@ -41,7 +41,6 @@ interface Schema {
 const proOptions = { hideAttribution: true };
 
 function DatabaseFlow({ dbSchema }) {
-  console.log(dbSchema);
   const dagreGraph = new dagre.graphlib.Graph();
   dagreGraph.setDefaultEdgeLabel(() => ({}));
 
