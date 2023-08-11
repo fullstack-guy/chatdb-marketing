@@ -45,7 +45,7 @@ const Page = () => {
       url="https://www.chatdb.ai/tools/sql-formatter"
     >
       <div className="mt-10 flex flex-col items-center p-6">
-        <h1 className="mb-4 text-5xl font-bold text-black">
+        <h1 className="mb-4 text-5xl text-center md:text-left  font-bold text-black">
           Free SQL Formatter
         </h1>
         <p className="mb-4 text-center text-lg">
