@@ -438,7 +438,7 @@ export default function Page() {
 
         {/* Features */}
 
-        <section className="px-8 py-12 md:py-18">
+        <section className="px-4 py-12 md:py-18">
           <div className="mx-auto max-w-6xl space-y-24 md:space-y-36 lg:space-y-64 xl:space-y-72">
             <div className="flex flex-col items-center justify-between gap-6 lg:flex-row-reverse">
               <div className="max-w-md space-y-6 text-center lg:text-left">
@@ -495,7 +495,7 @@ export default function Page() {
             {/* Table Viewer */}
             <div className="flex flex-col items-center justify-between gap-6 lg:flex-row-reverse">
               <div className="max-w-md space-y-6 text-center lg:text-left">
-                <span className="inline-flex items-center rounded-full border-2 border-green-200 bg-green-200 px-2 py-1 text-sm font-semibold text-green-600 shadow-sm">
+                <span className="inline-flex items-center rounded-full border-2 border-orange-200 bg-orange-200 px-2 py-1 text-sm font-semibold text-orange-600 shadow-sm">
                   <TagIcon className="mr-1 h-5 w-5" />
                   Simple View
                 </span>
@@ -504,17 +504,17 @@ export default function Page() {
                 </h3>
                 <p className="text-lg font-medium">
                   No need to use a clunky database client to get a quick view of
-                  your data.
+                  your data. Search and simple table interface built in!
                 </p>
               </div>
 
-              <div className="h-72 max-w-lg">
+              <div className="h-72 max-w-xl">
                 <Image
                   alt="chatdb table viewer"
                   className="rounded-xl"
-                  height={400}
-                  width={400}
-                  src="/images/TableViewer.gif"
+                  height={600}
+                  width={800}
+                  src="/images/TableViewer.png"
                 />
               </div>
             </div>
