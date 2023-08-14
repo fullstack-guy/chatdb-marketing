@@ -8,8 +8,8 @@ import {
   BasisTheoryValidationError,
   useBasisTheory,
 } from "@basis-theory/basis-theory-react";
-import supabase from "../../../utils/supabaseClient";
 import Layout from "../../../components/Layout";
+import useSupabase from "../../../hooks/useSupabaseClient";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -24,6 +24,8 @@ export default function Page() {
   const [connectionStringError, setConnectionStringError] = useState(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
+
+  const supabase = useSupabase();
 
   const [databaseInfo, setDatabaseInfo] = useState(null);
   const { user } = useUser();

@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import Modal from "react-modal";
-import supabase from "../../utils/supabaseClient";
 import { Toaster, toast } from "react-hot-toast";
 import { useRouter } from "next/router";
 import UsageChart from "./UsageChart";
+import useSupabase from "../../hooks/useSupabaseClient";
 
 interface SettingsProps {
   fetchedDatabase: {
@@ -29,26 +29,31 @@ const Settings: React.FC<SettingsProps> = ({
   );
   const [isModalOpen, setModalOpen] = useState(false);
   const [showSample, setShowSample] = useState(false);
+  const supabase = useSupabase();
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewDatabaseName(e.target.value);
   };
 
-  const showSampleRef = useRef(null);  // This ref will hold the initial value of showSample
+  const showSampleRef = useRef(null); // This ref will hold the initial value of showSample
 
   useEffect(() => {
     const fetchAndUpdateSetting = async () => {
-      if (showSampleRef.current === null) { // If it's the initial load
+      if (showSampleRef.current === null) {
+        // If it's the initial load
         const result = await getDatabaseSampleSetting(database);
         setShowSample(result);
-        showSampleRef.current = result;  // Store the initial value in the ref
-      } else if (showSample !== showSampleRef.current) {  // If the value has changed after the initial load
+        showSampleRef.current = result; // Store the initial value in the ref
+      } else if (showSample !== showSampleRef.current) {
+        // If the value has changed after the initial load
         await updateDatabaseSampleSetting(database, showSample);
       }
     };
 
-    fetchAndUpdateSetting();
-  }, [database, showSample]);
+    if (supabase) {
+      fetchAndUpdateSetting();
+    }
+  }, [database, showSample, supabase]);
 
   //fetch show_sample_rows field from user_databases table where uuid matches
   const getDatabaseSampleSetting = async (uuid) => {
@@ -126,7 +131,7 @@ const Settings: React.FC<SettingsProps> = ({
               type="text"
               value={newDatabaseName}
               onChange={handleNameChange}
-              className="focus:shadow-outline-blue input input-bordered flex-grow rounded-md px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-300 focus:outline-none"
+              className="focus:shadow-outline-blue input-bordered input flex-grow rounded-md px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-300 focus:outline-none"
               placeholder="Database Name"
             />
             <button
@@ -148,7 +153,7 @@ const Settings: React.FC<SettingsProps> = ({
               onChange={() => setShowSample((prev) => !prev)}
             />
           </label>
-          <p className="mt-1 text-md">
+          <p className="text-md mt-1">
             Let AI see sample of 3 rows of data in tables to improve AI results
           </p>
         </div>

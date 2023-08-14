@@ -6,11 +6,11 @@ import { BiRefresh } from "react-icons/bi";
 import { useRouter } from "next/router";
 import TablePage from "../../components/dashboard/TablePage";
 import Chat from "../../components/dashboard/Chat";
-import supabase from "../../utils/supabaseClient";
 import Settings from "../../components/dashboard/Settings";
 import DatabaseFlow from "../../components/DatabaseFlow";
 import { Toaster, toast } from "react-hot-toast";
 import { useBasisTheory } from "@basis-theory/basis-theory-react";
+import useSupabase from "../../hooks/useSupabaseClient";
 
 interface Database {
   id: number;
@@ -23,10 +23,8 @@ interface Database {
 
 export default function Page() {
   const router = useRouter();
-
   const { isLoaded, isSignedIn, user } = useUser();
   const { database } = router.query;
-
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("Chat");
@@ -36,6 +34,7 @@ export default function Page() {
   const [refreshing, setRefreshing] = useState(false);
   const [dataModel, setDataModel] = useState([]);
   const [saving, setSaving] = useState(false);
+  const supabase = useSupabase();
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
@@ -159,11 +158,11 @@ export default function Page() {
   };
 
   useEffect(() => {
-    if (isLoaded && isSignedIn) {
+    if (supabase && isLoaded && isSignedIn) {
       fetchTables();
       fetchDatabaseString();
     }
-  }, [isLoaded, isSignedIn]);
+  }, [isLoaded, isSignedIn, supabase]);
 
   function convertJsonToDataModel(json) {
     const dataModel = [];

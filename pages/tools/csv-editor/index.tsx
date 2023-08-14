@@ -182,7 +182,7 @@ const Page = () => {
         className="mt-10 flex flex-col items-center p-6"
         onKeyDown={handleKeyDown}
       >
-        <h1 className="mb-4 text-5xl text-center lg:text-left font-bold text-black">
+        <h1 className="mb-4 text-center text-5xl font-bold text-black lg:text-left">
           CSV Viewer and Editor
         </h1>
         <p className="mb-4 text-center text-lg">

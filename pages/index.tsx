@@ -6,11 +6,12 @@ import Layout from "../components/Layout";
 import posthog from "posthog-js";
 import Image from "next/image";
 import { LightBulbIcon } from "@heroicons/react/outline";
-import supabase from "../utils/supabaseClient";
+import useSupabase from "../hooks/useSupabaseClient";
 
 export default function Page() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const supabase = useSupabase();
 
   const handleSubmit = async (event) => {
     event.preventDefault();

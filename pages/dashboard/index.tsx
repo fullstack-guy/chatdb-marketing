@@ -4,24 +4,24 @@ import Table from "../../components/dashboard/Table";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import supabase from "../../utils/supabaseClient";
+import useSupabase from "../../hooks/useSupabaseClient";
 
 export default function Page() {
   const { isLoaded, isSignedIn, user } = useUser();
   const router = useRouter();
+  const supabase = useSupabase();
 
   const handleNavigation = (path) => {
     router.push(path);
   };
 
   useEffect(() => {
-    if (isLoaded && isSignedIn) {
+    if (isLoaded && isSignedIn && supabase) {
       fetchDatabases();
     }
-  }, [isLoaded, isSignedIn]);
+  }, [isLoaded, isSignedIn, supabase]);
 
   const [fetchedDatabases, setFetchedDatabases] = useState([]);
-
   const [newDatabases, setNewDatabases] = useState([
     {
       name: "PostgreSQL",

@@ -106,7 +106,7 @@ const Page = () => {
       url="https://www.chatdb.ai/tools/csv-to-json-converter"
     >
       <div className="mt-10 flex flex-col items-center p-6">
-        <h1 className="mb-4 text-center md:text-left text-5xl font-bold text-black">
+        <h1 className="mb-4 text-center text-5xl font-bold text-black md:text-left">
           Free Online CSV to JSON Converter
         </h1>
         <p className="mb-4 text-center text-lg">
