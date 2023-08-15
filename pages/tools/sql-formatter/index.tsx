@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 import Layout from "../../../components/Layout";
 import "react-contexify/dist/ReactContexify.css";
 import { formatDialect, sql } from "sql-formatter";
@@ -16,6 +17,27 @@ const Page = () => {
   const handleSQLChange = (e) => {
     setInputSQL(e.target.value);
   };
+
+  const tools = [
+    {
+      id: 1,
+      title: 'CSV Viewer and Editor',
+      description: 'A convenient viewer and editor for CSV files.',
+      link: '/tools/csv-editor',
+    },
+    {
+      id: 2,
+      title: 'Query CSV with SQL',
+      description: 'Run SQL queries directly on CSV files.',
+      link: '/tools/query-csv-with-sql',
+    },
+    {
+      id: 3,
+      title: 'CSV to JSON Converter',
+      description: 'Convert your CSV files to JSON with ease.',
+      link: '/tools/csv-to-json-converter',
+    },
+  ];
 
   useEffect(() => {
     adjustTextareaHeight();
@@ -69,6 +91,24 @@ const Page = () => {
           >
             {formattedSQL}
           </Prism>
+        </div>
+        <div className="mb-28 mt-72 w-full px-6">
+          <h2 className="text-center mb-10 text-3xl font-bold text-black">
+            Explore other tools
+          </h2>
+
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {tools.map(tool => (
+              <Link href={tool.link} key={tool.id}>
+                <div className="border border-purple-600 transform transition hover:scale-105 rounded-lg overflow-hidden shadow-lg hover:border-purple-700">
+                  <div className="bg-gradient-to-br from-purple-100 to-white p-6">
+                    <h2 className="font-bold text-purple-700 text-xl mb-2">{tool.title}</h2>
+                    <p className="text-gray-700 mb-4">{tool.description}</p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </Layout>
