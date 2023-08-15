@@ -2,7 +2,6 @@
 title: "How AI can reduce onboarding for engineers"
 metaTitle: "Accelerating Efficiency in Onboarding with AI and ChatDB"
 description: "Discover how ChatDB uses AI to transform the onboarding process for new engineers, leading to significant cost savings and improved productivity."
-image: images/onboarding-thinking.png
 date: "2023-06-21"
 tags:
   - onboarding

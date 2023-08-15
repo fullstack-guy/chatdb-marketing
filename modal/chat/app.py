@@ -26,6 +26,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import sqlparse
 import requests
+from typing import Any
+from datetime import datetime
 import json
 
 app = FastAPI()
@@ -98,7 +100,10 @@ class QuerySQLDataBaseTool(BaseSQLDatabaseTool, BaseTool):
         Only allowed query statements are executed.
         """
         if _is_allowed_query(query):
-            return self.db.run_no_throw(query)
+            return {
+                "sql": query,
+                "value": self.db.run_no_throw(query)
+            }
         else:
             return "Error: The AI is now allowed to do queries that can modify the database."
 
@@ -166,6 +171,14 @@ class QueryInput(BaseModel):
     query: str
     token: str
 
+# Helper function to serialize objects that are not JSON serializable by default.
+def json_serial(obj):
+    """JSON serializer for objects not serializable by default."""
+    if isinstance(obj, (datetime,)):
+        return obj.isoformat()
+    if isinstance(obj, bytes):
+        return obj.decode("utf-8")
+    raise TypeError("Type not serializable")
 
 class QueryOutput(BaseModel):
     """Model for the query output."""
@@ -176,7 +189,7 @@ class QueryOutput(BaseModel):
     total_cost: float
     text: str = ""
     sql: str = ""
-    data: List[Tuple[Any, ...]] = []
+    data: List[Any] = []
 
 @app.post("/ask")
 async def run_query(query_input: QueryInput):
@@ -210,7 +223,7 @@ async def run_query(query_input: QueryInput):
         toolkit = ReadOnlySQLDatabaseToolkit(
             db=db,
             llm=OpenAI(
-                model="gpt-4-0613", temperature=0, openai_api_key=get_openai_api_key()
+                model="gpt-3.5-0613", temperature=0, openai_api_key=get_openai_api_key()
             ),
         )
         agent_executor = create_sql_agent(
@@ -237,8 +250,11 @@ async def run_query(query_input: QueryInput):
             elif isinstance(results_output, dict):
                 data = results_output.get("value")
                 sql_output = results_output.get("sql")
+                
+            # Serialize the result into JSON format
+            data = json.loads(json.dumps(result["value"], default=json_serial))
 
-            print(
+            output = (
                 QueryOutput(
                     total_tokens=cb.total_tokens,
                     prompt_tokens=cb.prompt_tokens,
@@ -249,6 +265,7 @@ async def run_query(query_input: QueryInput):
                     data=data,
                 )
             )
-            return {"message": "Success"}
+            print (output)
+            return output
     except Exception as e:
         return HTTPException(500, "LLM Error: " + str(e))
