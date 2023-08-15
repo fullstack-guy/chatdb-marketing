@@ -33,11 +33,6 @@ async function streamToJSON(stream: ReadableStream<Uint8Array>): Promise<body> {
 }
 
 export default async function handler(req: NextRequest) {
-  // This is test to see if we are running on the edge
-  if (typeof global.EdgeRuntime === "string") {
-    console.log("This code is running on", global.EdgeRuntime);
-  }
-
   const { body } = req;
 
   if (req.method !== "POST") {
