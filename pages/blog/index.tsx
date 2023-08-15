@@ -36,19 +36,13 @@ export default function Page({ posts }) {
       <div className="m-10 p-4 md:p-0">
         {(posts || []).map(({ slug, frontmatter }, index) => (
           <Link key={index} href={`/post/${slug}`}>
-            <div className="card m-auto cursor-pointer">
-              <div
-                key={slug}
-                className={`mb-2 w-full transform rounded-xl p-2 shadow-xl transition hover:scale-105`}
-              >
-                <>
-                  <div className="card-body text-left">
-                    <h2 className="card-title text-2xl font-bold text-black">
-                      {frontmatter.title}
-                    </h2>
-                    <p className="mt-2 text-lg">{frontmatter.description}</p>
-                  </div>
-                </>
+            <div
+              key={slug}
+              className="border border-purple-600 transform transition hover:scale-105 rounded-lg overflow-hidden shadow-lg hover:border-purple-700 cursor-pointer m-auto mb-4" // Applied the purple design styles
+            >
+              <div className="bg-gradient-to-br from-purple-100 to-white p-6"> {/* Added gradient */}
+                <h2 className="font-bold text-purple-700 text-2xl mb-2">{frontmatter.title}</h2> {/* Text color changed to purple */}
+                <p className="text-gray-700 mt-2 text-lg">{frontmatter.description}</p>
               </div>
             </div>
           </Link>
@@ -57,3 +51,4 @@ export default function Page({ posts }) {
     </Layout>
   );
 }
+
