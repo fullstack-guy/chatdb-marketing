@@ -30,7 +30,7 @@ const ToolsPage = () => {
         {
             id: 5,
             title: 'CSV to Parquet Converter',
-            description: 'Convert CSV files to compressed parquet.',
+            description: 'Convert CSV files to compressed parquet. Ideal for efficient storage and analytics.',
             link: '/tools/csv-to-parquet-converter',
         }
     ];
@@ -50,7 +50,7 @@ const ToolsPage = () => {
                     Free tools for your data, no signup required! Everything runs in the browser and your data never touches our systems!
                 </p>
 
-                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
                     {tools.map(tool => (
                         <Link href={tool.link} key={tool.id}>
                             <div className="border border-purple-600 transform transition hover:scale-105 rounded-lg overflow-hidden shadow-lg hover:border-purple-700"> {/* Changed to an anchor tag for better semantics and added purple borders */}
