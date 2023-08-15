@@ -53,7 +53,7 @@ const Page = () => {
           free!
         </p>
 
-        <div className="flex w-full">
+        <div className="flex flex-col md:flex-row w-full"> {/* Here's the change */}
           <textarea
             ref={textareaRef}
             className="textarea-4xl textarea-accent textarea mx-4 mt-10 flex-1"
@@ -63,7 +63,7 @@ const Page = () => {
           />
 
           <Prism
-            className="mx-4 mt-10 w-full flex-1 text-xl"
+            className="mx-4 mt-10 flex-1 text-xl"
             withLineNumbers
             language="sql"
           >

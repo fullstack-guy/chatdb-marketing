@@ -148,9 +148,9 @@ const TableEditor = ({ tableName, database_token }) => {
 
           <div className="flex flex-col items-center mt-4">
             <div className="flex items-center"> {/* Added items-center */}
-              <div className="join-item btn btn-outline mx-2" onClick={() => setPageNumber(prev => Math.max(prev - 1, 1))}>«</div>
-              <span className="mx-2">Page {pageNumber}</span>
-              <button className="join-item btn btn-outline mx-2" onClick={() => setPageNumber(prev => prev + 1)}>»</button>
+              <div className="join-item btn-sm text-black btn btn-outline mx-2" onClick={() => setPageNumber(prev => Math.max(prev - 1, 1))}>«</div>
+              <span className="mx-2 text-black">Page {pageNumber}</span>
+              <button className="join-item btn-sm text-black btn btn-outline mx-2" onClick={() => setPageNumber(prev => prev + 1)}>»</button>
             </div>
             <span className="mt-2 text-sm">Showing {transformedRows.length} results</span>
           </div>

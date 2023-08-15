@@ -31,43 +31,12 @@ const Navbar = () => {
               </Link>
             )}
           </SignedIn>
-          <div className="dropdown">
-            <label
-              tabIndex={0}
-              className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
-            >
-              Tools
-            </label>
-            <ul
-              tabIndex={0}
-              className="dropdown-content menu rounded-box z-[1] mt-3 w-52 bg-base-100 p-2 shadow"
-            >
-              <Link
-                href="/tools/csv-editor"
-                className="text-md mx-2 cursor-pointer rounded-lg px-4 py-2.5 text-center text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
-              >
-                CSV Viewer and Editor
-              </Link>
-              <Link
-                href="/tools/query-csv-with-sql"
-                className="text-md  mx-2 cursor-pointer rounded-lg px-4 py-2.5 text-center text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
-              >
-                Query CSV with SQL
-              </Link>
-              <Link
-                href="/tools/csv-to-json-converter"
-                className="mx-2 cursor-pointer rounded-lg px-4 py-2.5 text-center text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
-              >
-                CSV to JSON Converter
-              </Link>
-              <Link
-                href="/tools/sql-formatter"
-                className="mx-2 cursor-pointer rounded-lg px-4 py-2.5 text-center text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
-              >
-                SQL Formatter
-              </Link>
-            </ul>
-          </div>
+          <Link
+            href="/tools"
+            className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
+          >
+            Tools
+          </Link>
           <Link
             href="/pricing"
             className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
@@ -112,10 +81,20 @@ const Navbar = () => {
               <Menu.Item>
                 {({ active }) => (
                   <Link
+                    href="/tools"
+                    className={`${active ? "bg-muted-1 text-heading" : "text-text"
+                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                  >
+                    Tools
+                  </Link>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <Link
                     href="/pricing"
-                    className={`${
-                      active ? "bg-muted-1 text-heading" : "text-text"
-                    } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                    className={`${active ? "bg-muted-1 text-heading" : "text-text"
+                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                   >
                     Pricing
                   </Link>
@@ -125,9 +104,8 @@ const Navbar = () => {
                 {({ active }) => (
                   <Link
                     href="/blog"
-                    className={`${
-                      active ? "bg-muted-1 text-heading" : "text-text"
-                    } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                    className={`${active ? "bg-muted-1 text-heading" : "text-text"
+                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                   >
                     Blog
                   </Link>
@@ -137,9 +115,8 @@ const Navbar = () => {
                 {({ active }) => (
                   <Link
                     href="/contact-us"
-                    className={`${
-                      active ? "bg-muted-1 text-heading" : "text-text"
-                    } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                    className={`${active ? "bg-muted-1 text-heading" : "text-text"
+                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                   >
                     Contact-Us
                   </Link>
