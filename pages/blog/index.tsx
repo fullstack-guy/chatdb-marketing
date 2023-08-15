@@ -30,7 +30,7 @@ export default function Page({ posts }) {
       description="Stay up-to-date with the latest news, insights, and tips about databases, AI technology, and ChatDB features from our blog."
       url="https://www.chatdb.ai/blog"
     >
-      <div className="mt-24 text-center text-7xl font-bold text-black">
+      <div className="mt-24 mb-24 text-center text-7xl font-bold text-black">
         Blog
       </div>
       <div className="m-10 p-4 md:p-0">
