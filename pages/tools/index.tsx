@@ -26,6 +26,12 @@ const ToolsPage = () => {
             title: 'SQL Formatter',
             description: 'Format and beautify your SQL statements for better readability.',
             link: '/tools/sql-formatter',
+        },
+        {
+            id: 5,
+            title: 'CSV to Parquet Converter',
+            description: 'Convert CSV files to compressed parquet.',
+            link: '/tools/csv-to-parquet-converter',
         }
     ];
 

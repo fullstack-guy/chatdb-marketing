@@ -8,6 +8,28 @@ const DynamicDuckDBComponent = dynamic(
 );
 
 const IndexPage = () => {
+
+  const tools = [
+    {
+      id: 3,
+      title: 'CSV to JSON Converter',
+      description: 'Convert your CSV files to JSON with ease.',
+      link: '/tools/csv-to-json-converter',
+    },
+    {
+      id: 4,
+      title: 'SQL Formatter',
+      description: 'Format and beautify your SQL statements for better readability.',
+      link: '/tools/sql-formatter',
+    },
+    {
+      id: 5,
+      title: 'CSV to Parquet Converter',
+      description: 'Convert CSV files to compressed parquet.',
+      link: '/tools/csv-to-parquet-converter',
+    }
+  ];
+
   return (
     <Layout
       title="Query CSV files with SQL and AI | ChatDB"
@@ -38,7 +60,7 @@ const IndexPage = () => {
             complex data analysis tool.
           </p>
         </div>
-        <div className="my-20 w-full px-6">
+        <div className="mb-10 w-full px-6">
           <h2 className="text-center text-4xl font-bold text-black">
             How it works
           </h2>
@@ -48,22 +70,23 @@ const IndexPage = () => {
             your machine and never leaves the browser!
           </p>
         </div>
-        <div className="mb-20 w-full px-6">
-          <h2 className="text-center text-2xl font-bold text-black">
-            Want to edit your CSV like a spreadsheet?
+        <div className="mb-28 w-full px-6">
+          <h2 className="text-center mb-10 text-3xl font-bold text-black">
+            Explore other tools
           </h2>
-          <p className="mt-6 text-center text-lg">
-            If you prefer working with a spreadsheet-like interface, check out
-            our{" "}
-            <Link
-              href="/tools/csv-editor"
-              className="text-xl font-bold text-gray-700"
-            >
-              CSV Editor tool
-            </Link>
-            It provides an intuitive, easy-to-use interface for viewing and
-            editing your CSV data.
-          </p>
+
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {tools.map(tool => (
+              <Link href={tool.link} key={tool.id}>
+                <div className="border border-purple-600 transform transition hover:scale-105 rounded-lg overflow-hidden shadow-lg hover:border-purple-700">
+                  <div className="bg-gradient-to-br from-purple-100 to-white p-6">
+                    <h2 className="font-bold text-purple-700 text-xl mb-2">{tool.title}</h2>
+                    <p className="text-gray-700 mb-4">{tool.description}</p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </Layout>

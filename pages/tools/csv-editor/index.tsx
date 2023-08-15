@@ -14,6 +14,7 @@ import {
   Separator,
   ItemParams,
 } from "react-contexify";
+import Link from "next/link";
 import TextEditor from "../../../components/spreadsheet/TextEditor";
 
 const Page = () => {
@@ -21,6 +22,27 @@ const Page = () => {
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [redoStack, setRedoStack] = useState([]);
+
+  const tools = [
+    {
+      id: 2,
+      title: 'Query CSV with SQL',
+      description: 'Run SQL queries directly on CSV files.',
+      link: '/tools/query-csv-with-sql',
+    },
+    {
+      id: 3,
+      title: 'CSV to JSON Converter',
+      description: 'Convert your CSV files to JSON with ease.',
+      link: '/tools/csv-to-json-converter',
+    },
+    {
+      id: 5,
+      title: 'CSV to Parquet Converter',
+      description: 'Convert CSV files to compressed parquet.',
+      link: '/tools/csv-to-parquet-converter',
+    }
+  ];
 
   const MENU_ID = `cell-menu`;
   const { show } = useContextMenu({
@@ -235,7 +257,7 @@ const Page = () => {
           </Item>
         </Menu>
       </div>
-      <h2 className="mb-4 mt-20 text-center text-4xl font-bold text-black">
+      <h2 className="mb-4 mt-48 text-center text-4xl font-bold text-black">
         What is a CSV file?
       </h2>
       <p className="mb-4 text-center text-lg">
@@ -244,6 +266,24 @@ const Page = () => {
         imported and exported from various applications including, but not
         limited to databases and spreadsheets.
       </p>
+      <div className="mb-28 w-full px-6">
+        <h2 className="text-center mt-16 text-3xl font-bold text-black">
+          Explore other tools
+        </h2>
+
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {tools.map(tool => (
+            <Link href={tool.link} key={tool.id}>
+              <div className="border border-purple-600 transform transition hover:scale-105 rounded-lg overflow-hidden shadow-lg hover:border-purple-700">
+                <div className="bg-gradient-to-br from-purple-100 to-white p-6">
+                  <h2 className="font-bold text-purple-700 text-xl mb-2">{tool.title}</h2>
+                  <p className="text-gray-700 mb-4">{tool.description}</p>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
       <Toaster position="bottom-center" />
     </Layout>
   );
