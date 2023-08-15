@@ -98,6 +98,9 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
               <Link href="/tools/sql-formatter" className="link-hover link">
                 SQL Formatter
               </Link>
+              <Link href="/tools/csv-to-parquet-converter" className="link-hover link">
+                CSV to Parquet Converter
+              </Link>
             </div>
           </footer>
         </div>
