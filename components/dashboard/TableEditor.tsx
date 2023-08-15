@@ -14,12 +14,11 @@ const TableEditor = ({ tableName, database_token }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [tableRows, setTableRows] = useState([]);
   const [columns, setColumns] = useState([]);
+  const [pageNumber, setPageNumber] = useState(1);
 
   const initialTableEditorState = {
     sortColumn: null,
     sortDirection: null,
-    offset: 0,
-    limit: 500,
     whereClause: "",
   };
 
@@ -29,8 +28,6 @@ const TableEditor = ({ tableName, database_token }) => {
   const [sortDirection, setSortDirection] = useState(
     initialTableEditorState.sortDirection
   );
-  const [offset, setOffset] = useState(initialTableEditorState.offset);
-  const [limit, setLimit] = useState(initialTableEditorState.limit);
   const [whereClause, setWhereClause] = useState(
     initialTableEditorState.whereClause
   );
@@ -42,12 +39,11 @@ const TableEditor = ({ tableName, database_token }) => {
       JSON.stringify({
         sortColumn,
         sortDirection,
-        offset,
-        limit,
+        pageNumber,
         whereClause,
       })
     );
-  }, [sortColumn, sortDirection, offset, limit, whereClause, tableName]);
+  }, [sortColumn, sortDirection, pageNumber, whereClause, tableName]);
 
   const fetchDataDebounced = debounce(async () => {
     setIsLoading(true);
@@ -59,8 +55,7 @@ const TableEditor = ({ tableName, database_token }) => {
         order_by: sortColumn
           ? `${sortColumn} ${sortDirection.toUpperCase()}`
           : undefined,
-        offset: offset,
-        limit: limit,
+        pageNumber: pageNumber,
         where_clause: whereClause,
       });
 
@@ -69,29 +64,28 @@ const TableEditor = ({ tableName, database_token }) => {
         const columns =
           response.data.length > 0
             ? Object.keys(response.data[0]).map((key) => ({
-                key: key,
-                name: key,
-                sortable: true,
-                editable: key === "id" ? false : true,
-                headerRenderer: (props) => (
-                  <div
-                    onClick={() =>
-                      handleSort(key, sortDirection === "asc" ? "desc" : "asc")
-                    }
-                  >
-                    {props.column.name}{" "}
-                    {sortDirection &&
-                      sortColumn === key &&
-                      (sortDirection === "asc" ? (
-                        <FaSortAmountDownAlt />
-                      ) : (
-                        <FaSortAmountUpAlt />
-                      ))}
-                  </div>
-                ),
-                resizable: true,
-                width: 120,
-              }))
+              key: key,
+              name: key,
+              sortable: true,
+              editable: key === "id" ? false : true,
+              headerRenderer: (props) => (
+                <div
+                  onClick={() =>
+                    handleSort(key, sortDirection === "asc" ? "desc" : "asc")
+                  }
+                >
+                  {props.column.name}{" "}
+                  {sortDirection &&
+                    sortColumn === key &&
+                    (sortDirection === "asc" ? (
+                      <FaSortAmountDownAlt />
+                    ) : (
+                      <FaSortAmountUpAlt />
+                    ))}
+                </div>
+              ),
+              resizable: true,
+            }))
             : [];
         setColumns(columns);
       }
@@ -109,7 +103,7 @@ const TableEditor = ({ tableName, database_token }) => {
     return () => {
       fetchDataDebounced.cancel();
     };
-  }, [sortColumn, sortDirection, offset, limit, whereClause]);
+  }, [sortColumn, sortDirection, pageNumber, whereClause]);
 
   const handleSort = (columnKey, direction) => {
     setSortColumn(columnKey);
@@ -134,7 +128,7 @@ const TableEditor = ({ tableName, database_token }) => {
   const transformedRows = transformRows(tableRows);
 
   return (
-    <div className="max-h-full w-full overflow-x-auto">
+    <div className="max-h-full w-full h-full overflow-x-auto flex flex-col"> {/* Added flex and flex-col */}
       {isLoading ? (
         <div className="m-auto">
           <PuffLoader
@@ -147,10 +141,20 @@ const TableEditor = ({ tableName, database_token }) => {
       ) : (
         <>
           <DataGrid
-            className={`rdg-light w-full ${roboto.className}`}
+            className={`rdg-light w-full h-[60vh] ${roboto.className}`}
             columns={columns}
             rows={transformedRows}
           />
+
+          <div className="flex flex-col items-center mt-4">
+            <div className="flex items-center"> {/* Added items-center */}
+              <div className="join-item btn btn-outline mx-2" onClick={() => setPageNumber(prev => Math.max(prev - 1, 1))}>«</div>
+              <span className="mx-2">Page {pageNumber}</span>
+              <button className="join-item btn btn-outline mx-2" onClick={() => setPageNumber(prev => prev + 1)}>»</button>
+            </div>
+            <span className="mt-2 text-sm">Showing {transformedRows.length} results</span>
+          </div>
+
 
           <div className="mt-4 flex flex-wrap items-center justify-between">
             <div className="flex flex-wrap gap-4">

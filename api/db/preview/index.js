@@ -10,13 +10,14 @@ app.post("*", ClerkExpressRequireAuth(), async (req, res) => {
   const {
     connectionStringToken,
     table_name,
+    pageNumber,
     where_clause,
-    offset,
-    limit,
     order_by,
   } = req.body;
 
   try {
+    const offset = (pageNumber - 1) * 500;
+
     const bt = await new BasisTheory().init(
       process.env.NEXT_PRIVATE_BASIS_THEORY_KEY
     );
@@ -45,7 +46,7 @@ app.post("*", ClerkExpressRequireAuth(), async (req, res) => {
     }
 
     query += ` LIMIT $${params.length + 1}`;
-    params.push(limit ? limit : 500);
+    params.push(500);
 
     if (offset) {
       query += ` OFFSET $${params.length + 1}`;
