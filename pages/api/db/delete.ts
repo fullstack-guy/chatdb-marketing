@@ -14,11 +14,6 @@ const clerk = Clerk({ apiKey: process.env.CLERK_API_SECRET });
 const basisTheoryApiKey = process.env.NEXT_PRIVATE_BASIS_THEORY_KEY;
 
 export default async function handler(req: NextRequest) {
-  // This is test to see if we are running on the edge
-  if (typeof global.EdgeRuntime === "string") {
-    console.log("This code is running on", global.EdgeRuntime);
-  }
-
   const sessionToken = req.headers.get("Authorization")?.replace("Bearer ", "");
   if (!sessionToken) {
     return NextResponse.json({ error: "Unauthenticated!" }, { status: 401 });
