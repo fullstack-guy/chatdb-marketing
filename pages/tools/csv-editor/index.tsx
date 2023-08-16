@@ -16,6 +16,7 @@ import {
 } from "react-contexify";
 import Link from "next/link";
 import TextEditor from "../../../components/spreadsheet/TextEditor";
+import Head from "next/head";
 
 const Page = () => {
   const [history, setHistory] = useState([]);
@@ -200,6 +201,19 @@ const Page = () => {
       url="https://www.chatdb.ai/tools/csv-editor"
       oggURL="https://www.chatdb.ai/_next/image?url=images/csv-editor-ogg.png&w=1200&q=75"
     >
+      <Head>
+        <meta name="og:title" content="CSV Editor and Viewer | ChatDB" />
+        <meta name="og:description" content="Free online CSV Editor and Viewer by ChatDB. Easily upload, view, and edit your CSV files." />
+
+        <meta
+          name="og:image"
+          content={
+            `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
+            }/api/og`
+          }
+        />
+      </Head>
+
       <div
         className="mt-10 flex flex-col items-center p-6"
         onKeyDown={handleKeyDown}

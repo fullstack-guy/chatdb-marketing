@@ -2,6 +2,7 @@ import fs from "fs";
 import matter from "gray-matter";
 import md from "markdown-it";
 import Layout from "../../components/Layout";
+import Head from "next/head";
 
 export async function getStaticPaths() {
   const files = fs.readdirSync("posts");
@@ -46,6 +47,19 @@ export default function PostPage({ frontmatter, htmlContent }) {
   const { title, description } = frontmatter;
   return (
     <Layout>
+      <Head>
+        <meta name="og:title" content={title} />
+        <meta name="og:description" content={description} />
+
+        <meta
+          name="og:image"
+          content={
+            `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
+            }/api/og`
+          }
+        />
+      </Head>
+
       <div className="prose-invert prose mx-auto mt-12">
         <div className="mx-10">
           <h1 className="text-center text-5xl text-heading">{title}</h1>

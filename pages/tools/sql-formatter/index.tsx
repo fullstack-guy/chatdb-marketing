@@ -4,6 +4,7 @@ import Layout from "../../../components/Layout";
 import "react-contexify/dist/ReactContexify.css";
 import { formatDialect, sql } from "sql-formatter";
 import { Prism } from "@mantine/prism";
+import Head from "next/head";
 
 const Page = () => {
   const [inputSQL, setInputSQL] =
@@ -66,6 +67,18 @@ const Page = () => {
       description="Free online SQL Formatter by ChatDB. Beautify your SQL statements effortlessly with our tool for improved readability."
       url="https://www.chatdb.ai/tools/sql-formatter"
     >
+      <Head>
+        <meta name="og:title" content="Free Online SQL Formatter | ChatDB" />
+        <meta name="og:description" content="Free online SQL Formatter by ChatDB. Beautify your SQL statements effortlessly with our tool for improved readability." />
+
+        <meta
+          name="og:image"
+          content={
+            `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
+            }/api/og`
+          }
+        />
+      </Head>
       <div className="mt-10 flex flex-col items-center p-6">
         <h1 className="mb-4 text-center text-5xl font-bold  text-black md:text-left">
           Free SQL Formatter

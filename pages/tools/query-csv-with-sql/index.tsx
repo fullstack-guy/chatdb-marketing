@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import Layout from "../../../components/Layout";
 import Link from "next/link";
+import Head from "next/head";
 
 const DynamicDuckDBComponent = dynamic(
   () => import("../../../components/duck/DuckDBComponent"),
@@ -37,6 +38,18 @@ const IndexPage = () => {
       url="https://www.chatdb.ai/tools/query-csv-with-sql"
       oggURL="https://www.chatdb.ai/_next/image?url=images/CSVSQL.png&w=1200&q=75"
     >
+      <Head>
+        <meta name="og:title" content="Query CSV files with SQL and AI | ChatDB" />
+        <meta name="og:description" content="Use ChatDB to query, view, and edit your CSV files using SQL. Upload your CSV, write an SQL query, and interact with your data. Easy to use and completely in the browser." />
+
+        <meta
+          name="og:image"
+          content={
+            `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
+            }/api/og`
+          }
+        />
+      </Head>
       <div className="mt-10 flex flex-col items-center p-6">
         <h1 className="relative mb-4 flex items-center justify-center text-center text-5xl font-bold text-black">
           Query CSV with SQL
