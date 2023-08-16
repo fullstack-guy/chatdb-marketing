@@ -2,7 +2,6 @@ import fs from "fs";
 import matter from "gray-matter";
 import Link from "next/link";
 import Layout from "../../components/Layout";
-import Head from "next/head";
 
 export async function getStaticProps() {
   const files = fs.readdirSync("posts");
@@ -31,19 +30,6 @@ export default function Page({ posts }) {
       description="Stay up-to-date with the latest news, insights, and tips about databases, AI technology, and ChatDB features from our blog."
       url="https://www.chatdb.ai/blog"
     >
-
-      <Head>
-
-        <meta
-          name="og:image"
-          content={
-
-            `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
-            }/api/og`
-          }
-        />
-      </Head>
-
       <div className="mt-24 mb-24 text-center text-7xl font-bold text-black">
         Blog
       </div>

@@ -136,7 +136,7 @@ const Page = () => {
           name="og:image"
           content={
             `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
-            }/api/og`
+            }/api/og?title=${encodeURIComponent('Free Online CSV to JSON Converter | ChatDB')}`
           }
         />
       </Head>

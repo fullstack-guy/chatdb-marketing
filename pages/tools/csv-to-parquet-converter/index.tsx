@@ -44,7 +44,7 @@ const IndexPage = () => {
                     name="og:image"
                     content={
                         `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
-                        }/api/og`
+                        }/api/og?title=${encodeURIComponent('Convert CSV to Parquet file | ChatDB')}`
                     }
                 />
             </Head>
