@@ -1,12 +1,10 @@
-const express = require("express");
-const { Pool } = require("pg");
-const { BasisTheory } = require("@basis-theory/basis-theory-js");
-const { ClerkExpressRequireAuth } = require("@clerk/clerk-sdk-node");
-
-const app = express();
-app.use(express.json());
-
-app.post("*", ClerkExpressRequireAuth(), async (req, res) => {
+import { NextApiRequest, NextApiResponse } from "next";
+import { Pool } from "pg";
+import { BasisTheory } from "@basis-theory/basis-theory-js";
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const {
     connectionStringToken,
     table_name,
@@ -64,11 +62,4 @@ app.post("*", ClerkExpressRequireAuth(), async (req, res) => {
       message: "An unexpected error occurred: " + e.message,
     });
   }
-});
-
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(401).json({ error: "Unauthenticated!" });
-});
-
-module.exports = app;
+}

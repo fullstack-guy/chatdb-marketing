@@ -1,16 +1,17 @@
-const { Configuration, OpenAIApi } = require("openai");
+import { NextApiRequest, NextApiResponse } from "next";
+import { Configuration, OpenAIApi } from "openai";
 
 const configuration = new Configuration({
   apiKey: process.env.OPEN_AI_KEY,
 });
 const openai = new OpenAIApi(configuration);
-
-// Serverless function handler
-module.exports = async (req, res) => {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method === "POST") {
     const { message, metadata } = req.body;
 
-    // Format the metadata into a string
     let metadataString = "Table: my_csv\n\n";
     metadata.forEach((field) => {
       metadataString += `${field.name}: ${field.type}\n`;
@@ -33,7 +34,6 @@ module.exports = async (req, res) => {
         ],
         temperature: 0,
       });
-      // Respond with the completion message
       res
         .status(200)
         .json({ sql: chatCompletion.data.choices[0].message.content });
@@ -41,8 +41,6 @@ module.exports = async (req, res) => {
       res.status(500).json({ error: err.message });
     }
   } else {
-    // Handle any other HTTP method
     res.status(405).json({ error: "Only POST requests allowed" });
   }
-};
-1;
+}

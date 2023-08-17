@@ -1,13 +1,9 @@
-const express = require("express");
-const cors = require("cors");
-const { Pool } = require("pg");
-const { BasisTheory } = require("@basis-theory/basis-theory-js");
-
-const app = express();
-app.use(cors());
-app.use(express.json());
+import { Pool } from "pg";
+import { BasisTheory } from "@basis-theory/basis-theory-js";
+import { NextApiRequest, NextApiResponse } from "next";
 
 function simplifyDataType(dataType) {
+  // TODO: Strong typing dataType
   const dataTypeMapping = {
     "character varying": "text",
     "timestamp without time zone": "timestamp",
@@ -16,7 +12,10 @@ function simplifyDataType(dataType) {
   return dataTypeMapping[dataType] || dataType;
 }
 
-app.post("*", async (req, res) => {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   let { connection_string, database_token } = req.body;
 
   if (database_token) {
@@ -24,7 +23,6 @@ app.post("*", async (req, res) => {
       process.env.NEXT_PRIVATE_BASIS_THEORY_KEY
     );
 
-    // Use the Basis Theory API to retrieve the real connection string
     const connectionStringObject = await bt.tokens.retrieve(database_token);
     connection_string = connectionStringObject.data;
   }
@@ -36,7 +34,6 @@ app.post("*", async (req, res) => {
   try {
     const client = await pool.connect();
 
-    // Get schemas and exclude certain schemas
     const excludedSchemas = ["information_schema", "pg_catalog"];
     const { rows: schemaRows } = await client.query(
       `SELECT schema_name FROM information_schema.schemata WHERE schema_name NOT IN (${excludedSchemas
@@ -51,7 +48,6 @@ app.post("*", async (req, res) => {
       const schema = schemaRow.schema_name;
       databaseInfo[schema] = {};
 
-      // Get tables
       const { rows: tableRows } = await client.query(
         "SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname = $1;",
         [schema]
@@ -76,7 +72,6 @@ app.post("*", async (req, res) => {
           };
         }
 
-        // Get foreign keys
         const { rows: foreignKeyRows } = await client.query(
           `
           SELECT 
@@ -112,7 +107,7 @@ app.post("*", async (req, res) => {
     }
 
     client.release();
-    res.json(databaseInfo);
+    res.status(200).json(databaseInfo);
   } catch (e) {
     console.error(e);
     res.status(400).json({
@@ -120,6 +115,4 @@ app.post("*", async (req, res) => {
       message: "An unexpected error occurred: " + e.message,
     });
   }
-});
-
-module.exports = app;
+}

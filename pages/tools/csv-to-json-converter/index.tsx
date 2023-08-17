@@ -8,6 +8,7 @@ import { Toaster, toast } from "react-hot-toast";
 import { useContextMenu } from "react-contexify";
 import Link from "next/link";
 import "react-data-grid/lib/styles.css";
+import Head from "next/head";
 
 const Page = () => {
   const [data, setData] = useState([]);
@@ -126,7 +127,15 @@ const Page = () => {
       title="Free Online CSV to JSON Converter | ChatDB"
       description="Free online CSV to JSON Converter by ChatDB. Easily upload, view, and transform your CSV files."
       url="https://www.chatdb.ai/tools/csv-to-json-converter"
+      oggURL={
+        `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
+        }/api/og?title=${encodeURIComponent('Free Online CSV to JSON Converter | ChatDB')}`
+      }
     >
+      <Head>
+        <meta name="og:title" content="Free Online CSV to JSON Converter | ChatDB" />
+        <meta name="og:description" content="Free online CSV to JSON Converter by ChatDB. Easily upload, view, and transform your CSV files." />
+      </Head>
       <div className="mt-10 flex flex-col items-center p-6">
         <h1 className="mb-4 text-center text-5xl font-bold text-black md:text-left">
           Free Online CSV to JSON Converter

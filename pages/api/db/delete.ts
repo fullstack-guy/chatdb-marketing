@@ -1,7 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import axios from "axios";
-import { Clerk } from "@clerk/clerk-sdk-node";
 
 export const config = {
   runtime: "edge",
@@ -10,21 +9,9 @@ export const config = {
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
-const clerk = Clerk({ apiKey: process.env.CLERK_API_SECRET });
 const basisTheoryApiKey = process.env.NEXT_PRIVATE_BASIS_THEORY_KEY;
 
 export default async function handler(req: NextRequest) {
-  const sessionToken = req.headers.get("Authorization")?.replace("Bearer ", "");
-  if (!sessionToken) {
-    return NextResponse.json({ error: "Unauthenticated!" }, { status: 401 });
-  }
-
-  try {
-    await clerk.base.verifySessionToken(sessionToken);
-  } catch (error) {
-    return NextResponse.json({ error: "Unauthenticated!" }, { status: 401 });
-  }
-
   const { url } = req;
   const database = new URL(url).searchParams.get("database");
 
