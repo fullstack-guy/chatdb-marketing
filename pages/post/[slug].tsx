@@ -46,18 +46,16 @@ export async function getStaticProps({ params: { slug } }) {
 export default function PostPage({ frontmatter, htmlContent }) {
   const { title, description } = frontmatter;
   return (
-    <Layout>
+    <Layout
+      oggURL={
+        `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
+        }/api/og?title=${encodeURIComponent(title)}`
+      }
+    >
       <Head>
         <meta name="og:title" content={title} />
         <meta name="og:description" content={description} />
 
-        <meta
-          name="og:image"
-          content={
-            `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
-            }/api/og?title=${encodeURIComponent(title)}`
-          }
-        />
       </Head>
 
       <div className="prose-invert prose mx-auto mt-12">

@@ -35,18 +35,14 @@ const IndexPage = () => {
             title="Convert CSV to Parquet file | ChatDB"
             description="Use ChatDB to swiftly convert your CSV files to Parquet format completely in the browser. No sign-ups or data transfer required."
             url="https://www.chatdb.ai/tools/csv-to-parquet-converter"
+            oggURL={
+                `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
+                }/api/og?title=${encodeURIComponent('Convert CSV to Parquet file | ChatDB')}`
+            }
         >
             <Head>
                 <meta name="og:title" content="Convert CSV to Parquet file | ChatDB" />
                 <meta name="og:description" content="Use ChatDB to swiftly convert your CSV files to Parquet format completely in the browser. No sign-ups or data transfer required." />
-
-                <meta
-                    name="og:image"
-                    content={
-                        `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
-                        }/api/og?title=${encodeURIComponent('Convert CSV to Parquet file | ChatDB')}`
-                    }
-                />
             </Head>
             <div className="mt-10 flex flex-col items-center p-6">
                 <h1 className="relative mb-4 flex items-center justify-center text-center text-5xl font-bold text-black">

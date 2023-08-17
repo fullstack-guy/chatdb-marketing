@@ -199,19 +199,14 @@ const Page = () => {
       title="CSV Editor and Viewer | ChatDB"
       description="Free online CSV Editor and Viewer by ChatDB. Easily upload, view, and edit your CSV files."
       url="https://www.chatdb.ai/tools/csv-editor"
-      oggURL="https://www.chatdb.ai/_next/image?url=images/csv-editor-ogg.png&w=1200&q=75"
+      oggURL={
+        `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
+        }/api/og?title=${encodeURIComponent('CSV Editor and Viewer | ChatDB')}`
+      }
     >
       <Head>
         <meta name="og:title" content="CSV Editor and Viewer | ChatDB" />
         <meta name="og:description" content="Free online CSV Editor and Viewer by ChatDB. Easily upload, view, and edit your CSV files." />
-
-        <meta
-          name="og:image"
-          content={
-            `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
-            }/api/og?title=${encodeURIComponent('CSV Editor and Viewer | ChatDB')}`
-          }
-        />
       </Head>
 
       <div

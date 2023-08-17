@@ -127,18 +127,14 @@ const Page = () => {
       title="Free Online CSV to JSON Converter | ChatDB"
       description="Free online CSV to JSON Converter by ChatDB. Easily upload, view, and transform your CSV files."
       url="https://www.chatdb.ai/tools/csv-to-json-converter"
+      oggURL={
+        `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
+        }/api/og?title=${encodeURIComponent('Free Online CSV to JSON Converter | ChatDB')}`
+      }
     >
       <Head>
         <meta name="og:title" content="Free Online CSV to JSON Converter | ChatDB" />
         <meta name="og:description" content="Free online CSV to JSON Converter by ChatDB. Easily upload, view, and transform your CSV files." />
-
-        <meta
-          name="og:image"
-          content={
-            `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
-            }/api/og?title=${encodeURIComponent('Free Online CSV to JSON Converter | ChatDB')}`
-          }
-        />
       </Head>
       <div className="mt-10 flex flex-col items-center p-6">
         <h1 className="mb-4 text-center text-5xl font-bold text-black md:text-left">

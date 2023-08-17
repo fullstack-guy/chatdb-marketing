@@ -24,6 +24,21 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
         title={title || defaultTitle}
         description={description || defaultDescription}
         canonical={url || defaultUrl}
+        openGraph={{
+          url: url || defaultUrl,
+          title: title || defaultTitle,
+          description: description || defaultDescription,
+          images: [
+            {
+              url: oggURL || defaultImage,
+              width: 800,
+              height: 600,
+              alt: "ChatDB",
+              type: "image/jpeg",
+            },
+          ],
+          site_name: "ChatDB",
+        }}
         twitter={{
           handle: "@calebfahlgren",
           site: "@calebfahlgren",
