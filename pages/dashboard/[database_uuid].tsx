@@ -29,7 +29,6 @@ export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("Chat");
   const [fetchedDatabase, setFetchedDatabase] = useState<Database | null>(null);
-  const [databaseToken, setDatabaseToken] = useState<string>("");
   const [selectedSchema, setSelectedSchema] = useState("public");
   const [refreshing, setRefreshing] = useState(false);
   const [dataModel, setDataModel] = useState([]);
