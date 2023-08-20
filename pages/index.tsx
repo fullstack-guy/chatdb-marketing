@@ -51,7 +51,7 @@ export default function Page() {
         <section className="px-8 pb-2 pt-6 text-center md:py-16">
           <div className="mx-auto max-w-6xl">
             <div className="flex flex-col items-center">
-              <h1 className="mt-5 text-center text-3xl font-semibold text-heading md:max-w-4xl lg:text-5xl xl:text-6xl">
+              <h1 className="mt-5 text-center text-3xl font-semibold text-heading md:max-w-4xl md:text-4xl lg:text-5xl xl:text-6xl">
                 Your Personal AI Data Analyst
               </h1>
               <p className="mt-6 max-w-3xl text-xl">
@@ -456,13 +456,13 @@ export default function Page() {
                 </p>
               </div>
 
-              <div className="h-72 max-w-lg">
+              <div className="h-72 max-w-2xl">
                 <Image
                   alt="chatgpt ask image"
                   className="rounded-xl"
                   height={500}
                   width={600}
-                  src="/images/Ask.png"
+                  src="/images/ASKDB-min.png"
                 />
               </div>
             </div>
