@@ -462,7 +462,7 @@ export default function Page() {
                   className="rounded-xl"
                   height={500}
                   width={600}
-                  src="/images/ASKDB-min.png"
+                  src="/images/AskDB-min.png"
                 />
               </div>
             </div>
