@@ -50,7 +50,7 @@ export default function Page() {
       .eq("user_id", user.id)
       .eq("uuid", database_uuid);
 
-    if (error) {
+    if (error || data.length === 0) {
       console.error("Error fetching tables:", error);
       router.push("/dashboard");
     } else {
