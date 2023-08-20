@@ -141,7 +141,7 @@ const TableEditor = ({ tableName, database_token }) => {
       ) : (
         <>
           <DataGrid
-            className={`rdg-light w-full h-[60vh] ${roboto.className}`}
+            className={`rdg-light w-full h-[100%] max-h-[60vh] ${roboto.className}`}
             columns={columns}
             rows={transformedRows}
           />

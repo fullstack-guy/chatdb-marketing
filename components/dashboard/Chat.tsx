@@ -5,7 +5,10 @@ import { Prism } from "@mantine/prism";
 import { Toaster, toast } from "react-hot-toast";
 import { FC, memo } from "react";
 import ReactMarkdown, { Options } from "react-markdown";
-import gfm from "remark-gfm"; // this is the plugin required for react-markdown to handle tables
+import gfm from "remark-gfm";
+import "react-data-grid/lib/styles.css";
+import DataGrid from "react-data-grid";
+import { useAuth } from "@clerk/clerk-react";
 
 export const MemoizedReactMarkdown: FC<Options> = memo(
   ReactMarkdown,
@@ -14,10 +17,39 @@ export const MemoizedReactMarkdown: FC<Options> = memo(
     prevProps.className === nextProps.className
 );
 
-const Chat = ({ database_token }) => {
+const Chat = ({ database_uuid }) => {
   const [query, setQuery] = useState("");
-  const [result, setResult] = useState({ sql: "", result: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const [result, setResult] = useState({ sql: "", result: "", data: null });
+  const [showSql, setShowSql] = useState(false);
+  const { getToken } = useAuth();
+
+  const toggleSqlVisibility = () => {
+    setShowSql(prevShowSql => !prevShowSql);
+  };
+
+  const formatDataForGrid = (data) => {
+    if (!data.columns || !data.rows) {
+      return { columns: [], rows: [] };
+    }
+
+    const columns = data.columns.map((col) => ({
+      key: col,
+      name: col,
+      resizable: true,
+      sortable: true,
+    }));
+
+    const rows = data.rows.map((row, rowIndex) => {
+      let rowObj = {};
+      data.columns.forEach((col, colIndex) => {
+        rowObj[col] = row[colIndex];
+      });
+      return { ...rowObj, id: rowIndex };
+    });
+
+    return { columns, rows };
+  };
 
   const handleKeyDown = async (e) => {
     if (e.key === "Enter") {
@@ -25,25 +57,31 @@ const Chat = ({ database_token }) => {
       setIsLoading(true);
 
       try {
-        const response = await fetch("/api/db/chat", {
+        const token = await getToken({ template: "supabase" });
+
+        const response = await fetch("https://chatdb-backend-deah4kbsta-uc.a.run.app/ask", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ query, token: database_token }),
+          headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+          body: JSON.stringify({ query, uuid: database_uuid }),
         });
 
         if (!response.ok) {
-          // check if response went through
           throw new Error("Response Error: " + response.status);
         }
 
         const data = await response.json();
 
-        setResult(data.result);
+        setResult({
+          sql: data.sql,
+          result: data.text,
+          data: data.data
+        });
+
         setIsLoading(false);
       } catch (error) {
         console.error("Fetch Error :-S", error);
         setIsLoading(false);
-        toast.error("Sorry that is embarrasing. We had an issue 🙈");
+        toast.error("Sorry, that is embarrassing. We had an issue 🙈");
       }
     }
   };
@@ -74,30 +112,57 @@ const Chat = ({ database_token }) => {
           />
         </div>
       ) : (
-        result.result && (
-          <div className="mt-10">
-            <div className="answer-box mb-4 rounded-lg p-4">
-              <MemoizedReactMarkdown
-                className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
-                remarkPlugins={[gfm]}
-                components={{
-                  p({ children }) {
-                    return (
-                      <p className="mb-2 text-black last:mb-0">{children}</p>
-                    );
-                  },
-                }}
-              >
-                {result.result}
-              </MemoizedReactMarkdown>
+        <div>
+          {result.result && (
+            <div className="mt-10">
+              <div className="answer-box mb-4 rounded-lg p-4">
+                <MemoizedReactMarkdown
+                  className="prose break-words text-black dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
+                  remarkPlugins={[gfm]}
+                  components={{
+                    p({ children }) {
+                      return (
+                        <p className="mb-2 text-black last:mb-0">{children}</p>
+                      );
+                    },
+                  }}
+                >
+                  {result.result}
+                </MemoizedReactMarkdown>
+              </div>
             </div>
-            <h1 className="my-2 text-2xl font-bold text-black">SQL Code</h1>
-            <Prism withLineNumbers language="sql">
-              {format(result.sql, { language: "postgresql" })}
-            </Prism>
-            <Toaster position="top-right" />
-          </div>
-        )
+          )}
+          {Object.keys(result?.data || {}).length > 0 && (
+            <div className="mt-5">
+              <DataGrid
+                className={`rdg-light w-full h-[100%] max-h-[60vh]`}
+                columns={formatDataForGrid(result.data).columns}
+                rows={formatDataForGrid(result.data).rows}
+              />
+            </div>
+          )}
+          {result.sql && (
+            <div>
+              {/* The View Code Button */}
+              <button
+                className="mt-5 btn btn-primary"
+                onClick={toggleSqlVisibility}
+              >
+                View Code
+              </button>
+
+              {/* Conditionally render the SQL dropdown */}
+              {showSql && (
+                <div className="sql-dropdown mt-4">
+                  <Prism withLineNumbers language="sql">
+                    {format(result.sql, { language: "postgresql" })}
+                  </Prism>
+                </div>
+              )}
+            </div>
+          )}
+          <Toaster position="top-right" />
+        </div>
       )}
     </>
   );
