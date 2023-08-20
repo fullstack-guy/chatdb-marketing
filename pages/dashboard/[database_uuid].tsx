@@ -24,6 +24,7 @@ export default function Page() {
   const router = useRouter();
   const { isLoaded, isSignedIn, user } = useUser();
   const { database_uuid } = router.query;
+  console.log(database_uuid)
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("Chat");

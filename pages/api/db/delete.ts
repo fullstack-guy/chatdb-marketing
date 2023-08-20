@@ -39,6 +39,7 @@ const getDatabaseStringFromUUID = async (
 export default async function handler(req: NextRequest) {
   const { url } = req;
   const uuid = new URL(url).searchParams.get("uuid");
+  console.log("uuid", uuid);
 
   if (req.method !== "DELETE") {
     return NextResponse.json(
