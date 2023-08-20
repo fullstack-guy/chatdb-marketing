@@ -10,7 +10,7 @@ import debounce from "lodash/debounce";
 
 const roboto = Roboto_Mono({ subsets: ["latin"] });
 
-const TableEditor = ({ tableName, database_token, database_uuid }) => {
+const TableEditor = ({ tableName, database_uuid }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [tableRows, setTableRows] = useState([]);
   const [columns, setColumns] = useState([]);
@@ -50,8 +50,8 @@ const TableEditor = ({ tableName, database_token, database_uuid }) => {
 
     try {
       const response = await axios.post("/api/db/preview", {
+        database_uuid,
         table_name: tableName,
-        connectionStringToken: database_token,
         order_by: sortColumn
           ? `${sortColumn} ${sortDirection.toUpperCase()}`
           : undefined,

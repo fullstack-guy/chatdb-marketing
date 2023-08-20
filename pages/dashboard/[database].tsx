@@ -208,7 +208,6 @@ export default function Page() {
       case "Tables":
         return (
           <TablePage
-            database_token={databaseToken}
             filteredTables={filteredTables}
             database_uuid={database_uuid}
 
