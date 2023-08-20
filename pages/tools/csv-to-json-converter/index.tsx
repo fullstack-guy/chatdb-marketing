@@ -129,7 +129,7 @@ const Page = () => {
       url="https://www.chatdb.ai/tools/csv-to-json-converter"
       oggURL={
         `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
-        }/api/og?title=${encodeURIComponent('Free Online CSV to JSON Converter | ChatDB')}`
+        }/api/og?title=${encodeURIComponent('Free Online CSV to JSON Converter')}`
       }
     >
       <Head>

@@ -37,7 +37,7 @@ const IndexPage = () => {
             url="https://www.chatdb.ai/tools/csv-to-parquet-converter"
             oggURL={
                 `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
-                }/api/og?title=${encodeURIComponent('Convert CSV to Parquet file | ChatDB')}`
+                }/api/og?title=${encodeURIComponent('Convert CSV to Parquet file')}`
             }
         >
             <Head>

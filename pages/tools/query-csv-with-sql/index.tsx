@@ -38,7 +38,7 @@ const IndexPage = () => {
       url="https://www.chatdb.ai/tools/query-csv-with-sql"
       oggURL={
         `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
-        }/api/og?title=${encodeURIComponent('Query CSV files with SQL and AI | ChatDB')}`
+        }/api/og?title=${encodeURIComponent('Query CSV files with SQL and AI')}`
       }
     >
       <Head>

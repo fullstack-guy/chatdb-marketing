@@ -201,7 +201,7 @@ const Page = () => {
       url="https://www.chatdb.ai/tools/csv-editor"
       oggURL={
         `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
-        }/api/og?title=${encodeURIComponent('CSV Editor and Viewer | ChatDB')}`
+        }/api/og?title=${encodeURIComponent('CSV Editor and Viewer')}`
       }
     >
       <Head>
