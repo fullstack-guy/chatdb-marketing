@@ -166,12 +166,10 @@ const Settings: React.FC<SettingsProps> = ({
 
       {/* Danger Zone Section */}
       <div className="w-full max-w-xl space-y-4 rounded-md bg-red-50 p-6 shadow-md">
-        <h2 className="text-2xl font-semibold text-red-600">Danger Zone</h2>
-
         <div>
           <button
             onClick={() => setModalOpen(true)}
-            className="inline-block w-full rounded-md bg-red-500 px-4 py-1 text-white hover:bg-red-700"
+            className="inline-block w-full rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-700"
           >
             Delete Connection
           </button>
