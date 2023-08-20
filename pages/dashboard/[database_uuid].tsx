@@ -9,6 +9,7 @@ import Chat from "../../components/dashboard/Chat";
 import Settings from "../../components/dashboard/Settings";
 import DatabaseFlow from "../../components/DatabaseFlow";
 import { Toaster, toast } from "react-hot-toast";
+import { useBasisTheory } from "@basis-theory/basis-theory-react";
 import useSupabase from "../../hooks/useSupabaseClient";
 
 interface Database {
@@ -23,8 +24,7 @@ interface Database {
 export default function Page() {
   const router = useRouter();
   const { isLoaded, isSignedIn, user } = useUser();
-  const { database_uuid } = router.query;
-  console.log(database_uuid)
+  const { database } = router.query;
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("Chat");
@@ -40,13 +40,16 @@ export default function Page() {
     setActiveTab(tabName);
   };
 
+  const { bt } = useBasisTheory(process.env.NEXT_PUBLIC_BASIS_THEORY_KEY, {
+    elements: true,
+  });
 
   const fetchTables = async () => {
     const { data, error } = await supabase
       .from("user_schemas")
       .select("*")
       .eq("user_id", user.id)
-      .eq("uuid", database_uuid);
+      .eq("uuid", database);
 
     if (error) {
       console.error("Error fetching tables:", error);
@@ -58,7 +61,7 @@ export default function Page() {
     }
   };
 
-  const updateDatabase = async (data, user, name, toast) => {
+  const updateDatabase = async (data, user, databaseToken, name, toast) => {
     try {
       const { data: existingSchemas, error: schemaError } = await supabase
         .from("user_schemas")
@@ -105,7 +108,7 @@ export default function Page() {
 
     const url = "/api/connect";
     const body = {
-      database_uuid,
+      database_token: databaseToken,
     };
 
     try {
@@ -124,7 +127,7 @@ export default function Page() {
       } else {
         const data = await response.json();
         try {
-          await updateDatabase(data, user, name, toast);
+          await updateDatabase(data, user, databaseToken, name, toast);
           await fetchTables();
           toast.success("Database refreshed!");
         } catch (error) {
@@ -140,11 +143,24 @@ export default function Page() {
     }
   };
 
+  const fetchDatabaseString = async () => {
+    const { data, error } = await supabase
+      .from("user_databases")
+      .select("database_string")
+      .eq("uuid", database);
 
+    if (error) {
+      console.error("Error fetching connection string:", error);
+      router.push("/dashboard");
+    } else if (data && data.length > 0) {
+      setDatabaseToken(data[0].database_string);
+    }
+  };
 
   useEffect(() => {
     if (supabase && isLoaded && isSignedIn) {
       fetchTables();
+      fetchDatabaseString();
     }
   }, [isLoaded, isSignedIn, supabase]);
 
@@ -205,14 +221,12 @@ export default function Page() {
       case "Tables":
         return (
           <TablePage
+            database_token={databaseToken}
             filteredTables={filteredTables}
-            database_uuid={database_uuid}
-
           />
         );
       case "Chat":
-        return <Chat database_token={databaseToken}
-        />;
+        return <Chat database_token={databaseToken} />;
       case "Flow":
         return <DatabaseFlow dbSchema={fetchedDatabase.schema_data} />;
       case "Settings":
@@ -220,7 +234,7 @@ export default function Page() {
           <Settings
             fetchedDatabase={fetchedDatabase}
             setFetchedDatabase={setFetchedDatabase}
-            database={Array.isArray(database_uuid) ? database_uuid[0] : database_uuid}
+            database={Array.isArray(database) ? database[0] : database}
           />
         );
       default:
