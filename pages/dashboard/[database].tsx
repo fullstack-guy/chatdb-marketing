@@ -9,7 +9,6 @@ import Chat from "../../components/dashboard/Chat";
 import Settings from "../../components/dashboard/Settings";
 import DatabaseFlow from "../../components/DatabaseFlow";
 import { Toaster, toast } from "react-hot-toast";
-import { useBasisTheory } from "@basis-theory/basis-theory-react";
 import useSupabase from "../../hooks/useSupabaseClient";
 
 interface Database {
@@ -40,9 +39,6 @@ export default function Page() {
     setActiveTab(tabName);
   };
 
-  const { bt } = useBasisTheory(process.env.NEXT_PUBLIC_BASIS_THEORY_KEY, {
-    elements: true,
-  });
 
   const fetchTables = async () => {
     const { data, error } = await supabase

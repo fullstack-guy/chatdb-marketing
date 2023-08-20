@@ -10,19 +10,26 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 type UUIDSupabaseResponse = { data: { database_string: string }; error: any };
 const getDatabaseStringFromUUID = async (
   database_uuid: string
-): Promise<string> => {
-  const { data, error }: UUIDSupabaseResponse = await supabase
-    .from("user_databases")
-    .select("database_string")
-    .eq("uuid", database_uuid)
-    .single();
+): Promise<{
+  data?: { database_string: string };
+  error?: any;
+}> => {
+  try {
+    const { data, error }: UUIDSupabaseResponse = await supabase
+      .from("user_databases")
+      .select("database_string")
+      .eq("uuid", database_uuid)
+      .single();
 
-  if (error || !data || Object.keys(data).length === 0) {
-    console.log("Error:", error);
-    throw new Error(error.message || "Error fetching database string");
+    if (error || !data || Object.keys(data).length === 0) {
+      console.log("Error:", error);
+      throw new Error(error.message || "Error fetching database string");
+    }
+
+    return { data: { database_string: data.database_string }, error: null };
+  } catch (e) {
+    return { error: e, data: null };
   }
-
-  return data.database_string;
 };
 export default async function handler(
   req: NextApiRequest,
@@ -47,8 +54,15 @@ export default async function handler(
   }
 
   try {
+    const { data, error } = await getDatabaseStringFromUUID(uuid);
+
+    if (error) {
+      res.status(400).json({ error: error.message });
+      return;
+    }
+
     const connectionStringObject = await bt.tokens.retrieve(
-      connectionStringToken
+      data.database_string
     );
     const connectionString = connectionStringObject.data;
 
