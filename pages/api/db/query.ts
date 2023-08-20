@@ -1,6 +1,36 @@
 import { Pool } from "pg";
 import { BasisTheory } from "@basis-theory/basis-theory-js";
 import { NextApiRequest, NextApiResponse } from "next";
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+type UUIDSupabaseResponse = { data: { database_string: string }; error: any };
+const getDatabaseStringFromUUID = async (
+  database_uuid: string
+): Promise<{
+  data?: { database_string: string };
+  error?: any;
+}> => {
+  try {
+    const { data, error }: UUIDSupabaseResponse = await supabase
+      .from("user_databases")
+      .select("database_string")
+      .eq("uuid", database_uuid)
+      .single();
+
+    if (error || !data || Object.keys(data).length === 0) {
+      console.log("Error:", error);
+      throw new Error(error.message || "Error fetching database string");
+    }
+
+    return { data: { database_string: data.database_string }, error: null };
+  } catch (e) {
+    return { error: e, data: null };
+  }
+};
 
 export default async function handler(
   req: NextApiRequest,
@@ -10,8 +40,8 @@ export default async function handler(
     process.env.NEXT_PRIVATE_BASIS_THEORY_KEY
   );
 
-  const { query, connectionStringToken } = req.body;
-  if (!query || !connectionStringToken) {
+  const { query, database_uuid } = req.body;
+  if (!query || !database_uuid) {
     res
       .status(400)
       .json({ error: "No query or connection string token provided" });
@@ -19,8 +49,15 @@ export default async function handler(
   }
 
   try {
+    const { data, error } = await getDatabaseStringFromUUID(database_uuid);
+
+    if (error) {
+      res.status(400).json({ error: error.message });
+      return;
+    }
+
     const connectionStringObject = await bt.tokens.retrieve(
-      connectionStringToken
+      data.database_string
     );
     const connectionString = connectionStringObject.data;
 
