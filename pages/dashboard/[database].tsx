@@ -24,7 +24,7 @@ interface Database {
 export default function Page() {
   const router = useRouter();
   const { isLoaded, isSignedIn, user } = useUser();
-  const { database } = router.query;
+  const { database_uuid } = router.query;
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("Chat");
@@ -49,7 +49,7 @@ export default function Page() {
       .from("user_schemas")
       .select("*")
       .eq("user_id", user.id)
-      .eq("uuid", database);
+      .eq("uuid", database_uuid);
 
     if (error) {
       console.error("Error fetching tables:", error);
@@ -61,7 +61,7 @@ export default function Page() {
     }
   };
 
-  const updateDatabase = async (data, user, databaseToken, name, toast) => {
+  const updateDatabase = async (data, user, name, toast) => {
     try {
       const { data: existingSchemas, error: schemaError } = await supabase
         .from("user_schemas")
@@ -108,7 +108,7 @@ export default function Page() {
 
     const url = "/api/connect";
     const body = {
-      database_token: databaseToken,
+      database_uuid,
     };
 
     try {
@@ -127,7 +127,7 @@ export default function Page() {
       } else {
         const data = await response.json();
         try {
-          await updateDatabase(data, user, databaseToken, name, toast);
+          await updateDatabase(data, user, name, toast);
           await fetchTables();
           toast.success("Database refreshed!");
         } catch (error) {
@@ -143,24 +143,11 @@ export default function Page() {
     }
   };
 
-  const fetchDatabaseString = async () => {
-    const { data, error } = await supabase
-      .from("user_databases")
-      .select("database_string")
-      .eq("uuid", database);
 
-    if (error) {
-      console.error("Error fetching connection string:", error);
-      router.push("/dashboard");
-    } else if (data && data.length > 0) {
-      setDatabaseToken(data[0].database_string);
-    }
-  };
 
   useEffect(() => {
     if (supabase && isLoaded && isSignedIn) {
       fetchTables();
-      fetchDatabaseString();
     }
   }, [isLoaded, isSignedIn, supabase]);
 
@@ -223,10 +210,13 @@ export default function Page() {
           <TablePage
             database_token={databaseToken}
             filteredTables={filteredTables}
+            database_uuid={database_uuid}
+
           />
         );
       case "Chat":
-        return <Chat database_token={databaseToken} />;
+        return <Chat database_token={databaseToken}
+        />;
       case "Flow":
         return <DatabaseFlow dbSchema={fetchedDatabase.schema_data} />;
       case "Settings":
@@ -234,7 +224,7 @@ export default function Page() {
           <Settings
             fetchedDatabase={fetchedDatabase}
             setFetchedDatabase={setFetchedDatabase}
-            database={Array.isArray(database) ? database[0] : database}
+            database={Array.isArray(database_uuid) ? database_uuid[0] : database_uuid}
           />
         );
       default:

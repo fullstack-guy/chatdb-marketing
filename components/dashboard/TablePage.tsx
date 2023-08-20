@@ -3,7 +3,7 @@ import TableEditor from "./TableEditor";
 import TableList from "./TableList";
 import TableTabs from "./TableTabs";
 
-const TablePage = ({ filteredTables, database_token }) => {
+const TablePage = ({ filteredTables, database_token, database_uuid }) => {
   // Check for tabs in localStorage
   const initialTabs = JSON.parse(localStorage.getItem("tabs")) || [];
   const initialActiveTab =
@@ -89,6 +89,7 @@ const TablePage = ({ filteredTables, database_token }) => {
               <TableEditor
                 tableName={tab.tableName}
                 database_token={database_token}
+                database_uuid={database_uuid}
               />
             </div>
           );

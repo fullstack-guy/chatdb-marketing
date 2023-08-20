@@ -10,7 +10,7 @@ import debounce from "lodash/debounce";
 
 const roboto = Roboto_Mono({ subsets: ["latin"] });
 
-const TableEditor = ({ tableName, database_token }) => {
+const TableEditor = ({ tableName, database_token, database_uuid }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [tableRows, setTableRows] = useState([]);
   const [columns, setColumns] = useState([]);
