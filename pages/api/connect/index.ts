@@ -46,10 +46,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  let { connection_string, uuid } = req.body;
+  let { connection_string, database_uuid } = req.body;
 
-  if (uuid) {
-    const { data, error } = await getDatabaseStringFromUUID(uuid);
+  if (database_uuid) {
+    const { data, error } = await getDatabaseStringFromUUID(database_uuid);
 
     if (error) {
       console.error("Error fetching database string token:", error);
