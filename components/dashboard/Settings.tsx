@@ -103,7 +103,7 @@ const Settings: React.FC<SettingsProps> = ({
 
   const deleteDatabase = async () => {
     setModalOpen(false); // Close the modal
-    const response = await fetch(`/api/db/delete?database=${database}`, {
+    const response = await fetch(`/api/db/delete?uuid=${database}`, {
       method: "DELETE",
     });
     const data = await response.json();
