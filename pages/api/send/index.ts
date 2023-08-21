@@ -67,7 +67,7 @@ export default async function handler(req: NextRequest) {
         from: "ChatDB <onboarding@chatdb.ai>",
         to: [email],
         subject: "Welcome from the ChatDB Team 👋",
-        reply_to: "cfahlgren1@gmail.com",
+        reply_to: "caleb@chatdb.ai",
         html: `
               <h2 style={{ color: '#333' }}>Hey there!</h2>
               <p>
