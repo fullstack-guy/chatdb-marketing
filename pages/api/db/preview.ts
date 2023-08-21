@@ -63,7 +63,7 @@ export default async function handler(
     );
 
     const connectionStringObject = await bt.tokens.retrieve(database_string);
-    const connection_string = connectionStringObject.data;
+    const connection_string = "postgres://" + connectionStringObject.data;
 
     const pool = new Pool({
       connectionString: connection_string,
