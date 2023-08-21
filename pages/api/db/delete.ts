@@ -1,6 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import axios from "axios";
 
 export const config = {
   runtime: "edge",
@@ -36,67 +35,109 @@ const getDatabaseStringFromUUID = async (
   }
 };
 
-export default async function handler(req: NextRequest) {
-  const { url } = req;
-  const uuid = new URL(url).searchParams.get("uuid");
-  console.log("uuid", uuid);
-
-  if (req.method !== "DELETE") {
-    return NextResponse.json(
-      { message: "Method not allowed" },
-      { status: 405 }
-    );
-  }
-
-  if (!uuid) {
-    return NextResponse.json(
-      { message: "Database not specified" },
-      { status: 400 }
-    );
-  }
-
-  const { data, error } = await getDatabaseStringFromUUID(uuid);
+const deleteSchemaFromVault = async (secret_id: string) => {
+  const { data, error } = await supabase.rpc("delete_secret_by_id", {
+    secret_id: secret_id,
+  });
 
   if (error) {
-    console.error("Error fetching database string token:", error);
-    return NextResponse.json({ error: error }, { status: 500 });
+    return {
+      data: null,
+      error,
+    };
+  } else {
+    return {
+      data,
+      error: null,
+    };
   }
+};
 
-  const database_string = data.database_string;
-  // First delete from user_schemas
-  const { data: dataSchema, error: errorSchema } = await supabase
-    .from("user_schemas")
-    .delete()
-    .eq("uuid", uuid);
-
-  if (errorSchema) {
-    console.error("Error deleting schemas:", errorSchema);
-    return NextResponse.json({ error: errorSchema }, { status: 500 });
-  }
-
-  const { error: errorDatabase } = await supabase
-    .from("user_databases")
-    .delete()
-    .eq("uuid", uuid);
-
-  if (errorDatabase) {
-    console.error("Error deleting database:", errorDatabase);
-    return NextResponse.json({ error: errorDatabase }, { status: 500 });
-  }
-
+export default async function handler(req: NextRequest) {
   try {
-    await axios.delete(
+    const { url } = req;
+    const uuid = new URL(url).searchParams.get("uuid");
+
+    if (req.method !== "DELETE") {
+      return NextResponse.json(
+        { message: "Method not allowed" },
+        { status: 405 }
+      );
+    }
+
+    if (!uuid) {
+      return NextResponse.json(
+        { message: "Database not specified" },
+        { status: 400 }
+      );
+    }
+
+    const { data, error } = await getDatabaseStringFromUUID(uuid);
+
+    if (error) {
+      NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    const database_string = data.database_string;
+
+    const { data: dataSchema, error: errorSchema } = await supabase
+      .from("user_schemas")
+      .select("schema_data")
+      .eq("uuid", uuid)
+      .single();
+
+    if (errorSchema) {
+      throw new Error(`Error deleting schemas: ${errorSchema}`);
+    }
+
+    const { error: errorVault } = await deleteSchemaFromVault(
+      dataSchema.schema_data
+    );
+
+    if (errorVault) {
+      throw new Error(`Error deleting schema from vault: ${errorVault}`);
+    }
+
+    const { error: errorSchemaDelete } = await supabase
+      .from("user_schemas")
+      .delete()
+      .eq("uuid", uuid);
+
+    if (errorSchemaDelete) {
+      throw new Error(`Error deleting schema: ${errorSchemaDelete}`);
+    }
+
+    const { error: errorDatabase } = await supabase
+      .from("user_databases")
+      .delete()
+      .eq("uuid", uuid);
+
+    if (errorDatabase) {
+      throw new Error(`Error deleting database: ${errorDatabase}`);
+    }
+
+    const response = await fetch(
       `https://api.basistheory.com/tokens/${database_string}`,
       {
+        method: "DELETE",
         headers: {
           "BT-API-KEY": `${basisTheoryApiKey}`,
         },
       }
     );
-  } catch (err) {
-    console.error("Error deleting Basis Theory token:", err);
-    return NextResponse.json({ error: err }, { status: 500 });
-  }
 
-  return NextResponse.json({ message: "Database deleted" }, { status: 200 });
+    if (!response.ok) {
+      const responseData = await response.json();
+      throw new Error(
+        `Error deleting Basis Theory token: ${
+          responseData.error || "Unknown error"
+        }`
+      );
+    }
+
+    return NextResponse.json({ message: "Database deleted" }, { status: 200 });
+  } catch (err) {
+    console.error(err.message);
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
 }

@@ -222,7 +222,7 @@ export default function Page() {
           <Settings
             fetchedDatabase={fetchedDatabase}
             setFetchedDatabase={setFetchedDatabase}
-            database={Array.isArray(database_uuid) ? database_uuid[0] : database_uuid}
+            database_uuid={Array.isArray(database_uuid) ? database_uuid[0] : database_uuid}
           />
         );
       default:
