@@ -76,45 +76,33 @@ export default function Page() {
 
   const updateDatabase = async (data, user, name, toast) => {
     try {
-      const { data: existingSchemas, error: schemaError } = await supabase
-        .from("user_schemas")
-        .select("uuid")
-        .eq("user_id", user.id)
-        .eq("title", fetchedDatabase.title);
+      const response = await fetch('/api/db/update', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          database_uuid, // Assuming you have fetchedDatabase available in this context
+          schema_data: data,
+          user: user,
+        }),
+      });
 
-      if (schemaError) {
-        console.error("Error querying Supabase:", schemaError);
-        toast.error("Error querying Supabase");
-        return;
-      }
+      const responseData = await response.json();
 
-      if (existingSchemas.length > 0) {
-        // Found matching schema, now update it
-        const schemaID = existingSchemas[0].uuid; // Get the id of the existing schema
-
-        const { error: databaseError } = await supabase
-          .from("user_schemas")
-          .update({
-            schema_data: data,
-          })
-          .eq("uuid", schemaID);
-
-        if (databaseError) {
-          console.error("Error saving data to database:", databaseError);
-          toast.error("Error saving database string to database");
-          return false;
-        } else {
-          return true;
-        }
-      } else {
-        toast.error("No matching schema found!");
+      if (!response.ok) {
+        console.error("Error updating data in database:", responseData);
+        toast.error("Error updating data in database");
         return false;
+      } else {
+        return true;
       }
     } catch (error) {
       console.error("Error updating data in database:", error);
       toast.error("Error updating data in database");
     }
   };
+
 
   const refreshAndSaveDatabase = async () => {
     setRefreshing(true);
