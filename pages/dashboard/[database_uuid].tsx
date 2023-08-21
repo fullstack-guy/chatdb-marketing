@@ -216,7 +216,7 @@ export default function Page() {
       case "Chat":
         return <Chat database_uuid={database_uuid} />;
       case "Flow":
-        return <DatabaseFlow dbSchema={fetchedDatabase.schema_data} />;
+        return <DatabaseFlow dbSchema={fetchedDatabase} />;
       case "Settings":
         return (
           <Settings
