@@ -44,21 +44,35 @@ export default function Page() {
   });
 
   const fetchTables = async () => {
-    const { data, error } = await supabase
-      .from("user_schemas")
-      .select("*")
-      .eq("user_id", user.id)
-      .eq("uuid", database_uuid);
+    try {
+      const response = await fetch('/api/db/fetch', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          database_uuid: database_uuid,
+        }),
+      });
 
-    if (error || data.length === 0) {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data) {
+        setFetchedDatabase(data);
+        setDataModel(convertJsonToDataModel(data));
+      } else {
+        router.push("/dashboard");
+      }
+    } catch (error) {
       console.error("Error fetching tables:", error);
       router.push("/dashboard");
-    } else {
-      const db = data[0] as Database;
-      setFetchedDatabase(db);
-      setDataModel(convertJsonToDataModel(db.schema_data));
     }
   };
+
 
   const updateDatabase = async (data, user, name, toast) => {
     try {
