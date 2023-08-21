@@ -34,6 +34,7 @@ export default function Page() {
   });
 
   useEffect(() => {
+    console.log("user", user);
     if (connected) {
       setConnected(false);
     }
@@ -61,62 +62,45 @@ export default function Page() {
   const handleApiResponse = async (
     data,
     user,
-    connectionString,
+    database_string,
     name,
     toast,
     bt
   ) => {
     try {
-      // Proceed with inserting data if the database doesn't exist
-      const { data: insertedSchemas, error: schemaError } = await supabase
-        .from("user_schemas")
-        .insert([
-          {
-            user_id: user.id,
-            schema_data: data,
-            title: name,
-          },
-        ])
-        .select("uuid"); // Include the 'id' in the response
+      // Send a POST request to /api/db/create
+      const response = await fetch('/api/db/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          schema_data: data,
+          user: user,
+          databaseString: database_string,
+          name: name,
+        }),
+      });
 
-      if (schemaError) {
-        console.error("Error saving data to Supabase:", schemaError);
-        toast.error("Error saving data to Supabase");
-        return;
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
       }
 
-      const userID = insertedSchemas[0].uuid; // Get the id of the inserted schema
+      const responseData = await response.json();
 
-      try {
-        const databaseTokens = await bt.tokenize({
-          database_string: "postgres://" + connectionString,
-        });
-
-        const { error } = await supabase
-          .from("user_databases")
-          .insert([{ ...databaseTokens, user_id: user.id, uuid: userID }]);
-
-        if (error) {
-          console.error("Error saving data to Supabase:", error);
-          toast.error("Error saving database string to Supabase");
-        } else {
-          toast.success("Woo! You have a new database!");
-          router.push("/dashboard");
-        }
-      } catch (error) {
-        if (error instanceof BasisTheoryValidationError) {
-          console.log(error);
-          toast.error("BasisTheory Validation Error");
-        } else if (error instanceof BasisTheoryApiError) {
-          console.log(error);
-          toast.error("BasisTheory API Error");
-        }
+      // Assuming the API returns an error in the response when something goes wrong
+      if (responseData.error) {
+        throw new Error(responseData.error);
       }
+
+      toast.success("Woo! You have a new database!");
+      router.push("/dashboard");
     } catch (error) {
-      console.error("Error saving data to Supabase:", error);
-      toast.error("Error saving data to Supabase");
+      console.error("Error:", error);
+      toast.error("Error occurred");
     }
   };
+
 
   const connectionStringChange = (event) => {
     const result = event.target.value
@@ -280,9 +264,8 @@ export default function Page() {
                         onChange={connectionStringChange}
                       />
                       <span
-                        className={`btn hidden sm:flex ${
-                          connecting || saving ? "loading" : ""
-                        } cursor-pointer border-none bg-success font-semibold text-black hover:bg-success`}
+                        className={`btn hidden sm:flex ${connecting || saving ? "loading" : ""
+                          } cursor-pointer border-none bg-success font-semibold text-black hover:bg-success`}
                         onClick={connected ? saveDatabase : connectToDatabase}
                       >
                         {connecting ? (
@@ -316,9 +299,8 @@ export default function Page() {
                     )}
                     <div className="my-2 w-full">
                       <button
-                        className={`btn ${
-                          connecting && "loading"
-                        } mx-auto my-2 flex w-[75%] bg-success font-semibold text-black hover:bg-success sm:hidden`}
+                        className={`btn ${connecting && "loading"
+                          } mx-auto my-2 flex w-[75%] bg-success font-semibold text-black hover:bg-success sm:hidden`}
                         onClick={connectToDatabase}
                         type="submit"
                       >

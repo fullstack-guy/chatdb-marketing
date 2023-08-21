@@ -16,6 +16,7 @@ export default authMiddleware({
     "/tools(.*)",
     "/api/send",
     "/api/og",
+    "/api/db/create",
   ],
   afterAuth: (auth) => {
     if (!auth.userId && !auth.isPublicRoute) {
