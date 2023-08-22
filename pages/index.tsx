@@ -49,14 +49,13 @@ export default function Page() {
       <main>
         {/* Hero section */}
         <section className="px-8 pb-2 pt-6 text-center md:py-16">
-          <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-7xl">
             <div className="flex flex-col items-center">
-              <h1 className="mt-5 text-center text-3xl font-semibold text-heading md:max-w-4xl md:text-4xl lg:text-5xl xl:text-6xl">
-                Your Personal AI Data Analyst
+              <h1 className="mt-5 text-center text-4xl font-bold text-heading md:max-w-4xl md:text-6xl xl:text-7xl">
+                Stop writing SQL to get answers from your data
               </h1>
-              <p className="mt-6 max-w-3xl text-xl">
-                Transforming raw database data into meaningful business
-                intelligence with ease. Think ChatGPT, but trained on your
+              <p className="mt-6 max-w-3xl text-lg lg:text-2xl">
+                Time is money! Say hello to your personal AI data analyst. Think ChatGPT, but for your
                 database.
               </p>
               {
@@ -355,6 +354,8 @@ export default function Page() {
               Master your Database. Without being an Expert.
             </h2>
             <p className="mt-6 text-xl text-text">
+              We all SQL queries are like single use plastics!
+              <br></br>
               Ask the questions you want to know without spending half an hour
               wrangling SQL!
             </p>
@@ -426,7 +427,7 @@ export default function Page() {
                   </svg>
                 </div>
                 <h3 className="mt-4 text-xl font-semibold text-heading">
-                  Intelligent Debugging 🧯
+                  Made for Decision Makers
                 </h3>
                 <p className="mt-2 text-center text-lg text-text">
                   ChatDB will automatically help you debug and fix errors in
