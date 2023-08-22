@@ -68,9 +68,9 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
               <Link href="/" className="link-hover link">
                 Home
               </Link>
-              <Link href="/pricing" className="link-hover link">
+              {/* <Link href="/pricing" className="link-hover link">
                 Pricing
-              </Link>
+              </Link> */}
               <Link href="/blog" className="link-hover link">
                 Blog
               </Link>
