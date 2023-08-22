@@ -19,11 +19,11 @@ export default function handler(request: NextRequest) {
       (
         <div
           style={{
-            backgroundColor: '##171717',
+            backgroundColor: '#171717',
             height: '100%',
             width: '100%',
             display: 'flex',
-            textAlign: 'center',
+            textAlign: 'left',
             alignItems: 'center',
             justifyContent: 'center',
             flexDirection: 'column',
@@ -32,7 +32,7 @@ export default function handler(request: NextRequest) {
         >
           <div
             style={{
-              fontSize: 60,
+              fontSize: 36,
               color: 'white',
               fontWeight: 'bold',
               marginBottom: 30,
@@ -43,7 +43,8 @@ export default function handler(request: NextRequest) {
           {title && (
             <div
               style={{
-                fontSize: 100,
+                fontSize: 72,
+                textAlign: "center",
                 fontStyle: 'normal',
                 letterSpacing: '-0.025em',
                 color: 'white',
