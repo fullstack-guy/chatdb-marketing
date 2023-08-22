@@ -134,7 +134,7 @@ export default function Page() {
               No Code Required
             </span>
             <h2 className="mx-auto mt-4 text-center text-3xl font-semibold tracking-tight text-heading md:max-w-2xl md:text-5xl">
-              We like writing SQL as much as the next person
+              We hate writing SQL as much as the next person
             </h2>
             <p className="mt-6 text-xl text-text">
               We all know SQL queries are like single use plastics!  You need it one time and don't use it again.
