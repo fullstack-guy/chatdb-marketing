@@ -64,7 +64,7 @@ const Chat = ({ database_uuid }) => {
       try {
         const token = await getToken({ template: "supabase" });
 
-        const response = await fetch("http://localhost:8080/ask", {
+        const response = await fetch("https://chatdb-backend-deah4kbsta-uc.a.run.app/ask", {
           method: "POST",
           headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
           body: JSON.stringify({ query, uuid: database_uuid }),
