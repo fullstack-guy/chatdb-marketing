@@ -94,7 +94,7 @@ export default function Page() {
                         background:
                           "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)",
                       }}
-                      className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none px-4 py-2.5 text-sm font-semibold text-white transition duration-200 hover:bg-gradient-to-r hover:from-fuchsia-600 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
+                      className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none px-4 py-2.5 text-sm font-semibold text-white transition duration-200 transform hover:scale-110 hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
                     >
                       Join Waitlist
                     </button>
@@ -103,13 +103,24 @@ export default function Page() {
               }
             </div>
             <div className="mt-12 md:px-2 px-0">
+              {/* Image for larger devices */}
               <Image
                 alt="chatdb demo image"
-                className="rounded-3xl w-full"
+                className="rounded-3xl w-full hidden sm:block"
                 layout="responsive"
                 height={700}
                 width={1200}
                 src="/images/ChatDBDemo.png"
+              />
+
+              {/* Image for smaller devices */}
+              <Image
+                alt="chatdb demo image"
+                className="rounded-3xl w-full sm:hidden"
+                layout="responsive"
+                height={700}
+                width={1200}
+                src="/images/ChatDBTableExample-min.png"
               />
             </div>
 
@@ -122,11 +133,12 @@ export default function Page() {
               <LightBulbIcon className="mr-1 h-5 w-5" />
               No Code Required
             </span>
-            <h2 className="mx-auto mt-4 text-center text-2xl font-semibold tracking-tight text-heading md:max-w-2xl md:text-5xl">
+            <h2 className="mx-auto mt-4 text-center text-3xl font-semibold tracking-tight text-heading md:max-w-2xl md:text-5xl">
               We like writing SQL as much as the next person
             </h2>
             <p className="mt-6 text-xl text-text">
-              We all know SQL queries are like single use plastics!  You need it 1 time and don't use it again.
+              We all know SQL queries are like single use plastics!  You need it one time and don't use it again.
+              <br></br>
               <br></br>
               Ask the questions you want to know without spending half an hour
               wrangling SQL!
@@ -142,87 +154,6 @@ export default function Page() {
                 <Tweet id="1693846373542817914" />
               </div>
             </div>
-            {/* <div className="mt-4 grid grid-cols-1 gap-y-6 md:grid-cols-2 lg:grid-cols-3">
-              <div className="p-5 text-center md:p-8">
-                <div className="inline-block rounded-3xl bg-layer-2 px-4 py-4">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="rgb(51, 51, 61)"
-                    className="h-8 w-8"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="mt-4 text-2xl font-semibold text-heading">
-                  Easy Onboarding
-                </h3>
-                <p className="mt-2 text-center text-lg text-text">
-                  Packed with tools to slash your employee onboarding time!
-                </p>
-              </div>
-              <div className="p-5 text-center md:p-8">
-                <div className="inline-block rounded-3xl bg-layer-2 px-4 py-4">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="rgb(51, 51, 61)"
-                    className="h-8 w-8"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="mt-4 text-2xl font-semibold text-heading">
-                  Smart Data Assistant
-                </h3>
-                <p className="mt-2 text-center text-lg text-text">
-                  ChatDB knows your schema, so it can write SQL queries that work!
-                </p>
-              </div>
-              <div className="p-5 text-center md:p-8">
-                <div className="inline-block rounded-3xl bg-layer-2 px-4 py-4">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="rgb(51, 51, 61)"
-                    className="h-8 w-8"
-                  >
-                    <circle
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 6v6l4 2"
-                    />
-                  </svg>
-                </div>
-                <h3 className="mt-4 text-2xl font-semibold text-heading">
-                  Answers, Quickly
-                </h3>
-                <p className="mt-2 text-center text-lg text-text">
-                  Less time writing lots of code or talking to engineers.
-                </p>
-              </div>
-            </div> */}
           </div>
         </div>
 
@@ -313,9 +244,9 @@ export default function Page() {
               <div className="max-w-md space-y-6 text-center lg:text-left">
                 <span className="inline-flex items-center rounded-full border-2 border-green-200 bg-green-200 px-2 py-1 text-sm font-semibold text-green-600 shadow-sm">
                   <TagIcon className="mr-1 h-5 w-5" />
-                  Powered by ChatGPT
+                  Powered by AI
                 </span>
-                <h3 className="text-3xl font-semibold text-heading lg:text-4xl">
+                <h3 className="text-4xl font-semibold text-heading lg:text-5xl">
                   Answers to your questions
                 </h3>
                 <p className="text-lg font-medium">
@@ -336,12 +267,12 @@ export default function Page() {
             </div>
 
             <div className="flex flex-col items-center justify-between gap-6 lg:flex-row ">
-              <div className="max-w-md space-y-6 text-center lg:text-left">
+              <div className="mt-10 max-w-md space-y-6 text-center lg:text-left">
                 <span className="inline-flex items-center rounded-full border-2 border-red-200 bg-red-200 px-2 py-1 text-sm font-semibold text-red-600 shadow-sm">
                   <TagIcon className="mr-1 h-5 w-5" />
                   Visualizations
                 </span>
-                <h3 className="text-3xl font-semibold text-heading lg:text-4xl">
+                <h3 className="text-4xl font-semibold text-heading lg:text-5xl">
                   Visualize your data relationships
                 </h3>
                 <p className="text-lg font-medium">
@@ -368,7 +299,7 @@ export default function Page() {
                   <TagIcon className="mr-1 h-5 w-5" />
                   Simple View
                 </span>
-                <h3 className="text-3xl font-semibold text-heading lg:text-4xl">
+                <h3 className="text-4xl font-semibold text-heading lg:text-5xl">
                   Simple Table Viewer
                 </h3>
                 <p className="text-lg font-medium">
