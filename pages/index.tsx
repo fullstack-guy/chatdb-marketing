@@ -53,7 +53,7 @@ export default function Page() {
     <Layout>
       <main>
         {/* Hero section */}
-        <section className="px-8 pb-2 pt-6 text-center md:py-16">
+        <section className="px-4 md:px-8 pb-2 pt-6 text-center md:py-16">
           <div className="mx-auto max-w-7xl">
             <div className="flex flex-col items-center">
               <h1 className="mt-5 text-center text-4xl font-bold text-heading md:max-w-4xl md:text-6xl xl:text-7xl">
@@ -102,15 +102,17 @@ export default function Page() {
                 )
               }
             </div>
-            <div className="mt-12 md:px-2">
+            <div className="mt-12 md:px-2 px-0">
               <Image
                 alt="chatdb demo image"
-                className="rounded-3xl"
+                className="rounded-3xl w-full"
+                layout="responsive"
                 height={700}
                 width={1200}
                 src="/images/ChatDBDemo.png"
               />
             </div>
+
           </div>
         </section>
 
@@ -129,14 +131,14 @@ export default function Page() {
               Ask the questions you want to know without spending half an hour
               wrangling SQL!
             </p>
-            <div className="flex space-x-4 mt-10">
-              <div className="w-1/3">
+            <div className="flex flex-col md:flex-row space-y-0 md:space-y-0 md:space-x-4 mt-10">
+              <div className="w-full md:w-1/3">
                 <Tweet id="1693649281931211172" />
               </div>
-              <div className="w-1/3">
+              <div className="w-full md:w-1/3">
                 <Tweet id="1693520648696668621" />
               </div>
-              <div className="w-1/3">
+              <div className="w-full md:w-1/3">
                 <Tweet id="1693846373542817914" />
               </div>
             </div>
