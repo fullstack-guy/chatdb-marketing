@@ -11,12 +11,16 @@ import useSupabase from "../hooks/useSupabaseClient";
 export default function Page() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const supabase = useSupabase();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     posthog.capture("waitlist_signup");
+    if (isSubmitting) return;  // Block submission if it's already in progress
+    setIsSubmitting(true);
 
     if (email === "") {
       toast.error("Sorry, the email field is blank");
