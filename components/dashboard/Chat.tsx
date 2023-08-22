@@ -43,7 +43,12 @@ const Chat = ({ database_uuid }) => {
     const rows = data.rows.map((row, rowIndex) => {
       let rowObj = {};
       data.columns.forEach((col, colIndex) => {
-        rowObj[col] = row[colIndex];
+        // Check if the value is a boolean and convert it to a string if it is
+        if (typeof row[colIndex] === 'boolean') {
+          rowObj[col] = row[colIndex] ? 'true' : 'false';
+        } else {
+          rowObj[col] = row[colIndex];
+        }
       });
       return { ...rowObj, id: rowIndex };
     });
@@ -59,7 +64,7 @@ const Chat = ({ database_uuid }) => {
       try {
         const token = await getToken({ template: "supabase" });
 
-        const response = await fetch("https://chatdb-backend-deah4kbsta-uc.a.run.app/ask", {
+        const response = await fetch("http://localhost:8080/ask", {
           method: "POST",
           headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
           body: JSON.stringify({ query, uuid: database_uuid }),

@@ -6,6 +6,7 @@ import Layout from "../components/Layout";
 import posthog from "posthog-js";
 import Image from "next/image";
 import { LightBulbIcon } from "@heroicons/react/outline";
+import { Tweet } from "react-tweet";
 import useSupabase from "../hooks/useSupabaseClient";
 
 export default function Page() {
@@ -56,7 +57,7 @@ export default function Page() {
           <div className="mx-auto max-w-7xl">
             <div className="flex flex-col items-center">
               <h1 className="mt-5 text-center text-4xl font-bold text-heading md:max-w-4xl md:text-6xl xl:text-7xl">
-                Stop writing SQL to get answers from your data
+                Stop writing SQL to get answers from your data.
               </h1>
               <p className="mt-6 max-w-3xl text-lg lg:text-2xl">
                 Time is money! Say hello to your personal AI data analyst. Think ChatGPT, but for your
@@ -101,176 +102,131 @@ export default function Page() {
                 )
               }
             </div>
-            {/* <div className="mt-12 md:px-2">
-              <svg
-                width="auto"
-                height="auto"
-                viewBox="0 0 1140 641"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M0 24.0004C0 10.7456 10.7452 0.000427246 24 0.000427246H1116C1129.25 0.000427246 1140 10.7456 1140 24.0004V617C1140 630.255 1129.25 641 1116 641H24C10.7452 641 0 630.255 0 617V24.0004Z"
-                  fill="url(#paint0_linear_2756_51693)"
-                />
-                <g filter="url(#filter0_d_2756_51693)">
-                  <rect
-                    x="232.535"
-                    y="81.0004"
-                    width="675.126"
-                    height="479"
-                    rx="45.2598"
-                    fill="url(#paint1_linear_2756_51693)"
-                    fillOpacity="0.5"
-                    shapeRendering="crispEdges"
-                  />
-                </g>
-                <rect
-                  x="315.512"
-                  y="258.268"
-                  width="339.449"
-                  height="222.528"
-                  rx="45.2598"
-                  fill="url(#paint2_linear_2756_51693)"
-                  fillOpacity="0.5"
-                />
-                <rect
-                  x="677.59"
-                  y="258.268"
-                  width="150.866"
-                  height="222.528"
-                  rx="45.2598"
-                  fill="url(#paint3_linear_2756_51693)"
-                  fillOpacity="0.5"
-                />
-                <rect
-                  x="421.118"
-                  y="148.89"
-                  width="60.3465"
-                  height="30.1732"
-                  rx="15.0866"
-                  fill="white"
-                  fillOpacity="0.7"
-                />
-                <rect
-                  x="511.638"
-                  y="148.89"
-                  width="60.3465"
-                  height="30.1732"
-                  rx="15.0866"
-                  fill="white"
-                  fillOpacity="0.7"
-                />
-                <rect
-                  x="602.157"
-                  y="148.89"
-                  width="60.3465"
-                  height="30.1732"
-                  rx="15.0866"
-                  fill="white"
-                  fillOpacity="0.7"
-                />
-                <rect
-                  x="323.055"
-                  y="130.032"
-                  width="67.8898"
-                  height="67.8898"
-                  rx="33.9449"
-                  fill="white"
-                  fillOpacity="0.6"
-                />
-                <defs>
-                  <filter
-                    id="filter0_d_2756_51693"
-                    x="224.992"
-                    y="81.0004"
-                    width="690.212"
-                    height="494.087"
-                    filterUnits="userSpaceOnUse"
-                    colorInterpolationFilters="sRGB"
-                  >
-                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                    <feColorMatrix
-                      in="SourceAlpha"
-                      type="matrix"
-                      values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                      result="hardAlpha"
-                    />
-                    <feMorphology
-                      radius="7.54331"
-                      operator="erode"
-                      in="SourceAlpha"
-                      result="effect1_dropShadow_2756_51693"
-                    />
-                    <feOffset dy="7.54331" />
-                    <feGaussianBlur stdDeviation="7.54331" />
-                    <feComposite in2="hardAlpha" operator="out" />
-                    <feColorMatrix
-                      type="matrix"
-                      values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"
-                    />
-                    <feBlend
-                      mode="normal"
-                      in2="BackgroundImageFix"
-                      result="effect1_dropShadow_2756_51693"
-                    />
-                    <feBlend
-                      mode="normal"
-                      in="SourceGraphic"
-                      in2="effect1_dropShadow_2756_51693"
-                      result="shape"
-                    />
-                  </filter>
-                  <linearGradient
-                    id="paint0_linear_2756_51693"
-                    x1="-2.12341e-06"
-                    y1="320.501"
-                    x2="1140"
-                    y2="320.501"
-                    gradientUnits="userSpaceOnUse"
-                  >
-                    <stop stopColor="#9068FE" />
-                    <stop offset="1" stopColor="#FEB068" />
-                  </linearGradient>
-                  <linearGradient
-                    id="paint1_linear_2756_51693"
-                    x1="570.098"
-                    y1="81.0004"
-                    x2="570.098"
-                    y2="560"
-                    gradientUnits="userSpaceOnUse"
-                  >
-                    <stop stopColor="white" />
-                    <stop offset="1" stopColor="white" stopOpacity="0" />
-                  </linearGradient>
-                  <linearGradient
-                    id="paint2_linear_2756_51693"
-                    x1="485.236"
-                    y1="258.268"
-                    x2="485.236"
-                    y2="480.796"
-                    gradientUnits="userSpaceOnUse"
-                  >
-                    <stop stopColor="white" />
-                    <stop offset="1" stopColor="white" stopOpacity="0" />
-                  </linearGradient>
-                  <linearGradient
-                    id="paint3_linear_2756_51693"
-                    x1="753.023"
-                    y1="258.268"
-                    x2="753.023"
-                    y2="480.796"
-                    gradientUnits="userSpaceOnUse"
-                  >
-                    <stop stopColor="white" />
-                    <stop offset="1" stopColor="white" stopOpacity="0" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </div> */}
+            <div className="mt-12 md:px-2">
+              <Image
+                alt="chatdb demo image"
+                className="rounded-3xl"
+                height={700}
+                width={1200}
+                src="/images/ChatDBDemo.png"
+              />
+            </div>
           </div>
         </section>
-        <section className="bg-layer-1 p-6 md:p-10">
+
+        <div className="w-full my-20 bg-layer-1 p-6 text-center md:p-20">
+          <div className="mx-auto w-full max-w-6xl">
+            <span className="leading-sm inline-flex items-center rounded-full border-2 border-orange-200 bg-orange-200 px-2 py-0.5 text-xs font-bold uppercase text-orange-600 shadow-sm">
+              <LightBulbIcon className="mr-1 h-5 w-5" />
+              No Code Required
+            </span>
+            <h2 className="mx-auto mt-4 text-center text-2xl font-semibold tracking-tight text-heading md:max-w-2xl md:text-5xl">
+              We like writing SQL as much as the next person
+            </h2>
+            <p className="mt-6 text-xl text-text">
+              We all know SQL queries are like single use plastics!  You need it 1 time and don't use it again.
+              <br></br>
+              Ask the questions you want to know without spending half an hour
+              wrangling SQL!
+            </p>
+            <div className="flex space-x-4 mt-10">
+              <div className="w-1/3">
+                <Tweet id="1693649281931211172" />
+              </div>
+              <div className="w-1/3">
+                <Tweet id="1693520648696668621" />
+              </div>
+              <div className="w-1/3">
+                <Tweet id="1693846373542817914" />
+              </div>
+            </div>
+            {/* <div className="mt-4 grid grid-cols-1 gap-y-6 md:grid-cols-2 lg:grid-cols-3">
+              <div className="p-5 text-center md:p-8">
+                <div className="inline-block rounded-3xl bg-layer-2 px-4 py-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="rgb(51, 51, 61)"
+                    className="h-8 w-8"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"
+                    />
+                  </svg>
+                </div>
+                <h3 className="mt-4 text-2xl font-semibold text-heading">
+                  Easy Onboarding
+                </h3>
+                <p className="mt-2 text-center text-lg text-text">
+                  Packed with tools to slash your employee onboarding time!
+                </p>
+              </div>
+              <div className="p-5 text-center md:p-8">
+                <div className="inline-block rounded-3xl bg-layer-2 px-4 py-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="rgb(51, 51, 61)"
+                    className="h-8 w-8"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z"
+                    />
+                  </svg>
+                </div>
+                <h3 className="mt-4 text-2xl font-semibold text-heading">
+                  Smart Data Assistant
+                </h3>
+                <p className="mt-2 text-center text-lg text-text">
+                  ChatDB knows your schema, so it can write SQL queries that work!
+                </p>
+              </div>
+              <div className="p-5 text-center md:p-8">
+                <div className="inline-block rounded-3xl bg-layer-2 px-4 py-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="rgb(51, 51, 61)"
+                    className="h-8 w-8"
+                  >
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 6v6l4 2"
+                    />
+                  </svg>
+                </div>
+                <h3 className="mt-4 text-2xl font-semibold text-heading">
+                  Answers, Quickly
+                </h3>
+                <p className="mt-2 text-center text-lg text-text">
+                  Less time writing lots of code or talking to engineers.
+                </p>
+              </div>
+            </div> */}
+          </div>
+        </div>
+
+        {/* Before and After */}
+
+        <section className="bg-layer-1 my-20 p-6 md:p-10">
           <div className="max-w-8xl mx-auto w-full">
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               <div className="rounded-3xl bg-layer-2 p-5 md:px-8 md:py-6">
@@ -347,101 +303,6 @@ export default function Page() {
           </div>
         </section>
 
-        {/* Integrations */}
-        <div className="w-full bg-layer-1 p-6 text-center md:p-20">
-          <div className="mx-auto w-full max-w-6xl">
-            <span className="leading-sm inline-flex items-center rounded-full border-2 border-orange-200 bg-orange-200 px-2 py-0.5 text-xs font-bold uppercase text-orange-600 shadow-sm">
-              <LightBulbIcon className="mr-1 h-5 w-5" />
-              Features
-            </span>
-            <h2 className="mx-auto mt-4 text-center text-2xl font-semibold tracking-tight text-heading md:max-w-2xl md:text-5xl">
-              Master your Database. Without being an Expert.
-            </h2>
-            <p className="mt-6 text-xl text-text">
-              We all SQL queries are like single use plastics!
-              <br></br>
-              Ask the questions you want to know without spending half an hour
-              wrangling SQL!
-            </p>
-
-            <div className="mt-12 grid grid-cols-1 gap-y-6 md:grid-cols-2 lg:grid-cols-3">
-              <div className="p-5 text-center md:p-8">
-                <div className="inline-block rounded-3xl bg-layer-2 px-4 py-4">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="rgb(51, 51, 61)"
-                    className="h-8 w-8"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="mt-4 text-xl font-semibold text-heading">
-                  Easy Onboarding
-                </h3>
-                <p className="mt-2 text-center text-lg text-text">
-                  Packed with tools to slash onboarding time for your employees!
-                </p>
-              </div>
-              <div className="p-5 text-center md:p-8">
-                <div className="inline-block rounded-3xl bg-layer-2 px-4 py-4">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="rgb(51, 51, 61)"
-                    className="h-8 w-8"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="mt-4 text-xl font-semibold text-heading">
-                  Smart Query Assistant 🧠
-                </h3>
-                <p className="mt-2 text-center text-lg text-text">
-                  ChatDB knows your schema, so it can write clean working SQL.
-                </p>
-              </div>
-              <div className="p-5 text-center md:p-8">
-                <div className="inline-block rounded-3xl bg-layer-2 px-4 py-4">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="rgb(51, 51, 61)"
-                    className="h-8 w-8"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="mt-4 text-xl font-semibold text-heading">
-                  Made for Decision Makers
-                </h3>
-                <p className="mt-2 text-center text-lg text-text">
-                  ChatDB will automatically help you debug and fix errors in
-                  your code!
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Features */}
 
         <section className="px-4 py-12 md:py-18">
@@ -483,7 +344,7 @@ export default function Page() {
                 </h3>
                 <p className="text-lg font-medium">
                   Database schemas can be complex. We try and make it easy for
-                  you to understand how everything is connected.
+                  you to understand how everything is connected. You get a schema diagram right out of the box!
                 </p>
               </div>
 
@@ -510,7 +371,7 @@ export default function Page() {
                 </h3>
                 <p className="text-lg font-medium">
                   No need to use a clunky database client to get a quick view of
-                  your data. Search and simple table interface built in!
+                  your data. Simple table interface with search built in.
                 </p>
               </div>
 
@@ -553,7 +414,7 @@ export default function Page() {
         </section>
 
         {/* CTA section */}
-        <section className="p-8 md:py-20">
+        <section className="p-8 mt-10 md:py-20">
           <div className="mx-auto flex max-w-6xl flex-col items-center rounded-xl text-center sm:bg-layer-2 sm:px-6 sm:py-12 md:py-18 lg:px-32 2xl:px-64">
             <h2 className="text-3xl font-semibold text-heading md:text-4xl">
               Stay in touch and be notified when it is released!
