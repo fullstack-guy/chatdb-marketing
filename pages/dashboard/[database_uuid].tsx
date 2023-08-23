@@ -35,6 +35,7 @@ export default function Page() {
   const [saving, setSaving] = useState(false);
   const supabase = useSupabase();
 
+  console.log("supabaaaase", supabase)
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };

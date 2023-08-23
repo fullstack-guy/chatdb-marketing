@@ -1,12 +1,18 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "@supabase/supabase-js";
 import { BasisTheory } from "@basis-theory/basis-theory-js";
+import { getAuth } from "@clerk/nextjs/server";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
-const storeSchemaInVault = async (schema_data: any, name: string, user) => {
+const storeSchemaInVault = async (
+  supabase,
+  token,
+  schema_data: any,
+  name: string,
+  user
+) => {
   const { data, error } = await supabase.rpc("insert_schema_data", {
     // let's add a time stamp to make the name unique
     name: `${name}-${new Date().getTime()}`,
@@ -41,8 +47,25 @@ export default async function handler(
     return res.status(400).json({ message: "Missing fields" });
   }
 
+  const auth = getAuth(req);
+  const token = await auth.getToken({ template: "supabase" });
+
+  const supabase = createClient(
+    supabaseUrl,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    }
+  );
+
   try {
     const { data: schemaVaultID, error: vaultError } = await storeSchemaInVault(
+      supabase,
+      token,
       schema_data,
       name,
       user
@@ -96,6 +119,7 @@ export default async function handler(
     }
 
     res.status(200).json(data);
+    return;
   } catch (e) {
     console.log(e);
     res.status(500).json({ message: "Internal server error" });
