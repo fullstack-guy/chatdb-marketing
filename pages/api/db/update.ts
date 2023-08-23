@@ -1,3 +1,4 @@
+import { getAuth } from "@clerk/nextjs/server";
 import { createClient } from "@supabase/supabase-js";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -6,6 +7,7 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const updateSchemaInVault = async (
+  supabase,
   secret_id: string,
   new_schema: string,
   new_name: string,
@@ -45,6 +47,21 @@ export default async function handler(
     return res.status(400).json({ message: "Missing fields" });
   }
 
+  const auth = getAuth(req);
+  const token = await auth.getToken({ template: "supabase" });
+
+  const supabase = createClient(
+    supabaseUrl,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    }
+  );
+
   try {
     const { data, error } = await supabase
       .from("user_schemas")
@@ -59,6 +76,7 @@ export default async function handler(
 
     const { data: updatedSchema, error: updateError } =
       await updateSchemaInVault(
+        supabase,
         data.schema_data,
         schema_data,
         data.title,
