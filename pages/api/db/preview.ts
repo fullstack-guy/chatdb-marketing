@@ -1,14 +1,14 @@
+import { getAuth } from "@clerk/nextjs/server";
 import { NextApiRequest, NextApiResponse } from "next";
 import { Pool } from "pg";
 import { BasisTheory } from "@basis-theory/basis-theory-js";
 import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 type UUIDSupabaseResponse = { data: { database_string: string }; error: any };
 const getDatabaseStringFromUUID = async (
+  supabase,
   database_uuid: string
 ): Promise<{
   data?: { database_string: string };
@@ -38,6 +38,21 @@ export default async function handler(
   const { database_uuid, table_name, pageNumber, where_clause, order_by } =
     req.body;
 
+  const auth = getAuth(req);
+  const token = await auth.getToken({ template: "supabase" });
+
+  const supabase = createClient(
+    supabaseUrl,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    }
+  );
+
   try {
     if (!database_uuid) {
       res.status(400).json({
@@ -47,7 +62,10 @@ export default async function handler(
       return;
     }
 
-    const { data, error } = await getDatabaseStringFromUUID(database_uuid);
+    const { data, error } = await getDatabaseStringFromUUID(
+      supabase,
+      database_uuid
+    );
 
     if (error) {
       console.error("Error fetching database string:", error);
