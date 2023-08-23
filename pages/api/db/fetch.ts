@@ -3,7 +3,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 const getSchemaFromVault = async (supabase, secret_id: string) => {
   const { data, error } = await supabase.rpc("read_schema_data", {
