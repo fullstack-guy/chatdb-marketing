@@ -6,6 +6,10 @@ const Page = () => {
         <Layout
             title="ChatDB | Terms of Service"
             url="https://www.yourdomain.com/terms-of-service"
+            oggURL={
+                `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
+                }/api/og?title=${encodeURIComponent("Terms of Service")}`
+            }
         >
             <div className="px-4 py-8 md:px-8">
                 <h1 className="mt-5 text-left text-black text-4xl font-bold md:max-w-4xl md:text-4xl xl:text-6xl">
