@@ -5,6 +5,7 @@ import DataGrid from "react-data-grid";
 import { FaSortAmountDownAlt, FaSortAmountUpAlt } from "react-icons/fa";
 import { CSVLink } from "react-csv";
 import { Roboto_Mono } from "next/font/google";
+import { FaSync, FaDownload } from "react-icons/fa";
 import { PuffLoader } from "react-spinners";
 import debounce from "lodash/debounce";
 
@@ -19,6 +20,7 @@ const TableEditor = ({ tableName, database_uuid }) => {
   const initialTableEditorState = {
     sortColumn: null,
     sortDirection: null,
+
     whereClause: "",
   };
 
@@ -146,18 +148,17 @@ const TableEditor = ({ tableName, database_uuid }) => {
             rows={transformedRows}
           />
 
-          <div className="flex flex-col items-center mt-4">
-            <div className="flex items-center"> {/* Added items-center */}
+          <div className="flex justify-between items-center m-4 px-4">
+            <div className="flex items-center">
               <div className="join-item btn-sm text-black btn btn-outline mx-2" onClick={() => setPageNumber(prev => Math.max(prev - 1, 1))}>«</div>
               <span className="mx-2 text-black">Page {pageNumber}</span>
               <button className="join-item btn-sm text-black btn btn-outline mx-2" onClick={() => setPageNumber(prev => prev + 1)}>»</button>
             </div>
             <span className="mt-2 text-sm">Showing {transformedRows.length} results</span>
-          </div>
-
-
-          <div className="mt-4 flex flex-wrap items-center justify-between">
-            <div className="flex flex-wrap gap-4">
+            <div className="flex items-center gap-4">
+              <button onClick={fetchDataDebounced} className="rounded px-4 py-2 text-black shadow">
+                <FaSync />
+              </button>
               <CSVLink
                 className="rounded px-4 py-2 text-black shadow"
                 filename={`${tableName}.csv`}
@@ -167,7 +168,7 @@ const TableEditor = ({ tableName, database_uuid }) => {
                   key: column.key,
                 }))}
               >
-                Export CSV
+                <FaDownload />
               </CSVLink>
             </div>
           </div>
