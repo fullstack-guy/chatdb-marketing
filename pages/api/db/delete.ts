@@ -1,3 +1,4 @@
+import { getAuth } from "@clerk/nextjs/server";
 import { NextResponse, NextRequest } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
@@ -6,12 +7,11 @@ export const config = {
 };
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
 const basisTheoryApiKey = process.env.NEXT_PRIVATE_BASIS_THEORY_KEY;
 
 type UUIDSupabaseResponse = { data: { database_string: string }; error: any };
 const getDatabaseStringFromUUID = async (
+  supabase,
   database_uuid: string
 ): Promise<{
   data?: { database_string: string };
@@ -35,7 +35,7 @@ const getDatabaseStringFromUUID = async (
   }
 };
 
-const deleteSchemaFromVault = async (secret_id: string) => {
+const deleteSchemaFromVault = async (supabase, secret_id: string) => {
   const { data, error } = await supabase.rpc("delete_secret_by_id", {
     secret_id: secret_id,
   });
@@ -72,7 +72,22 @@ export default async function handler(req: NextRequest) {
       );
     }
 
-    const { data, error } = await getDatabaseStringFromUUID(uuid);
+    const auth = getAuth(req);
+    const token = await auth.getToken({ template: "supabase" });
+
+    const supabase = createClient(
+      supabaseUrl,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      {
+        global: {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      }
+    );
+
+    const { data, error } = await getDatabaseStringFromUUID(supabase, uuid);
 
     if (error) {
       NextResponse.json({ error: error.message }, { status: 500 });
@@ -91,6 +106,7 @@ export default async function handler(req: NextRequest) {
     }
 
     const { error: errorVault } = await deleteSchemaFromVault(
+      supabase,
       dataSchema.schema_data
     );
 

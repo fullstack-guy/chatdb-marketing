@@ -4,11 +4,9 @@ import { BasisTheory } from "@basis-theory/basis-theory-js";
 import { getAuth } from "@clerk/nextjs/server";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 const storeSchemaInVault = async (
   supabase,
-  token,
   schema_data: any,
   name: string,
   user
@@ -65,7 +63,6 @@ export default async function handler(
   try {
     const { data: schemaVaultID, error: vaultError } = await storeSchemaInVault(
       supabase,
-      token,
       schema_data,
       name,
       user
