@@ -77,6 +77,12 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
               <Link href="/contact-us" className="link-hover link">
                 Contact Us
               </Link>
+              <Link href="/terms-and-conditions" className="link-hover link">
+                Terms and Conditions
+              </Link>
+              <Link href="/privacy-policy" className="link-hover link">
+                Privacy Policy
+              </Link>
             </div>
             <div>
               <span className="footer-title">Free Tools</span>
