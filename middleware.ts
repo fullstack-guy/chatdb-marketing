@@ -9,6 +9,8 @@ export default authMiddleware({
     "/",
     "/sign-in(.*)",
     "/sign-up(.*)",
+    "/terms-and-conditions(.*)",
+    "/privacy-policy(.*)",
     "/pricing",
     "/blog(.*)",
     "/post(.*)",
