@@ -1,11 +1,11 @@
+import { getAuth } from "@clerk/nextjs/server";
 import { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
-const getSchemaFromVault = async (secret_id: string) => {
+const getSchemaFromVault = async (supabase, secret_id: string) => {
   const { data, error } = await supabase.rpc("read_schema_data", {
     secret_id: secret_id,
   });
@@ -36,6 +36,21 @@ export default async function handler(
     return res.status(400).json({ message: "Missing fields" });
   }
 
+  const auth = getAuth(req);
+  const token = await auth.getToken({ template: "supabase" });
+
+  const supabase = createClient(
+    supabaseUrl,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    }
+  );
+
   try {
     const { data: schema_id, error: schemaError } = await supabase
       .from("user_schemas")
@@ -48,7 +63,10 @@ export default async function handler(
       return res.status(500).json(schemaError);
     }
 
-    const { data, error } = await getSchemaFromVault(schema_id.schema_data);
+    const { data, error } = await getSchemaFromVault(
+      supabase,
+      schema_id.schema_data
+    );
 
     if (error) {
       console.log("vault", error);
