@@ -11,6 +11,7 @@ import DatabaseFlow from "../../components/DatabaseFlow";
 import { Toaster, toast } from "react-hot-toast";
 import useSupabase from "../../hooks/useSupabaseClient";
 import QuickSearch from "../../components/dashboard/QuickSearch";
+import DatabaseNav from "../../components/dashboard/DatabaseNav";
 
 interface Database {
   id: number;
@@ -263,36 +264,7 @@ export default function Page() {
             )}
 
           </div>
-          <div className="tabs tabs-boxed mt-7 bg-transparent p-0">
-            <a
-              className={`tab text-lg text-black ${activeTab === "Chat" ? "tab-active" : ""
-                }`}
-              onClick={() => handleTabClick("Chat")}
-            >
-              Ask
-            </a>
-            <a
-              className={`tab text-lg text-black ${activeTab === "Tables" ? "tab-active" : ""
-                }`}
-              onClick={() => handleTabClick("Tables")}
-            >
-              Tables
-            </a>
-            <a
-              className={`tab text-lg text-black ${activeTab === "Flow" ? "tab-active" : ""
-                }`}
-              onClick={() => handleTabClick("Flow")}
-            >
-              Flow
-            </a>
-            <a
-              className={`tab text-lg text-black ${activeTab === "Settings" ? "tab-active" : ""
-                }`}
-              onClick={() => handleTabClick("Settings")}
-            >
-              Settings
-            </a>
-          </div>
+          <DatabaseNav activeTab={activeTab} setActiveTab={setActiveTab} />
         </div>
       )}
       <div className="flex flex-col bg-gray-100 sm:py-4">
