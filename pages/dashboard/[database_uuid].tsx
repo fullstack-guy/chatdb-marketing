@@ -1,15 +1,13 @@
 import Layout from "../../components/Layout";
 import { useUser } from "@clerk/nextjs";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsDatabase } from "react-icons/bs";
 import { BiRefresh } from "react-icons/bi";
 import { useRouter } from "next/router";
-import TablePage from "../../components/dashboard/TablePage";
-import Chat from "../../components/dashboard/Chat";
-import Settings from "../../components/dashboard/Settings";
-import DatabaseFlow from "../../components/DatabaseFlow";
 import { Toaster, toast } from "react-hot-toast";
-import useSupabase from "../../hooks/useSupabaseClient";
+import QuickSearch from "../../components/dashboard/QuickSearch";
+import DatabaseNav from "../../components/dashboard/DatabaseNav";
+import DatabaseControl from "../../components/dashboard/DatabaseControl";
 
 interface Database {
   id: number;
@@ -24,18 +22,12 @@ export default function Page() {
   const router = useRouter();
   const { isLoaded, isSignedIn, user } = useUser();
   const { database_uuid } = router.query;
-  const searchInputRef = useRef<HTMLInputElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("Chat");
   const [fetchedDatabase, setFetchedDatabase] = useState<Database | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [dataModel, setDataModel] = useState([]);
   const [saving, setSaving] = useState(false);
-  const supabase = useSupabase();
-
-  const handleTabClick = (tabName) => {
-    setActiveTab(tabName);
-  };
 
   const fetchTables = async () => {
     try {
@@ -67,8 +59,7 @@ export default function Page() {
     }
   };
 
-
-  const updateDatabase = async (data, user, name, toast) => {
+  const updateDatabase = async (data, user, toast) => {
     try {
       const response = await fetch('/api/db/update', {
         method: 'POST',
@@ -122,7 +113,7 @@ export default function Page() {
       } else {
         const data = await response.json();
         try {
-          await updateDatabase(data, user, name, toast);
+          await updateDatabase(data, user, toast);
           await fetchTables();
           toast.success("Database refreshed!");
         } catch (error) {
@@ -138,13 +129,11 @@ export default function Page() {
     }
   };
 
-
-
   useEffect(() => {
-    if (supabase && isLoaded && isSignedIn) {
+    if (isLoaded && isSignedIn) {
       fetchTables();
     }
-  }, [isLoaded, isSignedIn, supabase]);
+  }, [isLoaded, isSignedIn,]);
 
   function convertJsonToDataModel(json) {
     const dataModel = [];
@@ -178,56 +167,6 @@ export default function Page() {
     return dataModel;
   }
 
-  useEffect(() => {
-    const handleKeyDown = (event: any) => {
-      const isMac = window.navigator.userAgent.indexOf("Mac") !== -1;
-      const cmdOrCtrl = isMac ? event.metaKey : event.ctrlKey;
-
-      if (cmdOrCtrl && event.key === "k") {
-        event.preventDefault();
-        if (searchInputRef.current) {
-          searchInputRef.current.focus();
-        }
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
-
-  const renderContent = () => {
-    switch (activeTab) {
-      case "Tables":
-        return (
-          <TablePage
-            database_uuid={database_uuid}
-            filteredTables={filteredTables}
-          />
-        );
-      case "Chat":
-        return <Chat database_uuid={database_uuid} />;
-      case "Flow":
-        const { title, ...restOfDatabase } = fetchedDatabase;
-        return <DatabaseFlow dbSchema={restOfDatabase} />; case "Settings":
-        return (
-          <Settings
-            fetchedDatabase={fetchedDatabase}
-            setFetchedDatabase={setFetchedDatabase}
-            database_uuid={Array.isArray(database_uuid) ? database_uuid[0] : database_uuid}
-          />
-        );
-      default:
-        return <p>Invalid tab selected</p>;
-    }
-  };
-
-  const handleSearchInputChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
-
   const filteredTables = dataModel.filter(
     (table) =>
       table.tableName.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -256,81 +195,19 @@ export default function Page() {
                 </div>
               </div>
             </div>
-            {activeTab === "Query" && (
-              <div className="mt-4 sm:mt-0">
-                <div className="mt-4 flex items-center sm:mt-0">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      onChange={handleSearchInputChange}
-                      value={searchQuery}
-                      ref={searchInputRef}
-                      className="focus:ring-primary-600 w-64 flex-1 appearance-none rounded-lg border border-gray-300 border-transparent bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 shadow-sm focus:border-transparent focus:outline-none focus:ring-2"
-                      placeholder="Search"
-                    />
-                    <p className="absolute right-4 top-1/2 -translate-y-1/2 transform text-xs text-gray-400">
-                      <div className="kbd kbd-sm">⌘K</div>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-            {activeTab === "Tables" && (
-              <div className="mt-4 sm:mt-0">
-                <div className="mt-4 flex items-center sm:mt-0">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      onChange={handleSearchInputChange}
-                      value={searchQuery}
-                      ref={searchInputRef}
-                      className="focus:ring-primary-600 w-64 flex-1 appearance-none rounded-lg border border-gray-300 border-transparent bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 shadow-sm focus:border-transparent focus:outline-none focus:ring-2"
-                      placeholder="Search"
-                    />
-                    <p className="absolute right-4 top-1/2 -translate-y-1/2 transform text-xs text-gray-400">
-                      <div className="kbd kbd-sm">⌘K</div>
-                    </p>
-                  </div>
-                </div>
-              </div>
+            {(activeTab === "Query" || activeTab === "Tables") && (
+              <QuickSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             )}
           </div>
-          <div className="tabs tabs-boxed mt-7 bg-transparent p-0">
-            <a
-              className={`tab text-lg text-black ${activeTab === "Chat" ? "tab-active" : ""
-                }`}
-              onClick={() => handleTabClick("Chat")}
-            >
-              Ask
-            </a>
-            <a
-              className={`tab text-lg text-black ${activeTab === "Tables" ? "tab-active" : ""
-                }`}
-              onClick={() => handleTabClick("Tables")}
-            >
-              Tables
-            </a>
-            <a
-              className={`tab text-lg text-black ${activeTab === "Flow" ? "tab-active" : ""
-                }`}
-              onClick={() => handleTabClick("Flow")}
-            >
-              Flow
-            </a>
-            <a
-              className={`tab text-lg text-black ${activeTab === "Settings" ? "tab-active" : ""
-                }`}
-              onClick={() => handleTabClick("Settings")}
-            >
-              Settings
-            </a>
-          </div>
+          <DatabaseNav activeTab={activeTab} setActiveTab={setActiveTab} />
         </div>
       )}
       <div className="flex flex-col bg-gray-100 sm:py-4">
         <div className="relative w-full py-3 sm:mx-auto">
           <div className="relative mx-8 rounded-3xl bg-white px-4 py-8 shadow sm:p-10 md:mx-0">
-            <div className="mx-auto max-w-7xl">{renderContent()}</div>
+            <div className="mx-auto max-w-7xl">
+              <DatabaseControl activeTab={activeTab} database_uuid={database_uuid} filteredTables={filteredTables} fetchedDatabase={fetchedDatabase} setFetchedDatabase={setFetchedDatabase} />
+            </div>
           </div>
         </div>
       </div>
