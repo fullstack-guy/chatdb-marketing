@@ -3,7 +3,6 @@ import React, { useEffect, useRef } from 'react'
 export default function QuickSearch({ searchQuery, setSearchQuery }) {
     const searchInputRef = useRef<HTMLInputElement>(null);
 
-
     useEffect(() => {
         const handleKeyDown = (event: any) => {
             const isMac = window.navigator.userAgent.indexOf("Mac") !== -1;
