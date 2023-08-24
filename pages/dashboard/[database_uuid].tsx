@@ -10,6 +10,7 @@ import Settings from "../../components/dashboard/Settings";
 import DatabaseFlow from "../../components/DatabaseFlow";
 import { Toaster, toast } from "react-hot-toast";
 import useSupabase from "../../hooks/useSupabaseClient";
+import QuickSearch from "../../components/dashboard/QuickSearch";
 
 interface Database {
   id: number;
@@ -68,7 +69,7 @@ export default function Page() {
   };
 
 
-  const updateDatabase = async (data, user, name, toast) => {
+  const updateDatabase = async (data, user, toast) => {
     try {
       const response = await fetch('/api/db/update', {
         method: 'POST',
@@ -122,7 +123,7 @@ export default function Page() {
       } else {
         const data = await response.json();
         try {
-          await updateDatabase(data, user, name, toast);
+          await updateDatabase(data, user, toast);
           await fetchTables();
           toast.success("Database refreshed!");
         } catch (error) {
@@ -211,7 +212,8 @@ export default function Page() {
         return <Chat database_uuid={database_uuid} />;
       case "Flow":
         const { title, ...restOfDatabase } = fetchedDatabase;
-        return <DatabaseFlow dbSchema={restOfDatabase} />; case "Settings":
+        return <DatabaseFlow dbSchema={restOfDatabase} />;
+      case "Settings":
         return (
           <Settings
             fetchedDatabase={fetchedDatabase}
@@ -256,44 +258,10 @@ export default function Page() {
                 </div>
               </div>
             </div>
-            {activeTab === "Query" && (
-              <div className="mt-4 sm:mt-0">
-                <div className="mt-4 flex items-center sm:mt-0">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      onChange={handleSearchInputChange}
-                      value={searchQuery}
-                      ref={searchInputRef}
-                      className="focus:ring-primary-600 w-64 flex-1 appearance-none rounded-lg border border-gray-300 border-transparent bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 shadow-sm focus:border-transparent focus:outline-none focus:ring-2"
-                      placeholder="Search"
-                    />
-                    <p className="absolute right-4 top-1/2 -translate-y-1/2 transform text-xs text-gray-400">
-                      <div className="kbd kbd-sm">⌘K</div>
-                    </p>
-                  </div>
-                </div>
-              </div>
+            {(activeTab === "Query" || activeTab === "Tables") && (
+              <QuickSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             )}
-            {activeTab === "Tables" && (
-              <div className="mt-4 sm:mt-0">
-                <div className="mt-4 flex items-center sm:mt-0">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      onChange={handleSearchInputChange}
-                      value={searchQuery}
-                      ref={searchInputRef}
-                      className="focus:ring-primary-600 w-64 flex-1 appearance-none rounded-lg border border-gray-300 border-transparent bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 shadow-sm focus:border-transparent focus:outline-none focus:ring-2"
-                      placeholder="Search"
-                    />
-                    <p className="absolute right-4 top-1/2 -translate-y-1/2 transform text-xs text-gray-400">
-                      <div className="kbd kbd-sm">⌘K</div>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
+
           </div>
           <div className="tabs tabs-boxed mt-7 bg-transparent p-0">
             <a
