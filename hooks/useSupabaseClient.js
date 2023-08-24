@@ -13,7 +13,6 @@ const useSupabase = () => {
         token || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
       );
       setClient(supabase);
-      console.log("tokenene", token);
     }
     initSupabase();
   }, [getToken]);

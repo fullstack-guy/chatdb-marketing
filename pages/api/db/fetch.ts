@@ -71,7 +71,7 @@ export default async function handler(
       console.log("vault", error);
       return res.status(500).json(error);
     }
-    return res.status(200).json(data);
+    return res.status(200).json({ title: schema_id.title, ...data });
   } catch (e) {
     console.log(e);
     return res.status(500).json(e);

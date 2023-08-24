@@ -9,7 +9,6 @@ import Chat from "../../components/dashboard/Chat";
 import Settings from "../../components/dashboard/Settings";
 import DatabaseFlow from "../../components/DatabaseFlow";
 import { Toaster, toast } from "react-hot-toast";
-import { useBasisTheory } from "@basis-theory/basis-theory-react";
 import useSupabase from "../../hooks/useSupabaseClient";
 
 interface Database {
@@ -29,20 +28,14 @@ export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("Chat");
   const [fetchedDatabase, setFetchedDatabase] = useState<Database | null>(null);
-  const [selectedSchema, setSelectedSchema] = useState("public");
   const [refreshing, setRefreshing] = useState(false);
   const [dataModel, setDataModel] = useState([]);
   const [saving, setSaving] = useState(false);
   const supabase = useSupabase();
 
-  console.log("supabaaaase", supabase)
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
-
-  const { bt } = useBasisTheory(process.env.NEXT_PUBLIC_BASIS_THEORY_KEY, {
-    elements: true,
-  });
 
   const fetchTables = async () => {
     try {
@@ -217,8 +210,8 @@ export default function Page() {
       case "Chat":
         return <Chat database_uuid={database_uuid} />;
       case "Flow":
-        return <DatabaseFlow dbSchema={fetchedDatabase} />;
-      case "Settings":
+        const { title, ...restOfDatabase } = fetchedDatabase;
+        return <DatabaseFlow dbSchema={restOfDatabase} />; case "Settings":
         return (
           <Settings
             fetchedDatabase={fetchedDatabase}
