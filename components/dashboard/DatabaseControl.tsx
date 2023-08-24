@@ -29,7 +29,7 @@ export default function DatabaseControl({ activeTab, database_uuid, filteredTabl
                     />
                 );
             default:
-                return <p>Invalid tab selected</p>;
+                return <Chat database_uuid={database_uuid} />;
         }
     };
     return (
