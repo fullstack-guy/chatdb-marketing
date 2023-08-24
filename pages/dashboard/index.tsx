@@ -104,9 +104,8 @@ export default function Page() {
                 <div
                   key={index}
                   onClick={() => selectDatabase(index)}
-                  className={`mb-4 flex cursor-pointer items-center rounded-lg p-4 shadow-md ${
-                    database.selected ? "border-4 border-[#0fe0b6]" : ""
-                  }`}
+                  className={`mb-4 flex cursor-pointer items-center rounded-lg p-4 shadow-md ${database.selected ? "border-4 border-[#0fe0b6]" : ""
+                    }`}
                 >
                   <div className="mr-4 flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg bg-[#0fe0b6]">
                     <Image
