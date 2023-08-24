@@ -15,13 +15,13 @@ interface SettingsProps {
     schema_data: Record<string, unknown> | any;
   };
   setFetchedDatabase: (data: any) => void;
-  database: string | string[];
+  database_uuid: string;
 }
 
 const Settings: React.FC<SettingsProps> = ({
   fetchedDatabase,
   setFetchedDatabase,
-  database,
+  database_uuid,
 }) => {
   const router = useRouter();
   const [newDatabaseName, setNewDatabaseName] = useState<string>(
@@ -41,19 +41,19 @@ const Settings: React.FC<SettingsProps> = ({
     const fetchAndUpdateSetting = async () => {
       if (showSampleRef.current === null) {
         // If it's the initial load
-        const result = await getDatabaseSampleSetting(database);
+        const result = await getDatabaseSampleSetting(database_uuid);
         setShowSample(result);
         showSampleRef.current = result; // Store the initial value in the ref
       } else if (showSample !== showSampleRef.current) {
         // If the value has changed after the initial load
-        await updateDatabaseSampleSetting(database, showSample);
+        await updateDatabaseSampleSetting(database_uuid, showSample);
       }
     };
 
     if (supabase) {
       fetchAndUpdateSetting();
     }
-  }, [database, showSample, supabase]);
+  }, [database_uuid, showSample, supabase]);
 
   //fetch show_sample_rows field from user_databases table where uuid matches
   const getDatabaseSampleSetting = async (uuid) => {
@@ -70,11 +70,11 @@ const Settings: React.FC<SettingsProps> = ({
   };
 
   // Update show_sample_rows field in user_databases table where uuid matches
-  const updateDatabaseSampleSetting = async (database, newValue) => {
+  const updateDatabaseSampleSetting = async (database_uuid, newValue) => {
     const { data, error } = await supabase
       .from("user_databases")
       .update({ show_sample: newValue })
-      .eq("uuid", database);
+      .eq("uuid", database_uuid);
 
     if (error) {
       toast.error(`We had an issue updating sample setting.`);
@@ -88,7 +88,7 @@ const Settings: React.FC<SettingsProps> = ({
     const { data, error } = await supabase
       .from("user_schemas")
       .update({ title: newDatabaseName })
-      .eq("uuid", database);
+      .eq("uuid", database_uuid);
 
     if (error) {
       console.error("Error updating database name:", error);
@@ -98,23 +98,32 @@ const Settings: React.FC<SettingsProps> = ({
         ...fetchedDatabase,
         title: newDatabaseName,
       });
+      toast.success(`Database name updated!`);
     }
   };
 
   const deleteDatabase = async () => {
     setModalOpen(false); // Close the modal
-    const response = await fetch(`/api/db/delete?uuid=${database}`, {
-      method: "DELETE",
-    });
-    const data = await response.json();
 
-    if (response.ok) {
-      router.push("/dashboard"); // Redirect to dashboard after successful deletion
-    } else {
-      console.error("Error deleting database:", data.error);
-      toast.error("We had an issue deleting your database!");
+    try {
+      const response = await fetch(`/api/db/delete?uuid=${database_uuid}`, {
+        method: "DELETE",
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        router.push("/dashboard"); // Redirect to dashboard after successful deletion
+      } else {
+        console.error("Error deleting database:", data.error);
+        toast.error("We had an issue deleting your database!");
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+      toast.error("Network error occurred while deleting the database.");
     }
   };
+
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-start space-y-8 px-8">

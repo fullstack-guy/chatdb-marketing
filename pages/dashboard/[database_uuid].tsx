@@ -9,7 +9,6 @@ import Chat from "../../components/dashboard/Chat";
 import Settings from "../../components/dashboard/Settings";
 import DatabaseFlow from "../../components/DatabaseFlow";
 import { Toaster, toast } from "react-hot-toast";
-import { useBasisTheory } from "@basis-theory/basis-theory-react";
 import useSupabase from "../../hooks/useSupabaseClient";
 
 interface Database {
@@ -29,7 +28,6 @@ export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("Chat");
   const [fetchedDatabase, setFetchedDatabase] = useState<Database | null>(null);
-  const [selectedSchema, setSelectedSchema] = useState("public");
   const [refreshing, setRefreshing] = useState(false);
   const [dataModel, setDataModel] = useState([]);
   const [saving, setSaving] = useState(false);
@@ -39,68 +37,66 @@ export default function Page() {
     setActiveTab(tabName);
   };
 
-  const { bt } = useBasisTheory(process.env.NEXT_PUBLIC_BASIS_THEORY_KEY, {
-    elements: true,
-  });
-
   const fetchTables = async () => {
-    const { data, error } = await supabase
-      .from("user_schemas")
-      .select("*")
-      .eq("user_id", user.id)
-      .eq("uuid", database_uuid);
+    try {
+      const response = await fetch('/api/db/fetch', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          database_uuid: database_uuid,
+        }),
+      });
 
-    if (error || data.length === 0) {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data) {
+        setFetchedDatabase(data);
+        setDataModel(convertJsonToDataModel(data));
+      } else {
+        router.push("/dashboard");
+      }
+    } catch (error) {
       console.error("Error fetching tables:", error);
       router.push("/dashboard");
-    } else {
-      const db = data[0] as Database;
-      setFetchedDatabase(db);
-      setDataModel(convertJsonToDataModel(db.schema_data));
     }
   };
 
+
   const updateDatabase = async (data, user, name, toast) => {
     try {
-      const { data: existingSchemas, error: schemaError } = await supabase
-        .from("user_schemas")
-        .select("uuid")
-        .eq("user_id", user.id)
-        .eq("title", fetchedDatabase.title);
+      const response = await fetch('/api/db/update', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          database_uuid, // Assuming you have fetchedDatabase available in this context
+          schema_data: data,
+          user: user,
+        }),
+      });
 
-      if (schemaError) {
-        console.error("Error querying Supabase:", schemaError);
-        toast.error("Error querying Supabase");
-        return;
-      }
+      const responseData = await response.json();
 
-      if (existingSchemas.length > 0) {
-        // Found matching schema, now update it
-        const schemaID = existingSchemas[0].uuid; // Get the id of the existing schema
-
-        const { error: databaseError } = await supabase
-          .from("user_schemas")
-          .update({
-            schema_data: data,
-          })
-          .eq("uuid", schemaID);
-
-        if (databaseError) {
-          console.error("Error saving data to database:", databaseError);
-          toast.error("Error saving database string to database");
-          return false;
-        } else {
-          return true;
-        }
-      } else {
-        toast.error("No matching schema found!");
+      if (!response.ok) {
+        console.error("Error updating data in database:", responseData);
+        toast.error("Error updating data in database");
         return false;
+      } else {
+        return true;
       }
     } catch (error) {
       console.error("Error updating data in database:", error);
       toast.error("Error updating data in database");
     }
   };
+
 
   const refreshAndSaveDatabase = async () => {
     setRefreshing(true);
@@ -214,13 +210,13 @@ export default function Page() {
       case "Chat":
         return <Chat database_uuid={database_uuid} />;
       case "Flow":
-        return <DatabaseFlow dbSchema={fetchedDatabase.schema_data} />;
-      case "Settings":
+        const { title, ...restOfDatabase } = fetchedDatabase;
+        return <DatabaseFlow dbSchema={restOfDatabase} />; case "Settings":
         return (
           <Settings
             fetchedDatabase={fetchedDatabase}
             setFetchedDatabase={setFetchedDatabase}
-            database={Array.isArray(database_uuid) ? database_uuid[0] : database_uuid}
+            database_uuid={Array.isArray(database_uuid) ? database_uuid[0] : database_uuid}
           />
         );
       default:

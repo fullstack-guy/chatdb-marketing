@@ -14,7 +14,6 @@ const useSupabase = () => {
       );
       setClient(supabase);
     }
-
     initSupabase();
   }, [getToken]);
 
