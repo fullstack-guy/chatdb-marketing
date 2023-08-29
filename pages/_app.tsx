@@ -4,14 +4,18 @@ import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
 import "@fontsource/inter/700.css";
 
+import type { AppType } from 'next/app';
 import { ClerkProvider } from "@clerk/nextjs";
 import { SubscriptionProvider } from "use-stripe-subscription";
 import { hotjar } from "react-hotjar";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { v4 as uuidv4 } from "uuid"; // Import the UUID generator
+import { trpc } from '../utils/trpc';
 
-export default function MyApp({ Component, pageProps }) {
+
+
+const MyApp: AppType = ({ Component, pageProps }) => {
   const router = useRouter();
 
   useEffect(() => {
@@ -65,3 +69,5 @@ export default function MyApp({ Component, pageProps }) {
     </SubscriptionProvider>
   );
 }
+
+export default trpc.withTRPC(MyApp);
