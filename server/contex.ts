@@ -4,26 +4,29 @@ import { inferAsyncReturnType } from "@trpc/server";
 import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 export async function createContext(opts: CreateNextContextOptions) {
   const auth = getAuth(opts.req);
-  const token = await auth.getToken({ template: "supabase" });
+  const clerkToken = await auth.getToken({ template: "supabase" });
+  console.log("clerk token", clerkToken);
 
-  const supabase = createClient(
+  const userSupabase = createClient(
     supabaseUrl,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       global: {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${clerkToken}`,
         },
       },
     }
   );
+
+  const systemSupabase = createClient(supabaseUrl, supabaseAnonKey);
   return {
-    token,
-    req: opts.req,
-    supabase,
+    user: auth,
+    userSupabase,
+    systemSupabase,
   };
 }
 

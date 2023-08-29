@@ -2,6 +2,8 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
+import Script from "next/script";
+import Head from "next/head";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -20,6 +22,24 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
 
   return (
     <div className="bg-layer-1">
+      <Script
+        src="https://cdn.paddle.com/paddle/v2/paddle.js"
+        strategy="lazyOnload"
+        onLoad={() => {
+          console.log(`script loaded correctly, window.FB has been populated`)
+          const Paddle = window.Paddle;
+          Paddle.Environment.set("sandbox");
+          Paddle.Setup({
+            seller: 14142,
+            eventCallback: function (data) {
+              if (data.name == "checkout.completed") {
+                console.log("paddle data", data);
+              }
+            },
+          });
+        }
+        }
+      />
       <NextSeo
         title={title || defaultTitle}
         description={description || defaultDescription}
