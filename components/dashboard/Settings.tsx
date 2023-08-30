@@ -16,12 +16,14 @@ interface SettingsProps {
   };
   setFetchedDatabase: (data: any) => void;
   database_uuid: string;
+  setTitle: (title: string) => void;
 }
 
 const Settings: React.FC<SettingsProps> = ({
   fetchedDatabase,
   setFetchedDatabase,
   database_uuid,
+  setTitle
 }) => {
   const router = useRouter();
   const [newDatabaseName, setNewDatabaseName] = useState<string>(
@@ -94,6 +96,7 @@ const Settings: React.FC<SettingsProps> = ({
       console.error("Error updating database name:", error);
       toast.error(`We had an issue updating database name.`);
     } else {
+      setTitle(newDatabaseName);
       setFetchedDatabase({
         ...fetchedDatabase,
         title: newDatabaseName,
