@@ -5,15 +5,12 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import useSupabase from "../../hooks/useSupabaseClient";
-import { trpc } from "../../utils/trpc";
 
 export default function Page() {
   const { isLoaded, isSignedIn, user } = useUser();
   const router = useRouter();
   const supabase = useSupabase();
-  const { data, isLoading, error } = trpc.subscriptions.getSubscription.useQuery()
 
-  if (data) console.log("datatatata", data)
   const handleNavigation = (path) => {
     router.push(path);
   };
@@ -38,7 +35,7 @@ export default function Page() {
     const { data, error } = await supabase
       .from("user_schemas")
       .select("*")
-      .eq("user_id", user);
+      .eq("user_id", user.id);
 
     if (error) {
       console.error("Error fetching databases:", error);

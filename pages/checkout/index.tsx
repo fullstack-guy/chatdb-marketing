@@ -36,7 +36,11 @@ const Page = () => {
         >
             <div className="checkout-container"></div>
             <button
-                onClick={handlePayment}
+                className='paddle_button'
+                data-items='[{
+                     "priceId": "pri_01h91dyt1mxwnc4g0xqnwvcs7x",
+                     "quantity": 1
+                     }]'
             >
                 Pay
             </button>
