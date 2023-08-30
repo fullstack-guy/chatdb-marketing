@@ -26,7 +26,6 @@ const Checkout = () => {
     const handlePayment = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const Paddle = window.Paddle;
-        console.log("plan", plan);
         setSetsubmitting(true)
         Paddle.Checkout.open({
             settings: {
@@ -36,11 +35,6 @@ const Checkout = () => {
                 frameTarget: "checkout-container",
                 frameInitialHeight: "450",
                 frameStyle: "width: 100%; min-width: 312px; background-color: transparent; border: none;"
-            },
-            eventCallback: function (data) {
-                if (data.name == "checkout.completed") {
-                    console.log("paddle data", data);
-                }
             },
             items: [
                 {
@@ -69,8 +63,6 @@ const Checkout = () => {
             {
                 !submitting && (
                     <div className="h-[100vh] flex flex-col items-center justify-center align-middle">
-
-
                         <form className="h-[80vh] p-4 w-full md:w-1/2 lg:w-1/2 z-[100]" onSubmit={handlePayment}>
                             <div className="mb-6">
                                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
@@ -95,7 +87,6 @@ const Checkout = () => {
                     </div>
                 )
             }
-
             <div className="checkout-container">
             </div>
 

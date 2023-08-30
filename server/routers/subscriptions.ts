@@ -30,16 +30,13 @@ export const subscriptionsRouter = router({
     )
     .mutation(async (opts) => {
       const { input, ctx } = opts;
-
+      console.log("input", input, ctx.user.userId);
       try {
-        const updatedMetaData = await ctx.users.updateUserMetadata(
-          ctx.user.userId,
-          {
-            privateMetadata: {
-              customerId: input.customerId,
-            },
-          }
-        );
+        await ctx.users.updateUserMetadata(ctx.user.userId, {
+          publicMetadata: {
+            customerId: input.customerId,
+          },
+        });
         const { data, error } = await updateUser(
           ctx.systemSupabase,
           ctx.user.userId,

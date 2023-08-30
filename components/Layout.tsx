@@ -27,7 +27,8 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
 
   const updateUserStatus = async (data) => {
     customer.mutateAsync({
-      customerId: data.customer.id
+      customerId: data.customer.id,
+
     })
   }
   const defaultTitle = "ChatDB | The AI Database Assistant for your team";
@@ -41,13 +42,12 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
         src="https://cdn.paddle.com/paddle/v2/paddle.js"
         strategy="lazyOnload"
         onLoad={() => {
-          console.log(`script loaded correctly, window.FB has been populated`)
           const Paddle = window.Paddle;
           Paddle.Environment.set("sandbox");
           Paddle.Setup({
             seller: 14142,
             eventCallback: function (data) {
-              if (data.name == "checkout.completed" || isLoaded) {
+              if (data.name == "checkout.completed") {
                 updateUserStatus(data.data)
               }
             },
