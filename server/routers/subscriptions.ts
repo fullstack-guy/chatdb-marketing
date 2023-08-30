@@ -1,27 +1,65 @@
-import { router, procedure } from "../trpc";
+import { router, procedure, protectedProcedure } from "../trpc";
+import { z } from "zod";
 
-const isSubscribed = async (supabase, userId) => {
-  const { data: subscriptions, error } = await supabase
+const updateUser = async (supabase, userId, customerId) => {
+  const { data, error } = await supabase
     .from("users")
-    .select("*");
+    .update({ paddle_customer_id: customerId })
+    .eq("id", userId)
+    .single();
 
   if (error) {
-    throw error;
+    return {
+      data: null,
+      error,
+    };
+  } else {
+    return {
+      data,
+      error: null,
+    };
   }
-  return subscriptions;
-
-  if (!subscriptions.length || !subscriptions[0].is_active) {
-    return false;
-  }
-
-  return true;
 };
-export const subscriptionsRouter = router({
-  getSubscription: procedure.query((opts) => {
-    const { ctx } = opts;
-    console.log("user id", ctx.user.userId);
-    const subscribed = isSubscribed(ctx.systemSupabase, ctx.user.userId);
 
-    return subscribed;
-  }),
+export const subscriptionsRouter = router({
+  createCustomer: protectedProcedure
+    .input(
+      z.object({
+        customerId: z.string(),
+      })
+    )
+    .mutation(async (opts) => {
+      const { input, ctx } = opts;
+
+      try {
+        const updatedMetaData = await ctx.users.updateUserMetadata(
+          ctx.user.userId,
+          {
+            privateMetadata: {
+              customerId: input.customerId,
+            },
+          }
+        );
+        const { data, error } = await updateUser(
+          ctx.systemSupabase,
+          ctx.user.userId,
+          input.customerId
+        );
+
+        if (error) {
+          return {
+            data: null,
+            error,
+          };
+        } else {
+          return {
+            data,
+            error: null,
+          };
+        }
+      } catch (e) {
+        console.log(e);
+        return e;
+      }
+    }),
 });

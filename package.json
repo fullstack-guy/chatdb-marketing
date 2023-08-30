@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@basis-theory/basis-theory-react": "^1.11.0",
+    "@clerk/clerk-sdk-node": "^4.12.3",
     "@clerk/nextjs": "^4.23.2",
     "@duckdb/duckdb-wasm": "^1.27.0",
     "@fontsource/inter": "^4.5.11",

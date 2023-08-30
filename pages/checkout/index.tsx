@@ -2,7 +2,7 @@ import { FormEvent, useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import { useRouter } from "next/router";
 import { useUser } from "@clerk/nextjs";
-import { set } from "zod";
+
 
 const Checkout = () => {
     const { isLoaded, isSignedIn, user } = useUser();
@@ -13,6 +13,7 @@ const Checkout = () => {
         country: "",
         zip: ""
     })
+
     const [submitting, setSetsubmitting] = useState(false)
     const plans = {
         hobby: {
@@ -22,7 +23,6 @@ const Checkout = () => {
             monthlyPriceId: 'pri_01h90zt3jwcrxsjsmfyzb8qqda'
         }
     }
-    const capitalizeFirstLetter = (input: string) => input.charAt(0).toUpperCase() + input.slice(1);
     const handlePayment = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const Paddle = window.Paddle;
@@ -66,7 +66,7 @@ const Checkout = () => {
         >
 
             <div className="flex flex-col items-center justify-center align-middle">
-                <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">You are subscribing for the <span className="capitalize text-blue-600 dark:text-blue-500">{plan}</span> Plan.</h1>
+                <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">You are subscribing to the <span className="capitalize text-blue-600 dark:text-blue-500">{plan}</span> Plan.</h1>
 
                 {
                     !submitting && (

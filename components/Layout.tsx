@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 import Script from "next/script";
 import Head from "next/head";
+import { trpc } from "../utils/trpc";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/router";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -14,12 +17,24 @@ type LayoutProps = {
 };
 
 const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
+  const { isLoaded, isSignedIn, user } = useUser()
+  const router = useRouter()
+  const customer = trpc.subscriptions.createCustomer.useMutation({
+    onSuccess: () => {
+      router.push("/dashboard")
+    }
+  })
+
+  const updateUserStatus = async (data) => {
+    customer.mutateAsync({
+      customerId: data.customer.id
+    })
+  }
   const defaultTitle = "ChatDB | The AI Database Assistant for your team";
   const defaultDescription =
     "The tool that is an expert on your database. Say goodbye to hours spent creating the correct query to get the data you need.";
   const defaultUrl = "https://www.chatdb.ai";
   const defaultImage = "https://chatdb-assets.s3.amazonaws.com/ogg.png";
-
   return (
     <div className="bg-layer-1">
       <Script
@@ -32,8 +47,8 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
           Paddle.Setup({
             seller: 14142,
             eventCallback: function (data) {
-              if (data.name == "checkout.completed") {
-                console.log("paddle data", data);
+              if (data.name == "checkout.completed" || isLoaded) {
+                updateUserStatus(data.data)
               }
             },
           });
