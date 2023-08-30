@@ -25,7 +25,7 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
     }
   })
 
-  const updateUserStatus = async (data) => {
+  const saveSubscription = async (data) => {
     customer.mutateAsync({
       customerId: data.customer.id,
 
@@ -46,9 +46,10 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
           Paddle.Environment.set("sandbox");
           Paddle.Setup({
             seller: 14142,
-            eventCallback: function (data) {
-              if (data.name == "checkout.completed") {
-                updateUserStatus(data.data)
+            eventCallback: function (event) {
+              if (event.name == "checkout.completed") {
+                console.log(event.data)
+                saveSubscription(event.data)
               }
             },
           });

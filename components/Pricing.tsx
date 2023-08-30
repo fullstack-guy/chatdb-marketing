@@ -41,8 +41,12 @@ export default function Pricing() {
             features={[
               "1 User",
               "5 Databases",
-              "PostgreSQL Connection",
               "30 Tables",
+              "Unlimited Messages",
+              "Chat with CSV",
+              "Backed by ChatGPT",
+              "PostgreSQL Connection",
+              "Multiple Schemas",
             ]}
             btnText="Get Started"
           />
