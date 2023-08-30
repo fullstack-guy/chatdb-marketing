@@ -16,6 +16,7 @@ export default authMiddleware({
     "/post(.*)",
     "/contact-us(.*)",
     "/tools(.*)",
+    "/checkout",
     "/api/send",
     "/api/og",
   ],
