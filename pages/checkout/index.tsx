@@ -65,12 +65,13 @@ const Checkout = () => {
             url="https://www.chatdb.ai/pricing"
         >
 
-            <div className="flex flex-col items-center justify-center align-middle">
-                <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">You are subscribing to the <span className="capitalize text-blue-600 dark:text-blue-500">{plan}</span> Plan.</h1>
+            <h1 className="text-center p-2 m-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">You are subscribing to the <span className="capitalize text-blue-600 dark:text-blue-500">{plan}</span> Plan.</h1>
+            {
+                !submitting && (
+                    <div className="h-[100vh] flex flex-col items-center justify-center align-middle">
 
-                {
-                    !submitting && (
-                        <form className="p-4 w-full md:w-1/2 lg:w-1/2 z-[100]" onSubmit={handlePayment}>
+
+                        <form className="h-[80vh] p-4 w-full md:w-1/2 lg:w-1/2 z-[100]" onSubmit={handlePayment}>
                             <div className="mb-6">
                                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
                                 <input type="email" id="email" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="name@test.com" required
@@ -91,9 +92,9 @@ const Checkout = () => {
 
                             >Subscribe</button>
                         </form>
-                    )
-                }
-            </div>
+                    </div>
+                )
+            }
 
             <div className="checkout-container">
             </div>
