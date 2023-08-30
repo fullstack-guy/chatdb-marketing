@@ -51,7 +51,7 @@ export default async function handler(
   );
 
   try {
-    const { data: schema_id, error: schemaError } = await supabase
+    const { data: schema, error: schemaError } = await supabase
       .from("user_schemas")
       .select("*")
       .eq("uuid", database_uuid)
@@ -64,14 +64,14 @@ export default async function handler(
 
     const { data, error } = await getSchemaFromVault(
       supabase,
-      schema_id.schema_data
+      schema.schema_data
     );
 
     if (error) {
       console.log("vault", error);
       return res.status(500).json(error);
     }
-    return res.status(200).json({ title: schema_id.title, ...data });
+    return res.status(200).json({ title: schema.title, tables: data });
   } catch (e) {
     console.log(e);
     return res.status(500).json(e);

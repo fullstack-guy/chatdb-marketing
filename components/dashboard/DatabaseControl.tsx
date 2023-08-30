@@ -4,7 +4,7 @@ import Chat from './Chat';
 import DatabaseFlow from '../DatabaseFlow';
 import Settings from './Settings';
 
-export default function DatabaseControl({ activeTab, database_uuid, filteredTables, fetchedDatabase, setFetchedDatabase }) {
+export default function DatabaseControl({ activeTab, database_uuid, filteredTables, fetchedDatabase, setFetchedDatabase, setTitle }) {
 
     const renderContent = () => {
         switch (activeTab) {
@@ -26,6 +26,7 @@ export default function DatabaseControl({ activeTab, database_uuid, filteredTabl
                         fetchedDatabase={fetchedDatabase}
                         setFetchedDatabase={setFetchedDatabase}
                         database_uuid={Array.isArray(database_uuid) ? database_uuid[0] : database_uuid}
+                        setTitle={setTitle}
                     />
                 );
             default:
