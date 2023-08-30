@@ -1,5 +1,6 @@
-import React from "react";
+import React, { use } from "react";
 import posthog from "posthog-js";
+import { useRouter } from "next/router";
 
 interface PlanCardProps {
   name: string;
@@ -10,23 +11,19 @@ interface PlanCardProps {
   features: string[];
   color: string;
   price?: string;
-  isYearlyPricing?: boolean;
 }
 
 export default function PlanCard({
   name,
   description,
-  monthlyPrice,
-  annualPrice,
+  price,
   features,
   color,
-  isYearlyPricing,
   btnText = "Start Trial",
 }: PlanCardProps) {
-  const price = isYearlyPricing ? annualPrice : monthlyPrice;
-  const priceSuffix = isYearlyPricing ? "/year" : "/month";
-
+  const router = useRouter();
   const handleButtonClick = () => {
+    router.push(`/checkout?plan=${name.toLowerCase()}`);
     posthog.capture("pricing_button_clicked");
   };
 
@@ -43,7 +40,7 @@ export default function PlanCard({
             <>
               <div>${price}</div>
               <div className="text-lg font-medium">
-                {isYearlyPricing ? "/year" : "/month"}
+                /month
               </div>
             </>
           )}
@@ -83,20 +80,6 @@ export default function PlanCard({
       >
         {btnText}
       </label>
-
-      {/* The modal */}
-      <input type="checkbox" id={`${name}_modal`} className="modal-toggle" />
-      <div className="modal">
-        <div className="modal-box">
-          <h2 className="mb-4 text-2xl text-black">Stay Tuned!</h2>
-          <p>It's not ready yet, but stay tuned for updates!</p>
-          <div className="modal-action">
-            <label htmlFor={`${name}_modal`} className="btn cursor-pointer">
-              Close
-            </label>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

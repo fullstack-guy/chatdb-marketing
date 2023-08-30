@@ -18,84 +18,33 @@ export default function Pricing() {
             project. <br></br>Get your own personal data analyst at the price of
             a pizza!
           </p>
-          <div className="mt-6 flex justify-center space-x-4">
-            <button
-              className={`rounded-lg px-4 py-2 ${
-                !isYearlyPricing
-                  ? "bg-gray-800 text-white"
-                  : "bg-gray-200 text-gray-500"
-              }`}
-              onClick={() => setYearlyPricing(false)}
-            >
-              Monthly
-            </button>
-            <button
-              className={`rounded-lg px-4 py-2 ${
-                isYearlyPricing
-                  ? "bg-gray-800 text-white"
-                  : "bg-gray-200 text-gray-500"
-              }`}
-              onClick={() => setYearlyPricing(true)}
-            >
-              Yearly
-            </button>
-          </div>
         </div>
         <div className="flex flex-col gap-8 xl:flex-row">
           <PlanCard
             color="#78E3FC"
-            name="Basic"
-            monthlyPrice="29.99"
-            annualPrice="299.99"
+            name="Hobby"
+            price="19.99"
             description="Get started with the basic plan"
             features={[
               "1 User",
               "5 Databases",
-              "30 Tables",
-              "Unlimited Messages",
-              "Chat with CSV",
-              "Backed by ChatGPT",
               "PostgreSQL Connection",
-              "Multiple Schemas",
+              "30 Tables",
             ]}
             btnText="Get Started"
-            isYearlyPricing={isYearlyPricing}
           />
-          {/* <PlanCard
-            color="#F4D06F"
+          <PlanCard
+            color="#ffb5ba"
             name="Pro"
-            monthlyPrice="29.99"
-            annualPrice="299.99"
-            description="Get more advanced"
+            price="299.00"
+            description="Get started with the basic plan"
             features={[
               "1 User",
-              "5 Projects",
-              "50 Tables",
-              "Smart Debugging",
-              "Multiple Schemas",
-              "All Connections",
-              "GPT4 Add On",
-              "Premium Support",
+              "5 Databases",
+              "PostgreSQL Connection",
+              "30 Tables",
             ]}
-            btnText="Become a Pro"
-            isYearlyPricing={isYearlyPricing}
-          /> */}
-          <PlanCard
-            color="#FFB5BA"
-            name="Business"
-            description="For big teams and businesses"
-            price="Contact Us"
-            features={[
-              "Organization Settings",
-              "Unlimited Users",
-              "Unlimited Projects",
-              "All Connections",
-              "Backed by GPT4",
-              "Premium Support",
-              "Custom Feature Requests",
-            ]}
-            btnText="Contact Us"
-            isYearlyPricing={isYearlyPricing}
+            btnText="Get Started"
           />
         </div>
       </div>
