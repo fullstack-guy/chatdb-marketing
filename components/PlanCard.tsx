@@ -1,8 +1,10 @@
-import React, { use } from "react";
+import React, { use, useEffect, useState } from "react";
 import posthog from "posthog-js";
 import { useRouter } from "next/router";
+import { useUser } from "@clerk/nextjs";
 
 interface PlanCardProps {
+  active: boolean;
   name: string;
   description: string;
   btnText?: string;
@@ -14,12 +16,14 @@ interface PlanCardProps {
 }
 
 export default function PlanCard({
+  active,
   name,
   description,
   price,
   features,
   color,
   btnText = "Start Trial",
+
 }: PlanCardProps) {
   const router = useRouter();
   const handleButtonClick = () => {
@@ -27,12 +31,17 @@ export default function PlanCard({
     posthog.capture("pricing_button_clicked");
   };
 
+  useEffect(() => {
+    console.log(name, active)
+  }, [active])
   return (
     <div
       style={{ backgroundColor: color }}
       className="flex min-h-[428px] w-[400px] flex-col rounded-3xl p-8"
     >
-      <h2 className="mb-5 text-xl font-medium">{name}</h2>
+      <h2 className="flex items-center justify-between mb-5 text-xl font-medium">{name}
+        {active && (<span className="self-start bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">Current</span>)}
+      </h2>
 
       {name !== "Business" ? (
         <div className="mb-5 flex items-end text-6xl font-black text-black">
@@ -78,7 +87,7 @@ export default function PlanCard({
         className="mt-auto cursor-pointer rounded-xl bg-black px-6 py-3 text-lg font-medium text-white"
         onClick={handleButtonClick}
       >
-        {btnText}
+        {active ? "Cancel" : btnText}
       </label>
     </div>
   );

@@ -4,7 +4,14 @@ import { useUser } from "@clerk/nextjs";
 
 export default function Pricing() {
   const { isLoaded, isSignedIn, user } = useUser();
+  const [activePlan, setActivePlan] = useState("")
 
+  useEffect(() => {
+    if (isSignedIn && isSignedIn) {
+      setActivePlan(user.publicMetadata.activePlan as string)
+      console.log(user.publicMetadata.activePlan)
+    }
+  }, [isSignedIn, isLoaded, user])
   return (
     <div className="w-full">
       <div className="m-auto flex flex-col items-center p-4">
@@ -18,6 +25,7 @@ export default function Pricing() {
         </div>
         <div className="flex flex-col gap-8 xl:flex-row">
           <PlanCard
+            active={activePlan === "chatDB Hobby Plan"}
             color="#78E3FC"
             name="Hobby"
             price="19.99"
@@ -31,6 +39,7 @@ export default function Pricing() {
             btnText="Get Started"
           />
           <PlanCard
+            active={activePlan === "chatDB Pro Plan"}
             color="#ffb5ba"
             name="Pro"
             price="49.99"
