@@ -21,10 +21,10 @@ export default authMiddleware({
     "/api/og",
   ],
   afterAuth: (auth, req) => {
-    if (req.nextUrl.pathname.includes("/dashboard")) {
-      return NextResponse.redirect(new URL("/sign-in", req.url));
-    }
     if (!auth.userId && !auth.isPublicRoute) {
+      if (req.nextUrl.pathname.includes("/dashboard")) {
+        return NextResponse.redirect(new URL("/sign-in", req.url));
+      }
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
   },
