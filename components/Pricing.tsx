@@ -1,12 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PlanCard from "./PlanCard";
+import { useUser } from "@clerk/nextjs";
 
 export default function Pricing() {
-  const [isYearlyPricing, setYearlyPricing] = useState(false);
-
-  const handleToggle = () => {
-    setYearlyPricing(!isYearlyPricing);
-  };
+  const { isLoaded, isSignedIn, user } = useUser();
 
   return (
     <div className="w-full">
@@ -36,7 +33,7 @@ export default function Pricing() {
           <PlanCard
             color="#ffb5ba"
             name="Pro"
-            price="299.00"
+            price="49.99"
             description="Get started with the basic plan"
             features={[
               "1 User",

@@ -28,6 +28,7 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
   const saveSubscription = async (data) => {
     customer.mutateAsync({
       customerId: data.customer.id,
+      purchasedItems: data.items
 
     })
   }
