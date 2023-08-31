@@ -21,17 +21,12 @@ const updateUser = async (supabase, userId, customerId) => {
   }
 };
 
-const updateSubcription = async (supabase, customerId, userId, plan) => {
+const createSubscription = async (supabase, userId, customerId, plan) => {
   const { data, error } = await supabase
     .from("paddle_subscriptions")
-    .upsert({
-      is_active: "active",
-      customer_id: customerId,
-      user_id: userId,
-      plan,
-    })
-    .eq("customer_id", customerId)
-    .single();
+    .insert([
+      { user_id: userId, customer_id: customerId, plan, is_active: true },
+    ]);
 
   if (error) {
     return {
@@ -58,7 +53,6 @@ export const subscriptionsRouter = router({
     )
     .mutation(async (opts) => {
       const { input, ctx } = opts;
-      console.log("input", input, ctx.user.userId);
       try {
         await ctx.users.updateUserMetadata(ctx.user.userId, {
           publicMetadata: {
@@ -66,21 +60,28 @@ export const subscriptionsRouter = router({
             activePlan: input.purchasedItems[0].product.name,
           },
         });
-        const { data, error } = await updateUser(
+        const { error: userError } = await updateUser(
           ctx.systemSupabase,
           ctx.user.userId,
           input.customerId
         );
 
-        if (error) {
+        if (userError) {
           return {
-            data: null,
-            error,
+            userError,
           };
-        } else {
+        }
+
+        const { error: subscriptionError } = await createSubscription(
+          ctx.systemSupabase,
+          ctx.user.userId,
+          input.customerId,
+          input.purchasedItems[0].product.name
+        );
+
+        if (subscriptionError) {
           return {
-            data,
-            error: null,
+            subscriptionError,
           };
         }
       } catch (e) {
