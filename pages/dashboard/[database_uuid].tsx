@@ -25,6 +25,7 @@ export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("Chat");
   const [fetchedDatabase, setFetchedDatabase] = useState<Database | null>(null);
+  const [title, setTitle] = useState("")
   const [refreshing, setRefreshing] = useState(false);
   const [dataModel, setDataModel] = useState([]);
   const [saving, setSaving] = useState(false);
@@ -48,8 +49,9 @@ export default function Page() {
       const data = await response.json();
 
       if (data) {
-        setFetchedDatabase(data);
-        setDataModel(convertJsonToDataModel(data));
+        setTitle(data.title);
+        setFetchedDatabase(data.tables);
+        setDataModel(convertJsonToDataModel(data.tables));
       } else {
         router.push("/dashboard");
       }
@@ -184,7 +186,7 @@ export default function Page() {
                 <div className="flex items-center">
                   <BsDatabase />
                   <span className="ml-2 text-3xl font-semibold">
-                    {fetchedDatabase.title}
+                    {title}
                   </span>
                 </div>
                 <div>
@@ -206,7 +208,7 @@ export default function Page() {
         <div className="relative w-full py-3 sm:mx-auto">
           <div className="relative mx-8 rounded-3xl bg-white px-4 py-8 shadow sm:p-10 md:mx-0">
             <div className="mx-auto max-w-7xl">
-              <DatabaseControl activeTab={activeTab} database_uuid={database_uuid} filteredTables={filteredTables} fetchedDatabase={fetchedDatabase} setFetchedDatabase={setFetchedDatabase} />
+              <DatabaseControl activeTab={activeTab} database_uuid={database_uuid} filteredTables={filteredTables} fetchedDatabase={fetchedDatabase} setFetchedDatabase={setFetchedDatabase} setTitle={setTitle} />
             </div>
           </div>
         </div>
