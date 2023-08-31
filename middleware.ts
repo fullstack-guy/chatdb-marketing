@@ -20,7 +20,10 @@ export default authMiddleware({
     "/api/send",
     "/api/og",
   ],
-  afterAuth: (auth) => {
+  afterAuth: (auth, req) => {
+    if (req.nextUrl.pathname.includes("/dashboard")) {
+      return NextResponse.redirect(new URL("/sign-in", req.url));
+    }
     if (!auth.userId && !auth.isPublicRoute) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
