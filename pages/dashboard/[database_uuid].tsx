@@ -175,6 +175,14 @@ export default function Page() {
       table.schemaName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  useEffect(() => {
+
+    if (isLoaded && isSignedIn && user.publicMetadata.activePlan) {
+      fetchTables();
+    } else {
+      router.push("/pricing")
+    }
+  }, [isLoaded, isSignedIn,]);
   return (
     <Layout>
       {fetchedDatabase && (
