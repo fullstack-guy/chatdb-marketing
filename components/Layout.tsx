@@ -22,13 +22,13 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
   const customer = trpc.subscriptions.create.useMutation({
     onSuccess: () => {
       router.push("/dashboard")
-    }
+    },
   })
 
   const saveSubscription = async (data) => {
     customer.mutateAsync({
       customerId: data.customer.id,
-      purchasedItems: data.items
+      items: data.items
 
     })
   }
@@ -49,7 +49,6 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
             seller: 14142,
             eventCallback: function (event) {
               if (event.name == "checkout.completed") {
-                console.log(event.data)
                 saveSubscription(event.data)
               }
             },

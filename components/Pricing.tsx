@@ -8,8 +8,7 @@ export default function Pricing() {
 
   useEffect(() => {
     if (isSignedIn && isSignedIn) {
-      setActivePlan(user.publicMetadata.activePlan as string)
-      console.log(user.publicMetadata.activePlan)
+      setActivePlan(user.publicMetadata.plan as string)
     }
   }, [isSignedIn, isLoaded, user])
   return (

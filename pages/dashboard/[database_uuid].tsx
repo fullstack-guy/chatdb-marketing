@@ -177,12 +177,12 @@ export default function Page() {
 
   useEffect(() => {
 
-    if (user && user.publicMetadata.activePlan) {
+    if (isLoaded && isSignedIn && user && user.publicMetadata.activePlan) {
       fetchTables();
     } else {
       router.push("/pricing")
     }
-  }, [isLoaded, isSignedIn, user]);
+  }, [isSignedIn]);
   return (
     <Layout>
       {fetchedDatabase && (

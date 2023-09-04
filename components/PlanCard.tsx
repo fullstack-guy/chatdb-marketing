@@ -1,7 +1,7 @@
 import React, { use, useEffect, useState } from "react";
 import posthog from "posthog-js";
 import { useRouter } from "next/router";
-import { useUser } from "@clerk/nextjs";
+import { trpc } from "../utils/trpc";
 
 interface PlanCardProps {
   active: boolean;
@@ -26,9 +26,19 @@ export default function PlanCard({
 
 }: PlanCardProps) {
   const router = useRouter();
-  const handleButtonClick = () => {
-    router.push(`/checkout?plan=${name.toLowerCase()}`);
-    posthog.capture("pricing_button_clicked");
+  const cancel = trpc.subscriptions.cancel.useMutation({
+    onSuccess: () => {
+      console.log("cancelled")
+      router.push(`/`);
+    }
+  })
+  const handleButtonClick = (active) => {
+    if (active) {
+      cancel.mutateAsync()
+    } else {
+      router.push(`/checkout?plan=${name.toLowerCase()}`);
+      posthog.capture("pricing_button_clicked");
+    }
   };
 
   useEffect(() => {
@@ -85,7 +95,7 @@ export default function PlanCard({
       <label
         htmlFor={`${name}_modal`}
         className="mt-auto cursor-pointer rounded-xl bg-black px-6 py-3 text-lg font-medium text-white"
-        onClick={handleButtonClick}
+        onClick={e => handleButtonClick(active)}
       >
         {active ? "Cancel" : btnText}
       </label>
