@@ -316,7 +316,7 @@ export const subscriptionsRouter = router({
             });
           });
 
-        return { message: "Subscription upgraded successfully" };
+        return { message: "Successfully upgraded to Pro!" };
       } catch (e) {
         return {
           e: e.message,

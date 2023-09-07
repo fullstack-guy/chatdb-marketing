@@ -7,6 +7,7 @@ import Head from "next/head";
 import { trpc } from "../utils/trpc";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/router";
+import { toast } from "react-hot-toast";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -20,7 +21,8 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
   const { isLoaded, isSignedIn, user } = useUser()
   const router = useRouter()
   const subscription = trpc.subscriptions.create.useMutation({
-    onSuccess: () => {
+    onSuccess: (data) => {
+      toast.success(data.message)
       router.push("/dashboard")
     },
   })

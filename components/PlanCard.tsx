@@ -2,6 +2,7 @@ import React, { use, useEffect, useState } from "react";
 import posthog from "posthog-js";
 import { useRouter } from "next/router";
 import { trpc } from "../utils/trpc";
+import { toast } from "react-hot-toast";
 
 interface PlanCardProps {
   active: boolean;
@@ -27,13 +28,14 @@ export default function PlanCard({
 }: PlanCardProps) {
   const router = useRouter();
   const cancel = trpc.subscriptions.cancel.useMutation({
-    onSuccess: () => {
+    onSuccess: (data) => {
+      toast.success(data.message)
       router.push(`/`);
     }
   })
   const upgrade = trpc.subscriptions.update.useMutation({
-    onSuccess: () => {
-      console.log("Upgraded")
+    onSuccess: (data) => {
+      toast.success(data.message)
     }
   })
   const handleButtonClick = (active) => {
@@ -49,16 +51,6 @@ export default function PlanCard({
     }
   };
 
-  const _btnText = () => {
-    if (active && name === "Hobby") {
-      return "Cancel"
-    } else {
-
-    }
-  }
-  useEffect(() => {
-    console.log(name, active)
-  }, [active])
   return (
     <div
       style={{ backgroundColor: color }}

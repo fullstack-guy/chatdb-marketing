@@ -5,7 +5,6 @@ import { useUser } from "@clerk/nextjs";
 
 
 const Checkout = () => {
-    const { isLoaded, isSignedIn, user } = useUser();
     const router = useRouter()
     const plan = router.query.plan;
     const [formData, setFormData] = useState({
