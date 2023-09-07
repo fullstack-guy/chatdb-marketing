@@ -33,7 +33,7 @@ export default function PlanCard({
       router.push(`/`);
     }
   })
-  const upgrade = trpc.subscriptions.update.useMutation({
+  const update = trpc.subscriptions.update.useMutation({
     onSuccess: (data) => {
       toast.success(data.message)
     }
@@ -45,8 +45,12 @@ export default function PlanCard({
       router.push(`/checkout?plan=${name.toLowerCase()}`);
       posthog.capture("pricing_button_clicked");
     } else if (btnText === "Upgrade") {
-      upgrade.mutateAsync({
-        plan: "pro"
+      update.mutateAsync({
+        plan: "chatDB Pro Plan"
+      })
+    } else if (btnText === "Downgrade") {
+      update.mutateAsync({
+        plan: "chatDB Hobby Plan"
       })
     }
   };

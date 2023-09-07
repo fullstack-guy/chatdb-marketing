@@ -137,10 +137,10 @@ const updatePaddleSubscription = async (subId, ctmId, addId, price_id) => {
 
 const getPaddlePriceId = (priceName) => {
   const plans = {
-    hobby: {
+    ["chatDB Hobby Plan"]: {
       monthlyPriceId: "pri_01h90zjbsana88btxhepx13g9n",
     },
-    pro: {
+    ["chatDB Pro Plan"]: {
       monthlyPriceId: "pri_01h90zt3jwcrxsjsmfyzb8qqda",
     },
   };
@@ -291,7 +291,7 @@ export const subscriptionsRouter = router({
         const { error: updateError } = await updateSupabasePaddleSubscription(
           ctx.systemSupabase,
           ctx.user.userId,
-          "chatDB Pro Plan"
+          input.plan
         );
 
         if (updateError) {
@@ -305,7 +305,7 @@ export const subscriptionsRouter = router({
         ctx.users
           .updateUserMetadata(ctx.user.userId, {
             publicMetadata: {
-              plan: "chatDB Pro Plan",
+              plan: input.plan,
             },
           })
           .catch((e) => {
@@ -316,7 +316,7 @@ export const subscriptionsRouter = router({
             });
           });
 
-        return { message: "Successfully upgraded to Pro!" };
+        return { message: "Successfully updated subscription!" };
       } catch (e) {
         return {
           e: e.message,
