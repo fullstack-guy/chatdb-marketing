@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Navbar from "../components/Navbar";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 import Script from "next/script";
-import Head from "next/head";
 import { trpc } from "../utils/trpc";
-import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/router";
-import { toast } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -18,11 +16,12 @@ type LayoutProps = {
 };
 
 const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
-  const { isLoaded, isSignedIn, user } = useUser()
   const router = useRouter()
   const subscription = trpc.subscriptions.create.useMutation({
     onSuccess: (data) => {
-      toast.success(data.message)
+      toast.success(data.message, {
+        duration: 2000
+      })
       router.push("/dashboard")
     },
   })
@@ -149,6 +148,10 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
           </footer>
         </div>
       </div>
+      <Toaster
+        position="bottom-center"
+        reverseOrder={false}
+      />
     </div>
   );
 };

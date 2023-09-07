@@ -28,14 +28,37 @@ export default function PlanCard({
 }: PlanCardProps) {
   const router = useRouter();
   const cancel = trpc.subscriptions.cancel.useMutation({
+    onMutate: () => {
+      toast.loading("Updating plan...", {
+        duration: 2000
+      })
+    },
     onSuccess: (data) => {
-      toast.success(data.message)
-      router.push(`/`);
+      toast.success(data.message, {
+        duration: 2000
+      })
+    },
+    onError: (error) => {
+      toast.error(error.message, {
+        duration: 2000
+      })
     }
   })
   const update = trpc.subscriptions.update.useMutation({
+    onMutate: () => {
+      toast.loading("Updating plan...", {
+        duration: 2000
+      })
+    },
     onSuccess: (data) => {
-      toast.success(data.message)
+      toast.success(data.message, {
+        duration: 2000
+      })
+    },
+    onError: (error) => {
+      toast.error(error.message, {
+        duration: 2000
+      })
     }
   })
   const handleButtonClick = (active) => {
