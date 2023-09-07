@@ -3,7 +3,7 @@ import posthog from "posthog-js";
 import { useRouter } from "next/router";
 import { trpc } from "../utils/trpc";
 import { toast } from "react-hot-toast";
-
+import ConfirmationModal from "./ConfirmationModal";
 interface PlanCardProps {
   active: boolean;
   name: string;
@@ -26,12 +26,14 @@ export default function PlanCard({
   btnText = "Start Trial",
 
 }: PlanCardProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const router = useRouter();
   const cancel = trpc.subscriptions.cancel.useMutation({
     onMutate: () => {
       toast.loading("Updating plan...", {
         duration: 2000
       })
+
     },
     onSuccess: (data) => {
       toast.success(data.message, {
@@ -65,7 +67,8 @@ export default function PlanCard({
   })
   const handleButtonClick = (active) => {
     if (btnText === "Cancel") {
-      cancel.mutateAsync()
+      setIsModalOpen(true)
+
     } else if (btnText === "Get started") {
       router.push(`/checkout?plan=${name.toLowerCase()}`);
       posthog.capture("pricing_button_clicked");
@@ -79,12 +82,17 @@ export default function PlanCard({
       })
     }
   };
+  const confirmAction = () => {
+    console.log("Confirmed action")
+    cancel.mutateAsync()
+  }
 
   return (
     <div
       style={{ backgroundColor: color }}
       className="flex min-h-[428px] w-[400px] flex-col rounded-3xl p-8"
     >
+      <ConfirmationModal open={isModalOpen} setOpen={setIsModalOpen} action={confirmAction} />
       <h2 className="flex items-center justify-between mb-5 text-xl font-medium">{name}
         {active && (<span className="self-start bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">Current</span>)}
       </h2>
