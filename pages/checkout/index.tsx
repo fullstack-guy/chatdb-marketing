@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import { useRouter } from "next/router";
 import { useUser } from "@clerk/nextjs";
@@ -12,6 +12,7 @@ const Checkout = () => {
         country: "",
         zip: ""
     })
+
 
     const [submitting, setSetsubmitting] = useState(false)
     const plans = {
@@ -50,6 +51,12 @@ const Checkout = () => {
             }
         });
     };
+
+    useEffect(() => {
+        if (!plan) {
+            router.push("/pricing")
+        }
+    }, [plan])
 
     return (
         <Layout
