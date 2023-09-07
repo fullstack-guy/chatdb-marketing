@@ -157,53 +157,94 @@ export const subscriptionsRouter = router({
     )
     .mutation(async (opts) => {
       const { input, ctx } = opts;
-      try {
-        const { error: subscriptionError } =
-          await createSupabasePaddleSubscription(
-            ctx.systemSupabase,
-            ctx.user.userId,
-            input.customerId,
-            input.items[0].product.name
-          );
+      const { error: subscriptionError } =
+        await createSupabasePaddleSubscription(
+          ctx.systemSupabase,
+          ctx.user.userId,
+          input.customerId,
+          input.items[0].product.name
+        );
 
-        if (subscriptionError) {
+      if (subscriptionError) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Unable to create subscription, please try again later.",
+          cause: subscriptionError,
+        });
+      }
+
+      ctx.users
+        .updateUserMetadata(ctx.user.userId, {
+          publicMetadata: {
+            plan: input.items[0].product.name,
+            isActive: true,
+          },
+          privateMetadata: {
+            ctmId: input.customerId,
+          },
+        })
+        .catch((e) => {
           throw new TRPCError({
             code: "INTERNAL_SERVER_ERROR",
-            message: "Unable to create subscription, please try again later.",
-            cause: subscriptionError,
+            message: "Could not update the user meta data.",
+            cause: e,
           });
-        }
-
-        ctx.users
-          .updateUserMetadata(ctx.user.userId, {
-            publicMetadata: {
-              plan: input.items[0].product.name,
-              isActive: true,
-            },
-            privateMetadata: {
-              ctmId: input.customerId,
-            },
-          })
-          .catch((e) => {
-            throw new TRPCError({
-              code: "INTERNAL_SERVER_ERROR",
-              message: "Could not update the user meta data.",
-              cause: e,
-            });
-          });
-        return {
-          message: "Subscription created successfully",
-        };
-      } catch (e) {
-        console.error(e);
-        return {
-          error: e.message,
-        };
-      }
+        });
+      return {
+        message: "Subscription created successfully",
+      };
     }),
   cancel: protectedProcedure.mutation(async (opts) => {
-    try {
-      const { ctx } = opts;
+    const { ctx } = opts;
+    const { sub, error: subError } = await getPaddleSubscriptionIdFromUserId(
+      ctx.systemSupabase,
+      ctx.user.userId
+    );
+    if (subError) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Unable to get subscription",
+        cause: subError,
+      });
+    }
+
+    const { error } = await cancelPaddleSubscription(
+      sub.paddle_subscription_id
+    );
+
+    if (error) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Unable to cancel subscription",
+        cause: error,
+      });
+    }
+
+    ctx.users
+      .updateUserMetadata(ctx.user.userId, {
+        publicMetadata: {
+          plan: null,
+          isActive: false,
+        },
+      })
+      .catch((e) => {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Unable to update user metadata",
+          cause: e,
+        });
+      });
+
+    return { message: "Subscription canceled successfully" };
+  }),
+  update: protectedProcedure
+    .input(
+      z.object({
+        plan: z.string(),
+      })
+    )
+    .mutation(async (opts) => {
+      const { ctx, input } = opts;
       const { sub, error: subError } = await getPaddleSubscriptionIdFromUserId(
         ctx.systemSupabase,
         ctx.user.userId
@@ -216,23 +257,39 @@ export const subscriptionsRouter = router({
         });
       }
 
-      const { error } = await cancelPaddleSubscription(
-        sub.paddle_subscription_id
+      const { data, error } = await updatePaddleSubscription(
+        sub.paddle_subscription_id,
+        sub.customer_id,
+        sub.address_id,
+        getPaddlePriceId(input.plan)
       );
 
       if (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Unable to cancel subscription",
+          message: "Unable to update subscription",
           cause: error,
+        });
+      }
+
+      const { error: updateError } = await updateSupabasePaddleSubscription(
+        ctx.systemSupabase,
+        ctx.user.userId,
+        input.plan
+      );
+
+      if (updateError) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Unable to update subscription",
+          cause: updateError,
         });
       }
 
       ctx.users
         .updateUserMetadata(ctx.user.userId, {
           publicMetadata: {
-            plan: null,
-            isActive: false,
+            plan: input.plan,
           },
         })
         .catch((e) => {
@@ -243,84 +300,6 @@ export const subscriptionsRouter = router({
           });
         });
 
-      return { message: "Subscription canceled successfully" };
-    } catch (err) {
-      console.error(err);
-      return {
-        error: err.message,
-      };
-    }
-  }),
-  update: protectedProcedure
-    .input(
-      z.object({
-        plan: z.string(),
-      })
-    )
-    .mutation(async (opts) => {
-      const { ctx, input } = opts;
-      try {
-        const { sub, error: subError } =
-          await getPaddleSubscriptionIdFromUserId(
-            ctx.systemSupabase,
-            ctx.user.userId
-          );
-        if (subError) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Unable to get subscription",
-            cause: subError,
-          });
-        }
-
-        const { data, error } = await updatePaddleSubscription(
-          sub.paddle_subscription_id,
-          sub.customer_id,
-          sub.address_id,
-          getPaddlePriceId(input.plan)
-        );
-
-        if (error) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Unable to update subscription",
-            cause: error,
-          });
-        }
-
-        const { error: updateError } = await updateSupabasePaddleSubscription(
-          ctx.systemSupabase,
-          ctx.user.userId,
-          input.plan
-        );
-
-        if (updateError) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Unable to update subscription",
-            cause: updateError,
-          });
-        }
-
-        ctx.users
-          .updateUserMetadata(ctx.user.userId, {
-            publicMetadata: {
-              plan: input.plan,
-            },
-          })
-          .catch((e) => {
-            throw new TRPCError({
-              code: "INTERNAL_SERVER_ERROR",
-              message: "Unable to update user metadata",
-              cause: e,
-            });
-          });
-
-        return { message: "Successfully updated subscription!" };
-      } catch (e) {
-        return {
-          e: e.message,
-        };
-      }
+      return { message: "Successfully updated subscription!" };
     }),
 });

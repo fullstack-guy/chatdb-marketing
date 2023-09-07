@@ -37,6 +37,7 @@ export default function PlanCard({
       toast.success(data.message, {
         duration: 2000
       })
+      router.reload()
     },
     onError: (error) => {
       toast.error(error.message, {
@@ -54,6 +55,7 @@ export default function PlanCard({
       toast.success(data.message, {
         duration: 2000
       })
+      router.reload()
     },
     onError: (error) => {
       toast.error(error.message, {
