@@ -19,14 +19,14 @@ type LayoutProps = {
 const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
   const { isLoaded, isSignedIn, user } = useUser()
   const router = useRouter()
-  const customer = trpc.subscriptions.create.useMutation({
+  const subscription = trpc.subscriptions.create.useMutation({
     onSuccess: () => {
       router.push("/dashboard")
     },
   })
 
   const saveSubscription = async (data) => {
-    customer.mutateAsync({
+    subscription.mutateAsync({
       customerId: data.customer.id,
       items: data.items
 

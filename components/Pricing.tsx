@@ -6,9 +6,21 @@ export default function Pricing() {
   const { isLoaded, isSignedIn, user } = useUser();
   const [activePlan, setActivePlan] = useState("")
 
+  const btnText = (name) => {
+    if (activePlan === "chatDB Hobby Plan" && name === "Hobby") {
+      return "Cancel"
+    } else if (activePlan === "chatDB Hobby Plan" && name === "Pro") {
+      return "Upgrade"
+    } else if (activePlan === "chatDB Pro Plan" && name === "Pro") {
+      return "Cancel"
+    } else {
+      return "Get started"
+    }
+  }
   useEffect(() => {
     if (isSignedIn && isSignedIn) {
       setActivePlan(user.publicMetadata.plan as string)
+      console.log("Public meta data:", user.publicMetadata)
     }
   }, [isSignedIn, isLoaded, user])
   return (
@@ -35,7 +47,8 @@ export default function Pricing() {
               "PostgreSQL Connection",
               "30 Tables",
             ]}
-            btnText="Get Started"
+            btnText={btnText("Hobby")}
+
           />
           <PlanCard
             active={activePlan === "chatDB Pro Plan"}
@@ -53,7 +66,10 @@ export default function Pricing() {
               "PostgreSQL Connection",
               "Multiple Schemas",
             ]}
-            btnText="Get Started"
+            btnText={btnText("Pro")}
+          // let's add a prop Action, it'll be either upgrade or downgrade
+          // and we'll use that to determine what the button says
+          // and what the button does
           />
         </div>
       </div>

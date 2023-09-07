@@ -28,19 +28,34 @@ export default function PlanCard({
   const router = useRouter();
   const cancel = trpc.subscriptions.cancel.useMutation({
     onSuccess: () => {
-      console.log("cancelled")
       router.push(`/`);
     }
   })
+  const upgrade = trpc.subscriptions.update.useMutation({
+    onSuccess: () => {
+      console.log("Upgraded")
+    }
+  })
   const handleButtonClick = (active) => {
-    if (active) {
+    if (btnText === "Cancel") {
       cancel.mutateAsync()
-    } else {
+    } else if (btnText === "Get started") {
       router.push(`/checkout?plan=${name.toLowerCase()}`);
       posthog.capture("pricing_button_clicked");
+    } else if (btnText === "Upgrade") {
+      upgrade.mutateAsync({
+        plan: "pro"
+      })
     }
   };
 
+  const _btnText = () => {
+    if (active && name === "Hobby") {
+      return "Cancel"
+    } else {
+
+    }
+  }
   useEffect(() => {
     console.log(name, active)
   }, [active])
@@ -97,7 +112,9 @@ export default function PlanCard({
         className="mt-auto cursor-pointer rounded-xl bg-black px-6 py-3 text-lg font-medium text-white"
         onClick={e => handleButtonClick(active)}
       >
-        {active ? "Cancel" : btnText}
+        {
+          btnText
+        }
       </label>
     </div>
   );
