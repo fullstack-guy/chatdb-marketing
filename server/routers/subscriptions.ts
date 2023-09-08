@@ -166,6 +166,14 @@ const getPaddlePriceId = (priceName) => {
 
   return plans[priceName].monthlyPriceId;
 };
+
+const getUserRemainingDatabases = (dbs, plan) => {
+  if (plan === "chatDB Hobby Plan") {
+    return 1 - dbs.length;
+  } else if (plan === "chatDB Pro Plan") {
+    return 5 - dbs.length;
+  }
+};
 export const subscriptionsRouter = router({
   create: protectedProcedure
     .input(
@@ -337,6 +345,12 @@ export const subscriptionsRouter = router({
       });
     }
 
-    return { data, user: ctx.user };
+    return {
+      remainingDatabases: getUserRemainingDatabases(
+        data,
+        ctx.user.user.publicMetadata.plan
+      ),
+      user: ctx.user,
+    };
   }),
 });

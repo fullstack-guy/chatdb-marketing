@@ -132,6 +132,10 @@ export default function Page() {
   };
 
   useEffect(() => {
+
+    if (user && user.publicMetadata.isActive === false) {
+      router.push("/pricing")
+    }
     if (isLoaded && isSignedIn) {
       fetchTables();
     }

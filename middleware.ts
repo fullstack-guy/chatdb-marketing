@@ -19,18 +19,6 @@ export default authMiddleware({
     "/api/send",
     "/api/og",
   ],
-  afterAuth: (auth, req) => {
-    const url = req.nextUrl.clone();
-
-    if (req.nextUrl.pathname.startsWith("/dashboard/")) {
-      if (auth.user && auth.user.publicMetadata.isActive === true) {
-        return NextResponse.next();
-      } else {
-        url.pathname = "/pricing";
-        return NextResponse.redirect(url);
-      }
-    }
-  },
 });
 
 export const config = {

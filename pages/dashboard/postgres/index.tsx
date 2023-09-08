@@ -11,6 +11,7 @@ import {
 import Layout from "../../../components/Layout";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { trpc } from "../../../utils/trpc";
 
 export default function Page() {
   const router = useRouter();
@@ -23,13 +24,12 @@ export default function Page() {
   const [connectionStringError, setConnectionStringError] = useState(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
-
-
   const [databaseInfo, setDatabaseInfo] = useState(null);
   const { user } = useUser();
   const { bt } = useBasisTheory(process.env.NEXT_PUBLIC_BASIS_THEORY_KEY, {
     elements: true,
   });
+  const { isLoading, isError, data } = trpc.subscriptions.status.useQuery()
 
   useEffect(() => {
     if (connected) {
@@ -38,6 +38,11 @@ export default function Page() {
   }, [connectionString]);
 
   const saveDatabase = async () => {
+
+    // if (data && data.remainingDatabases === 0) {
+    //   toast.error("You have reached your database limit!")
+    //   router.push("/pricing")
+    // }
     setSaving(true);
     try {
       await handleApiResponse(
