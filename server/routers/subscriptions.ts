@@ -135,6 +135,25 @@ const updatePaddleSubscription = async (subId, ctmId, addId, price_id) => {
   }
 };
 
+const getUserDatabases = async (supabase, userId) => {
+  const { data, error } = await supabase
+    .from("user_databases")
+    .select("*")
+    .eq("user_id", userId);
+
+  if (error) {
+    return {
+      data: null,
+      error,
+    };
+  } else {
+    return {
+      data,
+      error: null,
+    };
+  }
+};
+
 const getPaddlePriceId = (priceName) => {
   const plans = {
     ["chatDB Hobby Plan"]: {
@@ -302,4 +321,22 @@ export const subscriptionsRouter = router({
 
       return { message: "Successfully updated subscription!" };
     }),
+
+  status: protectedProcedure.query(async (opts) => {
+    const { ctx } = opts;
+    const { data, error } = await getUserDatabases(
+      ctx.userSupabase,
+      ctx.user.userId
+    );
+
+    if (error) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Unable to get user databases",
+        cause: error,
+      });
+    }
+
+    return { data, user: ctx.user };
+  }),
 });

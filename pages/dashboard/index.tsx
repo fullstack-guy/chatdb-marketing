@@ -5,12 +5,13 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import useSupabase from "../../hooks/useSupabaseClient";
+import { trpc } from "../../utils/trpc";
 
 export default function Page() {
   const { isLoaded, isSignedIn, user } = useUser();
   const router = useRouter();
   const supabase = useSupabase();
-
+  const { isLoading, isError, data } = trpc.subscriptions.status.useQuery()
   const handleNavigation = (path) => {
     router.push(path);
   };
