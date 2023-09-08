@@ -20,7 +20,16 @@ export default authMiddleware({
     "/api/og",
   ],
   afterAuth: (auth, req) => {
-    // return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    const url = req.nextUrl.clone();
+
+    if (req.nextUrl.pathname.startsWith("/dashboard/")) {
+      if (auth.user && auth.user.publicMetadata.isActive === true) {
+        return NextResponse.next();
+      } else {
+        url.pathname = "/pricing";
+        return NextResponse.redirect(url);
+      }
+    }
   },
 });
 
