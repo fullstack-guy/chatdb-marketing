@@ -16,17 +16,11 @@ export default authMiddleware({
     "/post(.*)",
     "/contact-us(.*)",
     "/tools(.*)",
-    "/checkout",
     "/api/send",
     "/api/og",
   ],
   afterAuth: (auth, req) => {
-    if (!auth.userId && !auth.isPublicRoute) {
-      if (req.nextUrl.pathname.includes("/dashboard")) {
-        return NextResponse.redirect(new URL("/sign-in", req.url));
-      }
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
+    // return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   },
 });
 
