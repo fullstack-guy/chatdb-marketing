@@ -136,15 +136,15 @@ export default function PlanCard({
         ))}
       </ul>
 
-      <label
-        htmlFor={`${name}_modal`}
-        className="mt-auto cursor-pointer rounded-xl bg-black px-6 py-3 text-lg font-medium text-white"
+      <button
+        className="mt-auto cursor-pointer rounded-xl bg-black px-6 py-3 text-lg font-medium text-white text-left"
         onClick={e => handleButtonClick(active)}
+        disabled={cancel.isLoading || update.isLoading}
       >
         {
           btnText
         }
-      </label>
+      </button>
     </div>
   );
 }
