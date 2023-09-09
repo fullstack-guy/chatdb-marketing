@@ -4,8 +4,6 @@ import Link from "next/link";
 import { useUser } from "@clerk/clerk-react";
 import {
   BasisTheoryProvider,
-  BasisTheoryApiError,
-  BasisTheoryValidationError,
   useBasisTheory,
 } from "@basis-theory/basis-theory-react";
 import Layout from "../../../components/Layout";
@@ -39,10 +37,11 @@ export default function Page() {
 
   const saveDatabase = async () => {
 
-    // if (data && data.remainingDatabases === 0) {
-    //   toast.error("You have reached your database limit!")
-    //   router.push("/pricing")
-    // }
+    if (data && data.remainingDatabases <= 0) {
+      toast.error("You have reached your database limit!")
+      return router.push("/pricing")
+
+    }
     setSaving(true);
     try {
       await handleApiResponse(

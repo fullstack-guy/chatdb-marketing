@@ -83,7 +83,7 @@ const cancelPaddleSubscription = async (id) => {
 const getPaddleSubscriptionIdFromUserId = async (supabase, userId) => {
   const { data, error } = await supabase
     .from("paddle_subscriptions")
-    .select("paddle_subscription_id, address_id, customer_id")
+    .select("paddle_subscription_id, address_id, customer_id, plan")
     .eq("user_id", userId)
     .single();
 
@@ -345,11 +345,13 @@ export const subscriptionsRouter = router({
       });
     }
 
+    const { sub, error: subError } = await getPaddleSubscriptionIdFromUserId(
+      ctx.systemSupabase,
+      ctx.user.userId
+    );
+
     return {
-      remainingDatabases: getUserRemainingDatabases(
-        data,
-        ctx.user.user.publicMetadata.plan
-      ),
+      remainingDatabases: getUserRemainingDatabases(data, sub.plan),
       user: ctx.user,
     };
   }),
