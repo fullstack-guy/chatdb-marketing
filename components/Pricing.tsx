@@ -19,6 +19,10 @@ export default function Pricing() {
       return "Get started"
     }
   }
+
+  const isActivePlan = (name) => {
+    return activePlan === name
+  }
   useEffect(() => {
     if (isSignedIn && isSignedIn) {
       setActivePlan(user.publicMetadata.plan as string)
@@ -38,7 +42,7 @@ export default function Pricing() {
         </div>
         <div className="flex flex-col gap-8 xl:flex-row">
           <PlanCard
-            active={activePlan === "chatDB Hobby Plan"}
+            active={isActivePlan("chatDB Hobby Plan")}
             color="#78E3FC"
             name="Hobby"
             price="19.99"
@@ -53,7 +57,7 @@ export default function Pricing() {
 
           />
           <PlanCard
-            active={activePlan === "chatDB Pro Plan"}
+            active={isActivePlan("chatDB Pro Plan")}
             color="#ffb5ba"
             name="Pro"
             price="49.99"
