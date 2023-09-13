@@ -44,16 +44,17 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
         src="https://cdn.paddle.com/paddle/v2/paddle.js"
         strategy="lazyOnload"
         onLoad={() => {
+          console.log(process.env.NEXT_PUBLIC_PADDLE_ENV)
           const Paddle = window.Paddle;
-          Paddle.Environment.set(process.env.PADDLE_ENV);
-          Paddle.Setup({
-            seller: 14142,
-            eventCallback: function (event) {
-              if (event.name == "checkout.completed") {
-                saveSubscription(event.data)
-              }
-            },
-          });
+          // Paddle.Environment.set(process.env.PADDLE_ENV);
+          // Paddle.Setup({
+          //   seller: 14142,
+          //   eventCallback: function (event) {
+          //     if (event.name == "checkout.completed") {
+          //       saveSubscription(event.data)
+          //     }
+          //   },
+          // });
         }
         }
       />
