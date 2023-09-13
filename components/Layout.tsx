@@ -45,7 +45,7 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
         strategy="lazyOnload"
         onLoad={() => {
           const Paddle = window.Paddle;
-          Paddle.Environment.set("sandbox");
+          Paddle.Environment.set(process.env.PADDLE_ENV);
           Paddle.Setup({
             seller: 14142,
             eventCallback: function (event) {

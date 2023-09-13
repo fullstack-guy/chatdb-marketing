@@ -73,9 +73,6 @@ export default function Pricing() {
               "Multiple Schemas",
             ]}
             btnText={btnText("Pro")}
-          // let's add a prop Action, it'll be either upgrade or downgrade
-          // and we'll use that to determine what the button says
-          // and what the button does
           />
         </div>
       </div>
