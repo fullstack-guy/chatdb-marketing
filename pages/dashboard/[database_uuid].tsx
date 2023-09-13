@@ -132,7 +132,6 @@ export default function Page() {
   };
 
   useEffect(() => {
-    if (user) console.log(user.publicMetadata)
     if (user && (user.publicMetadata.isActive === false || Object.keys(user.publicMetadata).length === 0)) {
       router.push("/pricing")
     }
