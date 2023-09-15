@@ -10,10 +10,11 @@ import Layout from "../../../components/Layout";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { trpc } from "../../../utils/trpc";
+import UpgradeSubscriptionModal from "../../../components/UpgradeSubscriptionModal";
 
 export default function Page() {
   const router = useRouter();
-
+  const [isUpgradeSubscriptionModalOpened, setIsUpgradeSubscriptionModalOpened] = useState(false)
   const [connected, setConnected] = useState(false);
   const [connecting, setConnecting] = useState(false);
   const [connectionString, setConnectionString] = useState("");
@@ -28,20 +29,39 @@ export default function Page() {
     elements: true,
   });
   const { isLoading, isError, data } = trpc.subscriptions.status.useQuery()
-
+  const upgradeSubscription = trpc.subscriptions.update.useMutation({
+    onMutate: () => {
+      toast.loading("Updating plan...", {
+        duration: 2000
+      })
+    },
+    onSuccess: (data) => {
+      toast.success(data.message, {
+        duration: 2000
+      })
+      saveDatabase()
+    },
+    onError: (error) => {
+      toast.error(error.message, {
+        duration: 2000
+      })
+    }
+  })
   useEffect(() => {
     if (connected) {
       setConnected(false);
     }
   }, [connectionString]);
 
+  const handleSaveDatabaseButton = async () => {
+    if (data && data.remainingDatabases <= 0) {
+      setIsUpgradeSubscriptionModalOpened(true)
+    } else {
+      await saveDatabase()
+    }
+  }
   const saveDatabase = async () => {
 
-    if (data && data.remainingDatabases <= 0) {
-      toast.error("You have reached your database limit!")
-      return router.push("/pricing")
-
-    }
     setSaving(true);
     try {
       await handleApiResponse(
@@ -267,7 +287,7 @@ export default function Page() {
                       <span
                         className={`btn hidden sm:flex ${connecting || saving ? "loading" : ""
                           } cursor-pointer border-none bg-success font-semibold text-black hover:bg-success`}
-                        onClick={connected ? saveDatabase : connectToDatabase}
+                        onClick={connected ? handleSaveDatabaseButton : connectToDatabase}
                       >
                         {connecting ? (
                           <>Connecting</>
@@ -340,6 +360,9 @@ export default function Page() {
         <div className="invisible">Picture Here</div>
       </div>
       <Toaster position="bottom-center" />
+      <UpgradeSubscriptionModal open={isUpgradeSubscriptionModalOpened} setOpen={setIsUpgradeSubscriptionModalOpened} action={() => upgradeSubscription.mutateAsync({
+        plan: "chatDB Pro Plan"
+      })} />
     </Layout>
   );
 }
