@@ -137,7 +137,6 @@ const Settings: React.FC<SettingsProps> = ({
         </h2>
 
         <div className="form-control">
-          <label className="mb-1 block text-lg text-black">Database Name</label>
           <div className="input-group flex items-center">
             <input
               type="text"
@@ -173,7 +172,7 @@ const Settings: React.FC<SettingsProps> = ({
 
       {/* Usage Section */}
       <div className="w-full max-w-2xl space-y-4 rounded-md p-6 shadow-md">
-        <UsageChart />
+        <UsageChart database_uuid={database_uuid} />
       </div>
 
       {/* Danger Zone Section */}
