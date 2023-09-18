@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { trpc } from "../utils/trpc";
 import { toast } from "react-hot-toast";
 import ConfirmationModal from "./ConfirmationModal";
+import LoadingSpinner from "./LoadingSpinner";
 interface PlanCardProps {
   active: boolean;
   name: string;
@@ -27,6 +28,7 @@ export default function PlanCard({
 
 }: PlanCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [redirectingToCheckout, setRedirectingToCheckout] = useState(false)
   const router = useRouter();
   const cancel = trpc.subscriptions.cancel.useMutation({
     onMutate: () => {
@@ -68,8 +70,8 @@ export default function PlanCard({
   const handleButtonClick = (active) => {
     if (btnText === "Cancel") {
       setIsModalOpen(true)
-
     } else if (btnText === "Get started") {
+      setRedirectingToCheckout(true)
       router.push(`/checkout?plan=${name.toLowerCase()}`);
       posthog.capture("pricing_button_clicked");
     } else if (btnText === "Upgrade") {
@@ -142,7 +144,7 @@ export default function PlanCard({
         disabled={cancel.isLoading || update.isLoading}
       >
         {
-          btnText
+          (cancel.isLoading || update.isLoading || redirectingToCheckout) ? <LoadingSpinner /> : btnText
         }
       </button>
     </div>
