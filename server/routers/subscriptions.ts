@@ -8,7 +8,7 @@ const createSupabasePaddleSubscription = async (
   customerId,
   plan
 ) => {
-  const { data, error } = await supabase.from("paddle_subscriptions").insert({
+  const { data, error } = await supabase.from("paddle_subscriptions").upsert({
     user_id: userId,
     customer_id: customerId,
     plan,

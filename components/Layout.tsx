@@ -26,7 +26,7 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
     },
   })
 
-  const saveSubscription = async (data) => {
+  const createSubscription = async (data) => {
     subscription.mutateAsync({
       customerId: data.customer.id,
       items: data.items
@@ -48,9 +48,9 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
           Paddle.Environment.set(process.env.NEXT_PUBLIC_PADDLE_ENV);
           Paddle.Setup({
             seller: 14142,
-            eventCallback: function (event) {
+            eventCallback: async function (event) {
               if (event.name == "checkout.completed") {
-                saveSubscription(event.data)
+                await createSubscription(event.data)
               }
             },
           });
