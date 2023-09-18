@@ -6,7 +6,6 @@ import "@fontsource/inter/700.css";
 
 import type { AppType } from 'next/app';
 import { ClerkProvider } from "@clerk/nextjs";
-import { SubscriptionProvider } from "use-stripe-subscription";
 import { hotjar } from "react-hotjar";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
@@ -56,17 +55,10 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   }, [router.events]);
 
   return (
-    <SubscriptionProvider
-      stripePublishableKey={
-        process.env.NODE_ENV === "production"
-          ? process.env.STRIPE_PROD_PUBLISHABLE_KEY
-          : process.env.STRIPE_TEST_PUBLISHABLE_KEY
-      }
-    >
-      <ClerkProvider {...pageProps}>
-        <Component {...pageProps} />
-      </ClerkProvider>
-    </SubscriptionProvider>
+
+    <ClerkProvider {...pageProps}>
+      <Component {...pageProps} />
+    </ClerkProvider>
   );
 }
 
