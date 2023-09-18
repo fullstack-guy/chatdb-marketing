@@ -26,7 +26,6 @@ export default function Pricing() {
   useEffect(() => {
     if (isSignedIn) {
       setActivePlan(user.publicMetadata.plan as string)
-      console.log(user.publicMetadata)
     }
   }, [isSignedIn, isLoaded, user])
   return (

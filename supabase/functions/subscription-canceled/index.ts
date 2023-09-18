@@ -19,7 +19,10 @@ serve(async (req: Request) => {
 
       const { error } = await supabaseClient
         .from("paddle_subscriptions")
-        .delete()
+        .update({
+          canceled_at: payload.data.canceled_at,
+          is_active: false,
+        })
         .eq("paddle_subscription_id", payload.data.id);
 
       if (error) {
