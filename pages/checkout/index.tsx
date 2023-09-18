@@ -5,12 +5,10 @@ import { useUser } from "@clerk/nextjs";
 
 const Checkout = () => {
     const router = useRouter()
-    const { isSignedIn } = useUser()
+    const { isSignedIn, isLoaded, user } = useUser()
     const plan = router.query.plan;
     const [formData, setFormData] = useState({
         email: "",
-        country: "",
-        zip: ""
     })
     const [submitting, setSetsubmitting] = useState(false)
     const plans = {
@@ -43,9 +41,7 @@ const Checkout = () => {
             ],
             customer: {
                 email: formData.email,
-                address: {
-                    postalCode: formData.zip
-                }
+
             }
         });
     };
@@ -56,6 +52,9 @@ const Checkout = () => {
         }
         if (!isSignedIn) {
             router.push("/sign-in")
+        }
+        if (isSignedIn && isLoaded && user.emailAddresses[0]) {
+            setFormData({ ...formData, email: user.emailAddresses[0].emailAddress })
         }
     }, [plan])
 
@@ -78,15 +77,6 @@ const Checkout = () => {
                                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                 />
                             </div>
-
-                            <div className="mb-6">
-                                <label htmlFor="postalCode" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Zip or Postal code: <span className="text-sm text-gray-500">{"(Optional)"}</span></label>
-                                <input type="text" id="postalCode" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                                    value={formData.zip}
-                                    onChange={(e) => setFormData({ ...formData, zip: e.target.value })}
-                                />
-                            </div>
-
                             <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
 
                             >Subscribe</button>
