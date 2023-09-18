@@ -57,12 +57,12 @@ const updateSupabasePaddleSubscription = async (supabase, userId, plan) => {
 const cancelPaddleSubscription = async (id) => {
   try {
     const response = await fetch(
-      `${process.env.PADDLE_SANDBOX_API_URL}/subscriptions/${id}/cancel`,
+      `${process.env.PADDLE_API_URL}/subscriptions/${id}/cancel`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.PADDLE_SANDBOX_API_KEY}`,
+          Authorization: `Bearer ${process.env.PADDLE_API_KEY}`,
         },
         body: JSON.stringify({
           effective_from: "next_billing_period",
