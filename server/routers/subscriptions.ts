@@ -350,6 +350,12 @@ export const subscriptionsRouter = router({
       ctx.user.userId
     );
 
+    if (subError) {
+      return {
+        remainingDatabases: null,
+        user: ctx.user,
+      };
+    }
     return {
       remainingDatabases: getUserRemainingDatabases(data, sub.plan),
       user: ctx.user,

@@ -10,11 +10,13 @@ import Layout from "../../../components/Layout";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { trpc } from "../../../utils/trpc";
-import UpgradeSubscriptionModal from "../../../components/UpgradeSubscriptionModal";
+import UpdateSubscriptionModal from "../../../components/UpdateSubscriptionModal";
+
+
 
 export default function Page() {
   const router = useRouter();
-  const [isUpgradeSubscriptionModalOpened, setIsUpgradeSubscriptionModalOpened] = useState(false)
+  const [isUpdateSubscriptionModalOpeneded, setIsUpdateSubscriptionModalOpened] = useState(false)
   const [connected, setConnected] = useState(false);
   const [connecting, setConnecting] = useState(false);
   const [connectionString, setConnectionString] = useState("");
@@ -28,7 +30,11 @@ export default function Page() {
   const { bt } = useBasisTheory(process.env.NEXT_PUBLIC_BASIS_THEORY_KEY, {
     elements: true,
   });
-  const { isLoading, isError, data } = trpc.subscriptions.status.useQuery()
+  const { isLoading, isError, data: subscriptionStatus } = trpc.subscriptions.status.useQuery(null, {
+    refetchOnWindowFocus: false,
+    retry: 3,
+    retryOnMount: false,
+  })
   const upgradeSubscription = trpc.subscriptions.update.useMutation({
     onMutate: () => {
       toast.loading("Updating plan...", {
@@ -54,8 +60,8 @@ export default function Page() {
   }, [connectionString]);
 
   const handleSaveDatabaseButton = async () => {
-    if (data && data.remainingDatabases <= 0) {
-      setIsUpgradeSubscriptionModalOpened(true)
+    if (subscriptionStatus && subscriptionStatus.remainingDatabases <= 0) {
+      setIsUpdateSubscriptionModalOpened(true)
     } else {
       await saveDatabase()
     }
@@ -204,6 +210,30 @@ export default function Page() {
     }
   };
 
+  const renderUpdateSubcriptionModal = (subscriptionStatus: {
+    remainingDatabases: number;
+  }) => {
+    if (subscriptionStatus.remainingDatabases !== null && subscriptionStatus.remainingDatabases <= 0) {
+      return (
+
+        <UpdateSubscriptionModal open={isUpdateSubscriptionModalOpeneded} setOpen={setIsUpdateSubscriptionModalOpened}
+          description={" You have reached the maximum number of databases allowed on your current plan. Please upgrade your plan to create more databases."}
+          title={"Maximum number of databases reached"}
+          actionDescription={"Upgrade"}
+          action={() => upgradeSubscription.mutateAsync({
+            plan: "chatDB Pro Plan"
+          })} />
+      )
+    } else if (subscriptionStatus.remainingDatabases === null) {
+      return (<UpdateSubscriptionModal open={isUpdateSubscriptionModalOpeneded} setOpen={setIsUpdateSubscriptionModalOpened}
+        description={"You are not subscribed to any plan. Please choose a plan to start creating databases."}
+        title={"No plan selected"}
+        actionDescription={"Go to pricing page"}
+        action={() => router.push("/pricing")} />)
+    }
+
+  }
+
   return (
     <Layout>
       {/* BreadCrumbs */}
@@ -334,7 +364,7 @@ export default function Page() {
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
                               viewBox="0 0 24 24"
-                              stroke-width="1.5"
+                              strokeWidth="1.5"
                               stroke="currentColor"
                               className=" ml-1 h-6 w-6"
                             >
@@ -360,9 +390,7 @@ export default function Page() {
         <div className="invisible">Picture Here</div>
       </div>
       <Toaster position="bottom-center" />
-      <UpgradeSubscriptionModal open={isUpgradeSubscriptionModalOpened} setOpen={setIsUpgradeSubscriptionModalOpened} action={() => upgradeSubscription.mutateAsync({
-        plan: "chatDB Pro Plan"
-      })} />
+      {subscriptionStatus && renderUpdateSubcriptionModal(subscriptionStatus)}
     </Layout>
   );
 }
