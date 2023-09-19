@@ -16,7 +16,7 @@ export default function Pricing() {
     } else if (activePlan === "chatDB Pro Plan" && name === "Hobby") {
       return "Downgrade"
     } else {
-      return "Get started"
+      return "Subscribe"
     }
   }
 
@@ -35,8 +35,7 @@ export default function Pricing() {
           <h1 className="mb-4 text-7xl font-black text-black">Pricing</h1>
           <p className="text-lg">
             Choose the right pricing for you and get started working on your
-            project. <br></br>Get your own personal data analyst at the price of
-            a pizza!
+            project!
           </p>
         </div>
         <div className="flex flex-col gap-8 xl:flex-row">
@@ -44,13 +43,12 @@ export default function Pricing() {
             active={isActivePlan("chatDB Hobby Plan")}
             color="#78E3FC"
             name="Hobby"
-            price="19.99"
+            price="29.99"
             description="Get started with the basic plan"
             features={[
               "1 User",
-              "5 Databases",
+              "1 Data Source",
               "PostgreSQL Connection",
-              "30 Tables",
             ]}
             btnText={btnText("Hobby")}
 
@@ -60,16 +58,12 @@ export default function Pricing() {
             color="#ffb5ba"
             name="Pro"
             price="49.99"
-            description="Get started with the basic plan"
+            description="Get started with the pro plan"
             features={[
               "1 User",
-              "5 Databases",
-              "30 Tables",
-              "Unlimited Messages",
-              "Chat with CSV",
-              "Backed by ChatGPT",
+              "5 Data Sources",
               "PostgreSQL Connection",
-              "Multiple Schemas",
+              "More Databases Coming Soon"
             ]}
             btnText={btnText("Pro")}
           />
