@@ -19,11 +19,10 @@ const Checkout = () => {
             monthlyPriceId: 'pri_01h90zt3jwcrxsjsmfyzb8qqda'
         }
     }
-    const handlePayment = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const Paddle = window.Paddle;
+    const openPaddleCheckout = async () => {
+        const Paddle = await window.Paddle;
         setSetsubmitting(true)
-        Paddle.Checkout.open({
+        await Paddle?.Checkout.open({
             settings: {
                 displayMode: "inline",
                 theme: "light",
@@ -40,7 +39,7 @@ const Checkout = () => {
 
             ],
             customer: {
-                email: formData.email,
+                email: user?.emailAddresses[0]?.emailAddress,
 
             }
         });
@@ -56,6 +55,18 @@ const Checkout = () => {
         if (isSignedIn && isLoaded && user.emailAddresses[0]) {
             setFormData({ ...formData, email: user.emailAddresses[0].emailAddress })
         }
+
+        const onPageLoad = async () => {
+            await openPaddleCheckout();
+        };
+
+        // Check if the page has already loaded
+        if (document.readyState === 'complete') {
+            onPageLoad();
+        } else {
+            window.addEventListener('load', onPageLoad);
+            return () => window.removeEventListener('load', onPageLoad);
+        }
     }, [plan])
 
     return (
@@ -66,24 +77,7 @@ const Checkout = () => {
         >
 
             <h1 className="text-center p-2 m-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">You are subscribing to the <span className="capitalize text-blue-600 dark:text-blue-500">{plan}</span> Plan.</h1>
-            {
-                !submitting && (
-                    <div className="h-[100vh] flex flex-col items-center justify-center align-middle">
-                        <form className="h-[80vh] p-4 w-full md:w-1/2 lg:w-1/2 z-[100]" onSubmit={handlePayment}>
-                            <div className="mb-6">
-                                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
-                                <input type="email" id="email" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="name@test.com" required
-                                    value={formData.email}
-                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                />
-                            </div>
-                            <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
 
-                            >Subscribe</button>
-                        </form>
-                    </div>
-                )
-            }
             <div className="checkout-container">
             </div>
 

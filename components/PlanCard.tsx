@@ -68,9 +68,10 @@ export default function PlanCard({
     }
   })
   const handleButtonClick = (active) => {
+    console.log("Clicked button")
     if (btnText === "Cancel") {
       setIsModalOpen(true)
-    } else if (btnText === "Get started") {
+    } else if (btnText === "Subscribe") {
       setRedirectingToCheckout(true)
       router.push(`/checkout?plan=${name.toLowerCase()}`);
       posthog.capture("pricing_button_clicked");
