@@ -133,7 +133,7 @@ const Settings: React.FC<SettingsProps> = ({
       {/* Database Settings Section */}
       <div className="w-full max-w-2xl space-y-4 rounded-md bg-white p-6 shadow-md">
         <h2 className="sfont-semibold text-2xl text-black">
-          Database Settings
+          Connection Settings
         </h2>
 
         <div className="form-control">
