@@ -30,6 +30,10 @@ export default function Page() {
   const [dataModel, setDataModel] = useState([]);
   const [saving, setSaving] = useState(false);
 
+  useEffect(() => {
+    setSearchQuery(""); // clear the searchQuery when activeTab changes
+  }, [activeTab]);
+
   const fetchTables = async () => {
     try {
       const response = await fetch('/api/db/fetch', {

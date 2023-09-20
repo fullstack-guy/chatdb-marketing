@@ -53,9 +53,11 @@ const TableList = ({ filteredTables, onTableClick }) => {
   const [loadingTable, setLoadingTable] = useState(null);
 
   useEffect(() => {
-    const schemaNames = [...new Set(filteredTables.map((table) => table.schemaName))];
+    const schemaNames = filteredTables
+      .map((table) => table.schemaName)
+      .filter((schema, index, self) => self.indexOf(schema) === index);
 
-    const newColorIndexes = schemaNames.reduce((acc, schema, index) => {
+    const newColorIndexes = schemaNames.reduce((acc: Record<string, number>, schema, index) => {
       acc[schema] = index % colors.length;
       return acc;
     }, {});
@@ -75,8 +77,8 @@ const TableList = ({ filteredTables, onTableClick }) => {
     return a.schemaName.localeCompare(b.schemaName);
   });
 
-  const getSchemaSections = (tables) => {
-    const sections = {};
+  const getSchemaSections = (tables: Array<{ schemaName: string; tableName: string }>) => {
+    const sections: Record<string, any[]> = {};
 
     tables.forEach((table) => {
       if (!sections[table.schemaName]) {
