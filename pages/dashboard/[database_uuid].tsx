@@ -49,8 +49,9 @@ export default function Page() {
       const data = await response.json();
 
       if (data) {
+        console.log("data", data)
         setTitle(data.title);
-        setFetchedDatabase(data.tables);
+        setFetchedDatabase(data);
         setDataModel(convertJsonToDataModel(data.tables));
       } else {
         router.push("/dashboard");

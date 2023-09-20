@@ -18,8 +18,8 @@ export default function DatabaseControl({ activeTab, database_uuid, filteredTabl
             case "Chat":
                 return <Chat database_uuid={database_uuid} />;
             case "Flow":
-                const { title, ...restOfDatabase } = fetchedDatabase;
-                return <DatabaseFlow dbSchema={restOfDatabase} />;
+                const { title, tables } = fetchedDatabase;
+                return <DatabaseFlow dbSchema={tables} />;
             case "Settings":
                 return (
                     <Settings
