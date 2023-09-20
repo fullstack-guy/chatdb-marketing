@@ -68,7 +68,6 @@ export default function PlanCard({
     }
   })
   const handleButtonClick = (active) => {
-    console.log("Clicked button")
     if (btnText === "Cancel") {
       setIsModalOpen(true)
     } else if (btnText === "Subscribe") {

@@ -12,7 +12,6 @@ const Checkout = () => {
         email: "",
     })
     const [submitting, setSetsubmitting] = useState(false)
-    const { isLoading, isError, data: subscriptionStatus } = trpc.subscriptions.status.useQuery()
     const plans = {
         hobby: {
             monthlyPriceId: 'pri_01h90zjbsana88btxhepx13g9n',
@@ -55,11 +54,7 @@ const Checkout = () => {
         }
 
         const onPageLoad = async () => {
-            if (subscriptionStatus && subscriptionStatus.remainingDatabases === null) {
-                await openPaddleCheckout();
-            } else {
-                router.push("/")
-            }
+            await openPaddleCheckout();
         };
 
         if (document.readyState === 'complete') {
@@ -73,7 +68,7 @@ const Checkout = () => {
             window.addEventListener('load', onPageLoad);
             return () => window.removeEventListener('load', onPageLoad);
         }
-    }, [plan, isLoading, subscriptionStatus])
+    }, [plan])
 
     return (
         <Layout
