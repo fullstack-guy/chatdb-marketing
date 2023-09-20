@@ -30,7 +30,6 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
     subscription.mutateAsync({
       customerId: data.customer.id,
       items: data.items
-
     })
   }
   const defaultTitle = "ChatDB | The AI Database Assistant for your team";

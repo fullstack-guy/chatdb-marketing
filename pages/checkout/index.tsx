@@ -57,6 +57,8 @@ const Checkout = () => {
         const onPageLoad = async () => {
             if (subscriptionStatus && subscriptionStatus.remainingDatabases === null) {
                 await openPaddleCheckout();
+            } else {
+                router.push("/")
             }
         };
 

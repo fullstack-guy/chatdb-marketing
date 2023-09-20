@@ -103,7 +103,7 @@ const getPaddleSubscriptionIdFromUserId = async (supabase, userId) => {
 const updatePaddleSubscription = async (subId, ctmId, addId, price_id) => {
   try {
     const response = await fetch(
-      `${process.env.PADDLE_SANDBOX_API_URL}/subscriptions/${subId}`,
+      `${process.env.PADDLE_API_URL}/subscriptions/${subId}`,
       {
         method: "PATCH",
         headers: {
