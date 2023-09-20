@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import { useRouter } from "next/router";
 import { useUser } from "@clerk/nextjs";
+import { trpc } from "../../utils/trpc";
 
 const Checkout = () => {
     const router = useRouter()
@@ -11,6 +12,7 @@ const Checkout = () => {
         email: "",
     })
     const [submitting, setSetsubmitting] = useState(false)
+    const { isLoading, isError, data: subscriptionStatus } = trpc.subscriptions.status.useQuery()
     const plans = {
         hobby: {
             monthlyPriceId: 'pri_01h90zjbsana88btxhepx13g9n',
@@ -46,28 +48,30 @@ const Checkout = () => {
     };
 
     useEffect(() => {
-        if (!plan) {
-            router.push("/pricing")
-        }
-        if (!isSignedIn) {
-            router.push("/sign-in")
-        }
+
+
         if (isSignedIn && isLoaded && user.emailAddresses[0]) {
             setFormData({ ...formData, email: user.emailAddresses[0].emailAddress })
         }
 
         const onPageLoad = async () => {
-            await openPaddleCheckout();
+            if (subscriptionStatus && subscriptionStatus.remainingDatabases === null) {
+                await openPaddleCheckout();
+            }
         };
 
-        // Check if the page has already loaded
         if (document.readyState === 'complete') {
+            if (!plan) {
+                router.push("/pricing")
+                return
+            }
             onPageLoad();
+
         } else {
             window.addEventListener('load', onPageLoad);
             return () => window.removeEventListener('load', onPageLoad);
         }
-    }, [plan])
+    }, [plan, isLoading, subscriptionStatus])
 
     return (
         <Layout
