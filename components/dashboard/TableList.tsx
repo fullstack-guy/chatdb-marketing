@@ -96,7 +96,7 @@ const TableList = ({ filteredTables, onTableClick }) => {
         Object.entries(schemaSections).map(([schema, tables]) => (
           <div key={schema} className="my-6">
             <h2 className="text-2xl text-black font-bold mb-4">{schema}</h2>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
               {tables.map((table) => (
                 <div
                   key={table.tableName}
@@ -104,7 +104,7 @@ const TableList = ({ filteredTables, onTableClick }) => {
                   onClick={() => onTableClick(`${table.schemaName}.${table.tableName}`)}
                 >
                   <div
-                    className="mr-4 flex h-12 w-12 items-center justify-center rounded-full"
+                    className="mr-2 flex h-8 w-8 items-center justify-center rounded-full"
                     style={{ backgroundColor: colors[tableColorIndexes[table.schemaName]] }}
                   >
                     {loadingTable === table.tableName && (
@@ -119,7 +119,7 @@ const TableList = ({ filteredTables, onTableClick }) => {
                     )}
                   </div>
                   <div className="flex flex-col space-y-1">
-                    <h3 className="text-xl font-semibold text-black">{table.tableName}</h3>
+                    <h3 className="text-lg font-semibold text-black">{table.tableName}</h3>
                   </div>
                 </div>
               ))}
