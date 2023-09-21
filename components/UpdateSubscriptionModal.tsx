@@ -35,19 +35,15 @@ export default function UpdateSubscriptionModal({ open, setOpen, action, title, 
                             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                         >
-                            <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                            <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-xl">
                                 <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                                     <div className="sm:flex sm:items-start">
-                                        <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                            </svg>                                        </div>
                                         <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                            <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                                            <Dialog.Title as="h3" className="text-xl font-semibold leading-6 text-gray-900">
                                                 {title}
                                             </Dialog.Title>
                                             <div className="mt-2">
-                                                <p className="text-sm text-gray-500">
+                                                <p className="text-md text-gray-500">
                                                     {description}
                                                 </p>
                                             </div>
@@ -57,7 +53,11 @@ export default function UpdateSubscriptionModal({ open, setOpen, action, title, 
                                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                                     <button
                                         type="button"
-                                        className="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
+                                        style={{
+                                            background:
+                                                "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)",
+                                        }}
+                                        className="inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm sm:ml-3 sm:w-auto"
                                         onClick={() => executeAction()}
                                     >
                                         {isLoadingAction ? <LoadingSpinner /> : actionDescription}
@@ -68,7 +68,7 @@ export default function UpdateSubscriptionModal({ open, setOpen, action, title, 
                                         onClick={() => setOpen(false)}
                                         ref={cancelButtonRef}
                                     >
-                                        Return
+                                        Close
                                     </button>
                                 </div>
                             </Dialog.Panel>

@@ -227,8 +227,8 @@ export default function Page() {
     } else if (subscriptionStatus.remainingDatabases === null) {
       return (<UpdateSubscriptionModal open={isUpdateSubscriptionModalOpeneded} setOpen={setIsUpdateSubscriptionModalOpened}
         description={"You are not subscribed to any plan. Please choose a plan to start creating databases."}
-        title={"No plan selected"}
-        actionDescription={"Go to pricing page"}
+        title={"Choose a Plan"}
+        actionDescription={"View Pricing"}
         action={() => router.push("/pricing")} />)
     }
 
