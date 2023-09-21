@@ -91,13 +91,18 @@ export default function PlanCard({
 
   return (
     <div
-      style={{ backgroundColor: color }}
+      style={{ backgroundColor: color, border: active ? '3px solid #444' : 'none', boxShadow: active ? '0 4px 8px rgba(0,0,0,0.15)' : 'none' }}
       className="flex min-h-[428px] w-[400px] flex-col rounded-3xl p-8"
     >
       <ConfirmationModal open={isModalOpen} setOpen={setIsModalOpen} action={confirmAction} />
-      <h2 className="flex items-center justify-between mb-5 text-xl font-medium">{name}
-        {active && (<span className="self-start bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">Current</span>)}
-      </h2>
+      <div className="flex items-center justify-between mb-5">
+        <h2 className="text-xl text-black font-medium">{name}</h2>
+        {active && (
+          <span className="ml-2 bg-gray-800 text-white text-md font-medium px-2.5 py-1 rounded">
+            Current Plan
+          </span>
+        )}
+      </div>
 
       {name !== "Business" ? (
         <div className="mb-5 flex items-end text-6xl font-black text-black">
