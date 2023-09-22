@@ -1,16 +1,40 @@
 
-import { Fragment, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import LoadingSpinner from '../LoadingSpinner'
-export default function DeleteDatabasesModal({ open, setOpen, action, title, description, actionDescription, dbs }) {
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import { trpc } from '../../utils/trpc'
+import toast from 'react-hot-toast'
+export default function DeleteDatabasesModal({ open, setOpen, dbs }) {
     const [isLoadingAction, setIsLoadingAction] = useState(false)
+    const deleteDatabase = trpc.databases.delete.useMutation({
+        onError: (error) => {
+            toast.error(error.message)
+        },
+        onSuccess: () => {
+            toast.success("Database deleted successfully")
+        }
+
+    })
     const cancelButtonRef = useRef(null)
-    const executeAction = () => {
+    const router = useRouter()
+
+    const handleAction = () => {
         setIsLoadingAction(true)
-        action()
+        router.push("/pricing")
     }
+
+    const handleDeleteBtnClick = (uuid) => {
+        deleteDatabase.mutate({
+            uuid
+        })
+    }
+    useEffect(() => {
+        console.log("hhh", dbs)
+    }, [dbs])
     return (
-        <Transition.Root show={open} as={Fragment}>
+        <Transition.Root show={true} as={Fragment}>
             <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
                 <Transition.Child
                     as={Fragment}
@@ -40,14 +64,35 @@ export default function DeleteDatabasesModal({ open, setOpen, action, title, des
                                     <div className="sm:flex sm:items-start">
                                         <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                             <Dialog.Title as="h3" className="text-xl font-semibold leading-6 text-gray-900">
-                                                {title}
+                                                Maximum Databases Reached
                                             </Dialog.Title>
                                             <div className="mt-2">
                                                 <p className="text-md text-gray-500">
-                                                    {description}
+                                                    You have reached the maximum number of databases you can create for your current active plan. Please delete a database to create a new one.
                                                 </p>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div className="bg-gray-50 px-4 py-3 sm:px-6">
+                                    <div className="flex justify-between items-center">
+                                        {
+                                            dbs.map((db, index) => (
+                                                <div className="w-full flex justify-between" key={index}>
+                                                    <div className="flex justify-between items-center">
+                                                        <Image alt='database icon' src={db.img} width={30} height={25} />
+                                                        <span className="inline-flex rounded-md shadow-sm">
+                                                            {db.name}
+                                                        </span>
+                                                    </div>
+                                                    <button onClick={() => handleDeleteBtnClick(db.uuid)}>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="#d72f0c" strokeWidth={2}>
+                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            ))
+                                        }
                                     </div>
                                 </div>
                                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
@@ -58,9 +103,9 @@ export default function DeleteDatabasesModal({ open, setOpen, action, title, des
                                                 "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)",
                                         }}
                                         className="inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm sm:ml-3 sm:w-auto"
-                                        onClick={() => executeAction()}
+                                        onClick={handleAction}
                                     >
-                                        {isLoadingAction ? <LoadingSpinner /> : actionDescription}
+                                        {isLoadingAction ? <LoadingSpinner /> : "Go to pricing"}
                                     </button>
                                     <button
                                         type="button"

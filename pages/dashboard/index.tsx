@@ -136,11 +136,7 @@ export default function Page() {
           </div>
         </label>
       </label>
-      <DeleteDatabasesModal dbs={fetchedDatabases} open={isDeleteDatabasesModalOpened} setOpen={setIsDeleteDatabasesModalOpeneded}
-        description={"You are not subscribed to any plan. Please choose a plan to start creating databases."}
-        title={"Choose a Plan"}
-        actionDescription={"View Pricing"}
-        action={() => router.push("/pricing")} />
+      <DeleteDatabasesModal dbs={fetchedDatabases} open={isDeleteDatabasesModalOpened} setOpen={setIsDeleteDatabasesModalOpeneded} />
     </Layout>
   );
 }

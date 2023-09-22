@@ -40,7 +40,7 @@ const deleteUserSchema = async (supabase, uuid) => {
   }
 };
 export const databasesRouter = router({
-  delele: protectedProcedure
+  delete: protectedProcedure
     .input(
       z.object({
         uuid: z.string(),
