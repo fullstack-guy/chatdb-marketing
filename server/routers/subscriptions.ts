@@ -108,7 +108,7 @@ const updatePaddleSubscription = async (subId, ctmId, addId, price_id) => {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.PADDLE_SANDBOX_API_KEY}`,
+          Authorization: `Bearer ${process.env.PADDLE_API_KEY}`,
         },
         body: JSON.stringify({
           customer_id: ctmId,
