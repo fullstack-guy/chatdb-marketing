@@ -31,7 +31,6 @@ export default function Page() {
     if (isLoaded && isSignedIn && supabase) {
       fetchDatabases();
     }
-    console.log(subscriptionStatus)
     if (fetchedDatabases.length > subscriptionStatus?.allowedNumberOfDatabases) {
       setIsDeleteDatabasesModalOpeneded(true)
     }
@@ -73,7 +72,6 @@ export default function Page() {
 
   // set database as selected
   const selectDatabase = (index) => {
-    console.log("selecting database", index)
     setNewDatabases((prevDatabases) =>
       prevDatabases.map((db, i) => ({
         ...db,

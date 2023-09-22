@@ -38,9 +38,7 @@ export default function DeleteDatabasesModal({ open, setOpen }) {
             uuid
         })
     }
-    useEffect(() => {
-        console.log("hhh", dbss)
-    }, [dbss])
+
     return (
         <Transition.Root show={open} as={Fragment}>
             <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
