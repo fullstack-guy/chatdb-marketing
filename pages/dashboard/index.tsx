@@ -65,6 +65,7 @@ export default function Page() {
 
   // set database as selected
   const selectDatabase = (index) => {
+    console.log("selecting database", index)
     setNewDatabases((prevDatabases) =>
       prevDatabases.map((db, i) => ({
         ...db,

@@ -1,11 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { trpc } from "../../utils/trpc";
+import UpdateSubscriptionModal from "../UpdateSubscriptionModal";
+import { useRouter } from "next/router";
 
-const Card = ({ logo, title, lastUpdated, uuid }) => {
+export const Card = ({ logo, title, lastUpdated, uuid }) => {
+  const { isLoading, isError, data: subscriptionStatus } = trpc.subscriptions.status.useQuery()
+  const [isUpdateSubscriptionModalOpeneded, setIsUpdateSubscriptionModalOpened] = useState(false)
+  const router = useRouter()
+  const handleDatabaseCardClick = () => {
+    if (!isLoading && !isError && subscriptionStatus?.remainingDatabases === null) {
+      setIsUpdateSubscriptionModalOpened(true)
+    } else {
+      router.push(`/dashboard/${uuid}`)
+    }
+  }
+
   return (
     <div className="relative">
-      <Link href={`/dashboard/${uuid}`}>
+      <div className="cursor-pointer" onClick={handleDatabaseCardClick}>
         <div className="mb-4 flex cursor-pointer items-center rounded-lg p-4 shadow-md transition duration-300 ease-in-out hover:scale-105">
           <div className="mr-4 flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg bg-[#0fe0b6]">
             <Image
@@ -23,8 +37,14 @@ const Card = ({ logo, title, lastUpdated, uuid }) => {
             </p> */}
           </div>
         </div>
-      </Link>
+      </div>
+      <UpdateSubscriptionModal open={isUpdateSubscriptionModalOpeneded} setOpen={setIsUpdateSubscriptionModalOpened}
+        description={"You are not subscribed to any plan. Please choose a plan to start creating databases."}
+        title={"Choose a Plan"}
+        actionDescription={"View Pricing"}
+        action={() => router.push("/pricing")} />
     </div>
+
   );
 };
 

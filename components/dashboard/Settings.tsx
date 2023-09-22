@@ -39,10 +39,7 @@ const Settings: React.FC<SettingsProps> = ({
 
   const showSampleRef = useRef(null); // This ref will hold the initial value of showSample
 
-  useEffect(() => {
-    console.log(fetchedDatabase);
-  }
-    , [newDatabaseName]);
+
   useEffect(() => {
     const fetchAndUpdateSetting = async () => {
       if (showSampleRef.current === null) {
