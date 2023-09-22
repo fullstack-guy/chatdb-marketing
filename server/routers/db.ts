@@ -40,6 +40,22 @@ const deleteUserSchema = async (supabase, uuid) => {
   }
 };
 export const databasesRouter = router({
+  getAll: protectedProcedure.query(async (opts) => {
+    const { ctx } = opts;
+    const { data, error } = await ctx.userSupabase
+      .from("user_schemas")
+      .select("uuid, title");
+
+    if (error) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Unable to fetch databases",
+        cause: error,
+      });
+    }
+
+    return data;
+  }),
   delete: protectedProcedure
     .input(
       z.object({

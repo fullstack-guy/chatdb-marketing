@@ -81,6 +81,7 @@ const cancelPaddleSubscription = async (id) => {
 };
 
 const getPaddleSubscriptionIdFromUserId = async (supabase, userId) => {
+  console.log("usususus", userId);
   const { data, error } = await supabase
     .from("paddle_subscriptions")
     .select("paddle_subscription_id, address_id, customer_id, plan")
@@ -191,8 +192,9 @@ const getPaddlePriceId = (priceName) => {
 const getUserRemainingDatabases = (subscription, dbs, plan) => {
   if (
     subscription.data.data.status !== "active" ||
-    subscription.data.data.scheduled_change.action === "cancel"
+    subscription.data.data.scheduled_change?.action === "cancel"
   ) {
+    console.log("Subscription is not active");
     return null;
   } else if (plan === "chatDB Hobby Plan") {
     return 1 - dbs.length;
@@ -386,6 +388,7 @@ export const subscriptionsRouter = router({
     const subscriptionFromPaddleAPI = await getSubscriptionFromPaddleAPI(
       sub.paddle_subscription_id
     );
+    console.log(subscriptionFromPaddleAPI);
     return {
       remainingDatabases: getUserRemainingDatabases(
         subscriptionFromPaddleAPI,

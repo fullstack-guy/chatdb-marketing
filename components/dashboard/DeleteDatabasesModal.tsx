@@ -8,6 +8,7 @@ import { trpc } from '../../utils/trpc'
 import toast from 'react-hot-toast'
 export default function DeleteDatabasesModal({ open, setOpen, dbs }) {
     const [isLoadingAction, setIsLoadingAction] = useState(false)
+    const { isLoading, isError, data: dbss } = trpc.databases.getAll.useQuery()
     const deleteDatabase = trpc.databases.delete.useMutation({
         onError: (error) => {
             toast.error(error.message)
@@ -17,6 +18,7 @@ export default function DeleteDatabasesModal({ open, setOpen, dbs }) {
         }
 
     })
+
     const cancelButtonRef = useRef(null)
     const router = useRouter()
 
@@ -31,10 +33,10 @@ export default function DeleteDatabasesModal({ open, setOpen, dbs }) {
         })
     }
     useEffect(() => {
-        console.log("hhh", dbs)
-    }, [dbs])
+        console.log("hhh", dbss)
+    }, [dbss])
     return (
-        <Transition.Root show={true} as={Fragment}>
+        <Transition.Root show={open} as={Fragment}>
             <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
                 <Transition.Child
                     as={Fragment}
