@@ -24,6 +24,11 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
       })
       router.push("/dashboard")
     },
+    onError: (error) => {
+      toast.error(error.message, {
+        duration: 2000
+      })
+    }
   })
 
   const createSubscription = async (data) => {

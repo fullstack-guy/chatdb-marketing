@@ -1,8 +1,7 @@
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import { useRouter } from "next/router";
 import { useUser } from "@clerk/nextjs";
-import { trpc } from "../../utils/trpc";
 
 const Checkout = () => {
     const router = useRouter()

@@ -85,7 +85,6 @@ export default function PlanCard({
     }
   };
   const confirmAction = () => {
-    console.log("Confirmed action")
     cancel.mutateAsync()
   }
 

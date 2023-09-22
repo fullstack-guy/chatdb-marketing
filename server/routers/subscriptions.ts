@@ -130,7 +130,7 @@ const updatePaddleSubscription = async (subId, ctmId, addId, price_id) => {
     console.log(e);
     return {
       data: null,
-      error: e.message,
+      error: "Unable to update subscription",
     };
   }
 };
