@@ -5,8 +5,19 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import useSupabase from "../../hooks/useSupabaseClient";
+import DeleteDatabasesModal from "../../components/dashboard/DeleteDatabasesModal";
 
 export default function Page() {
+  const [isDeleteDatabasesModalOpened, setIsDeleteDatabasesModalOpeneded] = useState(false)
+  const [fetchedDatabases, setFetchedDatabases] = useState([]);
+  const [newDatabases, setNewDatabases] = useState([
+    {
+      name: "PostgreSQL",
+      path: "/dashboard/postgres",
+      selected: false,
+      img: "/images/postgres-icon.png",
+    },
+  ]);
   const { isLoaded, isSignedIn, user } = useUser();
   const router = useRouter();
   const supabase = useSupabase();
@@ -20,15 +31,6 @@ export default function Page() {
     }
   }, [isLoaded, isSignedIn, supabase]);
 
-  const [fetchedDatabases, setFetchedDatabases] = useState([]);
-  const [newDatabases, setNewDatabases] = useState([
-    {
-      name: "PostgreSQL",
-      path: "/dashboard/postgres",
-      selected: false,
-      img: "/images/postgres-icon.png",
-    },
-  ]);
 
   const fetchDatabases = async () => {
     const { data, error } = await supabase
@@ -134,6 +136,11 @@ export default function Page() {
           </div>
         </label>
       </label>
+      <DeleteDatabasesModal dbs={fetchedDatabases} open={isDeleteDatabasesModalOpened} setOpen={setIsDeleteDatabasesModalOpeneded}
+        description={"You are not subscribed to any plan. Please choose a plan to start creating databases."}
+        title={"Choose a Plan"}
+        actionDescription={"View Pricing"}
+        action={() => router.push("/pricing")} />
     </Layout>
   );
 }
