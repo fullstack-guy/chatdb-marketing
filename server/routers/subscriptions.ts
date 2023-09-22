@@ -135,6 +135,27 @@ const updatePaddleSubscription = async (subId, ctmId, addId, price_id) => {
   }
 };
 
+const getSubscriptionFromPaddleAPI = async (subId) => {
+  try {
+    const response = await fetch(
+      `${process.env.PADDLE_API_URL}/subscriptions/${subId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.PADDLE_API_KEY}`,
+        },
+      }
+    );
+    return { data: await response.json(), error: null };
+  } catch (e) {
+    return {
+      data: null,
+      error: "Unable to get subscription from Paddle",
+    };
+  }
+};
+
 const getUserDatabases = async (supabase, userId) => {
   const { data, error } = await supabase
     .from("user_databases")
@@ -167,8 +188,13 @@ const getPaddlePriceId = (priceName) => {
   return plans[priceName].monthlyPriceId;
 };
 
-const getUserRemainingDatabases = (dbs, plan) => {
-  if (plan === "chatDB Hobby Plan") {
+const getUserRemainingDatabases = (subscription, dbs, plan) => {
+  if (
+    subscription.data.data.status !== "active" ||
+    subscription.data.data.scheduled_change.action === "cancel"
+  ) {
+    return null;
+  } else if (plan === "chatDB Hobby Plan") {
     return 1 - dbs.length;
   } else if (plan === "chatDB Pro Plan") {
     return 5 - dbs.length;
@@ -356,8 +382,16 @@ export const subscriptionsRouter = router({
         user: ctx.user,
       };
     }
+
+    const subscriptionFromPaddleAPI = await getSubscriptionFromPaddleAPI(
+      sub.paddle_subscription_id
+    );
     return {
-      remainingDatabases: getUserRemainingDatabases(data, sub.plan),
+      remainingDatabases: getUserRemainingDatabases(
+        subscriptionFromPaddleAPI,
+        data,
+        sub.plan
+      ),
       user: ctx.user,
     };
   }),

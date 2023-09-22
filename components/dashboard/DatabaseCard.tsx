@@ -1,18 +1,23 @@
 import React, { useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { trpc } from "../../utils/trpc";
 import UpdateSubscriptionModal from "../UpdateSubscriptionModal";
 import { useRouter } from "next/router";
+import { useUser } from "@clerk/nextjs";
 
 export const Card = ({ logo, title, lastUpdated, uuid }) => {
   const { isLoading, isError, data: subscriptionStatus } = trpc.subscriptions.status.useQuery()
   const [isUpdateSubscriptionModalOpeneded, setIsUpdateSubscriptionModalOpened] = useState(false)
   const router = useRouter()
+  const { user } = useUser()
   const handleDatabaseCardClick = () => {
+    console.log(user)
+    return
     if (!isLoading && !isError && subscriptionStatus?.remainingDatabases === null) {
+      console.log("here")
       setIsUpdateSubscriptionModalOpened(true)
     } else {
+      console.log("there")
       router.push(`/dashboard/${uuid}`)
     }
   }
