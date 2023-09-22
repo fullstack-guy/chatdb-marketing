@@ -6,14 +6,20 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { trpc } from '../../utils/trpc'
 import toast from 'react-hot-toast'
-export default function DeleteDatabasesModal({ open, setOpen, dbs }) {
+export default function DeleteDatabasesModal({ open, setOpen }) {
     const [isLoadingAction, setIsLoadingAction] = useState(false)
-    const { isLoading, isError, data: dbss } = trpc.databases.getAll.useQuery()
+    const { isLoading, isError, data: dbss, refetch: refetchDatabases } = trpc.databases.getAll.useQuery()
     const deleteDatabase = trpc.databases.delete.useMutation({
+        onMutate: () => {
+            toast.loading("Deleting database...", {
+                duration: 1000
+            })
+        },
         onError: (error) => {
             toast.error(error.message)
         },
         onSuccess: () => {
+            refetchDatabases()
             toast.success("Database deleted successfully")
         }
 
@@ -77,14 +83,15 @@ export default function DeleteDatabasesModal({ open, setOpen, dbs }) {
                                     </div>
                                 </div>
                                 <div className="bg-gray-50 px-4 py-3 sm:px-6">
-                                    <div className="flex justify-between items-center">
+                                    <div className="flex flex-col justify-between items-center gap-4">
+                                        {isLoading && <LoadingSpinner />}
                                         {
-                                            dbs.map((db, index) => (
+                                            dbss?.map((db, index) => (
                                                 <div className="w-full flex justify-between" key={index}>
-                                                    <div className="flex justify-between items-center">
-                                                        <Image alt='database icon' src={db.img} width={30} height={25} />
+                                                    <div className="flex justify-between items-center gap-2">
+                                                        <Image alt='database icon' src="/images/postgres-icon.png" width={30} height={25} />
                                                         <span className="inline-flex rounded-md shadow-sm">
-                                                            {db.name}
+                                                            {db.title}
                                                         </span>
                                                     </div>
                                                     <button onClick={() => handleDeleteBtnClick(db.uuid)}>

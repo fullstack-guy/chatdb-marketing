@@ -6,8 +6,10 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import useSupabase from "../../hooks/useSupabaseClient";
 import DeleteDatabasesModal from "../../components/dashboard/DeleteDatabasesModal";
+import { trpc } from "../../utils/trpc";
 
 export default function Page() {
+  const { isLoading, isError, data: subscriptionStatus } = trpc.subscriptions.status.useQuery()
   const [isDeleteDatabasesModalOpened, setIsDeleteDatabasesModalOpeneded] = useState(false)
   const [fetchedDatabases, setFetchedDatabases] = useState([]);
   const [newDatabases, setNewDatabases] = useState([
@@ -29,7 +31,11 @@ export default function Page() {
     if (isLoaded && isSignedIn && supabase) {
       fetchDatabases();
     }
-  }, [isLoaded, isSignedIn, supabase]);
+    console.log(subscriptionStatus)
+    if (fetchedDatabases.length > subscriptionStatus?.allowedNumberOfDatabases) {
+      setIsDeleteDatabasesModalOpeneded(true)
+    }
+  }, [isLoaded, isSignedIn, supabase, subscriptionStatus]);
 
 
   const fetchDatabases = async () => {
@@ -136,7 +142,7 @@ export default function Page() {
           </div>
         </label>
       </label>
-      <DeleteDatabasesModal dbs={fetchedDatabases} open={isDeleteDatabasesModalOpened} setOpen={setIsDeleteDatabasesModalOpeneded} />
+      <DeleteDatabasesModal open={isDeleteDatabasesModalOpened} setOpen={setIsDeleteDatabasesModalOpeneded} />
     </Layout>
   );
 }

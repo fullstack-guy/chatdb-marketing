@@ -202,6 +202,14 @@ const getUserRemainingDatabases = (subscription, dbs, plan) => {
     return 5 - dbs.length;
   }
 };
+
+const getAllowedNumberOfDatabases = (plan) => {
+  if (plan === "chatDB Hobby Plan") {
+    return 1;
+  } else if (plan === "chatDB Pro Plan") {
+    return 5;
+  }
+};
 export const subscriptionsRouter = router({
   create: protectedProcedure
     .input(
@@ -382,6 +390,7 @@ export const subscriptionsRouter = router({
       return {
         remainingDatabases: null,
         user: ctx.user,
+        allowedNumberOfDatabases: null,
       };
     }
 
@@ -395,6 +404,7 @@ export const subscriptionsRouter = router({
         data,
         sub.plan
       ),
+      allowedNumberOfDatabases: getAllowedNumberOfDatabases(sub.plan),
       user: ctx.user,
     };
   }),
