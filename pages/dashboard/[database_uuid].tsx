@@ -8,6 +8,8 @@ import { Toaster, toast } from "react-hot-toast";
 import QuickSearch from "../../components/dashboard/QuickSearch";
 import DatabaseNav from "../../components/dashboard/DatabaseNav";
 import DatabaseControl from "../../components/dashboard/DatabaseControl";
+import DeleteDatabasesModal from "../../components/dashboard/DeleteDatabasesModal";
+import { trpc } from "../../utils/trpc";
 
 interface Database {
   id: number;
@@ -29,7 +31,8 @@ export default function Page() {
   const [refreshing, setRefreshing] = useState(false);
   const [dataModel, setDataModel] = useState([]);
   const [saving, setSaving] = useState(false);
-
+  const [isDeleteDatabasesModalOpened, setIsDeleteDatabasesModalOpened] = useState(false)
+  const { isLoading, isError, data: subscriptionStatus } = trpc.subscriptions.status.useQuery()
   const fetchTables = async () => {
     try {
       const response = await fetch('/api/db/fetch', {
@@ -138,7 +141,12 @@ export default function Page() {
     if (isLoaded && isSignedIn) {
       fetchTables();
     }
-  }, [isLoaded, isSignedIn,]);
+
+    if (!isLoading && !isError && subscriptionStatus?.isUserExceedingAllowedNumberOfDatabases) {
+      setIsDeleteDatabasesModalOpened(true)
+    }
+
+  }, [isLoaded, isSignedIn, subscriptionStatus]);
 
   function convertJsonToDataModel(json) {
     const dataModel = [];
@@ -217,6 +225,8 @@ export default function Page() {
         </div>
       </div>
       <Toaster position="bottom-center" />
+      <DeleteDatabasesModal open={isDeleteDatabasesModalOpened} setOpen={setIsDeleteDatabasesModalOpened} />
+
     </Layout>
   );
 }
