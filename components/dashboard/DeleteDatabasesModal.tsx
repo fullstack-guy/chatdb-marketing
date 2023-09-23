@@ -8,7 +8,7 @@ import { trpc } from '../../utils/trpc'
 import toast from 'react-hot-toast'
 export default function DeleteDatabasesModal({ open, setOpen }) {
     const [isLoadingAction, setIsLoadingAction] = useState(false)
-    const { isLoading, isError, data: dbs, refetch: refetchDatabases } = trpc.databases.getAll.useQuery()
+    const { isLoading, isError, data: dbss, refetch: refetchDatabases } = trpc.databases.getAll.useQuery()
     const deleteDatabase = trpc.databases.delete.useMutation({
         onMutate: () => {
             toast.loading("Deleting database...", {
@@ -25,6 +25,7 @@ export default function DeleteDatabasesModal({ open, setOpen }) {
 
     })
 
+    const cancelButtonRef = useRef(null)
     const router = useRouter()
 
     const handleAction = () => {
@@ -40,7 +41,7 @@ export default function DeleteDatabasesModal({ open, setOpen }) {
 
     return (
         <Transition.Root show={open} as={Fragment}>
-            <Dialog as="div" className="relative z-10" onClose={() => { }}>
+            <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -83,7 +84,7 @@ export default function DeleteDatabasesModal({ open, setOpen }) {
                                     <div className="flex flex-col justify-between items-center gap-4">
                                         {isLoading && <LoadingSpinner />}
                                         {
-                                            dbs?.map((db, index) => (
+                                            dbss?.map((db, index) => (
                                                 <div className="w-full flex justify-between" key={index}>
                                                     <div className="flex justify-between items-center gap-2">
                                                         <Image alt='database icon' src="/images/postgres-icon.png" width={30} height={25} />
@@ -113,7 +114,14 @@ export default function DeleteDatabasesModal({ open, setOpen }) {
                                     >
                                         {isLoadingAction ? <LoadingSpinner /> : "Go to pricing"}
                                     </button>
-
+                                    <button
+                                        type="button"
+                                        className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                                        onClick={() => setOpen(false)}
+                                        ref={cancelButtonRef}
+                                    >
+                                        Close
+                                    </button>
                                 </div>
                             </Dialog.Panel>
                         </Transition.Child>
