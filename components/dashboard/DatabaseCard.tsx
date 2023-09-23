@@ -3,15 +3,21 @@ import Image from "next/image";
 import { trpc } from "../../utils/trpc";
 import UpdateSubscriptionModal from "../UpdateSubscriptionModal";
 import { useRouter } from "next/router";
+import DeleteDatabasesModal from "./DeleteDatabasesModal";
 
 export const Card = ({ logo, title, lastUpdated, uuid }) => {
   const { isLoading, isError, data: subscriptionStatus } = trpc.subscriptions.status.useQuery()
   const [isUpdateSubscriptionModalOpeneded, setIsUpdateSubscriptionModalOpened] = useState(false)
+  const [isDeleteDatabasesModalOpened, setIsDeleteDatabasesModalOpeneded] = useState(false)
   const router = useRouter()
   const handleDatabaseCardClick = () => {
     if (!isLoading && !isError && subscriptionStatus?.remainingDatabases === null) {
       setIsUpdateSubscriptionModalOpened(true)
-    } else {
+    } else if (!isLoading && !isError && subscriptionStatus?.isUserExceedingAllowedNumberOfDatabases) {
+      console.log("isUserExceedingAllowedNumberOfDatabases")
+      setIsDeleteDatabasesModalOpeneded(true)
+    }
+    else {
       router.push(`/dashboard/${uuid}`)
     }
   }
@@ -42,6 +48,8 @@ export const Card = ({ logo, title, lastUpdated, uuid }) => {
         title={"Choose a Plan"}
         actionDescription={"View Pricing"}
         action={() => router.push("/pricing")} />
+      <DeleteDatabasesModal open={isDeleteDatabasesModalOpened} setOpen={setIsDeleteDatabasesModalOpeneded} />
+
     </div>
 
   );

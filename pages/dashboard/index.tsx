@@ -31,7 +31,7 @@ export default function Page() {
     if (isLoaded && isSignedIn && supabase) {
       fetchDatabases();
     }
-    if (fetchedDatabases.length > subscriptionStatus?.allowedNumberOfDatabases) {
+    if (!isLoading && !isError && subscriptionStatus?.isUserExceedingAllowedNumberOfDatabases) {
       setIsDeleteDatabasesModalOpeneded(true)
     }
   }, [isLoaded, isSignedIn, supabase, subscriptionStatus]);

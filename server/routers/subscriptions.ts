@@ -194,7 +194,6 @@ const getUserRemainingDatabases = (subscription, dbs, plan) => {
     subscription.data.data.status !== "active" ||
     subscription.data.data.scheduled_change?.action === "cancel"
   ) {
-    console.log("Subscription is not active");
     return null;
   } else if (plan === "chatDB Hobby Plan") {
     return 1 - dbs.length;
@@ -208,6 +207,14 @@ const getAllowedNumberOfDatabases = (plan) => {
     return 1;
   } else if (plan === "chatDB Pro Plan") {
     return 5;
+  }
+};
+
+const isUserExceedingAllowedNumberOfDatabases = (plan, dbs) => {
+  if (plan === "chatDB Hobby Plan") {
+    return dbs.length > 1;
+  } else if (plan === "chatDB Pro Plan") {
+    return dbs.length > 5;
   }
 };
 export const subscriptionsRouter = router({
@@ -368,7 +375,7 @@ export const subscriptionsRouter = router({
 
   status: protectedProcedure.query(async (opts) => {
     const { ctx } = opts;
-    const { data, error } = await getUserDatabases(
+    const { data: userDatabases, error } = await getUserDatabases(
       ctx.userSupabase,
       ctx.user.userId
     );
@@ -397,14 +404,15 @@ export const subscriptionsRouter = router({
     const subscriptionFromPaddleAPI = await getSubscriptionFromPaddleAPI(
       sub.paddle_subscription_id
     );
-    console.log(subscriptionFromPaddleAPI);
     return {
       remainingDatabases: getUserRemainingDatabases(
         subscriptionFromPaddleAPI,
-        data,
+        userDatabases,
         sub.plan
       ),
       allowedNumberOfDatabases: getAllowedNumberOfDatabases(sub.plan),
+      isUserExceedingAllowedNumberOfDatabases:
+        isUserExceedingAllowedNumberOfDatabases(sub.plan, userDatabases),
       user: ctx.user,
     };
   }),
