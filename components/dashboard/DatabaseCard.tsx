@@ -14,7 +14,6 @@ export const Card = ({ logo, title, lastUpdated, uuid }) => {
     if (!isLoading && !isError && subscriptionStatus?.remainingDatabases === null) {
       setIsUpdateSubscriptionModalOpened(true)
     } else if (!isLoading && !isError && subscriptionStatus?.isUserExceedingAllowedNumberOfDatabases) {
-      console.log("isUserExceedingAllowedNumberOfDatabases")
       setIsDeleteDatabasesModalOpeneded(true)
     }
     else {

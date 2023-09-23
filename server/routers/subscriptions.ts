@@ -81,7 +81,6 @@ const cancelPaddleSubscription = async (id) => {
 };
 
 const getPaddleSubscriptionIdFromUserId = async (supabase, userId) => {
-  console.log("usususus", userId);
   const { data, error } = await supabase
     .from("paddle_subscriptions")
     .select("paddle_subscription_id, address_id, customer_id, plan")
@@ -179,10 +178,10 @@ const getUserDatabases = async (supabase, userId) => {
 const getPaddlePriceId = (priceName) => {
   const plans = {
     ["chatDB Hobby Plan"]: {
-      monthlyPriceId: "pri_01h90zjbsana88btxhepx13g9n",
+      monthlyPriceId: process.env.NEXT_PUBLIC_PADDLE_HOBBY_PRICE_ID,
     },
     ["chatDB Pro Plan"]: {
-      monthlyPriceId: "pri_01h90zt3jwcrxsjsmfyzb8qqda",
+      monthlyPriceId: process.env.NEXT_PUBLIC_PADDLE_PRO_PRICE_ID,
     },
   };
 

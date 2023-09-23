@@ -13,10 +13,10 @@ const Checkout = () => {
     const [submitting, setSetsubmitting] = useState(false)
     const plans = {
         hobby: {
-            monthlyPriceId: 'pri_01h90zjbsana88btxhepx13g9n',
+            monthlyPriceId: process.env.NEXT_PUBLIC_PADDLE_PRO_PRICE_ID,
         },
         pro: {
-            monthlyPriceId: 'pri_01h90zt3jwcrxsjsmfyzb8qqda'
+            monthlyPriceId: process.env.NEXT_PUBLIC_PADDLE_PRO_PRICE_ID,
         }
     }
     const openPaddleCheckout = async () => {
