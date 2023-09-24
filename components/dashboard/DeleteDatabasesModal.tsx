@@ -8,7 +8,7 @@ import { trpc } from '../../utils/trpc'
 import toast from 'react-hot-toast'
 export default function DeleteDatabasesModal({ open, setOpen }) {
     const [isLoadingAction, setIsLoadingAction] = useState(false)
-    const { isLoading, isError, data: dbss, refetch: refetchDatabases } = trpc.databases.getAll.useQuery()
+    const { isLoading, isError, data: databases, refetch: refetchDatabases } = trpc.databases.getAll.useQuery()
     const deleteDatabase = trpc.databases.delete.useMutation({
         onMutate: () => {
             toast.loading("Deleting database...", {
@@ -84,7 +84,7 @@ export default function DeleteDatabasesModal({ open, setOpen }) {
                                     <div className="flex flex-col justify-between items-center gap-4">
                                         {isLoading && <LoadingSpinner />}
                                         {
-                                            dbss?.map((db, index) => (
+                                            databases?.map((db, index) => (
                                                 <div className="w-full flex justify-between" key={index}>
                                                     <div className="flex justify-between items-center gap-2">
                                                         <Image alt='database icon' src="/images/postgres-icon.png" width={30} height={25} />
