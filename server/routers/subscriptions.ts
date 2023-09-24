@@ -132,7 +132,36 @@ const updateSubscriptionViaPaddleAPI = async (
       }
     );
 
-    return { data: await response.json(), error: null };
+    // Check if the response status is 200 (OK)
+    if (response.status === 200) {
+      // Parse the JSON response
+      const responseData = await response.json();
+
+      // Check if the response contains an error related to a declined payment
+      if (
+        responseData.error &&
+        responseData.error.type === "request_error" &&
+        responseData.error.code === "subscription_payment_declined"
+      ) {
+        // Payment declined error
+        return {
+          data: null,
+          error: "Payment declined",
+        };
+      }
+
+      // Successful response
+      return {
+        data: responseData,
+        error: null,
+      };
+    } else {
+      // Handle non-200 status codes (e.g., 404, 500) here if needed
+      return {
+        data: null,
+        error: "Request failed with status: " + response.status,
+      };
+    }
   } catch (e) {
     console.log(e);
     return {
@@ -345,7 +374,7 @@ export const subscriptionsRouter = router({
       if (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Unable to update subscription",
+          message: "Unable to update subscription: " + error,
           cause: error,
         });
       }
