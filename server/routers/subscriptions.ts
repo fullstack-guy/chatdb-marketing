@@ -27,7 +27,7 @@ const createSupabasePaddleSubscription = async (
   }
 };
 
-const updateSupabasePaddleSubscription = async (supabase, userId, plan) => {
+const updateSubscriptionOnSupabase = async (supabase, userId, plan) => {
   try {
     const { data, error } = await supabase
       .from("paddle_subscriptions")
@@ -80,7 +80,7 @@ const cancelPaddleSubscription = async (id) => {
   }
 };
 
-const getPaddleSubscriptionIdFromUserId = async (supabase, userId) => {
+const getSupabaseSubscriptionIdFromUserId = async (supabase, userId) => {
   const { data, error } = await supabase
     .from("paddle_subscriptions")
     .select("paddle_subscription_id, address_id, customer_id, plan")
@@ -102,7 +102,12 @@ const getPaddleSubscriptionIdFromUserId = async (supabase, userId) => {
   }
 };
 
-const updatePaddleSubscription = async (subId, ctmId, addId, price_id) => {
+const updateSubscriptionViaPaddleAPI = async (
+  subId,
+  ctmId,
+  addId,
+  price_id
+) => {
   try {
     const response = await fetch(
       `${process.env.PADDLE_API_URL}/subscriptions/${subId}`,
@@ -267,7 +272,7 @@ export const subscriptionsRouter = router({
     }),
   cancel: protectedProcedure.mutation(async (opts) => {
     const { ctx } = opts;
-    const { sub, error: subError } = await getPaddleSubscriptionIdFromUserId(
+    const { sub, error: subError } = await getSupabaseSubscriptionIdFromUserId(
       ctx.systemSupabase,
       ctx.user.userId
     );
@@ -317,10 +322,11 @@ export const subscriptionsRouter = router({
     )
     .mutation(async (opts) => {
       const { ctx, input } = opts;
-      const { sub, error: subError } = await getPaddleSubscriptionIdFromUserId(
-        ctx.systemSupabase,
-        ctx.user.userId
-      );
+      const { sub, error: subError } =
+        await getSupabaseSubscriptionIdFromUserId(
+          ctx.systemSupabase,
+          ctx.user.userId
+        );
       if (subError) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
@@ -329,7 +335,7 @@ export const subscriptionsRouter = router({
         });
       }
 
-      const { data, error } = await updatePaddleSubscription(
+      const { data, error } = await updateSubscriptionViaPaddleAPI(
         sub.paddle_subscription_id,
         sub.customer_id,
         sub.address_id,
@@ -344,7 +350,7 @@ export const subscriptionsRouter = router({
         });
       }
 
-      const { error: updateError } = await updateSupabasePaddleSubscription(
+      const { error: updateError } = await updateSubscriptionOnSupabase(
         ctx.systemSupabase,
         ctx.user.userId,
         input.plan
@@ -390,7 +396,7 @@ export const subscriptionsRouter = router({
       });
     }
 
-    const { sub, error: subError } = await getPaddleSubscriptionIdFromUserId(
+    const { sub, error: subError } = await getSupabaseSubscriptionIdFromUserId(
       ctx.systemSupabase,
       ctx.user.userId
     );
