@@ -25,6 +25,66 @@ export default function Page() {
   const [connectionStringError, setConnectionStringError] = useState(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
+
+  const [activeTab, setActiveTab] = useState("details");
+
+  const [host, setHost] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [database, setDatabase] = useState("postgres");
+  const [port, setPort] = useState("5432");
+  const [ssl, setSSL] = useState(false);
+
+  const validateInputs = () => {
+    let isValid = true;
+
+    if (!name || name.trim() === "") {
+      setNameError("Name is required");
+      isValid = false;
+    } else {
+      setNameError(null);
+    }
+
+    if (activeTab === "url") {
+      if (!connectionString || connectionString.trim() === "") {
+        setConnectionStringError("Connection URL is required");
+        isValid = false;
+      } else {
+        setConnectionStringError(null);
+      }
+    } else {
+      if (!host || host.trim() === "") {
+        setError("Host is required");
+        isValid = false;
+      } else {
+        setError(null);
+      }
+
+      if (!username || username.trim() === "") {
+        setError("Username is required");
+        isValid = false;
+      } else {
+        setError(null);
+      }
+
+      if (!password || password.trim() === "") {
+        setError("Password is required");
+        isValid = false;
+      } else {
+        setError(null);
+      }
+
+      if (!database || database.trim() === "") {
+        setError("Database name is required");
+        isValid = false;
+      } else {
+        setError(null);
+      }
+    }
+
+    return isValid;
+  };
+
   const [databaseInfo, setDatabaseInfo] = useState(null);
   const { user } = useUser();
   const { bt } = useBasisTheory(process.env.NEXT_PUBLIC_BASIS_THEORY_KEY, {
@@ -45,7 +105,7 @@ export default function Page() {
       toast.success(data.message, {
         duration: 2000
       })
-      saveDatabase()
+      saveDatabase(getConnectionString())
     },
     onError: (error) => {
       toast.error(error.message, {
@@ -59,26 +119,17 @@ export default function Page() {
     }
   }, [connectionString]);
 
-  const handleSaveDatabaseButton = async () => {
-    if (subscriptionStatus && subscriptionStatus.remainingDatabases <= 0) {
-      setIsUpdateSubscriptionModalOpened(true)
-    } else {
-      await saveDatabase()
-    }
-  }
-  const saveDatabase = async () => {
-
+  const saveDatabase = async (connectionStr) => {
     setSaving(true);
     try {
       await handleApiResponse(
         databaseInfo,
         user,
-        connectionString,
+        connectionStr,
         name,
         toast,
         bt
       );
-      toast.success("Database refreshed!");
     } catch (error) {
       toast.error("There was an error saving the database!");
     } finally {
@@ -96,10 +147,10 @@ export default function Page() {
   ) => {
     try {
       // Send a POST request to /api/db/create
-      const response = await fetch('/api/db/create', {
-        method: 'POST',
+      const response = await fetch("/api/db/create", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           schema_data: data,
@@ -128,7 +179,6 @@ export default function Page() {
     }
   };
 
-
   const connectionStringChange = (event) => {
     const result = event.target.value
       .replace(/^postgres:\/\//, "")
@@ -136,31 +186,18 @@ export default function Page() {
     setConnectionString(result);
   };
 
-  const validateInputs = () => {
-    let isValid = true;
-
-    if (!name || name.trim() === "") {
-      setNameError("Name is required");
-      isValid = false;
-    } else {
-      setNameError(null);
-    }
-
-    if (!connectionString || connectionString.trim() === "") {
-      setConnectionStringError("Connection URL is required");
-      isValid = false;
-    } else {
-      setConnectionStringError(null);
-    }
-
-    return isValid;
-  };
-
   const handleNameChange = (event) => {
     setName(event.target.value);
   };
 
-  const connectToDatabase = async () => {
+  const getConnectionString = (fromDetails = false) => {
+    if (fromDetails) {
+      return `${username}:${password}@${host}:${port}/${database}`;
+    }
+    return connectionString;
+  };
+
+  const connectToDatabase = async (connectionStr) => {
     if (!validateInputs()) {
       return;
     }
@@ -169,7 +206,7 @@ export default function Page() {
 
     const url = "/api/connect";
     const body = {
-      connection_string: "postgres://" + connectionString,
+      connection_string: "postgres://" + connectionStr,
     };
 
     try {
@@ -182,13 +219,13 @@ export default function Page() {
       });
 
       if (!response.ok) {
-        const errorData = await response.json(); // Parse the response
-        setError(errorData.message); // Set the error message
+        const errorData = await response.json();
+        setError(errorData.message);
         setConnecting(false);
       } else {
         const data = await response.json();
         setDatabaseInfo(data);
-        setError(null); // Clear any previous error message
+        setError(null);
 
         toast("Successfully Connected", {
           icon: "👏",
@@ -206,7 +243,7 @@ export default function Page() {
     } catch (error) {
       console.error(error);
       setConnecting(false);
-      setError(error.message); // Show network error message
+      setError(error.message);
     }
   };
 
@@ -266,9 +303,7 @@ export default function Page() {
       <div className="m-auto lg:mx-[20%]">
         <div className="w-full text-center">
           <div className="container mx-auto my-auto">
-            <h1 className="mt-10 text-3xl font-bold text-black">
-              Connect your Database
-            </h1>
+            <h1 className="mt-10 text-3xl text-black">Connect your Database</h1>
 
             <h1 className="text-sm text-black">
               We will not store or modify any of the data in your tables!
@@ -279,16 +314,36 @@ export default function Page() {
               <div className="rounded-xl bg-white p-6 shadow-md">
                 <div className="w-full">
                   <BasisTheoryProvider bt={bt}>
+                    <div className="flex items-center justify-center rounded-lg bg-gray-100 px-2 py-2">
+                      <button
+                        className={`mr-3 flex-1 rounded-lg px-4 py-2 text-center transition duration-300 ease-in-out ${activeTab === "details"
+                          ? "bg-[#3D4451] text-white"
+                          : "bg-white text-black hover:bg-gray-200"
+                          }`}
+                        onClick={() => setActiveTab("details")}
+                      >
+                        Connect with Details
+                      </button>
+                      <button
+                        className={`ml-3 flex-1 rounded-lg px-4 py-2 text-center transition duration-300 ease-in-out ${activeTab === "url"
+                          ? "bg-[#3D4451] text-white"
+                          : "bg-white text-black hover:bg-gray-200"
+                          }`}
+                        onClick={() => setActiveTab("url")}
+                      >
+                        Connect with URL
+                      </button>
+                    </div>
                     <label
                       htmlFor="url"
-                      className="m-2 block text-xl font-semibold text-black"
+                      className="m-2 mt-5 block text-xl font-semibold text-black"
                     >
-                      Name
+                      Connection Name
                     </label>
                     <input
                       type="text"
                       placeholder="My Fresh Database 🤘"
-                      className="input-bordered input w-[50%] text-black"
+                      className="input-bordered input w-[50%] font-bold text-black"
                       value={name}
                       onChange={handleNameChange}
                     />
@@ -297,85 +352,234 @@ export default function Page() {
                         {nameError}
                       </p>
                     )}
-                    <label
-                      htmlFor="url"
-                      className="m-3 block text-xl font-semibold text-black"
-                    >
-                      Connection URL
-                    </label>
-                    <label className="input-group mb-5 justify-center">
-                      <span className="bg-gray-700 px-2 font-semibold text-white">
-                        postgresql://
-                      </span>
-                      <input
-                        type="text"
-                        placeholder="localhost:5432/db"
-                        className="input-bordered input w-[50%] text-black"
-                        value={connectionString}
-                        onChange={connectionStringChange}
-                      />
-                      <span
-                        className={`btn hidden sm:flex ${connecting || saving ? "loading" : ""
-                          } cursor-pointer border-none bg-success font-semibold text-black hover:bg-success`}
-                        onClick={connected ? handleSaveDatabaseButton : connectToDatabase}
-                      >
-                        {connecting ? (
-                          <>Connecting</>
-                        ) : connected ? (
-                          saving ? (
-                            <>Saving...</>
-                          ) : (
-                            <>
-                              Save{" "}
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                className=" ml-1 h-6 w-6"
-                              >
-                                <path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                              </svg>
-                            </>
-                          )
-                        ) : (
-                          <>Connect</>
+
+                    {/* Render the appropriate form based on the active tab */}
+                    {activeTab === "url" ? (
+                      <>
+                        <label
+                          htmlFor="url"
+                          className="m-3 block text-xl font-semibold text-black"
+                        >
+                          Connection URL
+                        </label>
+                        <div className="input-group mb-5 justify-center">
+                          <span className="input-group-text bg-gray-700 text-white">
+                            postgresql://
+                          </span>
+                          <input
+                            type="text"
+                            placeholder="localhost:5432/db"
+                            className="form-control text-black"
+                            value={connectionString}
+                            onChange={connectionStringChange}
+                          />
+                          <button
+                            className={`btn ${connecting || saving ? "btn-loading" : ""
+                              } cursor-pointer border-none bg-success text-black hover:bg-success`}
+                            onClick={
+                              connected
+                                ? () => saveDatabase(getConnectionString())
+                                : () => connectToDatabase(getConnectionString())
+                            }
+                          >
+                            {connecting ? (
+                              <>Connecting</>
+                            ) : connected ? (
+                              saving ? (
+                                <>Saving...</>
+                              ) : (
+                                <>
+                                  Save{" "}
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    className=" ml-1 h-6 w-6"
+                                  >
+                                    <path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                  </svg>
+                                </>
+                              )
+                            ) : (
+                              <>Connect</>
+                            )}
+                          </button>
+                        </div>
+                        {connectionStringError && (
+                          <p className="mt-1 text-sm font-bold text-red-600">
+                            {connectionStringError}
+                          </p>
                         )}
-                      </span>
-                    </label>
-                    {connectionStringError && (
-                      <p className="mt-1 text-sm font-bold text-red-600">
-                        {connectionStringError}
-                      </p>
-                    )}
-                    <div className="my-2 w-full">
-                      <button
-                        className={`btn ${connecting && "loading"
-                          } mx-auto my-2 flex w-[75%] bg-success font-semibold text-black hover:bg-success sm:hidden`}
-                        onClick={connectToDatabase}
-                        type="submit"
-                      >
-                        {connecting ? (
-                          <>Connecting</>
-                        ) : connected ? (
-                          <>
-                            Connected{" "}
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth="1.5"
-                              stroke="currentColor"
-                              className=" ml-1 h-6 w-6"
+                        <div className="my-2 w-full">
+                          <button
+                            className={`btn ${connecting && "btn-loading"
+                              } mx-auto my-2 flex w-[75%] bg-success text-black hover:bg-success sm:hidden`}
+                            onClick={
+                              connected
+                                ? () => saveDatabase(getConnectionString())
+                                : () => connectToDatabase(getConnectionString())
+                            }
+                            type="submit"
+                          >
+                            {connecting ? (
+                              <>Connecting</>
+                            ) : connected ? (
+                              saving ? (
+                                <>Saving...</>
+                              ) : (
+                                <>
+                                  Save{" "}
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    className=" ml-1 h-6 w-6"
+                                  >
+                                    <path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                  </svg>
+                                </>
+                              )
+                            ) : (
+                              <>Connect</>
+                            )}
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      // New form for connection with host, username, password, and database
+                      <>
+                        <div className="mt-5 flex space-x-4">
+                          <div className="w-1/2 space-y-4">
+                            <label
+                              htmlFor="host"
+                              className="block text-lg font-semibold text-black"
                             >
-                              <path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                          </>
-                        ) : (
-                          <>Connect</>
-                        )}
-                      </button>
-                    </div>
+                              Host
+                            </label>
+                            <input
+                              type="text"
+                              id="host"
+                              className="input-bordered input w-full text-black"
+                              value={host}
+                              onChange={(e) => setHost(e.target.value)}
+                              placeholder="db.example.com"
+                            />
+                            <label
+                              htmlFor="username"
+                              className="block text-lg font-semibold text-black"
+                            >
+                              User
+                            </label>
+                            <input
+                              type="text"
+                              id="username"
+                              className="input-bordered input w-full text-black"
+                              value={username}
+                              onChange={(e) => setUsername(e.target.value)}
+                              placeholder="postgres"
+                            />
+                            <label
+                              htmlFor="port"
+                              className="block text-lg font-semibold text-black"
+                            >
+                              Port
+                            </label>
+                            <input
+                              type="number"
+                              id="port"
+                              className="input-bordered input w-full text-black"
+                              value={port}
+                              onChange={(e) => setPort(e.target.value)}
+                              placeholder="5432"
+                            />{" "}
+                            {/* 5432 is a common default for PostgreSQL */}
+                          </div>
+
+                          <div className="w-1/2 space-y-4">
+                            <label
+                              htmlFor="password"
+                              className="block text-lg font-semibold text-black"
+                            >
+                              Password
+                            </label>
+                            <input
+                              type="password"
+                              id="password"
+                              className="input-bordered input w-full text-black"
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                              placeholder="Enter Password"
+                            />
+
+                            <label
+                              htmlFor="database"
+                              className="block text-lg font-semibold text-black"
+                            >
+                              Database
+                            </label>
+                            <input
+                              type="text"
+                              id="database"
+                              className="input-bordered input w-full text-black"
+                              value={database}
+                              onChange={(e) => setDatabase(e.target.value)}
+                              placeholder="postgres"
+                            />
+
+                            <div className="flex items-center">
+                              <input
+                                type="checkbox"
+                                className="checkbox"
+                                checked={ssl}
+                                onChange={(e) => setSSL(e.target.checked)}
+                              />
+                              <label
+                                htmlFor="ssl"
+                                className="ml-2 text-lg font-semibold text-black"
+                              >
+                                Use SSL
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+
+                        <button
+                          className={`btn ${connecting || saving ? "loading" : ""
+                            } mt-5 w-[75%] cursor-pointer border-none bg-success text-black hover:bg-success`}
+                          onClick={
+                            connected
+                              ? () => saveDatabase(getConnectionString(true))
+                              : () =>
+                                connectToDatabase(getConnectionString(true))
+                          }
+                        >
+                          {connecting ? (
+                            <>Connecting</>
+                          ) : connected ? (
+                            saving ? (
+                              <>Saving...</>
+                            ) : (
+                              <>
+                                Save{" "}
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  className=" ml-1 h-6 w-6"
+                                >
+                                  <path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                              </>
+                            )
+                          ) : (
+                            <>Connect</>
+                          )}
+                        </button>
+                      </>
+                    )}
                     {error && (
                       <p className="mt-1 text-sm font-semibold text-red-600">
                         {error}

@@ -1,39 +1,22 @@
-import React from 'react'
+import React from 'react';
 
 export default function DatabaseNav({ activeTab, setActiveTab }) {
-
     const handleTabClick = (tabName) => {
         setActiveTab(tabName);
     };
+
     return (
-        <div className="tabs tabs-boxed mt-7 bg-transparent p-0">
-            <a
-                className={`tab text-lg text-black ${activeTab === "Chat" ? "tab-active" : ""
-                    }`}
-                onClick={() => handleTabClick("Chat")}
-            >
-                Ask
-            </a>
-            <a
-                className={`tab text-lg text-black ${activeTab === "Tables" ? "tab-active" : ""
-                    }`}
-                onClick={() => handleTabClick("Tables")}
-            >
-                Tables
-            </a>
-            <a
-                className={`tab text-lg text-black ${activeTab === "Flow" ? "tab-active" : ""
-                    }`}
-                onClick={() => handleTabClick("Flow")}
-            >
-                Flow
-            </a>
-            <a
-                className={`tab text-lg text-black ${activeTab === "Settings" ? "tab-active" : ""
-                    }`}
-                onClick={() => handleTabClick("Settings")}
-            >
-                Settings
-            </a>
-        </div>)
+        <div className="flex items-center bg-gray-100 p-2 rounded-lg mt-7 space-x-4">
+            {["Chat", "Tables", "Flow", "Settings"].map((tabName) => (
+                <button
+                    key={tabName}
+                    className={`py-2 px-4 rounded-lg text-lg transition duration-300 ease-in-out transform ${activeTab === tabName ? "bg-[#3D4451] text-white scale-105" : "text-black hover:bg-gray-200"
+                        }`}
+                    onClick={() => handleTabClick(tabName)}
+                >
+                    {tabName}
+                </button>
+            ))}
+        </div>
+    );
 }

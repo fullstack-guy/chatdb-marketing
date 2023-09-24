@@ -37,6 +37,8 @@
     "markdown-table": "^3.0.3",
     "next": "^13.4.7",
     "next-seo": "^5.15.0",
+    "nextra": "^2.12.3",
+    "nextra-theme-docs": "^2.12.3",
     "openai": "^3.3.0",
     "openai-edge": "^1.1.0",
     "papaparse": "^5.4.1",

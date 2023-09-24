@@ -33,6 +33,11 @@ export default function Page() {
   const [saving, setSaving] = useState(false);
   const [isDeleteDatabasesModalOpened, setIsDeleteDatabasesModalOpened] = useState(false)
   const { isLoading, isError, data: subscriptionStatus } = trpc.subscriptions.status.useQuery()
+
+  useEffect(() => {
+    setSearchQuery(""); // clear the searchQuery when activeTab changes
+  }, [activeTab]);
+
   const fetchTables = async () => {
     try {
       const response = await fetch('/api/db/fetch', {

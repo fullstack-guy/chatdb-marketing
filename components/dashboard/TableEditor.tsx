@@ -118,6 +118,8 @@ const TableEditor = ({ tableName, database_uuid }) => {
       for (let key in newRow) {
         if (typeof newRow[key] === "object" && newRow[key] !== null) {
           newRow[key] = JSON.stringify(newRow[key]);
+        } else if (typeof newRow[key] === "boolean") {
+          newRow[key] = newRow[key] ? "true" : "false";
         }
       }
       return {
