@@ -85,6 +85,8 @@ const getPaddleSubscriptionIdFromUserId = async (supabase, userId) => {
     .from("paddle_subscriptions")
     .select("paddle_subscription_id, address_id, customer_id, plan")
     .eq("user_id", userId)
+    .order("created_at", { ascending: false }) // Assuming you have a "created_at" column
+    .limit(1) // Limit the result to one row
     .single();
 
   if (error) {
@@ -269,6 +271,7 @@ export const subscriptionsRouter = router({
       ctx.systemSupabase,
       ctx.user.userId
     );
+
     if (subError) {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
