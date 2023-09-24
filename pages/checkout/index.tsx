@@ -13,7 +13,7 @@ const Checkout = () => {
     const [submitting, setSetsubmitting] = useState(false)
     const plans = {
         hobby: {
-            monthlyPriceId: process.env.NEXT_PUBLIC_PADDLE_PRO_PRICE_ID,
+            monthlyPriceId: process.env.NEXT_PUBLIC_PADDLE_HOBBY_PRICE_ID,
         },
         pro: {
             monthlyPriceId: process.env.NEXT_PUBLIC_PADDLE_PRO_PRICE_ID,
