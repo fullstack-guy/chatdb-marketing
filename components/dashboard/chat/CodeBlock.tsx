@@ -39,12 +39,27 @@ export const programmingLanguages: languageMap = {
     css: '.css'
 }
 
-const CodeBlock: FC<Props> = ({ language, value }) => {
+const CodeBlock: FC<Props> = ({ language, value, onRunCode }) => {
     const [isCopied, setIsCopied] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const onCopy = () => {
         if (isCopied) return;
         setIsCopied(true);
+
+        // Clear the copied state after 2 seconds
+        setTimeout(() => {
+            setIsCopied(false);
+        }, 2000);
+    }
+
+    const handleRunCode = async () => {
+        setIsLoading(true);
+        try {
+            await onRunCode(value);
+        } catch (error) {
+        }
+        setIsLoading(false);
     }
 
 
@@ -64,12 +79,16 @@ const CodeBlock: FC<Props> = ({ language, value }) => {
                             <span className="sr-only">Copy code</span>
                         </button>
                     </CopyToClipboard>
-                    {/* Play Icon */}
-                    <button className="btn btn-square btn-md bg-[white] hover:bg-success btn-outline">
-                        <IconPlay className="h-6 w-6" />
-                        <span className="sr-only">Run code</span>
-                    </button>
 
+                    {/* Run Icon */}
+                    <button
+                        className="btn btn-square btn-md bg-[white] hover:bg-success btn-outline"
+                        onClick={handleRunCode}
+                        disabled={isLoading}
+                    >
+                        <IconPlay className="h-6 w-6" />
+                        <span className="sr-only">{isLoading ? "Loading..." : "Run code"}</span>
+                    </button>
                 </div>
             </div>
             <SyntaxHighlighter

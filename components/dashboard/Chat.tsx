@@ -60,8 +60,9 @@ const Chat = ({ database_uuid }) => {
   };
 
   async function sendQueryToEndpoint(code) {
+    setIsLoading(true)
     try {
-      const response = await fetch("/query", {
+      const response = await fetch("/api/db/query", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -73,14 +74,23 @@ const Chat = ({ database_uuid }) => {
       });
 
       const data = await response.json();
-
+      setIsLoading(false);
       if (response.ok) {
-        console.log("Successfully ran the query:", data);
-      } else {
-        console.error("Failed to run the query:", data);
+        setResult({
+          sql: data.sql,
+          result: "",
+          data: data.data
+        });
+
+        setIsLoading(false);
+
+      }
+      else {
+        toast.error("Sorry, we had an issue running the query.");
       }
     } catch (err) {
-      console.error("An error occurred:", err);
+      setIsLoading(false);
+      toast.error("Sorry, we had an issue running the query.");
     }
   }
 
@@ -177,6 +187,7 @@ const Chat = ({ database_uuid }) => {
                         <CodeBlock
                           key={Math.random()}
                           language={(match && match[1]) || ''}
+                          onRunCode={sendQueryToEndpoint}
                           value={String(children).replace(/\n$/, '')}
                           {...props}
                         />

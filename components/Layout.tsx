@@ -152,10 +152,6 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
           </footer>
         </div>
       </div>
-      <Toaster
-        position="bottom-center"
-        reverseOrder={false}
-      />
     </div>
   );
 };
