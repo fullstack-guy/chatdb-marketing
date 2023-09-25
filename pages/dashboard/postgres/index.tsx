@@ -26,7 +26,7 @@ export default function Page() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
 
-  const [activeTab, setActiveTab] = useState("details");
+  const [activeTab, setActiveTab] = useState("url");
 
   const [host, setHost] = useState("");
   const [username, setUsername] = useState("");
@@ -191,11 +191,22 @@ export default function Page() {
   };
 
   const getConnectionString = (fromDetails = false) => {
+    let baseString = "";
     if (fromDetails) {
-      return `${username}:${password}@${host}:${port}/${database}`;
+      baseString = `${username}:${password}@${host}:${port}/${database}`;
+
+      // Append SSL configuration if SSL is enabled
+      if (ssl) {
+        baseString += "?sslmode=require";
+      }
+
+    } else {
+      baseString = connectionString;
     }
-    return connectionString;
+
+    return baseString;
   };
+
 
   const connectToDatabase = async (connectionStr) => {
     if (!validateInputs()) {
@@ -316,22 +327,22 @@ export default function Page() {
                   <BasisTheoryProvider bt={bt}>
                     <div className="flex items-center justify-center rounded-lg bg-gray-100 px-2 py-2">
                       <button
-                        className={`mr-3 flex-1 rounded-lg px-4 py-2 text-center transition duration-300 ease-in-out ${activeTab === "details"
-                          ? "bg-[#3D4451] text-white"
-                          : "bg-white text-black hover:bg-gray-200"
-                          }`}
-                        onClick={() => setActiveTab("details")}
-                      >
-                        Connect with Details
-                      </button>
-                      <button
-                        className={`ml-3 flex-1 rounded-lg px-4 py-2 text-center transition duration-300 ease-in-out ${activeTab === "url"
+                        className={`ml-3 flex-1 rounded-lg mr-2 px-4 py-2 text-center transition duration-300 ease-in-out ${activeTab === "url"
                           ? "bg-[#3D4451] text-white"
                           : "bg-white text-black hover:bg-gray-200"
                           }`}
                         onClick={() => setActiveTab("url")}
                       >
                         Connect with URL
+                      </button>
+                      <button
+                        className={`mr-3 flex-1 rounded-lg px-4 ml-2 py-2 text-center transition duration-300 ease-in-out ${activeTab === "details"
+                          ? "bg-[#3D4451] text-white"
+                          : "bg-white text-black hover:bg-gray-200"
+                          }`}
+                        onClick={() => setActiveTab("details")}
+                      >
+                        Connect with Details
                       </button>
                     </div>
                     <label
