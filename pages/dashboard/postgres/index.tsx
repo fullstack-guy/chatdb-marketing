@@ -13,7 +13,6 @@ import { trpc } from "../../../utils/trpc";
 import UpdateSubscriptionModal from "../../../components/UpdateSubscriptionModal";
 
 
-
 export default function Page() {
   const router = useRouter();
   const [isUpdateSubscriptionModalOpeneded, setIsUpdateSubscriptionModalOpened] = useState(false)
@@ -315,7 +314,6 @@ export default function Page() {
         <div className="w-full text-center">
           <div className="container mx-auto my-auto">
             <h1 className="mt-10 text-3xl text-black">Connect your Database</h1>
-
             <h1 className="text-sm text-black">
               We will not store or modify any of the data in your tables!
             </h1>
@@ -596,13 +594,21 @@ export default function Page() {
                         {error}
                       </p>
                     )}
+                    {/* Recommendation for read-only account */}
+                    <div className="mt-10 bg-gray-300 border-l-4 border-gray-50 p-2 mb-2 rounded-md">
+                      <p className="font-semibold text-sm text-black">
+                        We recommend {" "}
+                        <Link href="/post/how-to-create-read-only-postgres-user" className="underline text-black" target="_blank">
+                          creating a read-only account with specific permissions
+                        </Link>.
+                      </p>
+                    </div>
                   </BasisTheoryProvider>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="invisible">Picture Here</div>
       </div>
       <Toaster position="bottom-center" />
       {subscriptionStatus && renderUpdateSubcriptionModal(subscriptionStatus)}

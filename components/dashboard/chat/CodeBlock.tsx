@@ -7,6 +7,7 @@ import { MdCheck as IconCheck, MdContentCopy as IconCopy, MdPlayArrow as IconPla
 interface Props {
     language: string
     value: string
+    onRunCode?: (code: string) => void;
 }
 
 interface languageMap {
