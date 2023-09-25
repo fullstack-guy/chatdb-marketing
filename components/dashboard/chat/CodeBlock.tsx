@@ -39,22 +39,14 @@ export const programmingLanguages: languageMap = {
     css: '.css'
 }
 
-export const generateRandomString = (length: number, lowercase = false) => {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXY3456789' // excluding similar looking characters like Z, 2, I, 1, O, 0
-    let result = ''
-    for (let i = 0; i < length; i++) {
-        result += chars.charAt(Math.floor(Math.random() * chars.length))
-    }
-    return lowercase ? result.toLowerCase() : result
-}
-
 const CodeBlock: FC<Props> = ({ language, value }) => {
     const [isCopied, setIsCopied] = useState(false);
 
     const onCopy = () => {
-        if (isCopied) return
-        copyToClipboard(value)
+        if (isCopied) return;
+        setIsCopied(true);
     }
+
 
     return (
         <div className="relative w-full font-sans codeblock bg-zinc-950">
@@ -65,7 +57,7 @@ const CodeBlock: FC<Props> = ({ language, value }) => {
                     {/* Copy to Clipboard Button */}
                     <CopyToClipboard
                         text={value}
-                        onCopy={() => setIsCopied(true)}
+                        onCopy={onCopy}
                     >
                         <button className="btn btn-md btn-circle btn-square btn-outline bg-[white]">
                             {isCopied ? <IconCheck /> : <IconCopy />}

@@ -55,8 +55,34 @@ const Chat = ({ database_uuid }) => {
       return { ...rowObj, id: rowIndex };
     });
 
+
     return { columns, rows };
   };
+
+  async function sendQueryToEndpoint(code) {
+    try {
+      const response = await fetch("/query", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: code,
+          database_uuid: database_uuid,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log("Successfully ran the query:", data);
+      } else {
+        console.error("Failed to run the query:", data);
+      }
+    } catch (err) {
+      console.error("An error occurred:", err);
+    }
+  }
 
   const handleKeyDown = async (e) => {
     if (e.key === "Enter") {
