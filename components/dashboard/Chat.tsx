@@ -9,6 +9,8 @@ import gfm from "remark-gfm";
 import "react-data-grid/lib/styles.css";
 import DataGrid from "react-data-grid";
 import { useAuth } from "@clerk/clerk-react";
+import CodeBlock from "./chat/CodeBlock";
+import cn from 'classnames';
 
 export const MemoizedReactMarkdown: FC<Options> = memo(
   ReactMarkdown,
@@ -119,21 +121,47 @@ const Chat = ({ database_uuid }) => {
       ) : (
         <div>
           {result.result && (
-            <div className="mt-10">
-              <div className="answer-box mb-4 rounded-lg p-4">
+            <div className="group relative mb-4 flex items-start">
+              <div className="flex-1 px-1 space-y-2 overflow-hidden">
                 <MemoizedReactMarkdown
-                  className="prose break-words text-black dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
+                  className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
                   remarkPlugins={[gfm]}
                   components={{
                     p({ children }) {
-                      return (
-                        <p className="mb-2 text-black last:mb-0">{children}</p>
-                      );
+                      return <p className="mb-2 last:mb-0">{children}</p>;
                     },
+                    code({ node, inline, className, children, ...props }) {
+                      if (children.length) {
+                        if (children[0] == '▍') {
+                          return (
+                            <span className="mt-1 cursor-default animate-pulse">▍</span>
+                          );
+                        }
+                        children[0] = (children[0] as string).replace('`▍`', '▍');
+                      }
+                      const match = /language-(\w+)/.exec(className || '');
+                      if (inline) {
+                        return (
+                          <code className={className} {...props}>
+                            {children}
+                          </code>
+                        );
+                      }
+                      return (
+                        <CodeBlock
+                          key={Math.random()}
+                          language={(match && match[1]) || ''}
+                          value={String(children).replace(/\n$/, '')}
+                          {...props}
+                        />
+                      );
+                    }
                   }}
                 >
                   {result.result}
                 </MemoizedReactMarkdown>
+                {/* If you want to include message actions as well, uncomment the line below */}
+                {/* <ChatMessageActions message={result} /> */}
               </div>
             </div>
           )}
