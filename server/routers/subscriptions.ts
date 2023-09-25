@@ -374,7 +374,8 @@ export const subscriptionsRouter = router({
       if (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Sorry, we had an issue updating the subscription. Please check your payment details and let us know if we can help!",
+          message:
+            "Sorry, we had an issue updating the subscription. Please check your payment details and let us know if we can help!",
           cause: error,
         });
       }

@@ -4,30 +4,30 @@ import { useUser } from "@clerk/nextjs";
 
 export default function Pricing() {
   const { isLoaded, isSignedIn, user } = useUser();
-  const [activePlan, setActivePlan] = useState("")
+  const [activePlan, setActivePlan] = useState("");
 
   const btnText = (name) => {
     if (activePlan === "chatDB Hobby Plan" && name === "Hobby") {
-      return "Cancel"
+      return "Cancel";
     } else if (activePlan === "chatDB Hobby Plan" && name === "Pro") {
-      return "Upgrade"
+      return "Upgrade";
     } else if (activePlan === "chatDB Pro Plan" && name === "Pro") {
-      return "Cancel"
+      return "Cancel";
     } else if (activePlan === "chatDB Pro Plan" && name === "Hobby") {
-      return "Downgrade"
+      return "Downgrade";
     } else {
-      return "Subscribe"
+      return "Subscribe";
     }
-  }
+  };
 
   const isActivePlan = (name) => {
-    return activePlan === name
-  }
+    return activePlan === name;
+  };
   useEffect(() => {
     if (isSignedIn) {
-      setActivePlan(user.publicMetadata.plan as string)
+      setActivePlan(user.publicMetadata.plan as string);
     }
-  }, [isSignedIn, isLoaded, user])
+  }, [isSignedIn, isLoaded, user]);
   return (
     <div className="w-full">
       <div className="m-auto flex flex-col items-center p-4">
@@ -45,13 +45,8 @@ export default function Pricing() {
             name="Hobby"
             price="29.99"
             description="Get started with the basic plan"
-            features={[
-              "1 User",
-              "1 Data Source",
-              "PostgreSQL Connection",
-            ]}
+            features={["1 User", "1 Data Source", "PostgreSQL Connection"]}
             btnText={btnText("Hobby")}
-
           />
           <PlanCard
             active={isActivePlan("chatDB Pro Plan")}
@@ -63,7 +58,7 @@ export default function Pricing() {
               "1 User",
               "5 Data Sources",
               "PostgreSQL Connection",
-              "More Databases Coming Soon"
+              "More Databases Coming Soon",
             ]}
             btnText={btnText("Pro")}
           />

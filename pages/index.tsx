@@ -20,7 +20,7 @@ export default function Page() {
     event.preventDefault();
 
     posthog.capture("waitlist_signup");
-    if (isSubmitting) return;  // Block submission if it's already in progress
+    if (isSubmitting) return; // Block submission if it's already in progress
     setIsSubmitting(true);
 
     if (email === "") {
@@ -53,15 +53,15 @@ export default function Page() {
     <Layout>
       <main>
         {/* Hero section */}
-        <section className="px-4 md:px-8 pb-2 pt-6 text-center md:py-16">
+        <section className="px-4 pb-2 pt-6 text-center md:px-8 md:py-16">
           <div className="mx-auto max-w-7xl">
             <div className="flex flex-col items-center">
               <h1 className="mt-5 text-center text-4xl font-bold text-heading md:max-w-4xl md:text-6xl xl:text-7xl">
                 Stop writing SQL to get answers from your data.
               </h1>
               <p className="mt-6 max-w-3xl text-lg lg:text-2xl">
-                Time is money! Say hello to your personal AI data analyst. Think ChatGPT, but for your
-                database.
+                Time is money! Say hello to your personal AI data analyst. Think
+                ChatGPT, but for your database.
               </p>
               {
                 // Render the form only if the form has not been submitted
@@ -94,7 +94,7 @@ export default function Page() {
                         background:
                           "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)",
                       }}
-                      className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none px-4 py-2.5 text-sm font-semibold text-white transition duration-200 transform hover:scale-110 hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
+                      className="inline-flex transform cursor-pointer items-center justify-center rounded-xl border-none px-4 py-2.5 text-sm font-semibold text-white transition duration-200 hover:scale-110 hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
                     >
                       Join Waitlist
                     </button>
@@ -102,11 +102,11 @@ export default function Page() {
                 )
               }
             </div>
-            <div className="mt-12 md:px-2 px-0">
+            <div className="mt-12 px-0 md:px-2">
               {/* Image for larger devices */}
               <Image
                 alt="chatdb demo image"
-                className="rounded-3xl w-full hidden sm:block"
+                className="hidden w-full rounded-3xl sm:block"
                 layout="responsive"
                 height={700}
                 width={1200}
@@ -116,18 +116,17 @@ export default function Page() {
               {/* Image for smaller devices */}
               <Image
                 alt="chatdb demo image"
-                className="rounded-3xl w-full sm:hidden"
+                className="w-full rounded-3xl sm:hidden"
                 layout="responsive"
                 height={700}
                 width={1200}
                 src="/images/ChatDBTableExample-min.png"
               />
             </div>
-
           </div>
         </section>
 
-        <div className="w-full my-20 bg-layer-1 p-6 text-center md:p-20">
+        <div className="my-20 w-full bg-layer-1 p-6 text-center md:p-20">
           <div className="mx-auto w-full max-w-6xl">
             <span className="leading-sm inline-flex items-center rounded-full border-2 border-orange-200 bg-orange-200 px-2 py-0.5 text-xs font-bold uppercase text-orange-600 shadow-sm">
               <LightBulbIcon className="mr-1 h-5 w-5" />
@@ -137,13 +136,14 @@ export default function Page() {
               We hate writing SQL as much as the next person
             </h2>
             <p className="mt-6 text-xl text-text">
-              We all know SQL queries are like single use plastics!  You need it one time and don't use it again.
+              We all know SQL queries are like single use plastics! You need it
+              one time and don't use it again.
               <br></br>
               <br></br>
               Ask the questions you want to know without spending half an hour
               wrangling SQL!
             </p>
-            <div className="flex flex-col md:flex-row space-y-0 md:space-y-0 md:space-x-4 mt-10">
+            <div className="mt-10 flex flex-col space-y-0 md:flex-row md:space-x-4 md:space-y-0">
               <div className="w-full md:w-1/3">
                 <Tweet id="1693649281931211172" />
               </div>
@@ -159,7 +159,7 @@ export default function Page() {
 
         {/* Before and After */}
 
-        <section className="bg-layer-1 my-20 p-6 md:p-10">
+        <section className="my-20 bg-layer-1 p-6 md:p-10">
           <div className="max-w-8xl mx-auto w-full">
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               <div className="rounded-3xl bg-layer-2 p-5 md:px-8 md:py-6">
@@ -277,7 +277,8 @@ export default function Page() {
                 </h3>
                 <p className="text-lg font-medium">
                   Database schemas can be complex. We try and make it easy for
-                  you to understand how everything is connected. You get a schema diagram right out of the box!
+                  you to understand how everything is connected. You get a
+                  schema diagram right out of the box!
                 </p>
               </div>
 
@@ -347,7 +348,7 @@ export default function Page() {
         </section>
 
         {/* CTA section */}
-        <section className="p-8 mt-10 md:py-20">
+        <section className="mt-10 p-8 md:py-20">
           <div className="mx-auto flex max-w-6xl flex-col items-center rounded-xl text-center sm:bg-layer-2 sm:px-6 sm:py-12 md:py-18 lg:px-32 2xl:px-64">
             <h2 className="text-3xl font-semibold text-heading md:text-4xl">
               Stay in touch and be notified when it is released!

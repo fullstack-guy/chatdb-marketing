@@ -25,79 +25,85 @@ export default function PlanCard({
   features,
   color,
   btnText = "Start Trial",
-
 }: PlanCardProps) {
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [redirectingToCheckout, setRedirectingToCheckout] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [redirectingToCheckout, setRedirectingToCheckout] = useState(false);
   const router = useRouter();
   const cancel = trpc.subscriptions.cancel.useMutation({
     onMutate: () => {
       toast.loading("Updating plan...", {
-        duration: 2000
-      })
-
+        duration: 2000,
+      });
     },
     onSuccess: (data) => {
       toast.success(data.message, {
-        duration: 2000
-      })
-      router.reload()
+        duration: 2000,
+      });
+      router.reload();
     },
     onError: (error) => {
       toast.error(error.message, {
-        duration: 2000
-      })
-    }
-  })
+        duration: 2000,
+      });
+    },
+  });
   const update = trpc.subscriptions.update.useMutation({
     onMutate: () => {
       toast.loading("Updating plan...", {
-        duration: 2000
-      })
+        duration: 2000,
+      });
     },
     onSuccess: (data) => {
       toast.success(data.message, {
-        duration: 2000
-      })
-      router.reload()
+        duration: 2000,
+      });
+      router.reload();
     },
     onError: (error) => {
       toast.error(error.message, {
-        duration: 2000
-      })
-    }
-  })
+        duration: 2000,
+      });
+    },
+  });
   const handleButtonClick = (active) => {
     if (btnText === "Cancel") {
-      setIsModalOpen(true)
+      setIsModalOpen(true);
     } else if (btnText === "Subscribe") {
-      setRedirectingToCheckout(true)
+      setRedirectingToCheckout(true);
       router.push(`/checkout?plan=${name.toLowerCase()}`);
       posthog.capture("pricing_button_clicked");
     } else if (btnText === "Upgrade") {
       update.mutateAsync({
-        plan: "chatDB Pro Plan"
-      })
+        plan: "chatDB Pro Plan",
+      });
     } else if (btnText === "Downgrade") {
       update.mutateAsync({
-        plan: "chatDB Hobby Plan"
-      })
+        plan: "chatDB Hobby Plan",
+      });
     }
   };
   const confirmAction = () => {
-    cancel.mutateAsync()
-  }
+    cancel.mutateAsync();
+  };
 
   return (
     <div
-      style={{ backgroundColor: color, border: active ? '3px solid #444' : 'none', boxShadow: active ? '0 4px 8px rgba(0,0,0,0.15)' : 'none' }}
+      style={{
+        backgroundColor: color,
+        border: active ? "3px solid #444" : "none",
+        boxShadow: active ? "0 4px 8px rgba(0,0,0,0.15)" : "none",
+      }}
       className="flex min-h-[428px] w-[400px] flex-col rounded-3xl p-8"
     >
-      <ConfirmationModal open={isModalOpen} setOpen={setIsModalOpen} action={confirmAction} />
-      <div className="flex items-center justify-between mb-5">
-        <h2 className="text-xl text-black font-medium">{name}</h2>
+      <ConfirmationModal
+        open={isModalOpen}
+        setOpen={setIsModalOpen}
+        action={confirmAction}
+      />
+      <div className="mb-5 flex items-center justify-between">
+        <h2 className="text-xl font-medium text-black">{name}</h2>
         {active && (
-          <span className="ml-2 bg-gray-800 text-white text-md font-medium px-2.5 py-1 rounded">
+          <span className="text-md ml-2 rounded bg-gray-800 px-2.5 py-1 font-medium text-white">
             Current Plan
           </span>
         )}
@@ -108,9 +114,7 @@ export default function PlanCard({
           {price && (
             <>
               <div>${price}</div>
-              <div className="text-lg font-medium">
-                /month
-              </div>
+              <div className="text-lg font-medium">/month</div>
             </>
           )}
         </div>
@@ -143,13 +147,15 @@ export default function PlanCard({
       </ul>
 
       <button
-        className="mt-auto cursor-pointer rounded-xl bg-black px-6 py-3 text-lg font-medium text-white text-left"
-        onClick={e => handleButtonClick(active)}
+        className="mt-auto cursor-pointer rounded-xl bg-black px-6 py-3 text-left text-lg font-medium text-white"
+        onClick={(e) => handleButtonClick(active)}
         disabled={cancel.isLoading || update.isLoading}
       >
-        {
-          (cancel.isLoading || update.isLoading || redirectingToCheckout) ? <LoadingSpinner /> : btnText
-        }
+        {cancel.isLoading || update.isLoading || redirectingToCheckout ? (
+          <LoadingSpinner />
+        ) : (
+          btnText
+        )}
       </button>
     </div>
   );

@@ -38,9 +38,7 @@ export default async function handler(
 ) {
   const { query, database_uuid } = req.body;
   if (!query || !database_uuid) {
-    res
-      .status(400)
-      .json({ error: "No query or database uuid provided" });
+    res.status(400).json({ error: "No query or database uuid provided" });
     return;
   }
 
@@ -72,7 +70,9 @@ export default async function handler(
     const bt = await new BasisTheory().init(
       process.env.NEXT_PRIVATE_BASIS_THEORY_KEY
     );
-    const connectionStringObject = await bt.tokens.retrieve(data.database_string);
+    const connectionStringObject = await bt.tokens.retrieve(
+      data.database_string
+    );
     const connection_string = "postgres://" + connectionStringObject.data;
 
     const pool = new Pool({
@@ -84,15 +84,15 @@ export default async function handler(
     client.release();
 
     // Extracting columns and rows in the desired format
-    const columns = result.fields.map(field => field.name);
-    const rows = result.rows.map(row => columns.map(column => row[column]));
+    const columns = result.fields.map((field) => field.name);
+    const rows = result.rows.map((row) => columns.map((column) => row[column]));
 
     return res.status(200).json({
       sql: query,
       data: {
         columns,
-        rows
-      }
+        rows,
+      },
     });
   } catch (err) {
     console.error(err);

@@ -27,12 +27,17 @@ export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("Chat");
   const [fetchedDatabase, setFetchedDatabase] = useState<Database | null>(null);
-  const [title, setTitle] = useState("")
+  const [title, setTitle] = useState("");
   const [refreshing, setRefreshing] = useState(false);
   const [dataModel, setDataModel] = useState([]);
   const [saving, setSaving] = useState(false);
-  const [isDeleteDatabasesModalOpened, setIsDeleteDatabasesModalOpened] = useState(false)
-  const { isLoading, isError, data: subscriptionStatus } = trpc.subscriptions.status.useQuery()
+  const [isDeleteDatabasesModalOpened, setIsDeleteDatabasesModalOpened] =
+    useState(false);
+  const {
+    isLoading,
+    isError,
+    data: subscriptionStatus,
+  } = trpc.subscriptions.status.useQuery();
 
   useEffect(() => {
     setSearchQuery(""); // clear the searchQuery when activeTab changes
@@ -40,10 +45,10 @@ export default function Page() {
 
   const fetchTables = async () => {
     try {
-      const response = await fetch('/api/db/fetch', {
-        method: 'POST',
+      const response = await fetch("/api/db/fetch", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           database_uuid: database_uuid,
@@ -71,10 +76,10 @@ export default function Page() {
 
   const updateDatabase = async (data, user, toast) => {
     try {
-      const response = await fetch('/api/db/update', {
-        method: 'POST',
+      const response = await fetch("/api/db/update", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           database_uuid, // Assuming you have fetchedDatabase available in this context
@@ -98,13 +103,12 @@ export default function Page() {
     }
   };
 
-
   const refreshAndSaveDatabase = async () => {
     setRefreshing(true);
 
     const url = "/api/connect";
     const body = {
-      database_uuid
+      database_uuid,
     };
 
     try {
@@ -140,17 +144,24 @@ export default function Page() {
   };
 
   useEffect(() => {
-    if (user && (user.publicMetadata.isActive === false || Object.keys(user.publicMetadata).length === 0)) {
-      router.push("/pricing")
+    if (
+      user &&
+      (user.publicMetadata.isActive === false ||
+        Object.keys(user.publicMetadata).length === 0)
+    ) {
+      router.push("/pricing");
     }
     if (isLoaded && isSignedIn) {
       fetchTables();
     }
 
-    if (!isLoading && !isError && subscriptionStatus?.isUserExceedingAllowedNumberOfDatabases) {
-      setIsDeleteDatabasesModalOpened(true)
+    if (
+      !isLoading &&
+      !isError &&
+      subscriptionStatus?.isUserExceedingAllowedNumberOfDatabases
+    ) {
+      setIsDeleteDatabasesModalOpened(true);
     }
-
   }, [isLoaded, isSignedIn, subscriptionStatus]);
 
   function convertJsonToDataModel(json) {
@@ -201,9 +212,7 @@ export default function Page() {
               <div className="flex items-center justify-between text-black">
                 <div className="flex items-center">
                   <BsDatabase />
-                  <span className="ml-2 text-3xl font-semibold">
-                    {title}
-                  </span>
+                  <span className="ml-2 text-3xl font-semibold">{title}</span>
                 </div>
                 <div>
                   <BiRefresh
@@ -214,7 +223,10 @@ export default function Page() {
               </div>
             </div>
             {(activeTab === "Query" || activeTab === "Tables") && (
-              <QuickSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+              <QuickSearch
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+              />
             )}
           </div>
           <DatabaseNav activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -224,14 +236,23 @@ export default function Page() {
         <div className="relative w-full py-3 sm:mx-auto">
           <div className="relative mx-8 rounded-3xl bg-white px-4 py-8 shadow sm:p-10 md:mx-0">
             <div className="mx-auto max-w-7xl">
-              <DatabaseControl activeTab={activeTab} database_uuid={database_uuid} filteredTables={filteredTables} fetchedDatabase={fetchedDatabase} setFetchedDatabase={setFetchedDatabase} setTitle={setTitle} />
+              <DatabaseControl
+                activeTab={activeTab}
+                database_uuid={database_uuid}
+                filteredTables={filteredTables}
+                fetchedDatabase={fetchedDatabase}
+                setFetchedDatabase={setFetchedDatabase}
+                setTitle={setTitle}
+              />
             </div>
           </div>
         </div>
       </div>
       <Toaster position="bottom-center" />
-      <DeleteDatabasesModal open={isDeleteDatabasesModalOpened} setOpen={setIsDeleteDatabasesModalOpened} />
-
+      <DeleteDatabasesModal
+        open={isDeleteDatabasesModalOpened}
+        setOpen={setIsDeleteDatabasesModalOpened}
+      />
     </Layout>
   );
 }

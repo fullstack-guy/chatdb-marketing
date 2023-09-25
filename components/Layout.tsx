@@ -16,27 +16,27 @@ type LayoutProps = {
 };
 
 const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
-  const router = useRouter()
+  const router = useRouter();
   const subscription = trpc.subscriptions.create.useMutation({
     onSuccess: (data) => {
       toast.success(data.message, {
-        duration: 2000
-      })
-      router.push("/dashboard")
+        duration: 2000,
+      });
+      router.push("/dashboard");
     },
     onError: (error) => {
       toast.error(error.message, {
-        duration: 2000
-      })
-    }
-  })
+        duration: 2000,
+      });
+    },
+  });
 
   const createSubscription = async (data) => {
     subscription.mutateAsync({
       customerId: data.customer.id,
-      items: data.items
-    })
-  }
+      items: data.items,
+    });
+  };
   const defaultTitle = "ChatDB | The AI Database Assistant for your team";
   const defaultDescription =
     "The tool that is an expert on your database. Say goodbye to hours spent creating the correct query to get the data you need.";
@@ -54,12 +54,11 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
             seller: 14142,
             eventCallback: async function (event) {
               if (event.name == "checkout.completed") {
-                await createSubscription(event.data)
+                await createSubscription(event.data);
               }
             },
           });
-        }
-        }
+        }}
       />
       <NextSeo
         title={title || defaultTitle}
@@ -145,7 +144,10 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
               <Link href="/tools/sql-formatter" className="link-hover link">
                 SQL Formatter
               </Link>
-              <Link href="/tools/csv-to-parquet-converter" className="link-hover link">
+              <Link
+                href="/tools/csv-to-parquet-converter"
+                className="link-hover link"
+              >
                 CSV to Parquet Converter
               </Link>
             </div>

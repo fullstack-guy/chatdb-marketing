@@ -12,10 +12,12 @@ import { useEffect } from "react";
 import { trpc } from "../../../utils/trpc";
 import UpdateSubscriptionModal from "../../../components/UpdateSubscriptionModal";
 
-
 export default function Page() {
   const router = useRouter();
-  const [isUpdateSubscriptionModalOpeneded, setIsUpdateSubscriptionModalOpened] = useState(false)
+  const [
+    isUpdateSubscriptionModalOpeneded,
+    setIsUpdateSubscriptionModalOpened,
+  ] = useState(false);
   const [connected, setConnected] = useState(false);
   const [connecting, setConnecting] = useState(false);
   const [connectionString, setConnectionString] = useState("");
@@ -89,29 +91,33 @@ export default function Page() {
   const { bt } = useBasisTheory(process.env.NEXT_PUBLIC_BASIS_THEORY_KEY, {
     elements: true,
   });
-  const { isLoading, isError, data: subscriptionStatus } = trpc.subscriptions.status.useQuery(null, {
+  const {
+    isLoading,
+    isError,
+    data: subscriptionStatus,
+  } = trpc.subscriptions.status.useQuery(null, {
     refetchOnWindowFocus: false,
     retry: 3,
     retryOnMount: false,
-  })
+  });
   const upgradeSubscription = trpc.subscriptions.update.useMutation({
     onMutate: () => {
       toast.loading("Updating plan...", {
-        duration: 2000
-      })
+        duration: 2000,
+      });
     },
     onSuccess: (data) => {
       toast.success(data.message, {
-        duration: 2000
-      })
-      saveDatabase(getConnectionString())
+        duration: 2000,
+      });
+      saveDatabase(getConnectionString());
     },
     onError: (error) => {
       toast.error(error.message, {
-        duration: 2000
-      })
-    }
-  })
+        duration: 2000,
+      });
+    },
+  });
   useEffect(() => {
     if (connected) {
       setConnected(false);
@@ -198,14 +204,12 @@ export default function Page() {
       if (ssl) {
         baseString += "?sslmode=require";
       }
-
     } else {
       baseString = connectionString;
     }
 
     return baseString;
   };
-
 
   const connectToDatabase = async (connectionStr) => {
     if (!validateInputs()) {
@@ -260,26 +264,41 @@ export default function Page() {
   const renderUpdateSubcriptionModal = (subscriptionStatus: {
     remainingDatabases: number;
   }) => {
-    if (subscriptionStatus.remainingDatabases !== null && subscriptionStatus.remainingDatabases <= 0) {
+    if (
+      subscriptionStatus.remainingDatabases !== null &&
+      subscriptionStatus.remainingDatabases <= 0
+    ) {
       return (
-
-        <UpdateSubscriptionModal open={isUpdateSubscriptionModalOpeneded} setOpen={setIsUpdateSubscriptionModalOpened}
-          description={" You have reached the maximum number of databases allowed on your current plan. Please upgrade your plan to create more databases."}
+        <UpdateSubscriptionModal
+          open={isUpdateSubscriptionModalOpeneded}
+          setOpen={setIsUpdateSubscriptionModalOpened}
+          description={
+            " You have reached the maximum number of databases allowed on your current plan. Please upgrade your plan to create more databases."
+          }
           title={"Maximum number of databases reached"}
           actionDescription={"Upgrade"}
-          action={() => upgradeSubscription.mutateAsync({
-            plan: "chatDB Pro Plan"
-          })} />
-      )
+          action={() =>
+            upgradeSubscription.mutateAsync({
+              plan: "chatDB Pro Plan",
+            })
+          }
+        />
+      );
     } else if (subscriptionStatus.remainingDatabases === null) {
-      return (<UpdateSubscriptionModal open={isUpdateSubscriptionModalOpeneded} setOpen={setIsUpdateSubscriptionModalOpened}
-        description={"You are not subscribed to any plan. Please choose a plan to start creating databases."}
-        title={"Choose a Plan"}
-        actionDescription={"View Pricing"}
-        action={() => router.push("/pricing")} />)
+      return (
+        <UpdateSubscriptionModal
+          open={isUpdateSubscriptionModalOpeneded}
+          setOpen={setIsUpdateSubscriptionModalOpened}
+          description={
+            "You are not subscribed to any plan. Please choose a plan to start creating databases."
+          }
+          title={"Choose a Plan"}
+          actionDescription={"View Pricing"}
+          action={() => router.push("/pricing")}
+        />
+      );
     }
-
-  }
+  };
 
   return (
     <Layout>
@@ -325,19 +344,21 @@ export default function Page() {
                   <BasisTheoryProvider bt={bt}>
                     <div className="flex items-center justify-center rounded-lg bg-gray-100 px-2 py-2">
                       <button
-                        className={`ml-3 flex-1 rounded-lg mr-2 px-4 py-2 text-center transition duration-300 ease-in-out ${activeTab === "url"
-                          ? "bg-[#3D4451] text-white"
-                          : "bg-white text-black hover:bg-gray-200"
-                          }`}
+                        className={`ml-3 mr-2 flex-1 rounded-lg px-4 py-2 text-center transition duration-300 ease-in-out ${
+                          activeTab === "url"
+                            ? "bg-[#3D4451] text-white"
+                            : "bg-white text-black hover:bg-gray-200"
+                        }`}
                         onClick={() => setActiveTab("url")}
                       >
                         Connect with URL
                       </button>
                       <button
-                        className={`mr-3 flex-1 rounded-lg px-4 ml-2 py-2 text-center transition duration-300 ease-in-out ${activeTab === "details"
-                          ? "bg-[#3D4451] text-white"
-                          : "bg-white text-black hover:bg-gray-200"
-                          }`}
+                        className={`ml-2 mr-3 flex-1 rounded-lg px-4 py-2 text-center transition duration-300 ease-in-out ${
+                          activeTab === "details"
+                            ? "bg-[#3D4451] text-white"
+                            : "bg-white text-black hover:bg-gray-200"
+                        }`}
                         onClick={() => setActiveTab("details")}
                       >
                         Connect with Details
@@ -383,8 +404,9 @@ export default function Page() {
                             onChange={connectionStringChange}
                           />
                           <button
-                            className={`btn ${connecting || saving ? "btn-loading" : ""
-                              } cursor-pointer border-none bg-success text-black hover:bg-success`}
+                            className={`btn ${
+                              connecting || saving ? "btn-loading" : ""
+                            } cursor-pointer border-none bg-success text-black hover:bg-success`}
                             onClick={
                               connected
                                 ? () => saveDatabase(getConnectionString())
@@ -422,8 +444,9 @@ export default function Page() {
                         )}
                         <div className="my-2 w-full">
                           <button
-                            className={`btn ${connecting && "btn-loading"
-                              } mx-auto my-2 flex w-[75%] bg-success text-black hover:bg-success sm:hidden`}
+                            className={`btn ${
+                              connecting && "btn-loading"
+                            } mx-auto my-2 flex w-[75%] bg-success text-black hover:bg-success sm:hidden`}
                             onClick={
                               connected
                                 ? () => saveDatabase(getConnectionString())
@@ -555,13 +578,14 @@ export default function Page() {
                         </div>
 
                         <button
-                          className={`btn ${connecting || saving ? "loading" : ""
-                            } mt-5 w-[75%] cursor-pointer border-none bg-success text-black hover:bg-success`}
+                          className={`btn ${
+                            connecting || saving ? "loading" : ""
+                          } mt-5 w-[75%] cursor-pointer border-none bg-success text-black hover:bg-success`}
                           onClick={
                             connected
                               ? () => saveDatabase(getConnectionString(true))
                               : () =>
-                                connectToDatabase(getConnectionString(true))
+                                  connectToDatabase(getConnectionString(true))
                           }
                         >
                           {connecting ? (
@@ -595,12 +619,17 @@ export default function Page() {
                       </p>
                     )}
                     {/* Recommendation for read-only account */}
-                    <div className="mt-10 bg-gray-300 border-l-4 border-gray-50 p-2 mb-2 rounded-md">
-                      <p className="font-semibold text-sm text-black">
-                        We recommend {" "}
-                        <Link href="/post/how-to-create-read-only-postgres-user" className="underline text-black" target="_blank">
+                    <div className="mb-2 mt-10 rounded-md border-l-4 border-gray-50 bg-gray-300 p-2">
+                      <p className="text-sm font-semibold text-black">
+                        We recommend{" "}
+                        <Link
+                          href="/post/how-to-create-read-only-postgres-user"
+                          className="text-black underline"
+                          target="_blank"
+                        >
                           creating a read-only account with specific permissions
-                        </Link>.
+                        </Link>
+                        .
                       </p>
                     </div>
                   </BasisTheoryProvider>

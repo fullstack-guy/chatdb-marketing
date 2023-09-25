@@ -23,22 +23,22 @@ const Page = () => {
   const tools = [
     {
       id: 1,
-      title: 'CSV Viewer and Editor',
-      description: 'A convenient viewer and editor for CSV files.',
-      link: '/tools/csv-editor',
+      title: "CSV Viewer and Editor",
+      description: "A convenient viewer and editor for CSV files.",
+      link: "/tools/csv-editor",
     },
     {
       id: 2,
-      title: 'Query CSV with SQL',
-      description: 'Run SQL queries directly on CSV files.',
-      link: '/tools/query-csv-with-sql',
+      title: "Query CSV with SQL",
+      description: "Run SQL queries directly on CSV files.",
+      link: "/tools/query-csv-with-sql",
     },
     {
       id: 5,
-      title: 'CSV to Parquet Converter',
-      description: 'Convert CSV files to compressed parquet.',
-      link: '/tools/csv-to-parquet-converter',
-    }
+      title: "CSV to Parquet Converter",
+      description: "Convert CSV files to compressed parquet.",
+      link: "/tools/csv-to-parquet-converter",
+    },
   ];
 
   const handleFileChange = (e) => {
@@ -127,14 +127,21 @@ const Page = () => {
       title="Free Online CSV to JSON Converter | ChatDB"
       description="Free online CSV to JSON Converter by ChatDB. Easily upload, view, and transform your CSV files."
       url="https://www.chatdb.ai/tools/csv-to-json-converter"
-      oggURL={
-        `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
-        }/api/og?title=${encodeURIComponent('Free Online CSV to JSON Converter')}`
-      }
+      oggURL={`${
+        process.env.VERCEL_URL ? "https://" + process.env.VERCEL_URL : ""
+      }/api/og?title=${encodeURIComponent(
+        "Free Online CSV to JSON Converter"
+      )}`}
     >
       <Head>
-        <meta name="og:title" content="Free Online CSV to JSON Converter | ChatDB" />
-        <meta name="og:description" content="Free online CSV to JSON Converter by ChatDB. Easily upload, view, and transform your CSV files." />
+        <meta
+          name="og:title"
+          content="Free Online CSV to JSON Converter | ChatDB"
+        />
+        <meta
+          name="og:description"
+          content="Free online CSV to JSON Converter by ChatDB. Easily upload, view, and transform your CSV files."
+        />
       </Head>
       <div className="mt-10 flex flex-col items-center p-6">
         <h1 className="mb-4 text-center text-5xl font-bold text-black md:text-left">
@@ -209,17 +216,19 @@ const Page = () => {
       </p>
 
       <div className="mb-28 w-full px-6">
-        <h2 className="text-center my-16 text-3xl font-bold text-black">
+        <h2 className="my-16 text-center text-3xl font-bold text-black">
           Explore other tools
         </h2>
 
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {tools.map(tool => (
+        <div className="mt-6 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {tools.map((tool) => (
             <Link href={tool.link} key={tool.id}>
-              <div className="border border-purple-600 transform transition hover:scale-105 rounded-lg overflow-hidden shadow-lg hover:border-purple-700">
+              <div className="transform overflow-hidden rounded-lg border border-purple-600 shadow-lg transition hover:scale-105 hover:border-purple-700">
                 <div className="bg-gradient-to-br from-purple-100 to-white p-6">
-                  <h2 className="font-bold text-purple-700 text-xl mb-2">{tool.title}</h2>
-                  <p className="text-gray-700 mb-4">{tool.description}</p>
+                  <h2 className="mb-2 text-xl font-bold text-purple-700">
+                    {tool.title}
+                  </h2>
+                  <p className="mb-4 text-gray-700">{tool.description}</p>
                 </div>
               </div>
             </Link>

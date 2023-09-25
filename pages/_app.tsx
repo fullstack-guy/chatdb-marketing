@@ -4,15 +4,13 @@ import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
 import "@fontsource/inter/700.css";
 
-import type { AppType } from 'next/app';
+import type { AppType } from "next/app";
 import { ClerkProvider } from "@clerk/nextjs";
 import { hotjar } from "react-hotjar";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { v4 as uuidv4 } from "uuid"; // Import the UUID generator
-import { trpc } from '../utils/trpc';
-
-
+import { trpc } from "../utils/trpc";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   const router = useRouter();
@@ -55,11 +53,10 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   }, [router.events]);
 
   return (
-
     <ClerkProvider {...pageProps}>
       <Component {...pageProps} />
     </ClerkProvider>
   );
-}
+};
 
 export default trpc.withTRPC(MyApp);

@@ -66,28 +66,28 @@ const TableEditor = ({ tableName, database_uuid }) => {
         const columns =
           response.data.length > 0
             ? Object.keys(response.data[0]).map((key) => ({
-              key: key,
-              name: key,
-              sortable: true,
-              editable: key === "id" ? false : true,
-              headerRenderer: (props) => (
-                <div
-                  onClick={() =>
-                    handleSort(key, sortDirection === "asc" ? "desc" : "asc")
-                  }
-                >
-                  {props.column.name}{" "}
-                  {sortDirection &&
-                    sortColumn === key &&
-                    (sortDirection === "asc" ? (
-                      <FaSortAmountDownAlt />
-                    ) : (
-                      <FaSortAmountUpAlt />
-                    ))}
-                </div>
-              ),
-              resizable: true,
-            }))
+                key: key,
+                name: key,
+                sortable: true,
+                editable: key === "id" ? false : true,
+                headerRenderer: (props) => (
+                  <div
+                    onClick={() =>
+                      handleSort(key, sortDirection === "asc" ? "desc" : "asc")
+                    }
+                  >
+                    {props.column.name}{" "}
+                    {sortDirection &&
+                      sortColumn === key &&
+                      (sortDirection === "asc" ? (
+                        <FaSortAmountDownAlt />
+                      ) : (
+                        <FaSortAmountUpAlt />
+                      ))}
+                  </div>
+                ),
+                resizable: true,
+              }))
             : [];
         setColumns(columns);
       }
@@ -132,7 +132,9 @@ const TableEditor = ({ tableName, database_uuid }) => {
   const transformedRows = transformRows(tableRows);
 
   return (
-    <div className="max-h-full w-full h-full overflow-x-auto flex flex-col"> {/* Added flex and flex-col */}
+    <div className="flex h-full max-h-full w-full flex-col overflow-x-auto">
+      {" "}
+      {/* Added flex and flex-col */}
       {isLoading ? (
         <div className="m-auto">
           <PuffLoader
@@ -145,20 +147,35 @@ const TableEditor = ({ tableName, database_uuid }) => {
       ) : (
         <>
           <DataGrid
-            className={`rdg-light w-full h-[100%] max-h-[60vh] ${roboto.className}`}
+            className={`rdg-light h-[100%] max-h-[60vh] w-full ${roboto.className}`}
             columns={columns}
             rows={transformedRows}
           />
 
-          <div className="flex justify-between items-center m-4 px-4">
+          <div className="m-4 flex items-center justify-between px-4">
             <div className="flex items-center">
-              <div className="join-item btn-sm text-black btn btn-outline mx-2" onClick={() => setPageNumber(prev => Math.max(prev - 1, 1))}>«</div>
+              <div
+                className="join-item btn-outline btn-sm btn mx-2 text-black"
+                onClick={() => setPageNumber((prev) => Math.max(prev - 1, 1))}
+              >
+                «
+              </div>
               <span className="mx-2 text-black">Page {pageNumber}</span>
-              <button className="join-item btn-sm text-black btn btn-outline mx-2" onClick={() => setPageNumber(prev => prev + 1)}>»</button>
+              <button
+                className="join-item btn-outline btn-sm btn mx-2 text-black"
+                onClick={() => setPageNumber((prev) => prev + 1)}
+              >
+                »
+              </button>
             </div>
-            <span className="mt-2 text-sm">Showing {transformedRows.length} results</span>
+            <span className="mt-2 text-sm">
+              Showing {transformedRows.length} results
+            </span>
             <div className="flex items-center gap-4">
-              <button onClick={fetchDataDebounced} className="rounded px-4 py-2 text-black shadow">
+              <button
+                onClick={fetchDataDebounced}
+                className="rounded px-4 py-2 text-black shadow"
+              >
                 <FaSync />
               </button>
               <CSVLink

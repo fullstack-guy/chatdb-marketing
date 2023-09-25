@@ -30,7 +30,6 @@ export default function UsageChart(props: UsageChartProps) {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
-
     if (!supabase) {
       console.error("Supabase client is not initialized yet.");
       return;
@@ -38,9 +37,9 @@ export default function UsageChart(props: UsageChartProps) {
 
     const fetchData = async () => {
       const { data, error } = await supabase
-        .from('ask_queries')
-        .select('created_at')
-        .eq('database_uuid', props.database_uuid)
+        .from("ask_queries")
+        .select("created_at")
+        .eq("database_uuid", props.database_uuid);
 
       if (error) {
         console.error("Error fetching data:", error);
@@ -54,7 +53,9 @@ export default function UsageChart(props: UsageChartProps) {
         return acc;
       }, {});
 
-      const formattedData = Object.entries(groupedData).map(([Month, Queries]) => ({ Month, Queries }));
+      const formattedData = Object.entries(groupedData).map(
+        ([Month, Queries]) => ({ Month, Queries })
+      );
 
       setChartData(formattedData);
     };
@@ -68,7 +69,9 @@ export default function UsageChart(props: UsageChartProps) {
         <TabList>
           <Tab className="p-4 text-left sm:p-6">
             <p className="text-lg text-black">Ask Queries</p>
-            <Metric className="mt-2 text-black">{sumArray(chartData, 'Queries')}</Metric>
+            <Metric className="mt-2 text-black">
+              {sumArray(chartData, "Queries")}
+            </Metric>
           </Tab>
         </TabList>
         <TabPanels>

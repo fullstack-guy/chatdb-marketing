@@ -8,11 +8,13 @@ date: "2023-08-21"
 Today, I'm drawing a somewhat unconventional, yet thought-provoking parallel: SQL is like single-use plastics. Yes, you read that right. Let's dive in!
 
 ## The Plastic Predicament
+
 We're all familiar with the environmental concerns surrounding single-use plastics. Their convenience is undeniable, yet their longevity is both their strength and their downfall. They serve their purpose momentarily but linger on far longer than their utility justifies.
 
 Similarly, traditional SQL queries, while powerful and essential, often become "single-use" in the hands of many businesses. Teams spend hours, if not days, crafting the perfect query to extract a particular piece of information. But once the question is answered? That custom-crafted query often gets discarded, just like a plastic straw after one sip of a drink.
 
 ## The Costs of One-Time-Only Queries
+
 This approach has costs:
 
 1. **Time and Talent Waste**: The cumulative hours spent crafting these one-off queries amount to immense human capital wastage.

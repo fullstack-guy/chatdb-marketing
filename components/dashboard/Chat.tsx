@@ -10,7 +10,7 @@ import "react-data-grid/lib/styles.css";
 import DataGrid from "react-data-grid";
 import { useAuth } from "@clerk/clerk-react";
 import CodeBlock from "./chat/CodeBlock";
-import cn from 'classnames';
+import cn from "classnames";
 
 export const MemoizedReactMarkdown: FC<Options> = memo(
   ReactMarkdown,
@@ -27,7 +27,7 @@ const Chat = ({ database_uuid }) => {
   const { getToken } = useAuth();
 
   const toggleSqlVisibility = () => {
-    setShowSql(prevShowSql => !prevShowSql);
+    setShowSql((prevShowSql) => !prevShowSql);
   };
 
   const formatDataForGrid = (data) => {
@@ -46,8 +46,8 @@ const Chat = ({ database_uuid }) => {
       let rowObj = {};
       data.columns.forEach((col, colIndex) => {
         // Check if the value is a boolean and convert it to a string if it is
-        if (typeof row[colIndex] === 'boolean') {
-          rowObj[col] = row[colIndex] ? 'true' : 'false';
+        if (typeof row[colIndex] === "boolean") {
+          rowObj[col] = row[colIndex] ? "true" : "false";
         } else {
           rowObj[col] = row[colIndex];
         }
@@ -55,12 +55,11 @@ const Chat = ({ database_uuid }) => {
       return { ...rowObj, id: rowIndex };
     });
 
-
     return { columns, rows };
   };
 
   async function sendQueryToEndpoint(code) {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const response = await fetch("/api/db/query", {
         method: "POST",
@@ -79,13 +78,11 @@ const Chat = ({ database_uuid }) => {
         setResult({
           sql: data.sql,
           result: "",
-          data: data.data
+          data: data.data,
         });
 
         setIsLoading(false);
-
-      }
-      else {
+      } else {
         toast.error("Sorry, we had an issue running the query.");
       }
     } catch (err) {
@@ -102,11 +99,17 @@ const Chat = ({ database_uuid }) => {
       try {
         const token = await getToken({ template: "supabase" });
 
-        const response = await fetch("https://chatdb-backend-deah4kbsta-uc.a.run.app/ask", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-          body: JSON.stringify({ query, uuid: database_uuid }),
-        });
+        const response = await fetch(
+          "https://chatdb-backend-deah4kbsta-uc.a.run.app/ask",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ query, uuid: database_uuid }),
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Response Error: " + response.status);
@@ -117,7 +120,7 @@ const Chat = ({ database_uuid }) => {
         setResult({
           sql: data.sql,
           result: data.text,
-          data: data.data
+          data: data.data,
         });
 
         setIsLoading(false);
@@ -158,7 +161,7 @@ const Chat = ({ database_uuid }) => {
         <div>
           {result.result && (
             <div className="group relative mb-4 flex items-start">
-              <div className="flex-1 px-1 space-y-2 overflow-hidden">
+              <div className="flex-1 space-y-2 overflow-hidden px-1">
                 <MemoizedReactMarkdown
                   className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
                   remarkPlugins={[gfm]}
@@ -168,14 +171,19 @@ const Chat = ({ database_uuid }) => {
                     },
                     code({ node, inline, className, children, ...props }) {
                       if (children.length) {
-                        if (children[0] == '▍') {
+                        if (children[0] == "▍") {
                           return (
-                            <span className="mt-1 cursor-default animate-pulse">▍</span>
+                            <span className="mt-1 animate-pulse cursor-default">
+                              ▍
+                            </span>
                           );
                         }
-                        children[0] = (children[0] as string).replace('`▍`', '▍');
+                        children[0] = (children[0] as string).replace(
+                          "`▍`",
+                          "▍"
+                        );
                       }
-                      const match = /language-(\w+)/.exec(className || '');
+                      const match = /language-(\w+)/.exec(className || "");
                       if (inline) {
                         return (
                           <code className={className} {...props}>
@@ -186,13 +194,13 @@ const Chat = ({ database_uuid }) => {
                       return (
                         <CodeBlock
                           key={Math.random()}
-                          language={(match && match[1]) || ''}
+                          language={(match && match[1]) || ""}
                           onRunCode={sendQueryToEndpoint}
-                          value={String(children).replace(/\n$/, '')}
+                          value={String(children).replace(/\n$/, "")}
                           {...props}
                         />
                       );
-                    }
+                    },
                   }}
                 >
                   {result.result}
@@ -205,7 +213,7 @@ const Chat = ({ database_uuid }) => {
           {Object.keys(result?.data || {}).length > 0 && (
             <div className="mt-5">
               <DataGrid
-                className={`rdg-light w-full h-[100%] max-h-[60vh]`}
+                className={`rdg-light h-[100%] max-h-[60vh] w-full`}
                 columns={formatDataForGrid(result.data).columns}
                 rows={formatDataForGrid(result.data).rows}
               />
@@ -215,7 +223,7 @@ const Chat = ({ database_uuid }) => {
             <div>
               {/* The View Code Button */}
               <button
-                className="mt-5 btn btn-primary"
+                className="btn-primary btn mt-5"
                 onClick={toggleSqlVisibility}
               >
                 View Code

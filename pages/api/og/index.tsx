@@ -1,8 +1,8 @@
-import { ImageResponse } from '@vercel/og';
-import { NextRequest } from 'next/server';
+import { ImageResponse } from "@vercel/og";
+import { NextRequest } from "next/server";
 
 export const config = {
-  runtime: 'edge',
+  runtime: "edge",
 };
 
 export default function handler(request: NextRequest) {
@@ -10,31 +10,29 @@ export default function handler(request: NextRequest) {
     const { searchParams } = new URL(request.url);
 
     // ?title=<title>
-    const hasTitle = searchParams.has('title');
-    const title = hasTitle
-      ? searchParams.get('title')?.slice(0, 100)
-      : null;
+    const hasTitle = searchParams.has("title");
+    const title = hasTitle ? searchParams.get("title")?.slice(0, 100) : null;
 
     return new ImageResponse(
       (
         <div
           style={{
-            backgroundColor: '#171717',
-            height: '100%',
-            width: '100%',
-            display: 'flex',
-            textAlign: 'left',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexDirection: 'column',
-            flexWrap: 'nowrap',
+            backgroundColor: "#171717",
+            height: "100%",
+            width: "100%",
+            display: "flex",
+            textAlign: "left",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+            flexWrap: "nowrap",
           }}
         >
           <div
             style={{
               fontSize: 36,
-              color: 'white',
-              fontWeight: 'bold',
+              color: "white",
+              fontWeight: "bold",
               marginBottom: 30,
             }}
           >
@@ -45,12 +43,12 @@ export default function handler(request: NextRequest) {
               style={{
                 fontSize: 72,
                 textAlign: "center",
-                fontStyle: 'normal',
-                letterSpacing: '-0.025em',
-                color: 'white',
-                padding: '0 120px',
+                fontStyle: "normal",
+                letterSpacing: "-0.025em",
+                color: "white",
+                padding: "0 120px",
                 lineHeight: 1.0,
-                whiteSpace: 'pre-wrap',
+                whiteSpace: "pre-wrap",
               }}
             >
               {title}
@@ -61,7 +59,7 @@ export default function handler(request: NextRequest) {
       {
         width: 1200,
         height: 630,
-      },
+      }
     );
   } catch (e: any) {
     console.log(`${e.message}`);

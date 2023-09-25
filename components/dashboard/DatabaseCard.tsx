@@ -6,20 +6,35 @@ import { useRouter } from "next/router";
 import DeleteDatabasesModal from "./DeleteDatabasesModal";
 
 export const Card = ({ logo, title, lastUpdated, uuid }) => {
-  const { isLoading, isError, data: subscriptionStatus } = trpc.subscriptions.status.useQuery()
-  const [isUpdateSubscriptionModalOpeneded, setIsUpdateSubscriptionModalOpened] = useState(false)
-  const [isDeleteDatabasesModalOpened, setIsDeleteDatabasesModalOpeneded] = useState(false)
-  const router = useRouter()
+  const {
+    isLoading,
+    isError,
+    data: subscriptionStatus,
+  } = trpc.subscriptions.status.useQuery();
+  const [
+    isUpdateSubscriptionModalOpeneded,
+    setIsUpdateSubscriptionModalOpened,
+  ] = useState(false);
+  const [isDeleteDatabasesModalOpened, setIsDeleteDatabasesModalOpeneded] =
+    useState(false);
+  const router = useRouter();
   const handleDatabaseCardClick = () => {
-    if (!isLoading && !isError && subscriptionStatus?.remainingDatabases === null) {
-      setIsUpdateSubscriptionModalOpened(true)
-    } else if (!isLoading && !isError && subscriptionStatus?.isUserExceedingAllowedNumberOfDatabases) {
-      setIsDeleteDatabasesModalOpeneded(true)
+    if (
+      !isLoading &&
+      !isError &&
+      subscriptionStatus?.remainingDatabases === null
+    ) {
+      setIsUpdateSubscriptionModalOpened(true);
+    } else if (
+      !isLoading &&
+      !isError &&
+      subscriptionStatus?.isUserExceedingAllowedNumberOfDatabases
+    ) {
+      setIsDeleteDatabasesModalOpeneded(true);
+    } else {
+      router.push(`/dashboard/${uuid}`);
     }
-    else {
-      router.push(`/dashboard/${uuid}`)
-    }
-  }
+  };
 
   return (
     <div className="relative">
@@ -42,15 +57,21 @@ export const Card = ({ logo, title, lastUpdated, uuid }) => {
           </div>
         </div>
       </div>
-      <UpdateSubscriptionModal open={isUpdateSubscriptionModalOpeneded} setOpen={setIsUpdateSubscriptionModalOpened}
-        description={"You are not subscribed to any plan. Please choose a plan to start creating databases."}
+      <UpdateSubscriptionModal
+        open={isUpdateSubscriptionModalOpeneded}
+        setOpen={setIsUpdateSubscriptionModalOpened}
+        description={
+          "You are not subscribed to any plan. Please choose a plan to start creating databases."
+        }
         title={"Choose a Plan"}
         actionDescription={"View Pricing"}
-        action={() => router.push("/pricing")} />
-      <DeleteDatabasesModal open={isDeleteDatabasesModalOpened} setOpen={setIsDeleteDatabasesModalOpeneded} />
-
+        action={() => router.push("/pricing")}
+      />
+      <DeleteDatabasesModal
+        open={isDeleteDatabasesModalOpened}
+        setOpen={setIsDeleteDatabasesModalOpeneded}
+      />
     </div>
-
   );
 };
 

@@ -21,9 +21,15 @@ export default class MyDocument extends Document {
             </defs>
           </svg>
           <script
-            dangerouslySetInnerHTML={{ __html: `!function(e,t,n){function a(){var e=t.getElementsByTagName("script")[0],n=t.createElement("script");n.type="text/javascript",n.async=!0,n.src="https://beacon-v2.helpscout.net",e.parentNode.insertBefore(n,e)}if(e.Beacon=n=function(t,n,a){e.Beacon.readyQueue.push({method:t,options:n,data:a})},n.readyQueue=[],"complete"===t.readyState)return a();e.attachEvent?e.attachEvent("onload",a):e.addEventListener("load",a,!1)}(window,document,window.Beacon||function(){});` }} />
+            dangerouslySetInnerHTML={{
+              __html: `!function(e,t,n){function a(){var e=t.getElementsByTagName("script")[0],n=t.createElement("script");n.type="text/javascript",n.async=!0,n.src="https://beacon-v2.helpscout.net",e.parentNode.insertBefore(n,e)}if(e.Beacon=n=function(t,n,a){e.Beacon.readyQueue.push({method:t,options:n,data:a})},n.readyQueue=[],"complete"===t.readyState)return a();e.attachEvent?e.attachEvent("onload",a):e.addEventListener("load",a,!1)}(window,document,window.Beacon||function(){});`,
+            }}
+          />
           <script
-            dangerouslySetInnerHTML={{ __html: `window.Beacon('init', '18ef39ce-1b8b-4f08-9cb6-3dd11dbd0fd7')` }} />
+            dangerouslySetInnerHTML={{
+              __html: `window.Beacon('init', '18ef39ce-1b8b-4f08-9cb6-3dd11dbd0fd7')`,
+            }}
+          />
         </body>
       </Html>
     );
