@@ -16,7 +16,7 @@ export default function Pricing() {
     } else if (activePlan === "chatDB Pro Plan" && name === "Hobby") {
       return "Downgrade";
     } else {
-      return "Subscribe";
+      return "Get Started";
     }
   };
 
