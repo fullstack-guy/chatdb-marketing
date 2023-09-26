@@ -51,7 +51,7 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
           const Paddle = await window.Paddle;
           await Paddle.Environment.set(process.env.NEXT_PUBLIC_PADDLE_ENV);
           await Paddle.Setup({
-            seller: 14142,
+            seller: 176405,
             eventCallback: async function (event) {
               if (event.name == "checkout.completed") {
                 await createSubscription(event.data);
