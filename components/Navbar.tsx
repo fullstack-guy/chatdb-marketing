@@ -49,9 +49,9 @@ const Navbar = () => {
             </div>
           </SignedIn>
           <SignedOut>
-            <div className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold hover:bg-heading/5 hover:text-heading focus:bg-heading/5">
+            {/* <div className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold hover:bg-heading/5 hover:text-heading focus:bg-heading/5">
               <SignInButton />
-            </div>
+            </div> */}
           </SignedOut>
         </div>
 
