@@ -48,9 +48,13 @@ const Chat = ({ database_uuid }) => {
         // Check if the value is a boolean and convert it to a string if it is
         if (typeof row[colIndex] === "boolean") {
           rowObj[col] = row[colIndex] ? "true" : "false";
+        }
+        if (typeof row[colIndex] === "object" && row[colIndex] !== null) {
+          rowObj[col] = JSON.stringify(row[colIndex]);
         } else {
           rowObj[col] = row[colIndex];
         }
+
       });
       return { ...rowObj, id: rowIndex };
     });
