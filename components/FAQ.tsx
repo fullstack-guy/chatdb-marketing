@@ -1,36 +1,30 @@
 import { Disclosure } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/outline";
+import Link from "next/link";
 
 const FAQ = () => {
   return (
     <>
       {/* FAQ */}
-      <section className="p-8 md:py-20">
+      <section className="p-8 my-48 md:py-20">
         <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
-          <h2 className="mb-10 text-4xl font-semibold text-heading md:text-5xl md:leading-tight">
+          <h2 className="mb-10 text-2xl font-semibold text-heading md:text-5xl md:leading-tight">
             Frequently Asked Questions
           </h2>
-          <div className="flex w-96 flex-col space-y-2">
+          <div className="flex w-full md:w-2/3 flex-col space-y-2">
+
             <Disclosure>
               {({ open }) => (
                 <>
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
-                    How does the database snapshot work?
+                    Do you support more than PostgreSQL?
                     <ChevronDownIcon
-                      className={`${
-                        open ? "rotate-180 text-heading" : "text-text"
-                      } h-5 w-5`}
+                      className={`${open ? "rotate-180 text-heading" : "text-text"
+                        } h-5 w-5`}
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 py-2">
-                    With TempConnect ChatDB connects to your database and reads
-                    the table information. This is a one time snapshot and
-                    ChatDB does not stay connected to your database.
-                    <br></br>
-                    <br></br>
-                    ChatDB only knows the names of the tables and the column
-                    names. It does not access or store any of your data in the
-                    tables.
+                    Currently, we support only PostgreSQL, but plan to add more database such as MySQL etc.<br></br><br></br>Send us a message at <b>caleb@chatdb.ai</b> if you use a data source other than PostgreSQL.
                   </Disclosure.Panel>
                 </>
               )}
@@ -40,16 +34,14 @@ const FAQ = () => {
               {({ open }) => (
                 <>
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
-                    Does it work with queries involving complex joins?
+                    How can I improve the results?
                     <ChevronDownIcon
-                      className={`${
-                        open ? "rotate-180 text-heading" : "text-text"
-                      } h-5 w-5`}
+                      className={`${open ? "rotate-180 text-heading" : "text-text"
+                        } h-5 w-5`}
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 py-2">
-                    Yes, it works great for complex problems where you may have
-                    to use multiple tables and relationships.
+                    By specifying the tables it needs to query can usually nudge the AI in the right direction. We will be continually improving the capabilities and effectiveness of the model.
                   </Disclosure.Panel>
                 </>
               )}
@@ -61,13 +53,30 @@ const FAQ = () => {
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
                     Do you offer technical support?
                     <ChevronDownIcon
-                      className={`${
-                        open ? "rotate-180 text-heading" : "text-text"
-                      } h-5 w-5`}
+                      className={`${open ? "rotate-180 text-heading" : "text-text"
+                        } h-5 w-5`}
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 py-2">
-                    Yes, premium plans offer technical support!
+                    Yes, we can help you based on the plan you are subscribed to.
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+
+            <Disclosure>
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
+                    How secure is the tool?
+                    <ChevronDownIcon
+                      className={`${open ? "rotate-180 text-heading" : "text-text"
+                        } h-5 w-5`}
+                    />
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="px-4 py-2">
+                    At ChatDB, security is the top priority. We encrypt database credentials at rest and in transit. When communicating between backend and database, we use secure tokens to protect your credentials. Your database table metadata is stored in secure secrets vault.
                   </Disclosure.Panel>
                 </>
               )}
@@ -77,19 +86,15 @@ const FAQ = () => {
               {({ open }) => (
                 <>
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
-                    What are the benefits of using ChatDB?
+                    How do you protect my database from bad queries?
                     <ChevronDownIcon
-                      className={`${
-                        open ? "rotate-180 text-heading" : "text-text"
-                      } h-5 w-5`}
+                      className={`${open ? "rotate-180 text-heading" : "text-text"
+                        } h-5 w-5`}
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 py-2">
-                    Offering ChatDB to your team will improve the employee
-                    onboarding experience, save precious engineering hours, and
-                    make it easier to extract valuable insights from your data,
-                    allowing your team to make more informed decisions and
-                    improve business outcomes.{" "}
+                    We parse the AI generated SQL query before executing it against the database. <br></br><br></br>
+                    To have fool proof protection, we recommend creating a read only account for ChatDB to use with the database. We have instructions on how to do that <Link className="underline font-bold" href="/post/how-to-create-read-only-postgres-user">here</Link>.
                   </Disclosure.Panel>
                 </>
               )}
@@ -99,18 +104,20 @@ const FAQ = () => {
               {({ open }) => (
                 <>
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
-                    How secure is the tool? Will it access or modify my data?
+                    What is on the product roadmap?
                     <ChevronDownIcon
-                      className={`${
-                        open ? "rotate-180 text-heading" : "text-text"
-                      } h-5 w-5`}
+                      className={`${open ? "rotate-180 text-heading" : "text-text"
+                        } h-5 w-5`}
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 py-2">
-                    At ChatDB, security is the top priority. We do not modify or
-                    access data in your databases. Additionally, we do not store
-                    your database authentication information or maintain a
-                    connection to your database.
+                    <ul className="list-disc list-inside mt-4 text-left">
+                      <li>Add MySQL Database Support</li>
+                      <li>Add Google Sheets Support</li>
+                      <li>Add AI for files like CSVs, Excel, etc</li>
+                    </ul>
+                    <br></br>
+                    Email us at <b>caleb@chatdb.ai</b> if you are looking for a feature that we don't yet have.
                   </Disclosure.Panel>
                 </>
               )}
@@ -120,19 +127,14 @@ const FAQ = () => {
               {({ open }) => (
                 <>
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
-                    How does the tool learn about my database and its schema?
+                    Do you have an Enterprise or a Custom plan?
                     <ChevronDownIcon
-                      className={`${
-                        open ? "rotate-180 text-heading" : "text-text"
-                      } h-5 w-5`}
+                      className={`${open ? "rotate-180 text-heading" : "text-text"
+                        } h-5 w-5`}
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 py-2">
-                    During the onboarding, you take a Snapshot of your data
-                    model. This is a simple read only query that reads the
-                    names, fields, and data types of the tables in your
-                    database. AI will use this information to create queries
-                    that work with your specific data model!
+                    Yes, we can do Enterprise or custom plans.<br></br><br></br>Send us a message at <b>caleb@chatdb.ai</b>.
                   </Disclosure.Panel>
                 </>
               )}

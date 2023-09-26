@@ -1,13 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PlanCard from "./PlanCard";
+import { useUser } from "@clerk/nextjs";
 
 export default function Pricing() {
-  const [isYearlyPricing, setYearlyPricing] = useState(false);
+  const { isLoaded, isSignedIn, user } = useUser();
+  const [activePlan, setActivePlan] = useState("");
 
-  const handleToggle = () => {
-    setYearlyPricing(!isYearlyPricing);
+  const btnText = (name) => {
+    if (activePlan === "chatDB Hobby Plan" && name === "Hobby") {
+      return "Cancel";
+    } else if (activePlan === "chatDB Hobby Plan" && name === "Pro") {
+      return "Upgrade";
+    } else if (activePlan === "chatDB Pro Plan" && name === "Pro") {
+      return "Cancel";
+    } else if (activePlan === "chatDB Pro Plan" && name === "Hobby") {
+      return "Downgrade";
+    } else {
+      return "Get Started";
+    }
   };
 
+  const isActivePlan = (name) => {
+    return activePlan === name;
+  };
+  useEffect(() => {
+    if (isSignedIn) {
+      setActivePlan(user.publicMetadata.plan as string);
+    }
+  }, [isSignedIn, isLoaded, user]);
   return (
     <div className="w-full">
       <div className="m-auto flex flex-col items-center p-4">
@@ -15,87 +35,32 @@ export default function Pricing() {
           <h1 className="mb-4 text-7xl font-black text-black">Pricing</h1>
           <p className="text-lg">
             Choose the right pricing for you and get started working on your
-            project. <br></br>Get your own personal data analyst at the price of
-            a pizza!
+            project!
           </p>
-          <div className="mt-6 flex justify-center space-x-4">
-            <button
-              className={`rounded-lg px-4 py-2 ${
-                !isYearlyPricing
-                  ? "bg-gray-800 text-white"
-                  : "bg-gray-200 text-gray-500"
-              }`}
-              onClick={() => setYearlyPricing(false)}
-            >
-              Monthly
-            </button>
-            <button
-              className={`rounded-lg px-4 py-2 ${
-                isYearlyPricing
-                  ? "bg-gray-800 text-white"
-                  : "bg-gray-200 text-gray-500"
-              }`}
-              onClick={() => setYearlyPricing(true)}
-            >
-              Yearly
-            </button>
-          </div>
         </div>
         <div className="flex flex-col gap-8 xl:flex-row">
           <PlanCard
+            active={isActivePlan("chatDB Hobby Plan")}
             color="#78E3FC"
-            name="Basic"
-            monthlyPrice="29.99"
-            annualPrice="299.99"
+            name="Hobby"
+            price="29.99"
             description="Get started with the basic plan"
-            features={[
-              "1 User",
-              "5 Databases",
-              "30 Tables",
-              "Unlimited Messages",
-              "Chat with CSV",
-              "Backed by ChatGPT",
-              "PostgreSQL Connection",
-              "Multiple Schemas",
-            ]}
-            btnText="Get Started"
-            isYearlyPricing={isYearlyPricing}
+            features={["1 User", "1 Data Source", "PostgreSQL Connection"]}
+            btnText={btnText("Hobby")}
           />
-          {/* <PlanCard
-            color="#F4D06F"
+          <PlanCard
+            active={isActivePlan("chatDB Pro Plan")}
+            color="#ffb5ba"
             name="Pro"
-            monthlyPrice="29.99"
-            annualPrice="299.99"
-            description="Get more advanced"
+            price="49.99"
+            description="Get started with the pro plan"
             features={[
               "1 User",
-              "5 Projects",
-              "50 Tables",
-              "Smart Debugging",
-              "Multiple Schemas",
-              "All Connections",
-              "GPT4 Add On",
-              "Premium Support",
+              "5 Data Sources",
+              "PostgreSQL Connection",
+              "More Databases Coming Soon",
             ]}
-            btnText="Become a Pro"
-            isYearlyPricing={isYearlyPricing}
-          /> */}
-          <PlanCard
-            color="#FFB5BA"
-            name="Business"
-            description="For big teams and businesses"
-            price="Contact Us"
-            features={[
-              "Organization Settings",
-              "Unlimited Users",
-              "Unlimited Projects",
-              "All Connections",
-              "Backed by GPT4",
-              "Premium Support",
-              "Custom Feature Requests",
-            ]}
-            btnText="Contact Us"
-            isYearlyPricing={isYearlyPricing}
+            btnText={btnText("Pro")}
           />
         </div>
       </div>

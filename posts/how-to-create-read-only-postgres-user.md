@@ -29,7 +29,6 @@ Once connected, you can create a new user with the `CREATE USER` command. For ex
 CREATE USER my_readonly_user;
 ```
 
-
 ## Step 3: Grant Connect Privilege
 
 Next, you need to grant the `CONNECT` privilege to the new user for the database:
@@ -46,7 +45,6 @@ Now, it's time to set the user permissions. You want to grant `USAGE` on the sch
 GRANT USAGE ON SCHEMA public TO my_readonly_user;
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO my_readonly_user;
 ```
-
 
 And voila! You've created a read-only user in PostgreSQL.
 

@@ -2,6 +2,10 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
+import Script from "next/script";
+import { trpc } from "../utils/trpc";
+import { useRouter } from "next/router";
+import { Toaster, toast } from "react-hot-toast";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -12,14 +16,50 @@ type LayoutProps = {
 };
 
 const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
+  const router = useRouter();
+  const subscription = trpc.subscriptions.create.useMutation({
+    onSuccess: (data) => {
+      toast.success(data.message, {
+        duration: 2000,
+      });
+      router.push("/dashboard");
+    },
+    onError: (error) => {
+      toast.error(error.message, {
+        duration: 2000,
+      });
+    },
+  });
+
+  const createSubscription = async (data) => {
+    subscription.mutateAsync({
+      customerId: data.customer.id,
+      items: data.items,
+    });
+  };
   const defaultTitle = "ChatDB | The AI Database Assistant for your team";
   const defaultDescription =
     "The tool that is an expert on your database. Say goodbye to hours spent creating the correct query to get the data you need.";
   const defaultUrl = "https://www.chatdb.ai";
   const defaultImage = "https://chatdb-assets.s3.amazonaws.com/ogg.png";
-
   return (
     <div className="bg-layer-1">
+      <Script
+        src="https://cdn.paddle.com/paddle/v2/paddle.js"
+        strategy="lazyOnload"
+        onLoad={async () => {
+          const Paddle = await window.Paddle;
+          await Paddle.Environment.set(process.env.NEXT_PUBLIC_PADDLE_ENV);
+          await Paddle.Setup({
+            seller: 14142,
+            eventCallback: async function (event) {
+              if (event.name == "checkout.completed") {
+                await createSubscription(event.data);
+              }
+            },
+          });
+        }}
+      />
       <NextSeo
         title={title || defaultTitle}
         description={description || defaultDescription}
@@ -68,9 +108,9 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
               <Link href="/" className="link-hover link">
                 Home
               </Link>
-              {/* <Link href="/pricing" className="link-hover link">
+              <Link href="/pricing" className="link-hover link">
                 Pricing
-              </Link> */}
+              </Link>
               <Link href="/blog" className="link-hover link">
                 Blog
               </Link>
@@ -104,7 +144,10 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
               <Link href="/tools/sql-formatter" className="link-hover link">
                 SQL Formatter
               </Link>
-              <Link href="/tools/csv-to-parquet-converter" className="link-hover link">
+              <Link
+                href="/tools/csv-to-parquet-converter"
+                className="link-hover link"
+              >
                 CSV to Parquet Converter
               </Link>
             </div>

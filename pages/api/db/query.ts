@@ -36,15 +36,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const bt = await new BasisTheory().init(
-    process.env.NEXT_PRIVATE_BASIS_THEORY_KEY
-  );
-
   const { query, database_uuid } = req.body;
   if (!query || !database_uuid) {
-    res
-      .status(400)
-      .json({ error: "No query or connection string token provided" });
+    res.status(400).json({ error: "No query or database uuid provided" });
     return;
   }
 
@@ -73,19 +67,32 @@ export default async function handler(
       return;
     }
 
+    const bt = await new BasisTheory().init(
+      process.env.NEXT_PRIVATE_BASIS_THEORY_KEY
+    );
     const connectionStringObject = await bt.tokens.retrieve(
       data.database_string
     );
-    const connectionString = connectionStringObject.data;
+    const connection_string = "postgres://" + connectionStringObject.data;
 
-    const pool = new Pool({ connectionString });
+    const pool = new Pool({
+      connectionString: connection_string,
+    });
 
-    const result = await pool.query(query);
-    res.status(200).json({
-      rows: result.rows,
-      rowCount: result.rowCount,
-      command: result.command,
-      message: `${result.rowCount} rows affected by ${result.command} command`,
+    const client = await pool.connect();
+    const result = await client.query(query);
+    client.release();
+
+    // Extracting columns and rows in the desired format
+    const columns = result.fields.map((field) => field.name);
+    const rows = result.rows.map((row) => columns.map((column) => row[column]));
+
+    return res.status(200).json({
+      sql: query,
+      data: {
+        columns,
+        rows,
+      },
     });
   } catch (err) {
     console.error(err);

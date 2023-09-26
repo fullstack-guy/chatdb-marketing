@@ -5,22 +5,17 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import useSupabase from "../../hooks/useSupabaseClient";
+import DeleteDatabasesModal from "../../components/dashboard/DeleteDatabasesModal";
+import { trpc } from "../../utils/trpc";
 
 export default function Page() {
-  const { isLoaded, isSignedIn, user } = useUser();
-  const router = useRouter();
-  const supabase = useSupabase();
-
-  const handleNavigation = (path) => {
-    router.push(path);
-  };
-
-  useEffect(() => {
-    if (isLoaded && isSignedIn && supabase) {
-      fetchDatabases();
-    }
-  }, [isLoaded, isSignedIn, supabase]);
-
+  const {
+    isLoading,
+    isError,
+    data: subscriptionStatus,
+  } = trpc.subscriptions.status.useQuery();
+  const [isDeleteDatabasesModalOpened, setIsDeleteDatabasesModalOpeneded] =
+    useState(false);
   const [fetchedDatabases, setFetchedDatabases] = useState([]);
   const [newDatabases, setNewDatabases] = useState([
     {
@@ -30,6 +25,25 @@ export default function Page() {
       img: "/images/postgres-icon.png",
     },
   ]);
+  const { isLoaded, isSignedIn, user } = useUser();
+  const router = useRouter();
+  const supabase = useSupabase();
+  const handleNavigation = (path) => {
+    router.push(path);
+  };
+
+  useEffect(() => {
+    if (isLoaded && isSignedIn && supabase) {
+      fetchDatabases();
+    }
+    if (
+      !isLoading &&
+      !isError &&
+      subscriptionStatus?.isUserExceedingAllowedNumberOfDatabases
+    ) {
+      setIsDeleteDatabasesModalOpeneded(true);
+    }
+  }, [isLoaded, isSignedIn, supabase, subscriptionStatus]);
 
   const fetchDatabases = async () => {
     const { data, error } = await supabase
@@ -104,8 +118,9 @@ export default function Page() {
                 <div
                   key={index}
                   onClick={() => selectDatabase(index)}
-                  className={`mb-4 flex cursor-pointer items-center rounded-lg p-4 shadow-md ${database.selected ? "border-4 border-[#0fe0b6]" : ""
-                    }`}
+                  className={`mb-4 flex cursor-pointer items-center rounded-lg p-4 shadow-md ${
+                    database.selected ? "border-4 border-[#0fe0b6]" : ""
+                  }`}
                 >
                   <div className="mr-4 flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg bg-[#0fe0b6]">
                     <Image
@@ -134,6 +149,10 @@ export default function Page() {
           </div>
         </label>
       </label>
+      <DeleteDatabasesModal
+        open={isDeleteDatabasesModalOpened}
+        setOpen={setIsDeleteDatabasesModalOpeneded}
+      />
     </Layout>
   );
 }

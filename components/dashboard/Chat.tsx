@@ -9,6 +9,8 @@ import gfm from "remark-gfm";
 import "react-data-grid/lib/styles.css";
 import DataGrid from "react-data-grid";
 import { useAuth } from "@clerk/clerk-react";
+import CodeBlock from "./chat/CodeBlock";
+import cn from "classnames";
 
 export const MemoizedReactMarkdown: FC<Options> = memo(
   ReactMarkdown,
@@ -25,7 +27,7 @@ const Chat = ({ database_uuid }) => {
   const { getToken } = useAuth();
 
   const toggleSqlVisibility = () => {
-    setShowSql(prevShowSql => !prevShowSql);
+    setShowSql((prevShowSql) => !prevShowSql);
   };
 
   const formatDataForGrid = (data) => {
@@ -44,17 +46,54 @@ const Chat = ({ database_uuid }) => {
       let rowObj = {};
       data.columns.forEach((col, colIndex) => {
         // Check if the value is a boolean and convert it to a string if it is
-        if (typeof row[colIndex] === 'boolean') {
-          rowObj[col] = row[colIndex] ? 'true' : 'false';
+        if (typeof row[colIndex] === "boolean") {
+          rowObj[col] = row[colIndex] ? "true" : "false";
+        }
+        if (typeof row[colIndex] === "object" && row[colIndex] !== null) {
+          rowObj[col] = JSON.stringify(row[colIndex]);
         } else {
           rowObj[col] = row[colIndex];
         }
+
       });
       return { ...rowObj, id: rowIndex };
     });
 
     return { columns, rows };
   };
+
+  async function sendQueryToEndpoint(code) {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/db/query", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: code,
+          database_uuid: database_uuid,
+        }),
+      });
+
+      const data = await response.json();
+      setIsLoading(false);
+      if (response.ok) {
+        setResult({
+          sql: data.sql,
+          result: "",
+          data: data.data,
+        });
+
+        setIsLoading(false);
+      } else {
+        toast.error("Sorry, we had an issue running the query.");
+      }
+    } catch (err) {
+      setIsLoading(false);
+      toast.error("Sorry, we had an issue running the query.");
+    }
+  }
 
   const handleKeyDown = async (e) => {
     if (e.key === "Enter") {
@@ -64,11 +103,17 @@ const Chat = ({ database_uuid }) => {
       try {
         const token = await getToken({ template: "supabase" });
 
-        const response = await fetch("https://chatdb-backend-deah4kbsta-uc.a.run.app/ask", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-          body: JSON.stringify({ query, uuid: database_uuid }),
-        });
+        const response = await fetch(
+          "https://chatdb-backend-deah4kbsta-uc.a.run.app/ask",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ query, uuid: database_uuid }),
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Response Error: " + response.status);
@@ -79,7 +124,7 @@ const Chat = ({ database_uuid }) => {
         setResult({
           sql: data.sql,
           result: data.text,
-          data: data.data
+          data: data.data,
         });
 
         setIsLoading(false);
@@ -119,28 +164,60 @@ const Chat = ({ database_uuid }) => {
       ) : (
         <div>
           {result.result && (
-            <div className="mt-10">
-              <div className="answer-box mb-4 rounded-lg p-4">
+            <div className="group relative mb-4 flex items-start">
+              <div className="flex-1 space-y-2 overflow-hidden px-1">
                 <MemoizedReactMarkdown
-                  className="prose break-words text-black dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
+                  className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
                   remarkPlugins={[gfm]}
                   components={{
                     p({ children }) {
+                      return <p className="mb-2 last:mb-0">{children}</p>;
+                    },
+                    code({ node, inline, className, children, ...props }) {
+                      if (children.length) {
+                        if (children[0] == "▍") {
+                          return (
+                            <span className="mt-1 animate-pulse cursor-default">
+                              ▍
+                            </span>
+                          );
+                        }
+                        children[0] = (children[0] as string).replace(
+                          "`▍`",
+                          "▍"
+                        );
+                      }
+                      const match = /language-(\w+)/.exec(className || "");
+                      if (inline) {
+                        return (
+                          <code className={className} {...props}>
+                            {children}
+                          </code>
+                        );
+                      }
                       return (
-                        <p className="mb-2 text-black last:mb-0">{children}</p>
+                        <CodeBlock
+                          key={Math.random()}
+                          language={(match && match[1]) || ""}
+                          onRunCode={sendQueryToEndpoint}
+                          value={String(children).replace(/\n$/, "")}
+                          {...props}
+                        />
                       );
                     },
                   }}
                 >
                   {result.result}
                 </MemoizedReactMarkdown>
+                {/* If you want to include message actions as well, uncomment the line below */}
+                {/* <ChatMessageActions message={result} /> */}
               </div>
             </div>
           )}
           {Object.keys(result?.data || {}).length > 0 && (
             <div className="mt-5">
               <DataGrid
-                className={`rdg-light w-full h-[100%] max-h-[60vh]`}
+                className={`rdg-light h-[100%] max-h-[60vh] w-full`}
                 columns={formatDataForGrid(result.data).columns}
                 rows={formatDataForGrid(result.data).rows}
               />
@@ -150,7 +227,7 @@ const Chat = ({ database_uuid }) => {
             <div>
               {/* The View Code Button */}
               <button
-                className="mt-5 btn btn-primary"
+                className="btn-primary btn mt-5"
                 onClick={toggleSqlVisibility}
               >
                 View Code

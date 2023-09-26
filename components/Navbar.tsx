@@ -32,17 +32,17 @@ const Navbar = () => {
             )}
           </SignedIn>
           <Link
-            href="/tools"
+            href="/dashboard"
             className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
           >
-            Tools
+            Dashboard
           </Link>
-          {/* <Link
+          <Link
             href="/pricing"
             className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
           >
             Pricing
-          </Link> */}
+          </Link>
           <Link
             href="/blog"
             className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
@@ -81,6 +81,17 @@ const Navbar = () => {
               <Menu.Item>
                 {({ active }) => (
                   <Link
+                    href="/dashboard"
+                    className={`${active ? "bg-muted-1 text-heading" : "text-text"
+                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                  >
+                    Dashboard
+                  </Link>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <Link
                     href="/tools"
                     className={`${active ? "bg-muted-1 text-heading" : "text-text"
                       } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
@@ -89,7 +100,7 @@ const Navbar = () => {
                   </Link>
                 )}
               </Menu.Item>
-              {/* <Menu.Item>
+              <Menu.Item>
                 {({ active }) => (
                   <Link
                     href="/pricing"
@@ -99,7 +110,7 @@ const Navbar = () => {
                     Pricing
                   </Link>
                 )}
-              </Menu.Item> */}
+              </Menu.Item>
               <Menu.Item>
                 {({ active }) => (
                   <Link
@@ -118,7 +129,7 @@ const Navbar = () => {
                     className={`${active ? "bg-muted-1 text-heading" : "text-text"
                       } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                   >
-                    Contact-Us
+                    Contact Us
                   </Link>
                 )}
               </Menu.Item>

@@ -4,17 +4,20 @@ import Link from "next/link";
 import { useUser } from "@clerk/clerk-react";
 import {
   BasisTheoryProvider,
-  BasisTheoryApiError,
-  BasisTheoryValidationError,
   useBasisTheory,
 } from "@basis-theory/basis-theory-react";
 import Layout from "../../../components/Layout";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { trpc } from "../../../utils/trpc";
+import UpdateSubscriptionModal from "../../../components/UpdateSubscriptionModal";
 
 export default function Page() {
   const router = useRouter();
-
+  const [
+    isUpdateSubscriptionModalOpeneded,
+    setIsUpdateSubscriptionModalOpened,
+  ] = useState(false);
   const [connected, setConnected] = useState(false);
   const [connecting, setConnecting] = useState(false);
   const [connectionString, setConnectionString] = useState("");
@@ -24,7 +27,7 @@ export default function Page() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
 
-  const [activeTab, setActiveTab] = useState("details");
+  const [activeTab, setActiveTab] = useState("url");
 
   const [host, setHost] = useState("");
   const [username, setUsername] = useState("");
@@ -88,7 +91,33 @@ export default function Page() {
   const { bt } = useBasisTheory(process.env.NEXT_PUBLIC_BASIS_THEORY_KEY, {
     elements: true,
   });
-
+  const {
+    isLoading,
+    isError,
+    data: subscriptionStatus,
+  } = trpc.subscriptions.status.useQuery(null, {
+    refetchOnWindowFocus: false,
+    retry: 3,
+    retryOnMount: false,
+  });
+  const upgradeSubscription = trpc.subscriptions.update.useMutation({
+    onMutate: () => {
+      toast.loading("Updating plan...", {
+        duration: 2000,
+      });
+    },
+    onSuccess: (data) => {
+      toast.success(data.message, {
+        duration: 2000,
+      });
+      saveDatabase(getConnectionString());
+    },
+    onError: (error) => {
+      toast.error(error.message, {
+        duration: 2000,
+      });
+    },
+  });
   useEffect(() => {
     if (connected) {
       setConnected(false);
@@ -167,10 +196,19 @@ export default function Page() {
   };
 
   const getConnectionString = (fromDetails = false) => {
+    let baseString = "";
     if (fromDetails) {
-      return `${username}:${password}@${host}:${port}/${database}`;
+      baseString = `${username}:${password}@${host}:${port}/${database}`;
+
+      // Append SSL configuration if SSL is enabled
+      if (ssl) {
+        baseString += "?sslmode=require";
+      }
+    } else {
+      baseString = connectionString;
     }
-    return connectionString;
+
+    return baseString;
   };
 
   const connectToDatabase = async (connectionStr) => {
@@ -223,6 +261,45 @@ export default function Page() {
     }
   };
 
+  const renderUpdateSubcriptionModal = (subscriptionStatus: {
+    remainingDatabases: number;
+  }) => {
+    if (
+      subscriptionStatus.remainingDatabases !== null &&
+      subscriptionStatus.remainingDatabases <= 0
+    ) {
+      return (
+        <UpdateSubscriptionModal
+          open={isUpdateSubscriptionModalOpeneded}
+          setOpen={setIsUpdateSubscriptionModalOpened}
+          description={
+            " You have reached the maximum number of databases allowed on your current plan. Please upgrade your plan to create more databases."
+          }
+          title={"Maximum number of databases reached"}
+          actionDescription={"Upgrade"}
+          action={() =>
+            upgradeSubscription.mutateAsync({
+              plan: "chatDB Pro Plan",
+            })
+          }
+        />
+      );
+    } else if (subscriptionStatus.remainingDatabases === null) {
+      return (
+        <UpdateSubscriptionModal
+          open={isUpdateSubscriptionModalOpeneded}
+          setOpen={setIsUpdateSubscriptionModalOpened}
+          description={
+            "You are not subscribed to any plan. Please choose a plan to start creating databases."
+          }
+          title={"Choose a Plan"}
+          actionDescription={"View Pricing"}
+          action={() => router.push("/pricing")}
+        />
+      );
+    }
+  };
+
   return (
     <Layout>
       {/* BreadCrumbs */}
@@ -256,7 +333,6 @@ export default function Page() {
         <div className="w-full text-center">
           <div className="container mx-auto my-auto">
             <h1 className="mt-10 text-3xl text-black">Connect your Database</h1>
-
             <h1 className="text-sm text-black">
               We will not store or modify any of the data in your tables!
             </h1>
@@ -268,22 +344,22 @@ export default function Page() {
                   <BasisTheoryProvider bt={bt}>
                     <div className="flex items-center justify-center rounded-lg bg-gray-100 px-2 py-2">
                       <button
-                        className={`mr-3 flex-1 rounded-lg px-4 py-2 text-center transition duration-300 ease-in-out ${activeTab === "details"
-                          ? "bg-[#3D4451] text-white"
-                          : "bg-white text-black hover:bg-gray-200"
-                          }`}
-                        onClick={() => setActiveTab("details")}
-                      >
-                        Connect with Details
-                      </button>
-                      <button
-                        className={`ml-3 flex-1 rounded-lg px-4 py-2 text-center transition duration-300 ease-in-out ${activeTab === "url"
+                        className={`ml-3 mr-2 flex-1 rounded-lg px-4 py-2 text-center transition duration-300 ease-in-out ${activeTab === "url"
                           ? "bg-[#3D4451] text-white"
                           : "bg-white text-black hover:bg-gray-200"
                           }`}
                         onClick={() => setActiveTab("url")}
                       >
                         Connect with URL
+                      </button>
+                      <button
+                        className={`ml-2 mr-3 flex-1 rounded-lg px-4 py-2 text-center transition duration-300 ease-in-out ${activeTab === "details"
+                          ? "bg-[#3D4451] text-white"
+                          : "bg-white text-black hover:bg-gray-200"
+                          }`}
+                        onClick={() => setActiveTab("details")}
+                      >
+                        Connect with Details
                       </button>
                     </div>
                     <label
@@ -537,15 +613,28 @@ export default function Page() {
                         {error}
                       </p>
                     )}
+                    <div className="mb-2 mt-10 rounded-md border-l-4 border-gray-50 bg-gray-300 p-2">
+                      <p className="text-sm font-semibold text-black">
+                        We recommend{" "}
+                        <Link
+                          href="/post/how-to-create-read-only-postgres-user"
+                          className="text-black underline"
+                          target="_blank"
+                        >
+                          creating a read-only account with specific permissions
+                        </Link>
+                        .
+                      </p>
+                    </div>
                   </BasisTheoryProvider>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="invisible">Picture Here</div>
       </div>
       <Toaster position="bottom-center" />
+      {subscriptionStatus && renderUpdateSubcriptionModal(subscriptionStatus)}
     </Layout>
   );
 }

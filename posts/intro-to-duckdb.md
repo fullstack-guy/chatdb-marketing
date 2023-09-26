@@ -50,6 +50,7 @@ You can read a CSV file into a DuckDB database using the `COPY` command. Here's 
 ```sql
 COPY tablename FROM '/path/to/your/file.csv' (FORMAT CSV, HEADER);
 ```
+
 ### Reading Parquet Files
 
 DuckDB also supports reading Parquet files, a popular columnar storage file format. Here's how you can do it:
@@ -58,7 +59,7 @@ DuckDB also supports reading Parquet files, a popular columnar storage file form
 COPY tablename FROM '/path/to/your/file.parquet' (FORMAT PARQUET);
 ```
 
-We hope this guide gives you a good introduction to DuckDB and its potential applications. As always, we're here to make your journey with databases more insightful and efficient. 
+We hope this guide gives you a good introduction to DuckDB and its potential applications. As always, we're here to make your journey with databases more insightful and efficient.
 
 Stay curious,
 

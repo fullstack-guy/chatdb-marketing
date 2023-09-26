@@ -18,13 +18,8 @@ export default authMiddleware({
     "/tools(.*)",
     "/api/send",
     "/api/og",
-    "/docs(.*)"
+    "/docs(.*)",
   ],
-  afterAuth: (auth) => {
-    if (!auth.userId && !auth.isPublicRoute) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
-  },
 });
 
 export const config = {

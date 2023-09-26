@@ -9,26 +9,26 @@ const DynamicDuckDBComponent = dynamic(
 );
 
 const IndexPage = () => {
-
   const tools = [
     {
       id: 3,
-      title: 'CSV to JSON Converter',
-      description: 'Convert your CSV files to JSON with ease.',
-      link: '/tools/csv-to-json-converter',
+      title: "CSV to JSON Converter",
+      description: "Convert your CSV files to JSON with ease.",
+      link: "/tools/csv-to-json-converter",
     },
     {
       id: 4,
-      title: 'SQL Formatter',
-      description: 'Format and beautify your SQL statements for better readability.',
-      link: '/tools/sql-formatter',
+      title: "SQL Formatter",
+      description:
+        "Format and beautify your SQL statements for better readability.",
+      link: "/tools/sql-formatter",
     },
     {
       id: 5,
-      title: 'CSV to Parquet Converter',
-      description: 'Convert CSV files to compressed parquet.',
-      link: '/tools/csv-to-parquet-converter',
-    }
+      title: "CSV to Parquet Converter",
+      description: "Convert CSV files to compressed parquet.",
+      link: "/tools/csv-to-parquet-converter",
+    },
   ];
 
   return (
@@ -36,14 +36,19 @@ const IndexPage = () => {
       title="Query CSV files with SQL and AI | ChatDB"
       description="Use ChatDB to query, view, and edit your CSV files using SQL. Upload your CSV, write an SQL query, and interact with your data. Easy to use and completely in the browser."
       url="https://www.chatdb.ai/tools/query-csv-with-sql"
-      oggURL={
-        `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
-        }/api/og?title=${encodeURIComponent('Query CSV files with SQL and AI')}`
-      }
+      oggURL={`${
+        process.env.VERCEL_URL ? "https://" + process.env.VERCEL_URL : ""
+      }/api/og?title=${encodeURIComponent("Query CSV files with SQL and AI")}`}
     >
       <Head>
-        <meta name="og:title" content="Query CSV files with SQL and AI | ChatDB" />
-        <meta name="og:description" content="Use ChatDB to query, view, and edit your CSV files using SQL. Upload your CSV, write an SQL query, and interact with your data. Easy to use and completely in the browser." />
+        <meta
+          name="og:title"
+          content="Query CSV files with SQL and AI | ChatDB"
+        />
+        <meta
+          name="og:description"
+          content="Use ChatDB to query, view, and edit your CSV files using SQL. Upload your CSV, write an SQL query, and interact with your data. Easy to use and completely in the browser."
+        />
       </Head>
       <div className="mt-10 flex flex-col items-center p-6">
         <h1 className="relative mb-4 flex items-center justify-center text-center text-5xl font-bold text-black">
@@ -79,17 +84,19 @@ const IndexPage = () => {
           </p>
         </div>
         <div className="mb-28 w-full px-6">
-          <h2 className="text-center mb-10 text-3xl font-bold text-black">
+          <h2 className="mb-10 text-center text-3xl font-bold text-black">
             Explore other tools
           </h2>
 
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {tools.map(tool => (
+          <div className="mt-6 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {tools.map((tool) => (
               <Link href={tool.link} key={tool.id}>
-                <div className="border border-purple-600 transform transition hover:scale-105 rounded-lg overflow-hidden shadow-lg hover:border-purple-700">
+                <div className="transform overflow-hidden rounded-lg border border-purple-600 shadow-lg transition hover:scale-105 hover:border-purple-700">
                   <div className="bg-gradient-to-br from-purple-100 to-white p-6">
-                    <h2 className="font-bold text-purple-700 text-xl mb-2">{tool.title}</h2>
-                    <p className="text-gray-700 mb-4">{tool.description}</p>
+                    <h2 className="mb-2 text-xl font-bold text-purple-700">
+                      {tool.title}
+                    </h2>
+                    <p className="mb-4 text-gray-700">{tool.description}</p>
                   </div>
                 </div>
               </Link>

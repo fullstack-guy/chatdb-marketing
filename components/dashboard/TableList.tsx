@@ -57,19 +57,22 @@ const TableList = ({ filteredTables, onTableClick }) => {
       .map((table) => table.schemaName)
       .filter((schema, index, self) => self.indexOf(schema) === index);
 
-    const newColorIndexes = schemaNames.reduce((acc: Record<string, number>, schema, index) => {
-      acc[schema] = index % colors.length;
-      return acc;
-    }, {});
+    const newColorIndexes = schemaNames.reduce(
+      (acc: Record<string, number>, schema, index) => {
+        acc[schema] = index % colors.length;
+        return acc;
+      },
+      {}
+    );
 
     setTableColorIndexes(newColorIndexes);
   }, [filteredTables]);
 
   const sortedFilteredTables = filteredTables.sort((a, b) => {
     // Prioritize public schema
-    if (a.schemaName === 'public' && b.schemaName !== 'public') {
+    if (a.schemaName === "public" && b.schemaName !== "public") {
       return -1;
-    } else if (a.schemaName !== 'public' && b.schemaName === 'public') {
+    } else if (a.schemaName !== "public" && b.schemaName === "public") {
       return 1;
     }
 
@@ -77,7 +80,9 @@ const TableList = ({ filteredTables, onTableClick }) => {
     return a.schemaName.localeCompare(b.schemaName);
   });
 
-  const getSchemaSections = (tables: Array<{ schemaName: string; tableName: string }>) => {
+  const getSchemaSections = (
+    tables: Array<{ schemaName: string; tableName: string }>
+  ) => {
     const sections: Record<string, any[]> = {};
 
     tables.forEach((table) => {
@@ -97,23 +102,30 @@ const TableList = ({ filteredTables, onTableClick }) => {
       {filteredTables.length > 0 ? (
         Object.entries(schemaSections).map(([schema, tables]) => (
           <div key={schema} className="my-6">
-            <h2 className="text-2xl text-black font-bold mb-4">{schema}</h2>
+            <h2 className="mb-4 text-2xl font-bold text-black">{schema}</h2>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
               {tables.map((table) => (
                 <div
                   key={table.tableName}
                   className="relative flex transform cursor-pointer items-center rounded-lg border p-4 shadow-sm transition-transform duration-200 hover:scale-105 hover:bg-gray-100"
-                  onClick={() => onTableClick(`${table.schemaName}.${table.tableName}`)}
+                  onClick={() =>
+                    onTableClick(`${table.schemaName}.${table.tableName}`)
+                  }
                 >
                   <div
                     className="mr-2 flex h-8 w-8 items-center justify-center rounded-full"
-                    style={{ backgroundColor: colors[tableColorIndexes[table.schemaName]] }}
+                    style={{
+                      backgroundColor:
+                        colors[tableColorIndexes[table.schemaName]],
+                    }}
                   >
                     {loadingTable === table.tableName && (
                       <TailSpin
                         height={50}
                         width={50}
-                        color={spinnerColors[tableColorIndexes[table.schemaName]]}
+                        color={
+                          spinnerColors[tableColorIndexes[table.schemaName]]
+                        }
                         radius={2}
                         visible={true}
                         ariaLabel="tail-spin-loading"
@@ -121,7 +133,9 @@ const TableList = ({ filteredTables, onTableClick }) => {
                     )}
                   </div>
                   <div className="flex flex-col space-y-1">
-                    <h3 className="text-lg font-semibold text-black">{table.tableName}</h3>
+                    <h3 className="text-lg font-semibold text-black">
+                      {table.tableName}
+                    </h3>
                   </div>
                 </div>
               ))}
@@ -129,7 +143,9 @@ const TableList = ({ filteredTables, onTableClick }) => {
           </div>
         ))
       ) : (
-        <div className="mt-4 text-center text-gray-700">No matching tables found.</div>
+        <div className="mt-4 text-center text-gray-700">
+          No matching tables found.
+        </div>
       )}
       <Toaster position="bottom-center" />
     </>

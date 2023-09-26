@@ -23,7 +23,7 @@ const Settings: React.FC<SettingsProps> = ({
   fetchedDatabase,
   setFetchedDatabase,
   database_uuid,
-  setTitle
+  setTitle,
 }) => {
   const router = useRouter();
   const [newDatabaseName, setNewDatabaseName] = useState<string>(
@@ -126,7 +126,6 @@ const Settings: React.FC<SettingsProps> = ({
       toast.error("Network error occurred while deleting the database.");
     }
   };
-
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-start space-y-8 px-8">
