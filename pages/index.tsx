@@ -7,6 +7,7 @@ import posthog from "posthog-js";
 import Image from "next/image";
 import { LightBulbIcon } from "@heroicons/react/outline";
 import { Tweet } from "react-tweet";
+import FAQ from "../components/FAQ";
 import useSupabase from "../hooks/useSupabaseClient";
 
 export default function Page() {
@@ -103,6 +104,7 @@ export default function Page() {
               }
             </div>
             <div className="mt-12 px-0 md:px-2">
+
               {/* Image for larger devices */}
               <Image
                 alt="chatdb demo image"
@@ -347,48 +349,8 @@ export default function Page() {
           </div>
         </section>
 
-        {/* CTA section */}
-        <section className="mt-10 p-8 md:py-20">
-          <div className="mx-auto flex max-w-6xl flex-col items-center rounded-xl text-center sm:bg-layer-2 sm:px-6 sm:py-12 md:py-18 lg:px-32 2xl:px-64">
-            <h2 className="text-3xl font-semibold text-heading md:text-4xl">
-              Stay in touch and be notified when it is released!
-            </h2>
-
-            <form
-              className="mt-8 flex w-full flex-col gap-2 sm:w-auto sm:flex-row"
-              method="POST"
-              onSubmit={handleSubmit}
-            >
-              <div>
-                <label
-                  htmlFor="email"
-                  className="sr-only block text-sm font-semibold text-heading"
-                >
-                  Email
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full rounded-xl border-2 border-layer-3 bg-muted-1 px-4 py-2.5 font-semibold text-heading placeholder:text-text/50 focus:border-primary focus:outline-none focus:ring-0 sm:text-sm md:w-64"
-                />
-              </div>
-              <button
-                type="submit"
-                style={{
-                  background:
-                    "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)",
-                }}
-                className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none px-4 py-2.5 text-sm font-semibold text-white transition duration-200 hover:bg-gradient-to-r focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
-              >
-                Submit
-              </button>
-            </form>
-          </div>
-        </section>
+        {/* FAQ Section */}
+        <FAQ />
       </main>
       <Toaster />
     </Layout>

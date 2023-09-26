@@ -613,7 +613,6 @@ export default function Page() {
                         {error}
                       </p>
                     )}
-                    {/* Recommendation for read-only account
                     <div className="mb-2 mt-10 rounded-md border-l-4 border-gray-50 bg-gray-300 p-2">
                       <p className="text-sm font-semibold text-black">
                         We recommend{" "}
@@ -626,7 +625,7 @@ export default function Page() {
                         </Link>
                         .
                       </p>
-                    </div> */}
+                    </div>
                   </BasisTheoryProvider>
                 </div>
               </div>
