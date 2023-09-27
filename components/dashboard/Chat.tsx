@@ -54,7 +54,6 @@ const Chat = ({ database_uuid }) => {
         } else {
           rowObj[col] = row[colIndex];
         }
-
       });
       return { ...rowObj, id: rowIndex };
     });

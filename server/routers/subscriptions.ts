@@ -271,7 +271,7 @@ export const subscriptionsRouter = router({
         );
 
       if (subscriptionError) {
-        console.log(subscriptionError)
+        console.log(subscriptionError);
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Unable to create subscription, please try again later.",
