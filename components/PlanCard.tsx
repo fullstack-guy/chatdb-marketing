@@ -69,8 +69,8 @@ export default function PlanCard({
     if (btnText === "Cancel") {
       setIsModalOpen(true);
     } else if (btnText === "Get Started") {
-      // setRedirectingToCheckout(true);
-      // router.push(`/checkout?plan=${name.toLowerCase()}`);
+      setRedirectingToCheckout(true);
+      router.push(`/checkout?plan=${name.toLowerCase()}`);
       posthog.capture("pricing_button_clicked");
     } else if (btnText === "Upgrade") {
       update.mutateAsync({

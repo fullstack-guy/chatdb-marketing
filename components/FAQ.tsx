@@ -17,6 +17,30 @@ const FAQ = () => {
               {({ open }) => (
                 <>
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
+                    What is the refund policy?
+                    <ChevronDownIcon
+                      className={`${open ? "rotate-180 text-heading" : "text-text"
+                        } h-5 w-5`}
+                    />
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="px-4 py-2">
+                    We have a satisfaction guarantee and offer refunds for up to 30 days under certain conditions.<br></br>
+                    <ol className="list-disc list-inside mt-4 text-left">
+                      <li><u>Oops, forgot to cancel your subscription?</u> If it is renewed and you haven't used any queries since, we'll happily give you a 100% refund.</li>
+                      <br></br>
+                      <li>For new subscribers, if you tried ChatDB within past 14 days and couldn't get it to work, we will refund 100% of your payment.</li>
+                    </ol>
+                    <br></br>
+                    Please note that apart from the conditions stated above, we are unable to process refunds due to the operational costs associated with providing our product.
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure>
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
                     Do you support more than PostgreSQL?
                     <ChevronDownIcon
                       className={`${open ? "rotate-180 text-heading" : "text-text"
@@ -139,6 +163,7 @@ const FAQ = () => {
                 </>
               )}
             </Disclosure>
+
           </div>
         </div>
       </section>
