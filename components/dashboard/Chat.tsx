@@ -97,6 +97,10 @@ const Chat = ({ database_uuid }) => {
   }
 
   const handleKeyDown = async (e) => {
+    if (isLoading) {
+      return; // Disable function if a query is in progress
+    }
+
     if (e.key === "Enter") {
       e.preventDefault();
       setIsLoading(true);
