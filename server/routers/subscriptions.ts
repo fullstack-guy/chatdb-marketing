@@ -413,46 +413,70 @@ export const subscriptionsRouter = router({
     }),
 
   status: protectedProcedure.query(async (opts) => {
-    const { ctx } = opts;
-    const { data: userDatabases, error } = await getUserDatabases(
-      ctx.userSupabase,
-      ctx.user.userId
-    );
+    try {
+      const { ctx } = opts;
+      const { data: userDatabases, error } = await getUserDatabases(
+        ctx.userSupabase,
+        ctx.user.userId
+      );
 
-    if (error) {
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Unable to get user databases",
-        cause: error,
-      });
-    }
+      if (error) {
+        console.error("Error fetching user databases:", error); // Log the error
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Unable to get user databases",
+          cause: error,
+        });
+      }
 
-    const { sub, error: subError } = await getSupabaseSubscriptionIdFromUserId(
-      ctx.systemSupabase,
-      ctx.user.userId
-    );
+      const { sub, error: subError } =
+        await getSupabaseSubscriptionIdFromUserId(
+          ctx.systemSupabase,
+          ctx.user.userId
+        );
 
-    if (subError) {
+      if (subError) {
+        console.error("Error fetching subscription ID:", subError); // Log the error
+        return {
+          remainingDatabases: null,
+          user: ctx.user,
+          allowedNumberOfDatabases: null,
+        };
+      }
+
+      const { data: subscriptionFromPaddleAPI, error: subPaddleError } =
+        await getSubscriptionFromPaddleAPI(sub.paddle_subscription_id);
+
+      if (subPaddleError) {
+        console.error(
+          "Error fetching subscription from Paddle API:",
+          subPaddleError
+        ); // Log the error
+        return {
+          remainingDatabases: null,
+          user: ctx.user,
+          allowedNumberOfDatabases: null,
+        };
+      }
+
+      console.log("User Databases:", userDatabases); // Log userDatabases
+      console.log("Subscription:", sub); // Log subscription details
+      console.log("Subscription from Paddle API:", subscriptionFromPaddleAPI); // Log subscriptionFromPaddleAPI
+
       return {
-        remainingDatabases: null,
+        remainingDatabases: getUserRemainingDatabases(
+          subscriptionFromPaddleAPI,
+          userDatabases,
+          sub.plan
+        ),
+        allowedNumberOfDatabases: getAllowedNumberOfDatabases(sub.plan),
+        isUserExceedingAllowedNumberOfDatabases:
+          isUserExceedingAllowedNumberOfDatabases(sub.plan, userDatabases),
         user: ctx.user,
-        allowedNumberOfDatabases: null,
       };
+    } catch (err) {
+      console.error("An error occurred:", err); // Log any unhandled errors
+      throw err;
     }
-
-    const subscriptionFromPaddleAPI = await getSubscriptionFromPaddleAPI(
-      sub.paddle_subscription_id
-    );
-    return {
-      remainingDatabases: getUserRemainingDatabases(
-        subscriptionFromPaddleAPI,
-        userDatabases,
-        sub.plan
-      ),
-      allowedNumberOfDatabases: getAllowedNumberOfDatabases(sub.plan),
-      isUserExceedingAllowedNumberOfDatabases:
-        isUserExceedingAllowedNumberOfDatabases(sub.plan, userDatabases),
-      user: ctx.user,
-    };
   }),
 });

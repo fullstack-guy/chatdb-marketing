@@ -22,7 +22,11 @@ export async function createContext(opts: CreateNextContextOptions) {
     }
   );
 
-  const systemSupabase = createClient(supabaseUrl, supabaseAnonKey);
+  const systemSupabase = createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      persistSession: false,
+    },
+  });
   return {
     users,
     user: auth,

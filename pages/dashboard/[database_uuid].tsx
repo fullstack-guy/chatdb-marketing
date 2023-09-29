@@ -37,7 +37,11 @@ export default function Page() {
     isLoading,
     isError,
     data: subscriptionStatus,
-  } = trpc.subscriptions.status.useQuery();
+  } = trpc.subscriptions.status.useQuery(null, {
+    refetchOnWindowFocus: false,
+    retry: 3,
+    retryOnMount: false,
+  });
 
   useEffect(() => {
     setSearchQuery(""); // clear the searchQuery when activeTab changes
