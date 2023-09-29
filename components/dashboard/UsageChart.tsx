@@ -1,5 +1,5 @@
 import {
-  AreaChart,
+  BarChart,
   Card,
   Metric,
   TabList,
@@ -46,7 +46,6 @@ export default function UsageChart(props: UsageChartProps) {
         return;
       }
 
-      // Group and count entries by date
       const groupedData = data.reduce((acc, row) => {
         const dateKey = new Date(row.created_at).toLocaleDateString();
         acc[dateKey] = (acc[dateKey] || 0) + 1;
@@ -54,38 +53,36 @@ export default function UsageChart(props: UsageChartProps) {
       }, {});
 
       const formattedData = Object.entries(groupedData).map(
-        ([Month, Queries]) => ({ Month, Queries })
+        ([Day, Queries]) => ({ Day, Queries })
       );
 
       setChartData(formattedData);
     };
 
     fetchData();
-  }, [supabase]);
+  }, [supabase, props.database_uuid]);
 
   return (
     <Card className="p-0">
       <TabGroup>
         <TabList>
           <Tab className="p-4 text-left sm:p-6">
-            <p className="text-lg text-black">Ask Queries</p>
+            <p className="text-lg text-black">AI Queries</p>
             <Metric className="mt-2 text-black">
               {sumArray(chartData, "Queries")}
             </Metric>
           </Tab>
         </TabList>
         <TabPanels>
-          <TabPanel className="p-6">
-            <AreaChart
-              className="mt-10 h-40"
+          <TabPanel className="p-2">
+            <BarChart
+              className="mt-2"
               data={chartData}
-              index="Month"
+              index="Day"
               categories={["Queries"]}
               colors={["blue"]}
               valueFormatter={numberFormatter}
-              showLegend={true}
-              allowDecimals={false}
-              yAxisWidth={50}
+              yAxisWidth={2}
             />
           </TabPanel>
         </TabPanels>

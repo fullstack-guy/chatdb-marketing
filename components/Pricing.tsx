@@ -44,8 +44,13 @@ export default function Pricing() {
             color="#78E3FC"
             name="Hobby"
             price="29.99"
-            description="Get started with the basic plan"
-            features={["1 User", "1 Data Source", "PostgreSQL Connection"]}
+            description="Get started with the basic plan!"
+            features={[
+              "1 User",
+              "1 Data Source",
+              "PostgreSQL Connection",
+              "60 AI Queries Per Month",
+            ]}
             btnText={btnText("Hobby")}
           />
           <PlanCard
@@ -53,15 +58,31 @@ export default function Pricing() {
             color="#ffb5ba"
             name="Pro"
             price="49.99"
-            description="Get started with the pro plan"
+            description="For taking it up a notch!"
             features={[
               "1 User",
               "5 Data Sources",
               "PostgreSQL Connection",
               "More Databases Coming Soon",
+              "120 AI Queries Per Month",
             ]}
             btnText={btnText("Pro")}
           />
+        </div>
+        {/* New banner for more AI query credits */}
+        <div className="mb-20 mt-20 w-[50%] rounded-xl bg-white p-4 text-center">
+          <h2 className="text-xl font-semibold text-black">
+            Need more AI query credits?
+          </h2>
+          <span>
+            <a
+              href="mailto:caleb@chatdb.ai"
+              className="text-gray-600 underline"
+            >
+              Contact us
+            </a>
+            <p className="inline"> and we can craft a customized plan.</p>
+          </span>
         </div>
       </div>
     </div>

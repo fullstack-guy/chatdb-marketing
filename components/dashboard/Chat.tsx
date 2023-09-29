@@ -11,6 +11,8 @@ import DataGrid from "react-data-grid";
 import { useAuth } from "@clerk/clerk-react";
 import CodeBlock from "./chat/CodeBlock";
 import cn from "classnames";
+import { CSVLink } from "react-csv";
+import { BsCodeSlash, BsDownload } from "react-icons/bs";
 
 export const MemoizedReactMarkdown: FC<Options> = memo(
   ReactMarkdown,
@@ -170,7 +172,9 @@ const Chat = ({ database_uuid }) => {
                   remarkPlugins={[gfm]}
                   components={{
                     p({ children }) {
-                      return <p className="mb-2 last:mb-0">{children}</p>;
+                      return (
+                        <p className="mb-2 text-black last:mb-0">{children}</p>
+                      );
                     },
                     code({ node, inline, className, children, ...props }) {
                       if (children.length) {
@@ -224,13 +228,35 @@ const Chat = ({ database_uuid }) => {
           )}
           {result.sql && (
             <div>
-              {/* The View Code Button */}
-              <button
-                className="btn-primary btn mt-5"
-                onClick={toggleSqlVisibility}
-              >
-                View Code
-              </button>
+              <div className="mt-5 flex justify-end">
+                <button
+                  className="mr-2 rounded px-4 py-2 text-black shadow"
+                  onClick={toggleSqlVisibility}
+                >
+                  <div className="tooltip tooltip-bottom" data-tip="View Code">
+                    <BsCodeSlash />
+                  </div>
+                </button>
+
+                <CSVLink
+                  className="rounded px-4 py-2 text-black shadow" // You can customize the CSS
+                  filename={"my-data.csv"}
+                  data={formatDataForGrid(result.data).rows}
+                  headers={formatDataForGrid(result.data).columns.map(
+                    (col) => ({
+                      label: col.name,
+                      key: col.key,
+                    })
+                  )}
+                >
+                  <div
+                    className="tooltip tooltip-bottom"
+                    data-tip="Download as CSV"
+                  >
+                    <BsDownload />
+                  </div>
+                </CSVLink>
+              </div>
 
               {/* Conditionally render the SQL dropdown */}
               {showSql && (

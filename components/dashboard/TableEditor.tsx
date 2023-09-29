@@ -5,7 +5,8 @@ import DataGrid from "react-data-grid";
 import { FaSortAmountDownAlt, FaSortAmountUpAlt } from "react-icons/fa";
 import { CSVLink } from "react-csv";
 import { Roboto_Mono } from "next/font/google";
-import { FaSync, FaDownload } from "react-icons/fa";
+import { FaSync } from "react-icons/fa";
+import { BsDownload } from "react-icons/bs";
 import { PuffLoader } from "react-spinners";
 import debounce from "lodash/debounce";
 
@@ -176,7 +177,9 @@ const TableEditor = ({ tableName, database_uuid }) => {
                 onClick={fetchDataDebounced}
                 className="rounded px-4 py-2 text-black shadow"
               >
-                <FaSync />
+                <div className="tooltip tooltip-bottom" data-tip="Refresh">
+                  <FaSync />
+                </div>
               </button>
               <CSVLink
                 className="rounded px-4 py-2 text-black shadow"
@@ -187,7 +190,12 @@ const TableEditor = ({ tableName, database_uuid }) => {
                   key: column.key,
                 }))}
               >
-                <FaDownload />
+                <div
+                  className="tooltip tooltip-bottom"
+                  data-tip="Download as CSV"
+                >
+                  <BsDownload />
+                </div>
               </CSVLink>
             </div>
           </div>
