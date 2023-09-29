@@ -440,9 +440,17 @@ export const subscriptionsRouter = router({
       };
     }
 
-    const subscriptionFromPaddleAPI = await getSubscriptionFromPaddleAPI(
-      sub.paddle_subscription_id
-    );
+    const { data: subscriptionFromPaddleAPI, error: subPaddleError } =
+      await getSubscriptionFromPaddleAPI(sub.paddle_subscription_id);
+
+    if (subPaddleError) {
+      return {
+        remainingDatabases: null,
+        user: ctx.user,
+        allowedNumberOfDatabases: null,
+      };
+    }
+
     return {
       remainingDatabases: getUserRemainingDatabases(
         subscriptionFromPaddleAPI,
