@@ -227,8 +227,8 @@ const getPaddlePriceId = (priceName) => {
 const getUserRemainingDatabases = (subscription, dbs, plan) => {
   if (
     subscription.data.status !== "active" ||
-    (subscription.data.data.scheduled_change &&
-      subscription.data.data.scheduled_change.action === "cancel")
+    (subscription.data.scheduled_change &&
+      subscription.data.scheduled_change.action === "cancel")
   ) {
     return null;
   } else if (plan === "chatDB Hobby Plan") {
