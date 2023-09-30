@@ -2,6 +2,7 @@ import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { trpc } from '../../utils/trpc'
 import toast from 'react-hot-toast'
+import LoadingSpinner from '../LoadingSpinner'
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -50,24 +51,28 @@ export default function DropDownMenu({ uuid, refetchDatabases }: { uuid: string,
                                         active ? 'bg-red-100 text-gray-900' : 'text-gray-700',
                                         'block px-4 py-2 text-sm cursor-pointer'
                                     )}
-                                    onClick={() => deleteDatabase.mutateAsync({ uuid })}
+                                    onClick={() => deleteDatabase.mutate({ uuid })}
                                 >
                                     <div className="flex flex-row justify-between items-center">
                                         Delete
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            className="h-6 w-6 cursor-pointer"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="#d72f0c"
-                                            strokeWidth={2}
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                            />
-                                        </svg>
+                                        {
+                                            deleteDatabase.isLoading ? <LoadingSpinner />
+                                                :
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    className="h-6 w-6 cursor-pointer"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke="#d72f0c"
+                                                    strokeWidth={2}
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                                    />
+                                                </svg>
+                                        }
                                     </div>
                                 </span>
                             )}
