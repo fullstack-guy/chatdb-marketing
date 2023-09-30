@@ -19,7 +19,6 @@ export const Card = ({ logo, title, lastUpdated, uuid, refetch }) => {
     useState(false);
   const router = useRouter();
   const handleDatabaseCardClick = () => {
-    console.log("clickeke")
     if (
       !isLoading &&
       !isError &&
