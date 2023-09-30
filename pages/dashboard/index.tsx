@@ -14,8 +14,16 @@ export default function Page() {
     isLoading,
     isError,
     data: subscriptionStatus,
-  } = trpc.subscriptions.status.useQuery();
-  const { isLoading: isDatabasesLoading, isError: isDatabasesError, refetch: refetchDatabases, data: databases } = trpc.databases.getAll.useQuery();
+  } = trpc.subscriptions.status.useQuery(null, {
+    refetchOnWindowFocus: false,
+    retry: 3,
+    retryOnMount: false,
+  });
+  const { isLoading: isDatabasesLoading, isError: isDatabasesError, refetch: refetchDatabases, data: databases } = trpc.databases.getAll.useQuery(null, {
+    refetchOnWindowFocus: false,
+    retry: 3,
+    retryOnMount: false,
+  });
   const [isDeleteDatabasesModalOpened, setIsDeleteDatabasesModalOpeneded] =
     useState(false);
   const [newDatabases, setNewDatabases] = useState([
