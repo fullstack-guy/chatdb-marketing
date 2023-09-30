@@ -1,11 +1,27 @@
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
+import { trpc } from '../../utils/trpc'
+import toast from 'react-hot-toast'
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function DropDownMenu() {
+export default function DropDownMenu({ uuid, refetchDatabases }: { uuid: string, refetchDatabases: () => void }) {
+    const deleteDatabase = trpc.databases.delete.useMutation({
+        onMutate: () => {
+            toast.loading('Deleting database...', {
+                duration: 1000,
+            })
+        },
+        onError: (error) => {
+            toast.error(error.message)
+        },
+        onSuccess: () => {
+            refetchDatabases()
+            toast.success('Database deleted successfully')
+        },
+    })
     return (
         <Menu as="div" className="w-8 h-8 inline-block text-left">
             <div>
@@ -29,12 +45,12 @@ export default function DropDownMenu() {
 
                         <Menu.Item>
                             {({ active }) => (
-                                <a
-                                    href="#"
+                                <span
                                     className={classNames(
                                         active ? 'bg-red-100 text-gray-900' : 'text-gray-700',
-                                        'block px-4 py-2 text-sm'
+                                        'block px-4 py-2 text-sm cursor-pointer'
                                     )}
+                                    onClick={() => deleteDatabase.mutateAsync({ uuid })}
                                 >
                                     <div className="flex flex-row justify-between items-center">
                                         Delete
@@ -53,7 +69,7 @@ export default function DropDownMenu() {
                                             />
                                         </svg>
                                     </div>
-                                </a>
+                                </span>
                             )}
                         </Menu.Item>
                     </div>

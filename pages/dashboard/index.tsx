@@ -15,7 +15,7 @@ export default function Page() {
     isError,
     data: subscriptionStatus,
   } = trpc.subscriptions.status.useQuery();
-  const { isLoading: isDatabasesLoading, isError: isDatabasesError, data: databases } = trpc.databases.getAll.useQuery();
+  const { isLoading: isDatabasesLoading, isError: isDatabasesError, refetch: refetchDatabases, data: databases } = trpc.databases.getAll.useQuery();
   const [isDeleteDatabasesModalOpened, setIsDeleteDatabasesModalOpeneded] =
     useState(false);
   const [newDatabases, setNewDatabases] = useState([
@@ -81,7 +81,7 @@ export default function Page() {
 
         <main className="">
           {(isDatabasesLoading && <LoadingSpinner />)}
-          {databases && <Table databases={databases} />}
+          {databases && <Table databases={databases} refetch={refetchDatabases} />}
           {databases && (databases.length === 0 && (
             <div className="flex flex-col items-center justify-center">
               <h1 className="text-2xl font-bold text-heading">

@@ -11,6 +11,7 @@ interface DatabaseObject {
 type DatabaseObjectArray = DatabaseObject[];
 interface Props {
   databases: DatabaseObjectArray;
+  refetch: () => void;
 }
 
 const getDatabaseLogo = (type: string | undefined) => {
@@ -20,7 +21,7 @@ const getDatabaseLogo = (type: string | undefined) => {
 
 }
 
-const Table = ({ databases }: Props) => {
+const Table = ({ databases, refetch }: Props) => {
   return (
     <div className="grid grid-flow-row-dense gap-4 md:grid-cols-2 lg:grid-cols-3">
       {databases.map((card, index) => (
@@ -31,6 +32,7 @@ const Table = ({ databases }: Props) => {
             title={card.title}
             uuid={card.uuid}
             lastUpdated={card.created_at}
+            refetch={refetch}
           />
         </div>
       ))}
