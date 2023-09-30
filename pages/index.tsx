@@ -9,46 +9,11 @@ import { LightBulbIcon } from "@heroicons/react/outline";
 import { Tweet } from "react-tweet";
 import FAQ from "../components/FAQ";
 import useSupabase from "../hooks/useSupabaseClient";
+import { useRouter } from "next/router";
 
 export default function Page() {
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const router = useRouter();
   const supabase = useSupabase();
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    posthog.capture("waitlist_signup");
-    if (isSubmitting) return; // Block submission if it's already in progress
-    setIsSubmitting(true);
-
-    if (email === "") {
-      toast.error("Sorry, the email field is blank");
-      return;
-    }
-
-    await supabase
-      .from("waitlist_email")
-      .upsert({ email: email })
-      .then(({ data, error }) => {
-        if (error) {
-          console.error("Error:", error);
-        } else {
-          axios
-            .post(`/api/send`, { email: email })
-            .then((response) => {
-              toast.success("Thanks for signing up!");
-              setEmail("");
-              setSubmitted(true);
-            })
-            .catch((error) => {
-              console.error("Error:", error);
-            });
-        }
-      });
-  };
 
   return (
     <Layout>
@@ -64,44 +29,21 @@ export default function Page() {
                 Time is money! Say hello to your personal AI data analyst. Think
                 ChatGPT, but for your database.
               </p>
-              {
-                // Render the form only if the form has not been submitted
-                !submitted && (
-                  <form
-                    className="subscription-form mt-6 flex flex-col gap-2 sm:flex-row"
-                    method="POST"
-                    onSubmit={handleSubmit}
-                  >
-                    <div>
-                      <label
-                        htmlFor="email"
-                        className="sr-only block border-blue-400 text-sm font-semibold text-heading"
-                      >
-                        Email
-                      </label>
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="block w-72 rounded-xl border-2 border-layer-3 bg-muted-1 px-4 py-2.5 font-semibold text-heading placeholder:text-text/50 focus:border-primary focus:outline-none focus:ring-0 sm:text-sm"
-                      />
-                    </div>
-                    <button
-                      type="submit"
-                      style={{
-                        background:
-                          "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)",
-                      }}
-                      className="inline-flex transform cursor-pointer items-center justify-center rounded-xl border-none px-4 py-2.5 text-sm font-semibold text-white transition duration-200 hover:scale-110 hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
-                    >
-                      Join Waitlist
-                    </button>
-                  </form>
-                )
-              }
+              <div className="mt-6">
+                <button
+                  onClick={() => {
+                    posthog.capture("homepage_cta");
+                    router.push("/dashboard")
+                  }}
+                  style={{
+                    background:
+                      "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)",
+                  }}
+                  className="inline-flex transform cursor-pointer items-center justify-center rounded-xl border-none px-8 py-4 text-md font-semibold text-white transition duration-200 hover:scale-105 hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
+                >
+                  Get Started
+                </button>
+              </div>
             </div>
             <div className="mt-12 px-0 md:px-2">
               {/* Image for larger devices */}
