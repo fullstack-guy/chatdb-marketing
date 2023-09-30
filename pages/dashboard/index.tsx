@@ -89,6 +89,14 @@ export default function Page() {
               </h1>
             </div>
           ))}
+          {isDatabasesError && (
+            <div className="flex flex-col items-center justify-center">
+              <h1 className="text-2xl font-bold text-heading">
+                Error fetching databases
+              </h1>
+            </div>
+
+          )}
         </main>
       </div>
       <input type="checkbox" id="database-modal" className="modal-toggle" />

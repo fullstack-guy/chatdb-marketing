@@ -13,6 +13,13 @@ interface Props {
   databases: DatabaseObjectArray;
 }
 
+const getDatabaseLogo = (type: string | undefined) => {
+  if (type === "postgres") {
+    return "/images/postgres-icon.png";
+  }
+
+}
+
 const Table = ({ databases }: Props) => {
   return (
     <div className="grid grid-flow-row-dense gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -20,7 +27,7 @@ const Table = ({ databases }: Props) => {
         <div key={index}>
           <DatabaseCard
             key={index}
-            logo={"/images/postgres-icon.png"}
+            logo={getDatabaseLogo("postgres")}
             title={card.title}
             uuid={card.uuid}
             lastUpdated={card.created_at}
