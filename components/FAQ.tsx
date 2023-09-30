@@ -81,6 +81,8 @@ const FAQ = () => {
                     By specifying the tables it needs to query can usually nudge
                     the AI in the right direction. We will be continually
                     improving the capabilities and effectiveness of the model.
+                    <br></br><br></br>
+                    Another really useful tool is using the <b>Include 3 Sample Rows</b> from database settings so the AI can see how your data is structured in your database. One example of this is so the AI knows that the text in the city column is NY and not New York.
                   </Disclosure.Panel>
                 </>
               )}
