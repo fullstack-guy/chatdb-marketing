@@ -40,8 +40,8 @@ export const Card = ({ logo, title, lastUpdated, uuid, refetch }) => {
   return (
     <div className="relative">
 
-      <div className="h-[20vh] flex items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 hover:scale-105 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-        <div className="h-full w-1/6 md:h-[20vh] md:w-2/6 lg:h-[20vh] lg:w-2/6 flex items-center justify-center rounded-lg bg-[#0fe0b6]">
+      <div className="h-[15vh] flex items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 hover:scale-105 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+        <div className="h-full w-1/6 md:h-[15vh] md:w-2/6 lg:h-[15vh] lg:w-2/6 flex items-center justify-center rounded-lg bg-[#0fe0b6]">
           <Image
             className="m-auto"
             width={40}
