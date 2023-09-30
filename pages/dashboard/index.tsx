@@ -18,7 +18,6 @@ export default function Page() {
   const { isLoading: isDatabasesLoading, isError: isDatabasesError, data: databases } = trpc.databases.getAll.useQuery();
   const [isDeleteDatabasesModalOpened, setIsDeleteDatabasesModalOpeneded] =
     useState(false);
-  const [fetchedDatabases, setFetchedDatabases] = useState([]);
   const [newDatabases, setNewDatabases] = useState([
     {
       name: "PostgreSQL",
@@ -35,9 +34,6 @@ export default function Page() {
   };
 
   useEffect(() => {
-    if (isLoaded && isSignedIn && supabase) {
-      fetchDatabases();
-    }
     if (
       !isLoading &&
       !isError &&
@@ -47,27 +43,7 @@ export default function Page() {
     }
   }, [isLoaded, isSignedIn, supabase, subscriptionStatus]);
 
-  const fetchDatabases = async () => {
-    const { data, error } = await supabase
-      .from("user_schemas")
-      .select("*")
-      .eq("user_id", user.id);
 
-    if (error) {
-      console.error("Error fetching databases:", error);
-    } else {
-      setFetchedDatabases(
-        data.map((db) => ({
-          name: db.title,
-          path: "/dashboard/postgres",
-          selected: false,
-          img: "/images/postgres-icon.png",
-          uuid: db.uuid,
-          created_at: db.created_at,
-        }))
-      );
-    }
-  };
 
   if (!isLoaded || !isSignedIn) {
     return null;
