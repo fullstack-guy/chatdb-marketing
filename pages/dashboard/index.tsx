@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import useSupabase from "../../hooks/useSupabaseClient";
 import DeleteDatabasesModal from "../../components/dashboard/DeleteDatabasesModal";
 import { trpc } from "../../utils/trpc";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 export default function Page() {
   const {
@@ -14,6 +15,7 @@ export default function Page() {
     isError,
     data: subscriptionStatus,
   } = trpc.subscriptions.status.useQuery();
+  const { isLoading: isDatabasesLoading, isError: isDatabasesError, data: databases } = trpc.databases.getAll.useQuery();
   const [isDeleteDatabasesModalOpened, setIsDeleteDatabasesModalOpeneded] =
     useState(false);
   const [fetchedDatabases, setFetchedDatabases] = useState([]);
@@ -102,11 +104,15 @@ export default function Page() {
         </header>
 
         <main className="">
-          {fetchedDatabases.length === 0 ? (
-            <h1>You don't have any databases added.</h1>
-          ) : (
-            <Table databases={fetchedDatabases} />
-          )}
+          {(isDatabasesLoading && <LoadingSpinner />)}
+          {databases && <Table databases={databases} />}
+          {databases && (databases.length === 0 && (
+            <div className="flex flex-col items-center justify-center">
+              <h1 className="text-2xl font-bold text-heading">
+                You don't have any databases yet
+              </h1>
+            </div>
+          ))}
         </main>
       </div>
       <input type="checkbox" id="database-modal" className="modal-toggle" />
@@ -118,9 +124,8 @@ export default function Page() {
                 <div
                   key={index}
                   onClick={() => selectDatabase(index)}
-                  className={`mb-4 flex cursor-pointer items-center rounded-lg p-4 shadow-md ${
-                    database.selected ? "border-4 border-[#0fe0b6]" : ""
-                  }`}
+                  className={`mb-4 flex cursor-pointer items-center rounded-lg p-4 shadow-md ${database.selected ? "border-4 border-[#0fe0b6]" : ""
+                    }`}
                 >
                   <div className="mr-4 flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg bg-[#0fe0b6]">
                     <Image

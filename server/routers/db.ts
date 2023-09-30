@@ -44,7 +44,7 @@ export const databasesRouter = router({
     const { ctx } = opts;
     const { data, error } = await ctx.userSupabase
       .from("user_schemas")
-      .select("uuid, title");
+      .select("*");
 
     if (error) {
       throw new TRPCError({

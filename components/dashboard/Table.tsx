@@ -2,7 +2,7 @@ import DatabaseCard from "./DatabaseCard";
 
 // Define the type for the individual database object
 interface DatabaseObject {
-  name: string;
+  title: string;
   type: string | undefined;
   created_at: string;
   uuid: string;
@@ -21,7 +21,7 @@ const Table = ({ databases }: Props) => {
           <DatabaseCard
             key={index}
             logo={"/images/postgres-icon.png"}
-            title={card.name}
+            title={card.title}
             uuid={card.uuid}
             lastUpdated={card.created_at}
           />
