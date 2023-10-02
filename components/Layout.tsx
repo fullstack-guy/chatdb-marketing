@@ -165,6 +165,7 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
             </div>
           </footer>
         </div>
+        <Toaster position="bottom-center" />
       </div>
     </div>
   );

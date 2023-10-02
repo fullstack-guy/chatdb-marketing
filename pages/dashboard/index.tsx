@@ -7,16 +7,25 @@ import { useRouter } from "next/router";
 import useSupabase from "../../hooks/useSupabaseClient";
 import DeleteDatabasesModal from "../../components/dashboard/DeleteDatabasesModal";
 import { trpc } from "../../utils/trpc";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 export default function Page() {
   const {
     isLoading,
     isError,
     data: subscriptionStatus,
-  } = trpc.subscriptions.status.useQuery();
+  } = trpc.subscriptions.status.useQuery(null, {
+    refetchOnWindowFocus: false,
+    retry: 3,
+    retryOnMount: false,
+  });
+  const { isLoading: isDatabasesLoading, isError: isDatabasesError, refetch: refetchDatabases, data: databases } = trpc.databases.getAll.useQuery(null, {
+    refetchOnWindowFocus: false,
+    retry: 3,
+    retryOnMount: false,
+  });
   const [isDeleteDatabasesModalOpened, setIsDeleteDatabasesModalOpeneded] =
     useState(false);
-  const [fetchedDatabases, setFetchedDatabases] = useState([]);
   const [newDatabases, setNewDatabases] = useState([
     {
       name: "PostgreSQL",
@@ -33,9 +42,6 @@ export default function Page() {
   };
 
   useEffect(() => {
-    if (isLoaded && isSignedIn && supabase) {
-      fetchDatabases();
-    }
     if (
       !isLoading &&
       !isError &&
@@ -45,27 +51,7 @@ export default function Page() {
     }
   }, [isLoaded, isSignedIn, supabase, subscriptionStatus]);
 
-  const fetchDatabases = async () => {
-    const { data, error } = await supabase
-      .from("user_schemas")
-      .select("*")
-      .eq("user_id", user.id);
 
-    if (error) {
-      console.error("Error fetching databases:", error);
-    } else {
-      setFetchedDatabases(
-        data.map((db) => ({
-          name: db.title,
-          path: "/dashboard/postgres",
-          selected: false,
-          img: "/images/postgres-icon.png",
-          uuid: db.uuid,
-          created_at: db.created_at,
-        }))
-      );
-    }
-  };
 
   if (!isLoaded || !isSignedIn) {
     return null;
@@ -102,10 +88,22 @@ export default function Page() {
         </header>
 
         <main className="">
-          {fetchedDatabases.length === 0 ? (
-            <h1>You don't have any databases added.</h1>
-          ) : (
-            <Table databases={fetchedDatabases} />
+          {(isDatabasesLoading && <LoadingSpinner />)}
+          {databases && <Table databases={databases} refetch={refetchDatabases} />}
+          {databases && (databases.length === 0 && (
+            <div className="flex flex-col items-center justify-center">
+              <h1 className="text-2xl font-bold text-heading">
+                You don't have any databases yet
+              </h1>
+            </div>
+          ))}
+          {isDatabasesError && (
+            <div className="flex flex-col items-center justify-center">
+              <h1 className="text-2xl font-bold text-heading">
+                Error fetching databases
+              </h1>
+            </div>
+
           )}
         </main>
       </div>

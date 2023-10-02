@@ -2,7 +2,7 @@ import DatabaseCard from "./DatabaseCard";
 
 // Define the type for the individual database object
 interface DatabaseObject {
-  name: string;
+  title: string;
   type: string | undefined;
   created_at: string;
   uuid: string;
@@ -11,19 +11,28 @@ interface DatabaseObject {
 type DatabaseObjectArray = DatabaseObject[];
 interface Props {
   databases: DatabaseObjectArray;
+  refetch: () => void;
 }
 
-const Table = ({ databases }: Props) => {
+const getDatabaseLogo = (type: string | undefined) => {
+  if (type === "postgres") {
+    return "/images/postgres-icon.png";
+  }
+
+}
+
+const Table = ({ databases, refetch }: Props) => {
   return (
     <div className="grid grid-flow-row-dense gap-4 md:grid-cols-2 lg:grid-cols-3">
       {databases.map((card, index) => (
         <div key={index}>
           <DatabaseCard
             key={index}
-            logo={"/images/postgres-icon.png"}
-            title={card.name}
+            logo={getDatabaseLogo("postgres")}
+            title={card.title}
             uuid={card.uuid}
             lastUpdated={card.created_at}
+            refetch={refetch}
           />
         </div>
       ))}
