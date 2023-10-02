@@ -151,6 +151,13 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
                 CSV to Parquet Converter
               </Link>
             </div>
+            <div>
+              <span className="footer-title">Integrations</span>
+              <Link href="/integrations/supabase" className="link-hover link">
+                Supabase
+              </Link>
+              {/* You can add more integrations here */}
+            </div>
           </footer>
         </div>
       </div>

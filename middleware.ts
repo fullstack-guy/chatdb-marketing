@@ -18,6 +18,7 @@ export default authMiddleware({
     "/tools(.*)",
     "/api/send",
     "/api/og",
+    "/integrations(.*)",
     "/docs(.*)",
   ],
 });

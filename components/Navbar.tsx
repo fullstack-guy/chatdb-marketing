@@ -74,8 +74,9 @@ const Navbar = () => {
                 {({ active }) => (
                   <Link
                     href="/dashboard"
-                    className={`${active ? "bg-muted-1 text-heading" : "text-text"
-                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                    className={`${
+                      active ? "bg-muted-1 text-heading" : "text-text"
+                    } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                   >
                     Dashboard
                   </Link>
@@ -85,8 +86,9 @@ const Navbar = () => {
                 {({ active }) => (
                   <Link
                     href="/tools"
-                    className={`${active ? "bg-muted-1 text-heading" : "text-text"
-                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                    className={`${
+                      active ? "bg-muted-1 text-heading" : "text-text"
+                    } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                   >
                     Tools
                   </Link>
@@ -96,8 +98,9 @@ const Navbar = () => {
                 {({ active }) => (
                   <Link
                     href="/pricing"
-                    className={`${active ? "bg-muted-1 text-heading" : "text-text"
-                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                    className={`${
+                      active ? "bg-muted-1 text-heading" : "text-text"
+                    } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                   >
                     Pricing
                   </Link>
@@ -107,8 +110,9 @@ const Navbar = () => {
                 {({ active }) => (
                   <Link
                     href="/blog"
-                    className={`${active ? "bg-muted-1 text-heading" : "text-text"
-                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                    className={`${
+                      active ? "bg-muted-1 text-heading" : "text-text"
+                    } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                   >
                     Blog
                   </Link>
@@ -118,8 +122,9 @@ const Navbar = () => {
                 {({ active }) => (
                   <Link
                     href="/contact-us"
-                    className={`${active ? "bg-muted-1 text-heading" : "text-text"
-                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                    className={`${
+                      active ? "bg-muted-1 text-heading" : "text-text"
+                    } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                   >
                     Contact Us
                   </Link>

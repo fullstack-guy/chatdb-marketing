@@ -18,8 +18,9 @@ const FAQ = () => {
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
                     What is the refund policy?
                     <ChevronDownIcon
-                      className={`${open ? "rotate-180 text-heading" : "text-text"
-                        } h-5 w-5`}
+                      className={`${
+                        open ? "rotate-180 text-heading" : "text-text"
+                      } h-5 w-5`}
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 py-2">
@@ -53,8 +54,9 @@ const FAQ = () => {
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
                     Do you support more than PostgreSQL?
                     <ChevronDownIcon
-                      className={`${open ? "rotate-180 text-heading" : "text-text"
-                        } h-5 w-5`}
+                      className={`${
+                        open ? "rotate-180 text-heading" : "text-text"
+                      } h-5 w-5`}
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 py-2">
@@ -73,16 +75,22 @@ const FAQ = () => {
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
                     How can I improve the results?
                     <ChevronDownIcon
-                      className={`${open ? "rotate-180 text-heading" : "text-text"
-                        } h-5 w-5`}
+                      className={`${
+                        open ? "rotate-180 text-heading" : "text-text"
+                      } h-5 w-5`}
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 py-2">
                     By specifying the tables it needs to query can usually nudge
                     the AI in the right direction. We will be continually
                     improving the capabilities and effectiveness of the model.
-                    <br></br><br></br>
-                    Another really useful tool is using the <b>Include 3 Sample Rows</b> from database settings so the AI can see how your data is structured in your database. One example of this is so the AI knows that the text in the city column is NY and not New York.
+                    <br></br>
+                    <br></br>
+                    Another really useful tool is using the{" "}
+                    <b>Include 3 Sample Rows</b> from database settings so the
+                    AI can see how your data is structured in your database. One
+                    example of this is so the AI knows that the text in the city
+                    column is NY and not New York.
                   </Disclosure.Panel>
                 </>
               )}
@@ -94,8 +102,9 @@ const FAQ = () => {
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
                     Do you offer technical support?
                     <ChevronDownIcon
-                      className={`${open ? "rotate-180 text-heading" : "text-text"
-                        } h-5 w-5`}
+                      className={`${
+                        open ? "rotate-180 text-heading" : "text-text"
+                      } h-5 w-5`}
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 py-2">
@@ -112,8 +121,9 @@ const FAQ = () => {
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
                     How secure is the tool?
                     <ChevronDownIcon
-                      className={`${open ? "rotate-180 text-heading" : "text-text"
-                        } h-5 w-5`}
+                      className={`${
+                        open ? "rotate-180 text-heading" : "text-text"
+                      } h-5 w-5`}
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 py-2">
@@ -133,17 +143,19 @@ const FAQ = () => {
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
                     How do you protect my database from bad queries?
                     <ChevronDownIcon
-                      className={`${open ? "rotate-180 text-heading" : "text-text"
-                        } h-5 w-5`}
+                      className={`${
+                        open ? "rotate-180 text-heading" : "text-text"
+                      } h-5 w-5`}
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 py-2">
                     We parse the AI generated SQL query before executing it
-                    against the database to ensure it is a SELECT statement. <br></br>
+                    against the database to ensure it is a SELECT statement.{" "}
                     <br></br>
-                    However, to have 100% fool proof protection, we recommend creating a read
-                    only account for ChatDB to use with the database. We have
-                    instructions on how to do that{" "}
+                    <br></br>
+                    However, to have 100% fool proof protection, we recommend
+                    creating a read only account for ChatDB to use with the
+                    database. We have instructions on how to do that{" "}
                     <Link
                       className="font-bold underline"
                       href="/post/how-to-create-read-only-postgres-user"
@@ -162,8 +174,9 @@ const FAQ = () => {
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
                     What is on the product roadmap?
                     <ChevronDownIcon
-                      className={`${open ? "rotate-180 text-heading" : "text-text"
-                        } h-5 w-5`}
+                      className={`${
+                        open ? "rotate-180 text-heading" : "text-text"
+                      } h-5 w-5`}
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 py-2">
@@ -186,8 +199,9 @@ const FAQ = () => {
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
                     Do you have an Enterprise or a Custom plan?
                     <ChevronDownIcon
-                      className={`${open ? "rotate-180 text-heading" : "text-text"
-                        } h-5 w-5`}
+                      className={`${
+                        open ? "rotate-180 text-heading" : "text-text"
+                      } h-5 w-5`}
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 py-2">

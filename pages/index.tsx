@@ -33,13 +33,13 @@ export default function Page() {
                 <button
                   onClick={() => {
                     posthog.capture("homepage_cta");
-                    router.push("/dashboard")
+                    router.push("/dashboard");
                   }}
                   style={{
                     background:
                       "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)",
                   }}
-                  className="inline-flex transform cursor-pointer items-center justify-center rounded-xl border-none px-8 py-4 text-md font-semibold text-white transition duration-200 hover:scale-105 hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
+                  className="text-md inline-flex transform cursor-pointer items-center justify-center rounded-xl border-none px-8 py-4 font-semibold text-white transition duration-200 hover:scale-105 hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
                 >
                   Get Started
                 </button>
