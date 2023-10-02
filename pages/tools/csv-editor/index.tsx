@@ -94,9 +94,16 @@ const Page = () => {
     }
   };
 
-  const handleDataChange = (newRows, { indexes, column }) => {
-    setData(data.map((row, i) => (i === indexes[0] ? newRows[0] : row)));
-    setHistory((currentHistory) => [newRows, ...currentHistory]);
+  const handleDataChange = (rows) => {
+    const updatedData = [...data];
+    rows.forEach((row) => { 
+      const rowIndex = data.findIndex((r) => r["#"] === row["#"]); 
+      if (rowIndex !== -1) {
+        updatedData[rowIndex] = row;
+      }
+    });
+    setData(updatedData);
+    setHistory((currentHistory) => [updatedData, ...currentHistory]);
   };
 
   function insertRow(insertRowIdx: number) {
