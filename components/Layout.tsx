@@ -156,7 +156,9 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
               <Link href="/integrations/supabase" className="link-hover link">
                 Supabase
               </Link>
-              {/* You can add more integrations here */}
+              <Link href="/integrations/neon" className="link-hover link">
+                Neon
+              </Link>
             </div>
           </footer>
         </div>
