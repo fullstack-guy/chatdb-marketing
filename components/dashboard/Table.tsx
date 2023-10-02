@@ -18,8 +18,7 @@ const getDatabaseLogo = (type: string | undefined) => {
   if (type === "postgres") {
     return "/images/postgres-icon.png";
   }
-
-}
+};
 
 const Table = ({ databases, refetch }: Props) => {
   return (

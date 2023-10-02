@@ -42,10 +42,12 @@ export const Card = ({ logo, title, lastUpdated, uuid, refetch }) => {
 
   return (
     <div className="relative">
-      <div className="flex justify-between items-center p-3 border border-gray-200 rounded-lg cursor-pointer shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 transition duration-300 ease-in-out hover:scale-105 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
-        onClick={handleDatabaseCardClick}>
+      <div
+        className="flex cursor-pointer items-center justify-between rounded-lg border border-gray-200 p-3 shadow-md transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 md:max-w-xl md:flex-row"
+        onClick={handleDatabaseCardClick}
+      >
         <div className="flex-shrink-0 p-1 md:p-1 lg:p-1">
-          <div className="h-[8vh] w-[8vh] flex items-center justify-center rounded-lg bg-[#0fe0b6]">
+          <div className="flex h-[8vh] w-[8vh] items-center justify-center rounded-lg bg-[#0fe0b6]">
             <Image
               className="m-auto"
               width={40}
@@ -55,19 +57,20 @@ export const Card = ({ logo, title, lastUpdated, uuid, refetch }) => {
             />
           </div>
         </div>
-        <div className="flex-grow h-full flex flex-col justify-between items-start leading-normal relative">
-          <div className="flex items-center w-full">
-            <h5 className="text-xl font-bold ml-2 text-left tracking-tight text-gray-900 dark:text-white">{title}</h5>
+        <div className="relative flex h-full flex-grow flex-col items-start justify-between leading-normal">
+          <div className="flex w-full items-center">
+            <h5 className="ml-2 text-left text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+              {title}
+            </h5>
           </div>
           <div
-            className="absolute top-0 right-0 p-0 m-0"
+            className="absolute right-0 top-0 m-0 p-0"
             onClick={handleDropdownClick}
           >
             <DropDownMenu uuid={uuid} refetchDatabases={refetch} />
           </div>
         </div>
       </div>
-
 
       <UpdateSubscriptionModal
         open={isUpdateSubscriptionModalOpeneded}
@@ -83,7 +86,7 @@ export const Card = ({ logo, title, lastUpdated, uuid, refetch }) => {
         open={isDeleteDatabasesModalOpened}
         setOpen={setIsDeleteDatabasesModalOpeneded}
       />
-    </div >
+    </div>
   );
 };
 

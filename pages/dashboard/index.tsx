@@ -20,7 +20,12 @@ export default function Page() {
     retry: 3,
     retryOnMount: false,
   });
-  const { isLoading: isDatabasesLoading, isError: isDatabasesError, refetch: refetchDatabases, data: databases } = trpc.databases.getAll.useQuery(null, {
+  const {
+    isLoading: isDatabasesLoading,
+    isError: isDatabasesError,
+    refetch: refetchDatabases,
+    data: databases,
+  } = trpc.databases.getAll.useQuery(null, {
     refetchOnWindowFocus: false,
     retry: 3,
     retryOnMount: false,
@@ -51,8 +56,6 @@ export default function Page() {
       setIsDeleteDatabasesModalOpeneded(true);
     }
   }, [isLoaded, isSignedIn, supabase, subscriptionStatus]);
-
-
 
   if (!isLoaded || !isSignedIn) {
     return null;
@@ -89,22 +92,26 @@ export default function Page() {
         </header>
 
         <main className="">
-          {(isDatabasesLoading && <LoadingSpinner />)}
-          {databases && <Table databases={databases as DatabaseObjectArray} refetch={refetchDatabases} />}
-          {databases && (databases.length === 0 && (
+          {isDatabasesLoading && <LoadingSpinner />}
+          {databases && (
+            <Table
+              databases={databases as DatabaseObjectArray}
+              refetch={refetchDatabases}
+            />
+          )}
+          {databases && databases.length === 0 && (
             <div className="flex flex-col items-center justify-center">
               <h1 className="text-2xl font-bold text-heading">
                 You don't have any databases yet
               </h1>
             </div>
-          ))}
+          )}
           {isDatabasesError && (
             <div className="flex flex-col items-center justify-center">
               <h1 className="text-2xl font-bold text-heading">
                 Error fetching databases
               </h1>
             </div>
-
           )}
         </main>
       </div>
@@ -117,8 +124,9 @@ export default function Page() {
                 <div
                   key={index}
                   onClick={() => selectDatabase(index)}
-                  className={`mb-4 flex cursor-pointer items-center rounded-lg p-4 shadow-md ${database.selected ? "border-4 border-[#0fe0b6]" : ""
-                    }`}
+                  className={`mb-4 flex cursor-pointer items-center rounded-lg p-4 shadow-md ${
+                    database.selected ? "border-4 border-[#0fe0b6]" : ""
+                  }`}
                 >
                   <div className="mr-4 flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg bg-[#0fe0b6]">
                     <Image
