@@ -8,6 +8,7 @@ import useSupabase from "../../hooks/useSupabaseClient";
 import DeleteDatabasesModal from "../../components/dashboard/DeleteDatabasesModal";
 import { trpc } from "../../utils/trpc";
 import LoadingSpinner from "../../components/LoadingSpinner";
+import { DatabaseObjectArray } from "../../components/dashboard/Table";
 
 export default function Page() {
   const {

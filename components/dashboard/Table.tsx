@@ -8,7 +8,7 @@ interface DatabaseObject {
   uuid: string;
 }
 
-type DatabaseObjectArray = DatabaseObject[];
+export type DatabaseObjectArray = DatabaseObject[];
 interface Props {
   databases: DatabaseObjectArray;
   refetch: () => void;
