@@ -89,7 +89,7 @@ export default function Page() {
 
         <main className="">
           {(isDatabasesLoading && <LoadingSpinner />)}
-          {databases && <Table databases={databases} refetch={refetchDatabases} />}
+          {databases && <Table databases={databases as DatabaseObjectArray} refetch={refetchDatabases} />}
           {databases && (databases.length === 0 && (
             <div className="flex flex-col items-center justify-center">
               <h1 className="text-2xl font-bold text-heading">
