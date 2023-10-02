@@ -19,16 +19,18 @@ const Navbar = () => {
           <h1 className="text-4xl font-bold text-heading">ChatDB</h1>
         </Link>
         <div className="hidden items-center md:flex">
-          {isOnDashboard ? (
-            <></>
-          ) : (
-            <Link
-              href="/dashboard"
-              className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
-            >
-              Dashboard
-            </Link>
-          )}
+          <SignedIn>
+            {isOnDashboard ? (
+              <></>
+            ) : (
+              <Link
+                href="/dashboard"
+                className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
+              >
+                Dashboard
+              </Link>
+            )}
+          </SignedIn>
           <Link
             href="/pricing"
             className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
@@ -41,16 +43,16 @@ const Navbar = () => {
           >
             Blog
           </Link>
+          <SignedOut>
+            <div className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold hover:bg-heading/5 hover:text-heading focus:bg-heading/5">
+              <SignInButton />
+            </div>
+          </SignedOut>
           <SignedIn>
             <div className="mx-4">
               <UserButton />
             </div>
           </SignedIn>
-          <SignedOut>
-            {/* <div className="mx-4 cursor-pointer rounded-lg px-4 py-2.5 text-base font-semibold hover:bg-heading/5 hover:text-heading focus:bg-heading/5">
-              <SignInButton />
-            </div> */}
-          </SignedOut>
         </div>
 
         <Menu as="div" className="relative md:hidden">
@@ -74,9 +76,8 @@ const Navbar = () => {
                 {({ active }) => (
                   <Link
                     href="/dashboard"
-                    className={`${
-                      active ? "bg-muted-1 text-heading" : "text-text"
-                    } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                    className={`${active ? "bg-muted-1 text-heading" : "text-text"
+                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                   >
                     Dashboard
                   </Link>
@@ -86,9 +87,8 @@ const Navbar = () => {
                 {({ active }) => (
                   <Link
                     href="/tools"
-                    className={`${
-                      active ? "bg-muted-1 text-heading" : "text-text"
-                    } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                    className={`${active ? "bg-muted-1 text-heading" : "text-text"
+                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                   >
                     Tools
                   </Link>
@@ -98,9 +98,8 @@ const Navbar = () => {
                 {({ active }) => (
                   <Link
                     href="/pricing"
-                    className={`${
-                      active ? "bg-muted-1 text-heading" : "text-text"
-                    } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                    className={`${active ? "bg-muted-1 text-heading" : "text-text"
+                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                   >
                     Pricing
                   </Link>
@@ -110,9 +109,8 @@ const Navbar = () => {
                 {({ active }) => (
                   <Link
                     href="/blog"
-                    className={`${
-                      active ? "bg-muted-1 text-heading" : "text-text"
-                    } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                    className={`${active ? "bg-muted-1 text-heading" : "text-text"
+                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                   >
                     Blog
                   </Link>
@@ -122,9 +120,8 @@ const Navbar = () => {
                 {({ active }) => (
                   <Link
                     href="/contact-us"
-                    className={`${
-                      active ? "bg-muted-1 text-heading" : "text-text"
-                    } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
+                    className={`${active ? "bg-muted-1 text-heading" : "text-text"
+                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-black`}
                   >
                     Contact Us
                   </Link>

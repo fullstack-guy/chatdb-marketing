@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 import useSupabase from "../../hooks/useSupabaseClient";
 import DeleteDatabasesModal from "../../components/dashboard/DeleteDatabasesModal";
 import { trpc } from "../../utils/trpc";
-import posthog from '../utils/posthog';
 
 export default function Page() {
   const {
@@ -36,7 +35,6 @@ export default function Page() {
   useEffect(() => {
     if (isLoaded && isSignedIn && supabase) {
       fetchDatabases();
-      posthog.identify(user.id);
     }
     if (
       !isLoading &&
@@ -97,9 +95,6 @@ export default function Page() {
           <h1 className="text-4xl font-bold text-heading">Overview</h1>
           <label
             htmlFor="database-modal"
-            onClick={() => {
-              posthog.capture('AddDataSourceClicked', { userId: user.id });
-            }}
             className="btn-md btn mx-4 inline-flex cursor-pointer items-center justify-center rounded-xl border-none px-4 py-1 text-base font-semibold capitalize text-white shadow-sm hover:bg-primary-accent focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:border-primary disabled:hover:bg-primary disabled:hover:text-white dark:focus:ring-white/80"
           >
             Add Data Source
