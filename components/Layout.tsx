@@ -159,6 +159,9 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
               <Link href="/integrations/neon" className="link-hover link">
                 Neon
               </Link>
+              <Link href="/integrations/render" className="link-hover link">
+                Render
+              </Link>
             </div>
           </footer>
         </div>

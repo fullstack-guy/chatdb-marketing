@@ -2,12 +2,12 @@ import Layout from "../../components/Layout";
 import Link from "next/link";
 import Image from "next/image";
 
-const NeonPage = () => {
+const RenderPage = () => {
   return (
     <Layout
-      title="Neon AI Database Assistant - ChatDB"
-      description="The tool that is an expert on your Neon database. Say goodbye to hours spent creating the correct query to get the data you need."
-      url="https://www.chatdb.ai/integrations/neon"
+      title="Render AI Database Assistant - ChatDB"
+      description="The tool that is an expert on your Render database. Say goodbye to hours spent creating the correct query to get the data you need."
+      url="https://www.chatdb.ai/integrations/render"
     >
       {/* Hero Section */}
       <div className="relative mt-4 rounded-xl bg-gray-900 text-white">
@@ -16,10 +16,10 @@ const NeonPage = () => {
         </div>
         <div className="relative mx-auto flex max-w-7xl flex-col items-center justify-center px-4 py-24 sm:px-6 lg:px-8">
           <h1 className="mb-4 text-center text-7xl font-extrabold tracking-tight text-white sm:text-8xl lg:text-7xl xl:text-8xl">
-            ChatDB + Neon
+            ChatDB + Render
           </h1>
           <p className="mt-3 text-center text-xl font-semibold leading-7 text-white sm:mt-4">
-            Query your Neon database with natural language and AI
+            Query your Render database with natural language and AI
           </p>
           <Link href="/dashboard">
             <button className="btn-success btn mt-10 rounded-md px-8 py-3 font-semibold text-white">
@@ -31,14 +31,14 @@ const NeonPage = () => {
       {/* Content Section */}
       <div className="mx-8 my-16 text-lg text-black">
         <h2 className="mb-6 inline-block text-3xl font-semibold tracking-tight">
-          Why Use ChatDB with Neon?
+          Why Use ChatDB with Render?
         </h2>
         <p className="mb-8">
-          Neon provides a robust, scalable database solution for your
+          Render provides a robust, scalable database solution for your
           application needs. But what if you could make querying this data as
           simple as asking a question? Start finding answers for your
           applications instantly. No SQL necessary. It is like ChatGPT meeting
-          your Neon database.
+          your Render database.
         </p>
 
         <div className="my-10 px-0 md:px-2">
@@ -65,30 +65,30 @@ const NeonPage = () => {
 
         {/* How to Connect to Supabase Section */}
         <div className="mx-8 my-16 text-black">
-          <h2 className="mb-6 text-4xl font-bold">How to Connect to Neon</h2>
+          <h2 className="mb-6 text-4xl font-bold">How to Connect to Render</h2>
           <p className="mb-8 text-lg">
-            Connecting to Neon is simple. Follow these steps to get started.
+            Connecting to Render is simple. Follow these steps to get started.
           </p>
 
           <div className="mb-16 mt-8">
             <h3 className="mb-4 text-3xl font-semibold">
-              Step 1: Get Neon Database Credentials
+              Step 1: Get Render Database Credentials
             </h3>
             <div className="mx-auto mb-8 max-w-2xl">
               <Image
-                alt="Neon Connection Database Information"
+                alt="Render Connection Database Information"
                 className="rounded-3xl"
                 layout="responsive"
                 height={500}
                 width={400}
-                src="/images/neon-connection-info.png"
+                src="/images/render-database-info.png"
               />
             </div>
           </div>
 
           <div className="my-32">
             <h3 className="mb-4 text-3xl font-semibold">
-              Step 2: Connect ChatDB with Neon
+              Step 2: Connect ChatDB with Render
             </h3>
             <div className="mx-auto max-w-2xl">
               <Image
@@ -104,7 +104,7 @@ const NeonPage = () => {
 
           <div className="my-16">
             <h3 className="mb-4 text-3xl font-semibold">
-              Step 3: Query Neon with AI
+              Step 3: Query Render with AI
             </h3>
             <p className="mb-8 text-lg">
               Now you're all set! Start querying your data with natural
@@ -154,4 +154,4 @@ const NeonPage = () => {
   );
 };
 
-export default NeonPage;
+export default RenderPage;
