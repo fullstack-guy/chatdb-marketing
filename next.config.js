@@ -7,6 +7,14 @@ const nextConfig = {
   reactStrictMode: true,
   output: "standalone",
   transpilePackages: ["react-tweet"],
+  async rewrites() {
+    return [
+      {
+        source: "/fastify/:path*",
+        destination: "http://localhost:8000/:path*",
+      },
+    ];
+  },
 };
 
 module.exports = withNextra({

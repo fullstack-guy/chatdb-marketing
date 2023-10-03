@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import "react-data-grid/lib/styles.css";
 import DataGrid from "react-data-grid";
 import { FaSortAmountDownAlt, FaSortAmountUpAlt } from "react-icons/fa";
@@ -52,7 +51,8 @@ const TableEditor = ({ tableName, database_uuid }) => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("/api/db/preview", {
+      const url = "/fastify/api/db/preview";
+      const data = {
         database_uuid,
         table_name: tableName,
         order_by: sortColumn
@@ -60,35 +60,50 @@ const TableEditor = ({ tableName, database_uuid }) => {
           : undefined,
         pageNumber: pageNumber,
         where_clause: whereClause,
+      };
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
 
-      if (response && response.data) {
-        setTableRows(response.data);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+
+      if (responseData) {
+        console.log(responseData)
+        setTableRows(responseData);
         const columns =
-          response.data.length > 0
-            ? Object.keys(response.data[0]).map((key) => ({
-                key: key,
-                name: key,
-                sortable: true,
-                editable: key === "id" ? false : true,
-                headerRenderer: (props) => (
-                  <div
-                    onClick={() =>
-                      handleSort(key, sortDirection === "asc" ? "desc" : "asc")
-                    }
-                  >
-                    {props.column.name}{" "}
-                    {sortDirection &&
-                      sortColumn === key &&
-                      (sortDirection === "asc" ? (
-                        <FaSortAmountDownAlt />
-                      ) : (
-                        <FaSortAmountUpAlt />
-                      ))}
-                  </div>
-                ),
-                resizable: true,
-              }))
+          responseData.length > 0
+            ? Object.keys(responseData[0]).map((key) => ({
+              key: key,
+              name: key,
+              sortable: true,
+              editable: key === "id" ? false : true,
+              headerRenderer: (props) => (
+                <div
+                  onClick={() =>
+                    handleSort(key, sortDirection === "asc" ? "desc" : "asc")
+                  }
+                >
+                  {props.column.name}{" "}
+                  {sortDirection &&
+                    sortColumn === key &&
+                    (sortDirection === "asc" ? (
+                      <FaSortAmountDownAlt />
+                    ) : (
+                      <FaSortAmountUpAlt />
+                    ))}
+                </div>
+              ),
+              resizable: true,
+            }))
             : [];
         setColumns(columns);
       }
