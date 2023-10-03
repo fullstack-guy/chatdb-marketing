@@ -3,8 +3,10 @@ import { Pool } from "pg";
 import { BasisTheory } from "@basis-theory/basis-theory-js";
 import { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "@supabase/supabase-js";
+import { Parser } from 'node-sql-parser';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const parser = new Parser();
 
 type UUIDSupabaseResponse = { data: { database_string: string }; error: any };
 const getDatabaseStringFromUUID = async (
@@ -39,6 +41,15 @@ export default async function handler(
   const { query, database_uuid } = req.body;
   if (!query || !database_uuid) {
     res.status(400).json({ error: "No query or database uuid provided" });
+    return;
+  }
+
+  // Parse the SQL query to AST
+  const ast = parser.astify(query);
+
+  // Check if the query type is 'select'
+  if (ast.type !== 'select') {
+    res.status(400).json({ error: "Only SELECT queries are allowed" });
     return;
   }
 

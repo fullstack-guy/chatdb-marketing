@@ -40,6 +40,7 @@
     "next-seo": "^5.15.0",
     "nextra": "^2.12.3",
     "nextra-theme-docs": "^2.12.3",
+    "node-sql-parser": "^4.11.0",
     "openai": "^3.3.0",
     "openai-edge": "^1.1.0",
     "papaparse": "^5.4.1",
