@@ -110,7 +110,7 @@ export default function Page() {
   const refreshAndSaveDatabase = async () => {
     setRefreshing(true);
 
-    const url = "/api/connect";
+    const url = "/fastify/api/db/connect";
     const body = {
       database_uuid,
     };
