@@ -47,8 +47,11 @@ export default async function handler(
   // Parse the SQL query to AST
   const ast = parser.astify(query);
 
-  // Check if the query type is 'select'
-  if (ast.type !== 'select') {
+  // Check if AST is an array (multiple queries) or a single object
+  if (Array.isArray(ast)) {
+    res.status(400).json({ error: "Multiple queries are not allowed" });
+    return;
+  } else if (ast.type !== 'select') {
     res.status(400).json({ error: "Only SELECT queries are allowed" });
     return;
   }
