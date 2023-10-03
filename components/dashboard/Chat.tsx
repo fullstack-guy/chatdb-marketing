@@ -66,7 +66,8 @@ const Chat = ({ database_uuid }) => {
   async function sendQueryToEndpoint(code) {
     setIsLoading(true);
     try {
-      const response = await fetch("/api/db/query", {
+      const url = "/fastify/api/db/query"
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
