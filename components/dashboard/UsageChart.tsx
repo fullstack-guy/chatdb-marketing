@@ -36,10 +36,16 @@ export default function UsageChart(props: UsageChartProps) {
     }
 
     const fetchData = async () => {
+      const now = new Date();
+      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+      const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString();
+
       const { data, error } = await supabase
         .from("ask_queries")
         .select("created_at")
-        .eq("database_uuid", props.database_uuid);
+        .eq("database_uuid", props.database_uuid)
+        .gte("created_at", startOfMonth)
+        .lt("created_at", endOfMonth);
 
       if (error) {
         console.error("Error fetching data:", error);
