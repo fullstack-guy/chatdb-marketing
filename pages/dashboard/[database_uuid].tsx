@@ -1,5 +1,5 @@
 import Layout from "../../components/Layout";
-import { auth, useUser, useAuth } from "@clerk/nextjs";
+import { useUser, useAuth } from "@clerk/nextjs";
 import React, { useEffect, useState } from "react";
 import { BsDatabase } from "react-icons/bs";
 import { BiRefresh } from "react-icons/bi";
