@@ -2,10 +2,13 @@ import { Toaster, toast } from "react-hot-toast";
 import { useState } from "react";
 import Link from "next/link";
 import { useUser } from "@clerk/clerk-react";
+import { useAuth } from "@clerk/nextjs";
+
 import {
   BasisTheoryProvider,
   useBasisTheory,
 } from "@basis-theory/basis-theory-react";
+
 import Layout from "../../../components/Layout";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -13,6 +16,7 @@ import { trpc } from "../../../utils/trpc";
 import UpdateSubscriptionModal from "../../../components/UpdateSubscriptionModal";
 
 export default function Page() {
+  const auth = useAuth();
   const router = useRouter();
   const [
     isUpdateSubscriptionModalOpeneded,
@@ -217,8 +221,8 @@ export default function Page() {
     }
 
     setConnecting(true);
-
-    const url = "/api/connect";
+    const token = await auth.getToken();
+    const url = "/fastify/api/db/connect";
     const body = {
       connection_string: "postgres://" + connectionStr,
     };
@@ -228,6 +232,7 @@ export default function Page() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(body),
       });
@@ -344,21 +349,19 @@ export default function Page() {
                   <BasisTheoryProvider bt={bt}>
                     <div className="flex items-center justify-center rounded-lg bg-gray-100 px-2 py-2">
                       <button
-                        className={`ml-3 mr-2 flex-1 rounded-lg px-4 py-2 text-center transition duration-300 ease-in-out ${
-                          activeTab === "url"
-                            ? "bg-[#3D4451] text-white"
-                            : "bg-white text-black hover:bg-gray-200"
-                        }`}
+                        className={`ml-3 mr-2 flex-1 rounded-lg px-4 py-2 text-center transition duration-300 ease-in-out ${activeTab === "url"
+                          ? "bg-[#3D4451] text-white"
+                          : "bg-white text-black hover:bg-gray-200"
+                          }`}
                         onClick={() => setActiveTab("url")}
                       >
                         Connect with URL
                       </button>
                       <button
-                        className={`ml-2 mr-3 flex-1 rounded-lg px-4 py-2 text-center transition duration-300 ease-in-out ${
-                          activeTab === "details"
-                            ? "bg-[#3D4451] text-white"
-                            : "bg-white text-black hover:bg-gray-200"
-                        }`}
+                        className={`ml-2 mr-3 flex-1 rounded-lg px-4 py-2 text-center transition duration-300 ease-in-out ${activeTab === "details"
+                          ? "bg-[#3D4451] text-white"
+                          : "bg-white text-black hover:bg-gray-200"
+                          }`}
                         onClick={() => setActiveTab("details")}
                       >
                         Connect with Details
@@ -404,9 +407,8 @@ export default function Page() {
                             onChange={connectionStringChange}
                           />
                           <button
-                            className={`btn ${
-                              connecting || saving ? "btn-loading" : ""
-                            } cursor-pointer border-none bg-success text-black hover:bg-success`}
+                            className={`btn ${connecting || saving ? "btn-loading" : ""
+                              } cursor-pointer border-none bg-success text-black hover:bg-success`}
                             onClick={
                               connected
                                 ? () => saveDatabase(getConnectionString())
@@ -444,9 +446,8 @@ export default function Page() {
                         )}
                         <div className="my-2 w-full">
                           <button
-                            className={`btn ${
-                              connecting && "btn-loading"
-                            } mx-auto my-2 flex w-[75%] bg-success text-black hover:bg-success sm:hidden`}
+                            className={`btn ${connecting && "btn-loading"
+                              } mx-auto my-2 flex w-[75%] bg-success text-black hover:bg-success sm:hidden`}
                             onClick={
                               connected
                                 ? () => saveDatabase(getConnectionString())
@@ -578,14 +579,13 @@ export default function Page() {
                         </div>
 
                         <button
-                          className={`btn ${
-                            connecting || saving ? "loading" : ""
-                          } mt-5 w-[75%] cursor-pointer border-none bg-success text-black hover:bg-success`}
+                          className={`btn ${connecting || saving ? "loading" : ""
+                            } mt-5 w-[75%] cursor-pointer border-none bg-success text-black hover:bg-success`}
                           onClick={
                             connected
                               ? () => saveDatabase(getConnectionString(true))
                               : () =>
-                                  connectToDatabase(getConnectionString(true))
+                                connectToDatabase(getConnectionString(true))
                           }
                         >
                           {connecting ? (

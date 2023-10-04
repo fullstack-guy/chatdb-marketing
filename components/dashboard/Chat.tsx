@@ -10,7 +10,6 @@ import "react-data-grid/lib/styles.css";
 import DataGrid from "react-data-grid";
 import { useAuth } from "@clerk/clerk-react";
 import CodeBlock from "./chat/CodeBlock";
-import cn from "classnames";
 import { CSVLink } from "react-csv";
 import { BsCodeSlash, BsDownload } from "react-icons/bs";
 
@@ -22,6 +21,7 @@ export const MemoizedReactMarkdown: FC<Options> = memo(
 );
 
 const Chat = ({ database_uuid }) => {
+  const auth = useAuth()
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState({ sql: "", result: "", data: null });
@@ -66,10 +66,13 @@ const Chat = ({ database_uuid }) => {
   async function sendQueryToEndpoint(code) {
     setIsLoading(true);
     try {
-      const response = await fetch("/api/db/query", {
+      const token = await auth.getToken();
+      const url = "/fastify/api/db/query"
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
           query: code,

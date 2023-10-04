@@ -1,5 +1,5 @@
 import Layout from "../../components/Layout";
-import { useUser } from "@clerk/nextjs";
+import { useUser, useAuth } from "@clerk/nextjs";
 import React, { useEffect, useState } from "react";
 import { BsDatabase } from "react-icons/bs";
 import { BiRefresh } from "react-icons/bi";
@@ -21,6 +21,7 @@ interface Database {
 }
 
 export default function Page() {
+  const auth = useAuth();
   const router = useRouter();
   const { isLoaded, isSignedIn, user } = useUser();
   const { database_uuid } = router.query;
@@ -109,17 +110,19 @@ export default function Page() {
 
   const refreshAndSaveDatabase = async () => {
     setRefreshing(true);
-
-    const url = "/api/connect";
+    const token = await auth.getToken()
+    const url = "/fastify/api/db/connect";
     const body = {
       database_uuid,
     };
 
     try {
+      console.log("token", token)
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(body),
       });
