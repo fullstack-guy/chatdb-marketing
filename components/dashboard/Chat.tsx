@@ -46,6 +46,13 @@ const Chat = ({ database_uuid }) => {
   const toggleSqlVisibility = () => {
     setShowSql((prevShowSql) => !prevShowSql);
   };
+  const dataSelectors = [
+    "Table",
+    "Pie Chart",
+    "Bar Chart",
+    "Area Chart",
+    "Line Chart",
+  ];
 
   const formatDataForGrid = (data) => {
     if (!data.columns || !data.rows) {
@@ -119,6 +126,10 @@ const Chat = ({ database_uuid }) => {
     if (e.key === "Enter") {
       e.preventDefault();
       setIsLoading(true);
+      setIndexedField("");
+      setCategoryField("");
+      setshowTable(true);
+      setIsChartConfig(false);
 
       try {
         const token = await getToken({ template: "supabase" });
@@ -166,6 +177,22 @@ const Chat = ({ database_uuid }) => {
       setSelectedChart(chartName);
       setSelectedChartName(chartName);
       setshowTable(false);
+    }
+  };
+
+  const onOptionChangeHandler = (e) => {
+    console.log("User Selected Value - ", e.target.value);
+    const selectedValue = e.target.value;
+    if (selectedValue === "Table") {
+      setshowTable(true);
+    } else if (selectedValue === "Pie Chart") {
+      handleChartConfiguration("Pie Chart");
+    } else if (selectedValue === "Bar Chart") {
+      handleChartConfiguration("Bar Chart");
+    } else if (selectedValue === "Area Chart") {
+      handleChartConfiguration("Area Chart");
+    } else if (selectedValue === "Line Chart") {
+      handleChartConfiguration("Line Chart");
     }
   };
 
@@ -287,44 +314,20 @@ const Chat = ({ database_uuid }) => {
           {result.sql && (
             <div>
               <div className="mt-5 flex justify-end">
-                <button
-                  className="mr-2 rounded px-4 py-2 text-black shadow"
-                  onClick={() => setshowTable(true)}
-                >
-                  <BsTable />
-                </button>
-                <button
-                  className="mr-2 rounded px-4 py-2 text-black shadow"
-                  onClick={() => handleChartConfiguration("Area Chart")}
-                >
-                  <div className="tooltip tooltip-bottom" data-tip="Area Chart">
-                    <AiOutlineAreaChart />
-                  </div>
-                </button>
-                <button
-                  className="mr-2 rounded px-4 py-2 text-black shadow"
-                  onClick={() => handleChartConfiguration("Line Chart")}
-                >
-                  <div className="tooltip tooltip-bottom" data-tip="Line Chart">
-                    <AiOutlineLineChart />
-                  </div>
-                </button>
-                <button
-                  className="mr-2 rounded px-4 py-2 text-black shadow"
-                  onClick={() => handleChartConfiguration("Bar Chart")}
-                >
-                  <div className="tooltip tooltip-bottom" data-tip="Bar Chart">
-                    <AiOutlineBarChart />
-                  </div>
-                </button>
-                <button
-                  className="mr-2 rounded px-4 py-2 text-black shadow"
-                  onClick={() => handleChartConfiguration("Pie Chart")}
-                >
-                  <div className="tooltip tooltip-bottom" data-tip="Pie Chart">
-                    <AiOutlinePieChart />
-                  </div>
-                </button>
+                {dataSelectors.length && (
+                  <select
+                    className="select-bordered select mr-2 w-full max-w-xs rounded px-4 py-2 text-black shadow"
+                    onChange={onOptionChangeHandler}
+                  >
+                    {dataSelectors.map((label) => {
+                      return (
+                        <option key={label} value={label}>
+                          {label}
+                        </option>
+                      );
+                    })}
+                  </select>
+                )}
                 <button
                   className="mr-2 rounded px-4 py-2 text-black shadow"
                   onClick={toggleSqlVisibility}
@@ -366,7 +369,7 @@ const Chat = ({ database_uuid }) => {
                 </h2>
                 <p className="mb-8 text-center">
                   {selectedChartName
-                    ? `Configure the ${selectedChartName} by selecting indexed field and category field.`
+                    ? `Configure the ${selectedChartName} by selecting data field and label field.`
                     : "Select a chart to configure."}
                 </p>
 
@@ -375,7 +378,7 @@ const Chat = ({ database_uuid }) => {
                     htmlFor="indexedField"
                     className="text-md block font-medium text-gray-700"
                   >
-                    Indexed Field:
+                    Label Field:
                   </label>
                   <select
                     id="indexedField"
@@ -396,7 +399,7 @@ const Chat = ({ database_uuid }) => {
                     htmlFor="categoryField"
                     className="text-md block font-medium text-gray-700"
                   >
-                    Category Field:
+                    Data Field:
                   </label>
                   <select
                     id="categoryField"
