@@ -2,10 +2,13 @@ import { Toaster, toast } from "react-hot-toast";
 import { useState } from "react";
 import Link from "next/link";
 import { useUser } from "@clerk/clerk-react";
+import { useAuth } from "@clerk/nextjs";
+
 import {
   BasisTheoryProvider,
   useBasisTheory,
 } from "@basis-theory/basis-theory-react";
+
 import Layout from "../../../components/Layout";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -13,6 +16,7 @@ import { trpc } from "../../../utils/trpc";
 import UpdateSubscriptionModal from "../../../components/UpdateSubscriptionModal";
 
 export default function Page() {
+  const auth = useAuth();
   const router = useRouter();
   const [
     isUpdateSubscriptionModalOpeneded,
@@ -217,7 +221,7 @@ export default function Page() {
     }
 
     setConnecting(true);
-
+    const token = await auth.getToken();
     const url = "/fastify/api/db/connect";
     const body = {
       connection_string: "postgres://" + connectionStr,
@@ -228,6 +232,7 @@ export default function Page() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(body),
       });

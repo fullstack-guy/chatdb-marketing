@@ -8,10 +8,12 @@ import { FaSync } from "react-icons/fa";
 import { BsDownload } from "react-icons/bs";
 import { PuffLoader } from "react-spinners";
 import debounce from "lodash/debounce";
+import { useAuth } from "@clerk/nextjs";
 
 const roboto = Roboto_Mono({ subsets: ["latin"] });
 
 const TableEditor = ({ tableName, database_uuid }) => {
+  const auth = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [tableRows, setTableRows] = useState([]);
   const [columns, setColumns] = useState([]);
@@ -51,6 +53,7 @@ const TableEditor = ({ tableName, database_uuid }) => {
     setIsLoading(true);
 
     try {
+      const token = await auth.getToken();
       const url = "/fastify/api/db/preview";
       const data = {
         database_uuid,
@@ -66,7 +69,9 @@ const TableEditor = ({ tableName, database_uuid }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
+
         body: JSON.stringify(data),
       });
 
