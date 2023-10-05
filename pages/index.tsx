@@ -22,12 +22,16 @@ export default function Page() {
         <section className="px-4 pb-2 pt-6 text-center md:px-8 md:py-16">
           <div className="mx-auto max-w-7xl">
             <div className="flex flex-col items-center">
-              <h1 className="mt-5 text-center text-4xl font-bold text-heading md:max-w-4xl md:text-6xl xl:text-7xl">
-                Stop writing SQL to get answers from your data.
+              <h1 className="mt-5 text-center text-5xl font-bold tracking-tighter text-heading md:max-w-4xl md:text-6xl xl:text-8xl">
+                Go from data to insights in <span style={{
+                  background: 'linear-gradient(90deg, rgba(168,41,250,1) 0%, rgba(255,185,50,1) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  color: 'transparent',
+                  paddingRight: '0.2em'
+                }}>seconds!</span>
               </h1>
               <p className="mt-6 max-w-3xl text-lg lg:text-2xl">
-                Time is money! Say hello to your personal AI data analyst. Think
-                ChatGPT, but for your database.
+                Stop writing SQL and fast-track your analytics with ChatDB. It is like ChatGPT for your database.
               </p>
               <div className="mt-6">
                 <button
@@ -37,34 +41,40 @@ export default function Page() {
                   }}
                   style={{
                     background:
-                      "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgb(121 87 255 / 80%) 75%)",
+                      "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgba(255,185,50,1) 100%)",
                   }}
-                  className="text-md inline-flex transform cursor-pointer items-center justify-center rounded-xl border-none px-8 py-4 font-semibold text-white transition duration-200 hover:scale-105 hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
+                  className="text-md mt-2 inline-flex transform cursor-pointer items-center justify-center rounded-xl border-none px-8 py-4 font-bold text-white transition duration-200 hover:scale-105 hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
                 >
                   Get Started
                 </button>
               </div>
             </div>
-            <div className="mt-12 px-0 md:px-2">
-              {/* Image for larger devices */}
-              <Image
-                alt="chatdb demo image"
-                className="hidden w-full rounded-3xl sm:block"
-                layout="responsive"
-                height={700}
-                width={1200}
-                src="/images/ChatDBDemo.png"
-              />
+            <div className="mt-12 px-0 md:px-2rounded-3xl p-4">
+              {/* Video for larger devices */}
+              <video className="hidden w-full rounded-3xl sm:block" autoPlay muted loop>
+                <source src="https://res.cloudinary.com/dohopff7b/video/upload/v1696469996/ShortChatDBDemo_bc0a1v.mp4" type="video/mp4" />
+                <Image
+                  alt="chatdb demo image fallback"
+                  className="hidden w-full rounded-3xl sm:block"
+                  layout="responsive"
+                  height={700}
+                  width={1000}
+                  src="/images/ChatDBDemo.png"
+                />
+              </video>
 
-              {/* Image for smaller devices */}
-              <Image
-                alt="chatdb demo image"
-                className="w-full rounded-3xl sm:hidden"
-                layout="responsive"
-                height={700}
-                width={1200}
-                src="/images/ChatDBTableExample-min.png"
-              />
+              {/* Video for smaller devices */}
+              <video className="w-full rounded-3xl sm:hidden" autoPlay muted loop>
+                <source src="https://res.cloudinary.com/dohopff7b/video/upload/v1696469996/ShortChatDBDemo_bc0a1v.mp4" type="video/mp4" />
+                <Image
+                  alt="chatdb demo image fallback"
+                  className="w-full rounded-3xl sm:hidden"
+                  layout="responsive"
+                  height={700}
+                  width={1200}
+                  src="/images/ChatDBTableExample-min.png"
+                />
+              </video>
             </div>
           </div>
         </section>
