@@ -48,6 +48,7 @@ export default function Pricing() {
             features={[
               "1 User",
               "1 Data Source",
+              "Charts and Graphs",
               "PostgreSQL Connection",
               "60 AI Queries Per Month",
             ]}
@@ -62,6 +63,7 @@ export default function Pricing() {
             features={[
               "1 User",
               "5 Data Sources",
+              "Charts and Graphs",
               "PostgreSQL Connection",
               "More Databases Coming Soon",
               "120 AI Queries Per Month",
