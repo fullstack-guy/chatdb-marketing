@@ -153,6 +153,9 @@ const Layout = ({ children, title, description, url, oggURL }: LayoutProps) => {
             </div>
             <div>
               <span className="footer-title">Integrations</span>
+              <Link href="/docs" className="link-hover link">
+                Docs
+              </Link>
               <Link href="/integrations/supabase" className="link-hover link">
                 Supabase
               </Link>
