@@ -11,14 +11,8 @@ import DataGrid from "react-data-grid";
 import { useAuth } from "@clerk/clerk-react";
 import CodeBlock from "./chat/CodeBlock";
 import { CSVLink } from "react-csv";
-import { BsCodeSlash, BsDownload, BsTable } from "react-icons/bs";
-import {
-  AiOutlinePieChart,
-  AiOutlineAreaChart,
-  AiOutlineLineChart,
-  AiOutlineBarChart,
-  AiOutlineSetting,
-} from "react-icons/ai";
+import { BsCodeSlash, BsDownload } from "react-icons/bs";
+import { AiOutlineSetting } from "react-icons/ai";
 import Modal from "react-modal";
 import Chart from "./Chart";
 
@@ -185,14 +179,39 @@ const Chat = ({ database_uuid }) => {
     if (selectedValue === "Table") {
       setshowTable(true);
     } else if (selectedValue === "Pie Chart") {
-      handleChartConfiguration("Pie Chart");
+      if (indexedField == "" && categoryField == "") {
+        setModalOpen(true);
+        setSelectedChartName(selectedValue);
+      } else if (indexedField != "" || categoryField != "") {
+        handleChartConfiguration("Pie Chart");
+      }
     } else if (selectedValue === "Bar Chart") {
-      handleChartConfiguration("Bar Chart");
+      if (indexedField == "" && categoryField == "") {
+        setModalOpen(true);
+        setSelectedChartName(selectedValue);
+      } else if (indexedField != "" || categoryField != "") {
+        handleChartConfiguration("Bar Chart");
+      }
     } else if (selectedValue === "Area Chart") {
-      handleChartConfiguration("Area Chart");
+      if (indexedField == "" && categoryField == "") {
+        setModalOpen(true);
+        setSelectedChartName(selectedValue);
+      } else if (indexedField != "" || categoryField != "") {
+        handleChartConfiguration("Area Chart");
+      }
     } else if (selectedValue === "Line Chart") {
-      handleChartConfiguration("Line Chart");
+      if (indexedField == "" && categoryField == "") {
+        setModalOpen(true);
+        setSelectedChartName(selectedValue);
+      } else if (indexedField != "" || categoryField != "") {
+        handleChartConfiguration("Line Chart");
+      }
     }
+  };
+
+  const handleChartInitialState = (e) => {
+    setModalOpen(false);
+    setSelectedChart(selectedChartName);
   };
 
   return (
@@ -359,30 +378,34 @@ const Chat = ({ database_uuid }) => {
               <Modal
                 isOpen={isModalOpen}
                 onRequestClose={() => setModalOpen(false)}
-                className="fixed inset-0 flex items-center justify-center z-50 p-4 bg-transparent"
+                className="fixed inset-0 z-50 flex items-center justify-center bg-transparent p-4"
                 overlayClassName="fixed inset-0 bg-black bg-opacity-80"
                 contentLabel="Chart Configuration Modal"
               >
-                <div className="relative bg-white rounded-lg shadow-xl w-full sm:w-3/4 md:w-1/2 lg:w-1/3">
+                <div className="relative w-full rounded-lg bg-white shadow-xl sm:w-3/4 md:w-1/2 lg:w-1/3">
                   <button
-                    className="absolute top-2 right-2 text-gray-400 hover:text-gray-800"
+                    className="absolute right-2 top-2 text-gray-400 hover:text-gray-800"
                     onClick={() => setModalOpen(false)}
                   >
                     <span className="text-2xl">×</span>
                   </button>
 
                   <div className="px-8 py-6">
-                    <h2 className="text-2xl font-semibold text-black mb-4">Configure Chart</h2>
-                    <p className="text-gray-700 mb-6">
+                    <h2 className="mb-4 text-2xl font-semibold text-black">
+                      Configure Chart
+                    </h2>
+                    <p className="mb-6 text-gray-700">
                       {selectedChartName
                         ? `Configure the ${selectedChartName} by selecting data field and label field.`
-                        : "Select a chart to configure."
-                      }
+                        : "Select a chart to configure."}
                     </p>
 
                     {/* Label Field */}
                     <div className="mb-4">
-                      <label htmlFor="indexedField" className="block text-sm font-medium text-gray-700">
+                      <label
+                        htmlFor="indexedField"
+                        className="block text-sm font-medium text-gray-700"
+                      >
                         Label Field:
                       </label>
                       <select
@@ -390,19 +413,24 @@ const Chat = ({ database_uuid }) => {
                         value={indexedField}
                         required
                         onChange={(e) => setIndexedField(e.target.value)}
-                        className="mt-1 w-full p-2 border rounded-md focus:border-indigo-500 focus:outline-none focus:ring focus:ring-indigo-200"
+                        className="mt-1 w-full rounded-md border p-2 focus:border-indigo-500 focus:outline-none focus:ring focus:ring-indigo-200"
                       >
-                        {formatDataForGrid(result.data).columns.map((column) => (
-                          <option key={column.key} value={column.name}>
-                            {column.name}
-                          </option>
-                        ))}
+                        {formatDataForGrid(result.data).columns.map(
+                          (column) => (
+                            <option key={column.key} value={column.name}>
+                              {column.name}
+                            </option>
+                          )
+                        )}
                       </select>
                     </div>
 
                     {/* Data Field */}
                     <div className="mb-4">
-                      <label htmlFor="categoryField" className="block text-sm font-medium text-gray-700">
+                      <label
+                        htmlFor="categoryField"
+                        className="block text-sm font-medium text-gray-700"
+                      >
                         Data Field:
                       </label>
                       <select
@@ -410,26 +438,28 @@ const Chat = ({ database_uuid }) => {
                         value={categoryField}
                         required
                         onChange={(e) => setCategoryField(e.target.value)}
-                        className="mt-1 w-full p-2 border rounded-md focus:border-indigo-500 focus:outline-none focus:ring focus:ring-indigo-200"
+                        className="mt-1 w-full rounded-md border p-2 focus:border-indigo-500 focus:outline-none focus:ring focus:ring-indigo-200"
                       >
-                        {formatDataForGrid(result.data).columns.map((column) => (
-                          <option key={column.key} value={column.name}>
-                            {column.name}
-                          </option>
-                        ))}
+                        {formatDataForGrid(result.data).columns.map(
+                          (column) => (
+                            <option key={column.key} value={column.name}>
+                              {column.name}
+                            </option>
+                          )
+                        )}
                       </select>
                     </div>
 
                     {/* Buttons */}
                     <div className="mt-3 flex justify-end space-x-4">
                       <button
-                        onClick={() => setModalOpen(false)}
-                        className="px-4 py-2 rounded text-gray-600 hover:bg-gray-200"
+                        onClick={handleChartInitialState}
+                        className="rounded px-4 py-2 text-gray-600 hover:bg-gray-200"
                       >
                         Cancel
                       </button>
                       <button
-                        className="px-4 py-2 rounded text-white bg-success"
+                        className="rounded bg-success px-4 py-2 text-white"
                         onClick={() => {
                           setModalOpen(false);
                           setshowTable(false);
