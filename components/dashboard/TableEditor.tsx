@@ -69,7 +69,7 @@ const TableEditor = ({ tableName, database_uuid }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
 
         body: JSON.stringify(data),
@@ -82,33 +82,33 @@ const TableEditor = ({ tableName, database_uuid }) => {
       const responseData = await response.json();
 
       if (responseData) {
-        console.log(responseData)
+        console.log(responseData);
         setTableRows(responseData);
         const columns =
           responseData.length > 0
             ? Object.keys(responseData[0]).map((key) => ({
-              key: key,
-              name: key,
-              sortable: true,
-              editable: key === "id" ? false : true,
-              headerRenderer: (props) => (
-                <div
-                  onClick={() =>
-                    handleSort(key, sortDirection === "asc" ? "desc" : "asc")
-                  }
-                >
-                  {props.column.name}{" "}
-                  {sortDirection &&
-                    sortColumn === key &&
-                    (sortDirection === "asc" ? (
-                      <FaSortAmountDownAlt />
-                    ) : (
-                      <FaSortAmountUpAlt />
-                    ))}
-                </div>
-              ),
-              resizable: true,
-            }))
+                key: key,
+                name: key,
+                sortable: true,
+                editable: key === "id" ? false : true,
+                headerRenderer: (props) => (
+                  <div
+                    onClick={() =>
+                      handleSort(key, sortDirection === "asc" ? "desc" : "asc")
+                    }
+                  >
+                    {props.column.name}{" "}
+                    {sortDirection &&
+                      sortColumn === key &&
+                      (sortDirection === "asc" ? (
+                        <FaSortAmountDownAlt />
+                      ) : (
+                        <FaSortAmountUpAlt />
+                      ))}
+                  </div>
+                ),
+                resizable: true,
+              }))
             : [];
         setColumns(columns);
       }

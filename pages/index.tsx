@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { TagIcon } from "@heroicons/react/outline";
 import Layout from "../components/Layout";
 import posthog from "posthog-js";
@@ -8,12 +8,49 @@ import Image from "next/image";
 import { LightBulbIcon } from "@heroicons/react/outline";
 import { Tweet } from "react-tweet";
 import FAQ from "../components/FAQ";
-import useSupabase from "../hooks/useSupabaseClient";
 import { useRouter } from "next/router";
 
 export default function Page() {
   const router = useRouter();
-  const supabase = useSupabase();
+
+  const videoRef = useRef(null);
+  const [playing, setPlaying] = useState(false);
+
+  const toggleVideo = () => {
+    if (playing) {
+      videoRef.current.pause();
+      setPlaying(false);
+    } else {
+      videoRef.current.play();
+      setPlaying(true);
+    }
+  };
+
+  useEffect(() => {
+    videoRef.current.play();
+    videoRef.current.pause();
+
+    const setVideoPoster = () => {
+      if (window.innerWidth < 640) {
+        // For mobile
+        videoRef.current.poster = "/images/ChatDBTableExample-min.png";
+      } else {
+        // For larger screens
+        videoRef.current.poster = "/images/ChatDBDemo.png";
+      }
+    };
+
+    // Initial setup
+    setVideoPoster();
+
+    // Listen for window resize events to update the poster
+    window.addEventListener("resize", setVideoPoster);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("resize", setVideoPoster);
+    };
+  }, []);
 
   return (
     <Layout>
@@ -23,15 +60,22 @@ export default function Page() {
           <div className="mx-auto max-w-7xl">
             <div className="flex flex-col items-center">
               <h1 className="mt-5 text-center text-5xl font-bold tracking-tighter text-heading md:max-w-4xl md:text-6xl xl:text-8xl">
-                Go from data to insights in <span style={{
-                  background: 'linear-gradient(90deg, rgba(168,41,250,1) 0%, rgba(255,185,50,1) 100%)',
-                  WebkitBackgroundClip: 'text',
-                  color: 'transparent',
-                  paddingRight: '0.2em'
-                }}>seconds!</span>
+                Go from data to insights in{" "}
+                <span
+                  style={{
+                    background:
+                      "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgba(255,185,50,1) 100%)",
+                    WebkitBackgroundClip: "text",
+                    color: "transparent",
+                    paddingRight: "0.2em",
+                  }}
+                >
+                  seconds!
+                </span>
               </h1>
               <p className="mt-6 max-w-3xl text-lg lg:text-2xl">
-                Stop writing SQL and fast-track your analytics with ChatDB. It is like ChatGPT for your database.
+                Stop writing SQL and fast-track your analytics with ChatDB. It
+                is like ChatGPT for your database.
               </p>
               <div className="mt-6">
                 <button
@@ -49,32 +93,37 @@ export default function Page() {
                 </button>
               </div>
             </div>
-            <div className="mt-12 px-0 md:px-2rounded-3xl p-4">
-              {/* Video for larger devices */}
-              <video className="hidden w-full rounded-3xl sm:block" autoPlay muted loop>
-                <source src="https://res.cloudinary.com/dohopff7b/video/upload/v1696469996/ShortChatDBDemo_bc0a1v.mp4" type="video/mp4" />
-                <Image
-                  alt="chatdb demo image fallback"
-                  className="hidden w-full rounded-3xl sm:block"
-                  layout="responsive"
-                  height={700}
-                  width={1000}
-                  src="/images/ChatDBDemo.png"
-                />
-              </video>
-
-              {/* Video for smaller devices */}
-              <video className="w-full rounded-3xl sm:hidden" autoPlay muted loop>
-                <source src="https://res.cloudinary.com/dohopff7b/video/upload/v1696469996/ShortChatDBDemo_bc0a1v.mp4" type="video/mp4" />
-                <Image
-                  alt="chatdb demo image fallback"
-                  className="w-full rounded-3xl sm:hidden"
-                  layout="responsive"
-                  height={700}
-                  width={1200}
-                  src="/images/ChatDBTableExample-min.png"
-                />
-              </video>
+            <div className="mt-12 rounded-3xl p-4 px-0 md:px-2">
+              <div className="relative">
+                <video
+                  onClick={toggleVideo}
+                  ref={videoRef}
+                  className="w-full rounded-3xl sm:block"
+                  autoPlay
+                  muted
+                  loop
+                >
+                  <source
+                    src="https://res.cloudinary.com/dohopff7b/video/upload/v1696469996/ShortChatDBDemo_bc0a1v.mp4"
+                    type="video/mp4"
+                  />
+                </video>
+                <button
+                  onClick={toggleVideo}
+                  className={`${
+                    playing ? "hidden" : "absolute"
+                  } left-[calc(50%-30px)] top-[calc(50%-30px)] rounded-full bg-[black] p-2 shadow-lg`}
+                >
+                  <svg
+                    className="h-14 w-14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M6 4l15 8-15 8V4z" fill="white" />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </section>

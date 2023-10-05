@@ -21,7 +21,7 @@ export const MemoizedReactMarkdown: FC<Options> = memo(
 );
 
 const Chat = ({ database_uuid }) => {
-  const auth = useAuth()
+  const auth = useAuth();
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState({ sql: "", result: "", data: null });
@@ -67,12 +67,12 @@ const Chat = ({ database_uuid }) => {
     setIsLoading(true);
     try {
       const token = await auth.getToken();
-      const url = "/fastify/api/db/query"
+      const url = "/fastify/api/db/query";
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           query: code,

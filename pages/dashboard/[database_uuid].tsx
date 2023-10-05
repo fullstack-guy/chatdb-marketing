@@ -110,19 +110,19 @@ export default function Page() {
 
   const refreshAndSaveDatabase = async () => {
     setRefreshing(true);
-    const token = await auth.getToken()
+    const token = await auth.getToken();
     const url = "/fastify/api/db/connect";
     const body = {
       database_uuid,
     };
 
     try {
-      console.log("token", token)
+      console.log("token", token);
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(body),
       });
