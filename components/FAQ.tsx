@@ -18,9 +18,8 @@ const FAQ = () => {
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
                     What is the refund policy?
                     <ChevronDownIcon
-                      className={`${
-                        open ? "rotate-180 text-heading" : "text-text"
-                      } h-5 w-5`}
+                      className={`${open ? "rotate-180 text-heading" : "text-text"
+                        } h-5 w-5`}
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 py-2">
@@ -54,9 +53,8 @@ const FAQ = () => {
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
                     Do you support more than PostgreSQL?
                     <ChevronDownIcon
-                      className={`${
-                        open ? "rotate-180 text-heading" : "text-text"
-                      } h-5 w-5`}
+                      className={`${open ? "rotate-180 text-heading" : "text-text"
+                        } h-5 w-5`}
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 py-2">
@@ -75,9 +73,8 @@ const FAQ = () => {
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
                     How can I improve the results?
                     <ChevronDownIcon
-                      className={`${
-                        open ? "rotate-180 text-heading" : "text-text"
-                      } h-5 w-5`}
+                      className={`${open ? "rotate-180 text-heading" : "text-text"
+                        } h-5 w-5`}
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 py-2">
@@ -102,9 +99,8 @@ const FAQ = () => {
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
                     Do you offer technical support?
                     <ChevronDownIcon
-                      className={`${
-                        open ? "rotate-180 text-heading" : "text-text"
-                      } h-5 w-5`}
+                      className={`${open ? "rotate-180 text-heading" : "text-text"
+                        } h-5 w-5`}
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 py-2">
@@ -121,9 +117,8 @@ const FAQ = () => {
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
                     How secure is the tool?
                     <ChevronDownIcon
-                      className={`${
-                        open ? "rotate-180 text-heading" : "text-text"
-                      } h-5 w-5`}
+                      className={`${open ? "rotate-180 text-heading" : "text-text"
+                        } h-5 w-5`}
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 py-2">
@@ -141,11 +136,29 @@ const FAQ = () => {
               {({ open }) => (
                 <>
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
+                    What are the static IP Addresses of ChatDB?
+                    <ChevronDownIcon
+                      className={`${open ? "rotate-180 text-heading" : "text-text"
+                        } h-5 w-5`}
+                    />
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="px-4 py-2">
+                    Yes, you can see those <Link className="text-blue-500 font-bold" href="/docs#what-is-the-outgoing-static-ip-addresses-for-chatdb">here</Link> :)!
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+
+
+            <Disclosure>
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
                     How do you protect my database from bad queries?
                     <ChevronDownIcon
-                      className={`${
-                        open ? "rotate-180 text-heading" : "text-text"
-                      } h-5 w-5`}
+                      className={`${open ? "rotate-180 text-heading" : "text-text"
+                        } h-5 w-5`}
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 py-2">
@@ -174,9 +187,8 @@ const FAQ = () => {
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
                     What is on the product roadmap?
                     <ChevronDownIcon
-                      className={`${
-                        open ? "rotate-180 text-heading" : "text-text"
-                      } h-5 w-5`}
+                      className={`${open ? "rotate-180 text-heading" : "text-text"
+                        } h-5 w-5`}
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 py-2">
@@ -199,9 +211,8 @@ const FAQ = () => {
                   <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-base font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
                     Do you have an Enterprise or a Custom plan?
                     <ChevronDownIcon
-                      className={`${
-                        open ? "rotate-180 text-heading" : "text-text"
-                      } h-5 w-5`}
+                      className={`${open ? "rotate-180 text-heading" : "text-text"
+                        } h-5 w-5`}
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 py-2">
