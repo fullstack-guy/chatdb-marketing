@@ -139,7 +139,7 @@ const Chat = ({ database_uuid }) => {
         const token = await getToken({ template: "supabase" });
 
         const response = await fetch(
-          "https://chatdb-backend-deah4kbsta-uc.a.run.app/ask",
+          "https://chatdb-ai-backend.onrender.com/ask",
           {
             method: "POST",
             headers: {
