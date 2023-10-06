@@ -96,8 +96,8 @@ const Page = () => {
 
   const handleDataChange = (rows) => {
     const updatedData = [...data];
-    rows.forEach((row) => { 
-      const rowIndex = data.findIndex((r) => r["#"] === row["#"]); 
+    rows.forEach((row) => {
+      const rowIndex = data.findIndex((r) => r["#"] === row["#"]);
       if (rowIndex !== -1) {
         updatedData[rowIndex] = row;
       }

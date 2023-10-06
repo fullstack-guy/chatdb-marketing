@@ -1,5 +1,5 @@
 import { format } from "sql-formatter";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BeatLoader } from "react-spinners";
 import { Prism } from "@mantine/prism";
 import { Toaster, toast } from "react-hot-toast";
@@ -26,20 +26,26 @@ export const MemoizedReactMarkdown: FC<Options> = memo(
 const Chat = ({ database_uuid }) => {
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [result, setResult] = useState({ sql: "", result: "", data: null });
+  const [result, setResult] = useState({
+    sql: "",
+    result: "",
+    data: null,
+  });
   const [showSql, setShowSql] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [indexedField, setIndexedField] = useState("");
   const [categoryField, setCategoryField] = useState("");
   const [selectedChart, setSelectedChart] = useState("");
   const [isChartConfig, setIsChartConfig] = useState(false);
-  const [showTable, setshowTable] = useState(true);
+
+  const [showTable, setShowTable] = useState(true);
   const [selectedChartName, setSelectedChartName] = useState("");
   const { getToken } = useAuth();
 
   const toggleSqlVisibility = () => {
     setShowSql((prevShowSql) => !prevShowSql);
   };
+
   const dataSelectors = [
     "Table",
     "Pie Chart",
@@ -114,7 +120,7 @@ const Chat = ({ database_uuid }) => {
 
   const handleKeyDown = async (e) => {
     if (isLoading) {
-      return; // Disable function if a query is in progress
+      return; // disable function if a query is in progress
     }
 
     if (e.key === "Enter") {
@@ -122,7 +128,7 @@ const Chat = ({ database_uuid }) => {
       setIsLoading(true);
       setIndexedField("");
       setCategoryField("");
-      setshowTable(true);
+      setShowTable(true);
       setIsChartConfig(false);
 
       try {
@@ -161,57 +167,35 @@ const Chat = ({ database_uuid }) => {
     }
   };
 
+  const handleCancel = () => {
+    setModalOpen(false);
+  };
+
   const handleChartConfiguration = (chartName) => {
-    if (!isChartConfig) {
+    // only open modal if neither indexedField nor categoryField have been set
+    if (!indexedField && !categoryField) {
       setModalOpen(true);
-      setSelectedChartName(chartName);
-      setIsChartConfig(true);
-    } else {
-      setModalOpen(false);
-      setSelectedChart(chartName);
-      setSelectedChartName(chartName);
-      setshowTable(false);
     }
+    setSelectedChartName(chartName);
+    setIsChartConfig(true);
+    setSelectedChart(chartName);
+    setShowTable(false);
   };
 
   const onOptionChangeHandler = (e) => {
     const selectedValue = e.target.value;
     if (selectedValue === "Table") {
-      setshowTable(true);
-    } else if (selectedValue === "Pie Chart") {
-      if (indexedField == "" && categoryField == "") {
-        setModalOpen(true);
-        setSelectedChartName(selectedValue);
-      } else if (indexedField != "" || categoryField != "") {
-        handleChartConfiguration("Pie Chart");
-      }
-    } else if (selectedValue === "Bar Chart") {
-      if (indexedField == "" && categoryField == "") {
-        setModalOpen(true);
-        setSelectedChartName(selectedValue);
-      } else if (indexedField != "" || categoryField != "") {
-        handleChartConfiguration("Bar Chart");
-      }
-    } else if (selectedValue === "Area Chart") {
-      if (indexedField == "" && categoryField == "") {
-        setModalOpen(true);
-        setSelectedChartName(selectedValue);
-      } else if (indexedField != "" || categoryField != "") {
-        handleChartConfiguration("Area Chart");
-      }
-    } else if (selectedValue === "Line Chart") {
-      if (indexedField == "" && categoryField == "") {
-        setModalOpen(true);
-        setSelectedChartName(selectedValue);
-      } else if (indexedField != "" || categoryField != "") {
-        handleChartConfiguration("Line Chart");
-      }
+      setShowTable(true);
+      return;
     }
-  };
 
-  const handleChartInitialState = (e) => {
-    setModalOpen(false);
-    setSelectedChart(selectedChartName);
+    // Only call handleChartConfiguration if indexedField and categoryField are empty
+    if (!indexedField && !categoryField) {
+      setModalOpen(true);
+      setSelectedChartName(selectedValue);
+    } else {
+      handleChartConfiguration(selectedValue);
+    }
   };
 
   return (
@@ -412,8 +396,10 @@ const Chat = ({ database_uuid }) => {
                         id="indexedField"
                         value={indexedField}
                         required
-                        onChange={(e) => setIndexedField(e.target.value)}
-                        className="mt-1 w-full rounded-md border p-2 focus:border-indigo-500 focus:outline-none focus:ring focus:ring-indigo-200"
+                        onChange={(e) => {
+                          setIndexedField(e.target.value);
+                        }}
+                        className="mt-1 w-full rounded-md border p-2 text-black focus:border-indigo-500 focus:outline-none focus:ring focus:ring-indigo-200"
                       >
                         {formatDataForGrid(result.data).columns.map(
                           (column) => (
@@ -438,7 +424,7 @@ const Chat = ({ database_uuid }) => {
                         value={categoryField}
                         required
                         onChange={(e) => setCategoryField(e.target.value)}
-                        className="mt-1 w-full rounded-md border p-2 focus:border-indigo-500 focus:outline-none focus:ring focus:ring-indigo-200"
+                        className="mt-1 w-full rounded-md border p-2 text-black focus:border-indigo-500 focus:outline-none focus:ring focus:ring-indigo-200"
                       >
                         {formatDataForGrid(result.data).columns.map(
                           (column) => (
@@ -453,17 +439,26 @@ const Chat = ({ database_uuid }) => {
                     {/* Buttons */}
                     <div className="mt-3 flex justify-end space-x-4">
                       <button
-                        onClick={handleChartInitialState}
+                        onClick={handleCancel}
                         className="rounded px-4 py-2 text-gray-600 hover:bg-gray-200"
                       >
                         Cancel
                       </button>
                       <button
-                        className="rounded bg-success px-4 py-2 text-white"
+                        className="rounded bg-secondary px-4 py-2 text-white"
                         onClick={() => {
                           setModalOpen(false);
-                          setshowTable(false);
+                          setShowTable(false);
                           setSelectedChart(selectedChartName);
+
+                          // if user didn't explicitly set, set default of first column
+
+                          const columns = formatDataForGrid(
+                            result.data
+                          ).columns;
+                          if (!indexedField && columns && columns.length > 0) {
+                            setIndexedField(columns[0].name);
+                          }
                         }}
                       >
                         Confirm

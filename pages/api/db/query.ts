@@ -3,7 +3,7 @@ import { Pool } from "pg";
 import { BasisTheory } from "@basis-theory/basis-theory-js";
 import { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "@supabase/supabase-js";
-import { Parser } from 'node-sql-parser';
+import { Parser } from "node-sql-parser";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const parser = new Parser();
@@ -51,7 +51,7 @@ export default async function handler(
   if (Array.isArray(ast)) {
     res.status(400).json({ error: "Multiple queries are not allowed" });
     return;
-  } else if (ast.type !== 'select') {
+  } else if (ast.type !== "select") {
     res.status(400).json({ error: "Only SELECT queries are allowed" });
     return;
   }

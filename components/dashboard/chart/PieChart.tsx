@@ -36,7 +36,13 @@ function PieChartComponent({ x_axis, y_axis, data }) {
       <ResponsiveContainer height={350}>
         <PieChart>
           <Tooltip />
-          <Pie dataKey={y_axis} stroke="#000000" data={data} label>
+          <Pie
+            dataKey={y_axis}
+            nameKey={x_axis}
+            stroke="#000000"
+            data={data}
+            label
+          >
             {data.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={colors[index]} />
             ))}
