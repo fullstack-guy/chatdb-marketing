@@ -60,7 +60,7 @@ export default function Page() {
           <div className="mx-auto max-w-7xl">
             <div className="flex flex-col items-center">
               <h1 className="mt-5 text-center text-5xl font-bold tracking-tighter text-heading md:max-w-4xl md:text-6xl xl:text-8xl">
-                Go from data to insights in{" "}
+                Query your data with {" "}
                 <span
                   style={{
                     background:
@@ -70,11 +70,11 @@ export default function Page() {
                     paddingRight: "0.2em",
                   }}
                 >
-                  seconds!
+                  without SQL!
                 </span>
               </h1>
               <p className="mt-6 max-w-3xl text-lg lg:text-2xl">
-                Stop writing SQL and fast-track your analytics with ChatDB. It
+                Get data insights with natural language, powered by AI. It
                 is like ChatGPT for your database.
               </p>
               <div className="mt-6">
@@ -110,9 +110,8 @@ export default function Page() {
                 </video>
                 <button
                   onClick={toggleVideo}
-                  className={`${
-                    playing ? "hidden" : "absolute"
-                  } left-[calc(50%-30px)] top-[calc(50%-30px)] rounded-full bg-[black] p-2 shadow-lg`}
+                  className={`${playing ? "hidden" : "absolute"
+                    } left-[calc(50%-30px)] top-[calc(50%-30px)] rounded-full bg-[black] p-2 shadow-lg`}
                 >
                   <svg
                     className="h-14 w-14"
