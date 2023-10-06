@@ -460,10 +460,6 @@ export const subscriptionsRouter = router({
         };
       }
 
-      console.log("User Databases:", userDatabases); // Log userDatabases
-      console.log("Subscription:", sub); // Log subscription details
-      console.log("Subscription from Paddle API:", subscriptionFromPaddleAPI); // Log subscriptionFromPaddleAPI
-
       return {
         remainingDatabases: getUserRemainingDatabases(
           subscriptionFromPaddleAPI,
