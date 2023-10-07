@@ -81,7 +81,7 @@ export default function Page() {
                 <button
                   onClick={() => {
                     posthog.capture("homepage_cta");
-                    router.push("/pricing");
+                    router.push("/dashboard");
                   }}
                   style={{
                     background:
@@ -89,7 +89,7 @@ export default function Page() {
                   }}
                   className="text-md mt-2 inline-flex transform cursor-pointer items-center justify-center rounded-xl border-none px-8 py-4 font-bold text-white transition duration-200 hover:scale-105 hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
                 >
-                  Get Started
+                  Sign Up
                 </button>
               </div>
             </div>
