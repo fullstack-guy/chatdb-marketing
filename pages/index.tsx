@@ -81,7 +81,7 @@ export default function Page() {
                 <button
                   onClick={() => {
                     posthog.capture("homepage_cta");
-                    router.push("/dashboard");
+                    router.push("/pricing");
                   }}
                   style={{
                     background:
