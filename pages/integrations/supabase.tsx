@@ -11,28 +11,31 @@ const SupabasePage = () => {
     >
       {" "}
       {/* Hero Section */}
-      {/* Hero Section */}
-      <div className="relative mt-4 rounded-xl bg-gray-900 text-white">
-        <div className="absolute inset-0">
-          <div className="absolute inset-y-0 left-0 w-1/2"></div>
-        </div>
-        <div className="relative mx-auto flex max-w-7xl flex-col items-center justify-center px-4 py-24 sm:px-6 lg:px-8">
-          <h1 className="mb-4 text-center text-7xl font-extrabold tracking-tight text-white sm:text-8xl lg:text-7xl xl:text-8xl">
-            ChatDB + Supabase
+      <div className="relative mt-4 rounded-xl">
+        <div className="flex flex-col items-center mb-10">
+          <h1 className="mt-5 text-center text-6xl font-bold tracking-tighter text-heading md:max-w-5xl xl:text-8xl">
+            Query Supabase {" "}
+            <span
+              style={{
+                background:
+                  "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgba(255,185,50,1) 100%)",
+                WebkitBackgroundClip: "text",
+                color: "transparent",
+                paddingRight: "0.2em",
+              }}
+            >
+              without SQL!
+            </span>
           </h1>
-          <p className="mt-3 text-center text-xl font-semibold leading-7 text-white sm:mt-4">
-            Query your Supabase instance with natural language and AI
+          <p className="mt-6 max-w-3xl text-xl font-semibold text-center lg:text-2xl">
+            Get data insights with natural language, powered by AI. It
+            is like ChatGPT for your Supabase database.
           </p>
-          <Link href="/dashboard">
-            <button className="btn-success btn mt-10 rounded-md px-8 py-3 font-semibold text-white">
-              Get Started
-            </button>
-          </Link>
         </div>
       </div>
       {/* Content Section */}
-      <div className="mx-8 my-16 text-lg text-black">
-        <h2 className="mb-6 inline-block text-3xl font-semibold tracking-tight">
+      <div className="mx-8 md:my-16 text-lg text-black">
+        <h2 className="mb-6 inline-block text-4xl font-semibold tracking-tight">
           Why Use ChatDB with Supabase?
         </h2>
         <p className="mb-8">
@@ -66,7 +69,7 @@ const SupabasePage = () => {
         </div>
 
         {/* How to Connect to Supabase Section */}
-        <div className="mx-8 my-16 text-black">
+        <div className="my-16 text-black">
           <h2 className="mb-6 text-4xl font-bold">
             How to Connect to Supabase
           </h2>
@@ -88,23 +91,23 @@ const SupabasePage = () => {
             />
           </div>
 
-          <div className="my-32">
+          <div className="md:my-32">
             <h3 className="mb-4 text-3xl font-semibold">
               Step 2: Connect ChatDB with Supabase
             </h3>
-            <div className="mx-auto max-w-2xl">
+            <div className="mx-auto max-w-5xl">
               <Image
                 alt="ChatDB Connection UI"
                 className="rounded-3xl"
                 layout="responsive"
-                height={500}
-                width={400}
+                height={600}
+                width={700}
                 src="/images/chatdb-connect-ui.png"
               />
             </div>
           </div>
 
-          <div className="my-32">
+          <div className="my-10 md:my-32">
             <h3 className="mb-4 text-3xl font-semibold">
               Step 3: Query Supabase with AI
             </h3>
