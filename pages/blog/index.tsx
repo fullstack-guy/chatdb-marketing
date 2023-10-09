@@ -17,7 +17,7 @@ export async function getStaticProps() {
   });
 
   // Sort the posts by date, assuming frontmatter has a 'date' field
-  posts.sort((a, b) => new Date(b.frontmatter.date) - new Date(a.frontmatter.date));
+  posts.sort((a, b) => new Date(b.frontmatter.date as string).getTime() - new Date(a.frontmatter.date as string).getTime());
 
   return {
     props: {
