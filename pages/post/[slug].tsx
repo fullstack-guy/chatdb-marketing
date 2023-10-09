@@ -47,9 +47,8 @@ export default function PostPage({ frontmatter, htmlContent }) {
   const { title, description } = frontmatter;
   return (
     <Layout
-      oggURL={`${
-        process.env.VERCEL_URL ? "https://" + process.env.VERCEL_URL : ""
-      }/api/og?title=${encodeURIComponent(title)}`}
+      oggURL={`${process.env.VERCEL_URL ? "https://" + process.env.VERCEL_URL : ""
+        }/api/og?title=${encodeURIComponent(title)}`}
     >
       <Head>
         <meta name="og:title" content={title} />

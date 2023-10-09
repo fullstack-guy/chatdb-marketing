@@ -9,6 +9,7 @@ import { LightBulbIcon } from "@heroicons/react/outline";
 import { Tweet } from "react-tweet";
 import FAQ from "../components/FAQ";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function Page() {
   const router = useRouter();
@@ -77,20 +78,29 @@ export default function Page() {
                 Get data insights with natural language, powered by AI. It
                 is like ChatGPT for your database.
               </p>
-              <div className="mt-6">
-                <button
-                  onClick={() => {
-                    posthog.capture("homepage_cta");
-                    router.push("/dashboard");
-                  }}
-                  style={{
-                    background:
-                      "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgba(255,185,50,1) 100%)",
-                  }}
-                  className="text-md mt-2 inline-flex transform cursor-pointer items-center justify-center rounded-xl border-none px-8 py-4 font-bold text-white transition duration-200 hover:scale-105 hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
-                >
-                  Sign Up
-                </button>
+              <div className="mt-6 flex justify-center space-x-4">
+                <Link href="/dashboard">
+                  <button
+                    onClick={() => {
+                      posthog.capture("homepage_cta");
+                    }}
+                    style={{
+                      background:
+                        "linear-gradient(90deg, rgba(168,41,250,1) 0%, rgba(255,185,50,1) 100%)",
+                    }}
+                    className="text-md inline-flex transform cursor-pointer items-center justify-center rounded-xl border-none px-8 py-4 font-bold text-white transition duration-200 hover:scale-105 hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
+                  >
+                    Sign Up
+                  </button>
+                </Link>
+                <Link href="/post/querying-the-la-crime-database-with-ai">
+                  <button
+                    className="text-md inline-flex transform cursor-pointer items-center justify-center rounded-xl px-8 py-4 font-bold text-black transition duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
+                  >
+                    Learn More
+                  </button>
+                </Link>
+
               </div>
             </div>
             <div className="mt-12 rounded-3xl p-4 px-0 md:px-2">
