@@ -95,6 +95,9 @@ export default function Page() {
                 </Link>
                 <Link href="/post/querying-the-la-crime-database-with-ai">
                   <button
+                    onClick={() => {
+                      posthog.capture("learn_more");
+                    }}
                     className="text-md inline-flex transform cursor-pointer items-center justify-center rounded-xl px-8 py-4 font-bold text-black transition duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:text-white dark:focus:ring-white/80"
                   >
                     Learn More
