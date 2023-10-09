@@ -22,7 +22,6 @@ const TableEditor = ({ tableName, database_uuid }) => {
   const initialTableEditorState = {
     sortColumn: null,
     sortDirection: null,
-
     whereClause: "",
   };
 
@@ -152,7 +151,7 @@ const TableEditor = ({ tableName, database_uuid }) => {
   const transformedRows = transformRows(tableRows);
 
   return (
-    <div className="flex h-full max-h-full w-full flex-col overflow-x-auto">
+    <div className="flex h-full max-h-full w-full flex-col overflow-hidden">
       {" "}
       {/* Added flex and flex-col */}
       {isLoading ? (

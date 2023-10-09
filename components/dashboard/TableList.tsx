@@ -107,33 +107,29 @@ const TableList = ({ filteredTables, onTableClick }) => {
               {tables.map((table) => (
                 <div
                   key={table.tableName}
-                  className="relative flex transform cursor-pointer items-center rounded-lg border p-4 shadow-sm transition-transform duration-200 hover:scale-105 hover:bg-gray-100"
-                  onClick={() =>
-                    onTableClick(`${table.schemaName}.${table.tableName}`)
-                  }
+                  className="relative flex items-center rounded-lg border p-4 shadow-sm transition-transform duration-200 hover:scale-105 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => onTableClick(`${table.schemaName}.${table.tableName}`)}
+                  style={{ alignItems: "center" }} // Vertically align items
                 >
                   <div
-                    className="mr-2 flex h-8 w-8 items-center justify-center rounded-full"
+                    className="mr-2 flex-shrink-0 h-8 w-8 items-center justify-center rounded-full" // Note the "flex-shrink-0", it prevents the circle from shrinking
                     style={{
-                      backgroundColor:
-                        colors[tableColorIndexes[table.schemaName]],
+                      backgroundColor: colors[tableColorIndexes[table.schemaName]],
                     }}
                   >
                     {loadingTable === table.tableName && (
                       <TailSpin
                         height={50}
                         width={50}
-                        color={
-                          spinnerColors[tableColorIndexes[table.schemaName]]
-                        }
+                        color={spinnerColors[tableColorIndexes[table.schemaName]]}
                         radius={2}
                         visible={true}
                         ariaLabel="tail-spin-loading"
                       />
                     )}
                   </div>
-                  <div className="flex flex-col space-y-1">
-                    <h3 className="text-lg font-semibold text-black">
+                  <div className="flex flex-col space-y-1 flex-grow overflow-hidden"> {/* Note the "flex-grow" and "overflow-hidden" */}
+                    <h3 className="text-lg font-semibold text-black truncate" style={{ maxWidth: "calc(100% - 1rem)", whiteSpace: "normal", wordWrap: "break-word" }}>
                       {table.tableName}
                     </h3>
                   </div>
