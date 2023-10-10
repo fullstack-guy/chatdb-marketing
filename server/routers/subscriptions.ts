@@ -265,7 +265,7 @@ export const subscriptionsRouter = router({
       const { input, ctx } = opts;
       const { error: subscriptionError } =
         await createSupabasePaddleSubscription(
-          ctx.systemSupabase,
+          ctx.userSupabase,
           ctx.user.userId,
           input.customerId,
           input.items[0].product.name
@@ -304,7 +304,7 @@ export const subscriptionsRouter = router({
   cancel: protectedProcedure.mutation(async (opts) => {
     const { ctx } = opts;
     const { sub, error: subError } = await getSupabaseSubscriptionIdFromUserId(
-      ctx.systemSupabase,
+      ctx.userSupabase,
       ctx.user.userId
     );
 
@@ -355,7 +355,7 @@ export const subscriptionsRouter = router({
       const { ctx, input } = opts;
       const { sub, error: subError } =
         await getSupabaseSubscriptionIdFromUserId(
-          ctx.systemSupabase,
+          ctx.userSupabase,
           ctx.user.userId
         );
       if (subError) {
@@ -383,7 +383,7 @@ export const subscriptionsRouter = router({
       }
 
       const { error: updateError } = await updateSubscriptionOnSupabase(
-        ctx.systemSupabase,
+        ctx.userSupabase,
         ctx.user.userId,
         input.plan
       );
@@ -432,9 +432,11 @@ export const subscriptionsRouter = router({
 
       const { sub, error: subError } =
         await getSupabaseSubscriptionIdFromUserId(
-          ctx.systemSupabase,
+          ctx.userSupabase,
           ctx.user.userId
         );
+
+      console.log(ctx.user.userId)
 
       if (subError) {
         console.error("Error fetching subscription ID:", subError); // Log the error
