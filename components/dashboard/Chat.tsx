@@ -90,7 +90,7 @@ const Chat = ({ database_uuid }) => {
     setIsLoading(true);
     try {
       const token = await auth.getToken();
-      const url = "/fastify/api/db/query";
+      const url = "/fastify/api/db/postgres/query";
       const response = await fetch(url, {
         method: "POST",
         headers: {

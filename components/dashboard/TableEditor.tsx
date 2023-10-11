@@ -53,7 +53,7 @@ const TableEditor = ({ tableName, database_uuid }) => {
 
     try {
       const token = await auth.getToken();
-      const url = "/fastify/api/db/preview";
+      const url = "/fastify/api/db/postgres/preview";
       const data = {
         database_uuid,
         table_name: tableName,
