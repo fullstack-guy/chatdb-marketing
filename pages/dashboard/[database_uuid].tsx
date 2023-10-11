@@ -115,7 +115,7 @@ export default function Page() {
   const refreshAndSaveDatabase = async () => {
     setRefreshing(true);
     const token = await auth.getToken();
-    const url = "/fastify/api/db/connect";
+    const url = "/fastify/api/db/postgres/connect";
     const body = {
       database_uuid,
     };
