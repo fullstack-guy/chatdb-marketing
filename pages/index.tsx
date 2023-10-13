@@ -61,7 +61,7 @@ export default function Page() {
           <div className="mx-auto max-w-7xl">
             <div className="flex flex-col items-center">
               <h1 className="mt-5 text-center text-5xl font-bold tracking-tighter text-heading md:max-w-4xl md:text-6xl xl:text-8xl">
-                Query your data with {" "}
+                Query your data with{" "}
                 <span
                   style={{
                     background:
@@ -75,7 +75,8 @@ export default function Page() {
                 </span>
               </h1>
               <p className="mt-6 max-w-3xl text-lg lg:text-2xl">
-                Get data insights with natural language, powered by AI. It's like ChatGPT for your database.
+                Get data insights with natural language, powered by AI. It's
+                like ChatGPT for your database.
               </p>
               <div className="mt-6 flex justify-center space-x-4">
                 <Link href="/dashboard">
@@ -102,7 +103,6 @@ export default function Page() {
                     Learn More
                   </button>
                 </Link>
-
               </div>
             </div>
             <div className="mt-12 rounded-3xl p-4 px-0 md:px-2">
@@ -122,8 +122,9 @@ export default function Page() {
                 </video>
                 <button
                   onClick={toggleVideo}
-                  className={`${playing ? "hidden" : "absolute"
-                    } left-[calc(50%-30px)] top-[calc(50%-30px)] rounded-full bg-[black] p-2 shadow-lg`}
+                  className={`${
+                    playing ? "hidden" : "absolute"
+                  } left-[calc(50%-30px)] top-[calc(50%-30px)] rounded-full bg-[black] p-2 shadow-lg`}
                 >
                   <svg
                     className="h-14 w-14"

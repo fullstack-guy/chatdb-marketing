@@ -4,14 +4,14 @@ metaTitle: "Connecting LA Crime Database with ChatDB"
 description: "Getting insights and answer questions from your data without SQL."
 date: "2023-10-08"
 ---
-One of the biggest hurdles in data-driven decision-making is the need for SQL knowledge. Our mission at ChatDB is to simplify that process, making it accessible to everyone, regardless of their technical skills. 
+
+One of the biggest hurdles in data-driven decision-making is the need for SQL knowledge. Our mission at ChatDB is to simplify that process, making it accessible to everyone, regardless of their technical skills.
 
 Let's take an open source dataset, LA Crimes Dataset, and connect it to ChatDB so we can understand the data!
 
-
 # Top 10 Crimes Breakdown
 
-Our first query aimed to understand the most common types of crimes in LA. ChatDB simplified what would have been complex SQL queries into a simple question: ***"What are the top 10 most common crimes in LA?"***
+Our first query aimed to understand the most common types of crimes in LA. ChatDB simplified what would have been complex SQL queries into a simple question: **_"What are the top 10 most common crimes in LA?"_**
 
 ![10 Crimes Breakdown Table](/images/10-crimes-breakdown.jpg)
 
@@ -25,18 +25,17 @@ If pie charts aren't your thing, ChatDB also lets you switch to a more conventio
 
 # Top 5 Most Common Ages of Victims
 
-Understanding the demographics of crime victims can be incredibly valuable for targeted community support. By asking ChatDB, "***What are the most common ages of crime victims?***", we found that apart from the default value of 0, the late 20s and early 30s are the most vulnerable ages.
+Understanding the demographics of crime victims can be incredibly valuable for targeted community support. By asking ChatDB, "**_What are the most common ages of crime victims?_**", we found that apart from the default value of 0, the late 20s and early 30s are the most vulnerable ages.
 
 ![5 Victim ages](/images/5-victims.jpg)
 
 # Street with the Highest Crime Rates
 
-To better understand crime distribution, we queried, "***Which street has the highest crime rate in LA?***" The result? 800 N Alameda St has the most recorded crimes.
+To better understand crime distribution, we queried, "**_Which street has the highest crime rate in LA?_**" The result? 800 N Alameda St has the most recorded crimes.
 
 We can also view the SQL code it used to find the answer
 
 ![Highest crime rate street](/images/la-crime-rate.jpg)
-
 
 ## Conclusion
 

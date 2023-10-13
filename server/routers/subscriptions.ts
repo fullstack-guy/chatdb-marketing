@@ -225,7 +225,7 @@ const getPaddlePriceId = (priceName) => {
 };
 
 const getUserRemainingDatabases = (subscription, dbs, plan) => {
-  console.log(subscription)
+  console.log(subscription);
   if (
     subscription.data.status !== "active" ||
     (subscription.data.scheduled_change &&
@@ -437,7 +437,7 @@ export const subscriptionsRouter = router({
           ctx.user.userId
         );
 
-      console.log(ctx.user.userId)
+      console.log(ctx.user.userId);
 
       if (subError) {
         console.error("Error fetching subscription ID:", subError); // Log the error

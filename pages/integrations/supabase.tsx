@@ -12,9 +12,9 @@ const SupabasePage = () => {
       {" "}
       {/* Hero Section */}
       <div className="relative mt-4 rounded-xl">
-        <div className="flex flex-col items-center mb-10">
+        <div className="mb-10 flex flex-col items-center">
           <h1 className="mt-5 text-center text-6xl font-bold tracking-tighter text-heading md:max-w-5xl xl:text-8xl">
-            Query Supabase {" "}
+            Query Supabase{" "}
             <span
               style={{
                 background:
@@ -27,14 +27,14 @@ const SupabasePage = () => {
               without SQL!
             </span>
           </h1>
-          <p className="mt-6 max-w-3xl text-xl font-semibold text-center lg:text-2xl">
-            Get data insights with natural language, powered by AI. It
-            is like ChatGPT for your Supabase database.
+          <p className="mt-6 max-w-3xl text-center text-xl font-semibold lg:text-2xl">
+            Get data insights with natural language, powered by AI. It is like
+            ChatGPT for your Supabase database.
           </p>
         </div>
       </div>
       {/* Content Section */}
-      <div className="mx-8 md:my-16 text-lg text-black">
+      <div className="mx-8 text-lg text-black md:my-16">
         <h2 className="mb-6 inline-block text-4xl font-semibold tracking-tight">
           Why Use ChatDB with Supabase?
         </h2>

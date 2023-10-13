@@ -34,8 +34,7 @@ export default function Pricing() {
         <div className="mb-10 mt-12 text-center">
           <h1 className="mb-4 text-7xl font-black text-black">Pricing</h1>
           <p className="text-lg">
-            Choose the right pricing for you and get started working on your
-            project!
+            Choose the right pricing for you and get started on your project!
           </p>
         </div>
         <div className="flex flex-col gap-8 xl:flex-row">
@@ -69,6 +68,22 @@ export default function Pricing() {
               "120 AI Queries Per Month",
             ]}
             btnText={btnText("Pro")}
+          />
+          <PlanCard
+            active={isActivePlan("chatDB Custom Plan")}
+            color="#ab9cf0"
+            name="Business"
+            price="Custom"
+            description="Tailored to your needs!"
+            features={[
+              "Unlimited Users",
+              "Unlimited Data Sources",
+              "Charts and Graphs",
+              "Fine-Tuned Model to your Database",
+              "Unlimited Queries",
+              "Premium Support",
+            ]}
+            btnText={btnText("Contact Us")}
           />
         </div>
         {/* New banner for more AI query credits */}

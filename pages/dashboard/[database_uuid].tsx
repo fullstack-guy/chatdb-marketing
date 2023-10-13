@@ -8,13 +8,17 @@ import { Toaster, toast } from "react-hot-toast";
 import QuickSearch from "../../components/dashboard/QuickSearch";
 import DatabaseNav from "../../components/dashboard/DatabaseNav";
 import DeleteDatabasesModal from "../../components/dashboard/DeleteDatabasesModal";
-import dynamic from 'next/dynamic'
+import dynamic from "next/dynamic";
 import { trpc } from "../../utils/trpc";
 import LoadingSpinner from "../../components/LoadingSpinner";
 
-const DatabaseControl = dynamic(() => import("../../components/dashboard/DatabaseControl"), {
-  ssr: true, loading: () => <LoadingSpinner />,
-})
+const DatabaseControl = dynamic(
+  () => import("../../components/dashboard/DatabaseControl"),
+  {
+    ssr: true,
+    loading: () => <LoadingSpinner />,
+  }
+);
 interface Database {
   id: number;
   uuid: string;

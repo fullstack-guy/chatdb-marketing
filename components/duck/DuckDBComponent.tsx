@@ -28,7 +28,6 @@ const DuckDBComponent = () => {
   const [sqlGenerated, setSqlGenerated] = useState(false);
   const [tableSchema, setTableSchema] = useState("");
 
-
   useEffect(() => {
     initializeDuckDB();
   }, []);
@@ -53,13 +52,14 @@ const DuckDBComponent = () => {
     for (let i = 0; i < fields.length; i++) {
       const fieldName = fields[i].name;
       const fieldType = batches[i].type; // You might need additional logic to decode the type
-      const columnDetail = fieldType.isSigned ? `${fieldName} INT${fieldType.bitWidth}` : `${fieldName} VARCHAR`;
+      const columnDetail = fieldType.isSigned
+        ? `${fieldName} INT${fieldType.bitWidth}`
+        : `${fieldName} VARCHAR`;
       columnDetails.push(columnDetail);
     }
 
     return `CREATE TABLE my_csv (\n  ${columnDetails.join(",\n  ")}\n);`;
   }
-
 
   const handleAssistantClick = () => {
     setModalIsOpen(true);
@@ -216,7 +216,7 @@ const DuckDBComponent = () => {
           }
 
           // Handle general objects (convert to JSON string)
-          if (cell && typeof cell === 'object' && !Array.isArray(cell)) {
+          if (cell && typeof cell === "object" && !Array.isArray(cell)) {
             try {
               cell = JSON.stringify(cell);
             } catch (error) {
@@ -224,9 +224,16 @@ const DuckDBComponent = () => {
             }
           }
 
-          rowObj[field.name] = cell == null ? "null" :
-            !Array.isArray(cell) ? cell :
-              "[" + cell.map(value => value == null ? "null" : value).join(", ") + "]";
+          rowObj[field.name] =
+            cell == null
+              ? "null"
+              : !Array.isArray(cell)
+              ? cell
+              : "[" +
+                cell
+                  .map((value) => (value == null ? "null" : value))
+                  .join(", ") +
+                "]";
         }
         rows.push(rowObj);
       }
@@ -238,7 +245,6 @@ const DuckDBComponent = () => {
       setErrorMessage("An error occurred: " + err.message);
     }
   };
-
 
   return (
     <>

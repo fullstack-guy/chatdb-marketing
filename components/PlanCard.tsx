@@ -5,6 +5,8 @@ import { trpc } from "../utils/trpc";
 import { toast } from "react-hot-toast";
 import ConfirmationModal from "./ConfirmationModal";
 import LoadingSpinner from "./LoadingSpinner";
+import Link from "next/link";
+
 interface PlanCardProps {
   active: boolean;
   name: string;
@@ -124,11 +126,11 @@ export default function PlanCard({
         </div>
       )}
 
-      <p className="mb-5">{description}</p>
+      <p className="mb-5 font-semibold text-black">{description}</p>
 
       <ul className="mb-10 flex flex-col gap-y-2">
         {features.map((feature, index) => (
-          <li key={index} className="flex items-center">
+          <li key={index} className="flex items-center text-gray-800">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="mr-3 h-7 w-7"
@@ -145,18 +147,19 @@ export default function PlanCard({
           </li>
         ))}
       </ul>
-
-      <button
-        className="mt-auto cursor-pointer rounded-xl bg-black px-6 py-3 text-left text-lg font-medium text-white"
-        onClick={(e) => handleButtonClick(active)}
-        disabled={cancel.isLoading || update.isLoading}
-      >
-        {cancel.isLoading || update.isLoading || redirectingToCheckout ? (
-          <LoadingSpinner />
-        ) : (
-          btnText
-        )}
-      </button>
+      {name !== "Business" && (
+        <button
+          className="mt-auto cursor-pointer rounded-xl bg-black px-6 py-3 text-left text-lg font-medium text-white"
+          onClick={(e) => handleButtonClick(active)}
+          disabled={cancel.isLoading || update.isLoading}
+        >
+          {cancel.isLoading || update.isLoading || redirectingToCheckout ? (
+            <LoadingSpinner />
+          ) : (
+            btnText
+          )}
+        </button>
+      )}
     </div>
   );
 }
