@@ -75,8 +75,7 @@ export default function Page() {
                 </span>
               </h1>
               <p className="mt-6 max-w-3xl text-lg lg:text-2xl">
-                Get data insights with natural language, powered by AI. It
-                is like ChatGPT for your database.
+                Get data insights with natural language, powered by AI. It's like ChatGPT for your database.
               </p>
               <div className="mt-6 flex justify-center space-x-4">
                 <Link href="/dashboard">
