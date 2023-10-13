@@ -26,6 +26,8 @@ const DuckDBComponent = () => {
   const [assistantSQL, setAssistantSQL] = useState("");
   const [tableMetadata, setTableMetadata] = useState([]);
   const [sqlGenerated, setSqlGenerated] = useState(false);
+  const [tableSchema, setTableSchema] = useState("");
+
 
   useEffect(() => {
     initializeDuckDB();
@@ -42,6 +44,22 @@ const DuckDBComponent = () => {
       setColumns(newColumns);
     }
   }, [data]);
+
+  function generateCreateTableSQL(schemaResult) {
+    const fields = schemaResult.schema.fields;
+    const batches = schemaResult.batches[0].data.children;
+    const columnDetails = [];
+
+    for (let i = 0; i < fields.length; i++) {
+      const fieldName = fields[i].name;
+      const fieldType = batches[i].type; // You might need additional logic to decode the type
+      const columnDetail = fieldType.isSigned ? `${fieldName} INT${fieldType.bitWidth}` : `${fieldName} VARCHAR`;
+      columnDetails.push(columnDetail);
+    }
+
+    return `CREATE TABLE my_csv (\n  ${columnDetails.join(",\n  ")}\n);`;
+  }
+
 
   const handleAssistantClick = () => {
     setModalIsOpen(true);
@@ -142,6 +160,9 @@ const DuckDBComponent = () => {
     const schemaQuery = `PRAGMA table_info(${tableName});`;
     const schemaResult = await connection.query(schemaQuery);
 
+    const createTableSQL = generateCreateTableSQL(schemaResult);
+    setTableSchema(createTableSQL);
+
     // Convert the result to an array of objects
     const schema = [];
     for (let row of schemaResult) {
@@ -184,25 +205,28 @@ const DuckDBComponent = () => {
         for (let field of arrowTable.schema.fields) {
           let cell = row[field.name];
 
+          // Handle BigInt
           if (typeof cell === "bigint") {
             cell = Number.isSafeInteger(cell) ? Number(cell) : cell.toString();
           }
 
-          // Check if cell is a timestamp
+          // Handle Dates
           if (field.name === "BirthDate" || field.name === "HireDate") {
             cell = new Date(Number(cell)).toISOString();
           }
 
-          rowObj[field.name] =
-            cell == null
-              ? "null"
-              : !Array.isArray(cell)
-              ? cell
-              : "[" +
-                cell
-                  .map((value) => (value == null ? "null" : value))
-                  .join(", ") +
-                "]";
+          // Handle general objects (convert to JSON string)
+          if (cell && typeof cell === 'object' && !Array.isArray(cell)) {
+            try {
+              cell = JSON.stringify(cell);
+            } catch (error) {
+              console.error("Couldn't stringify object", error);
+            }
+          }
+
+          rowObj[field.name] = cell == null ? "null" :
+            !Array.isArray(cell) ? cell :
+              "[" + cell.map(value => value == null ? "null" : value).join(", ") + "]";
         }
         rows.push(rowObj);
       }
@@ -214,6 +238,7 @@ const DuckDBComponent = () => {
       setErrorMessage("An error occurred: " + err.message);
     }
   };
+
 
   return (
     <>
