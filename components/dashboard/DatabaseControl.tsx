@@ -11,6 +11,7 @@ export default function DatabaseControl({
   fetchedDatabase,
   setFetchedDatabase,
   setTitle,
+  dbType
 }) {
   const renderContent = () => {
     switch (activeTab) {
@@ -22,7 +23,7 @@ export default function DatabaseControl({
           />
         );
       case "Chat":
-        return <Chat database_uuid={database_uuid} />;
+        return <Chat database_uuid={database_uuid} dbType={dbType} />;
       case "Flow":
         const { title, tables } = fetchedDatabase;
         return <DatabaseFlow dbSchema={tables} />;
@@ -38,7 +39,7 @@ export default function DatabaseControl({
           />
         );
       default:
-        return <Chat database_uuid={database_uuid} />;
+        return <Chat database_uuid={database_uuid} dbType={dbType} />;
     }
   };
   return renderContent();

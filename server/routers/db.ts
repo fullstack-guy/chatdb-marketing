@@ -92,4 +92,27 @@ export const databasesRouter = router({
 
       return { message: "Database deleted successfully" };
     }),
+  getDbType: protectedProcedure
+    .input(
+      z.object({
+        uuid: z.string(),
+      })
+    )
+    .query(async (opts) => {
+      const { ctx, input } = opts;
+      const { data, error } = await ctx.userSupabase
+        .from("user_databases")
+        .select("db_type")
+        .eq("uuid", input.uuid);
+
+      if (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Unable to fetch database type",
+          cause: error,
+        });
+      }
+
+      return data[0].db_type.toLowerCase();
+    }),
 });

@@ -52,6 +52,13 @@ export default function Page() {
     retryOnMount: false,
   });
 
+  const {
+    data: dbType,
+  } = trpc.databases.getDbType.useQuery({
+    uuid: database_uuid as string || "",
+  }, {
+
+  })
   useEffect(() => {
     setSearchQuery(""); // clear the searchQuery when activeTab changes
   }, [activeTab]);
@@ -223,7 +230,7 @@ export default function Page() {
         <div className="border-0 border-b border-solid border-b-slate-200 py-4">
           <div className="flex flex-col items-start text-black sm:flex-row sm:justify-between">
             <div>
-              <div className="text-left">POSTGRESQL</div>
+              <div className="text-left uppercase">{dbType}</div>
               <div className="flex items-center justify-between text-black">
                 <div className="flex items-center">
                   <BsDatabase />
@@ -258,6 +265,7 @@ export default function Page() {
                 fetchedDatabase={fetchedDatabase}
                 setFetchedDatabase={setFetchedDatabase}
                 setTitle={setTitle}
+                dbType={dbType}
               />
             </div>
           </div>
