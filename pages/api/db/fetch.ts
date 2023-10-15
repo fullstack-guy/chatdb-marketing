@@ -1,6 +1,8 @@
 import { getAuth } from "@clerk/nextjs/server";
 import { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "@supabase/supabase-js";
+import _ from "lodash";
+import { formatSchema } from "../../../utils/db/formatSchema";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 
@@ -25,7 +27,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { database_uuid } = req.body;
+  const { dbType, database_uuid } = req.body;
 
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
@@ -71,7 +73,9 @@ export default async function handler(
       console.log("vault", error);
       return res.status(500).json(error);
     }
-    return res.status(200).json({ title: schema.title, tables: data });
+
+    const tables = formatSchema(dbType, data);
+    return res.status(200).json({ title: schema.title, tables });
   } catch (e) {
     console.log(e);
     return res.status(500).json(e);

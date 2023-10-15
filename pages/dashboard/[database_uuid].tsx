@@ -53,11 +53,12 @@ export default function Page() {
   });
 
   const {
+    isLoading: isDbTypeLoading,
     data: dbType,
   } = trpc.databases.getDbType.useQuery({
     uuid: database_uuid as string || "",
   }, {
-
+    notifyOnChangeProps: ["data"]
   })
   useEffect(() => {
     setSearchQuery(""); // clear the searchQuery when activeTab changes
@@ -72,6 +73,7 @@ export default function Page() {
         },
         body: JSON.stringify({
           database_uuid: database_uuid,
+          dbType
         }),
       });
 
@@ -173,7 +175,7 @@ export default function Page() {
     ) {
       router.push("/pricing");
     }
-    if (isLoaded && isSignedIn) {
+    if (isLoaded && isSignedIn && !isDbTypeLoading) {
       fetchTables();
     }
 
