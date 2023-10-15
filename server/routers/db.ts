@@ -42,7 +42,7 @@ const deleteUserSchema = async (supabase, uuid) => {
 export const databasesRouter = router({
   getAll: protectedProcedure.query(async (opts) => {
     const { ctx } = opts;
-    const { data, error } = await ctx.userSupabase
+    const { data: schemas, error } = await ctx.userSupabase
       .from("user_schemas")
       .select("uuid, title");
 
@@ -54,8 +54,32 @@ export const databasesRouter = router({
       });
     }
 
-    return data;
+    const { data: databaseTypes, error: databaseTypesError } =
+      await ctx.userSupabase.from("user_databases").select("uuid, db_type");
+
+    if (databaseTypesError) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Unable to fetch database types",
+        cause: databaseTypesError,
+      });
+    }
+
+    const databaseTypesMap = databaseTypes.reduce(
+      (acc, { uuid, db_type }) => ({
+        ...acc,
+        [uuid]: db_type,
+      }),
+      {}
+    );
+
+    return schemas.map(({ uuid, title }) => ({
+      uuid,
+      title,
+      dbType: databaseTypesMap[uuid],
+    }));
   }),
+
   delete: protectedProcedure
     .input(
       z.object({
