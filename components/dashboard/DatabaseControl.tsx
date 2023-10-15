@@ -18,6 +18,7 @@ export default function DatabaseControl({
       case "Tables":
         return (
           <TablePage
+            dbType={dbType}
             database_uuid={database_uuid}
             filteredTables={filteredTables}
           />
