@@ -70,8 +70,6 @@ export default async function handler(
     connectionString: connection_string,
   });
 
-  console.log("connection_string", connection_string);
-
   try {
     const client = await pool.connect();
 

@@ -225,7 +225,6 @@ const getPaddlePriceId = (priceName) => {
 };
 
 const getUserRemainingDatabases = (subscription, dbs, plan) => {
-  console.log(subscription);
   if (
     subscription.data.status !== "active" ||
     (subscription.data.scheduled_change &&
