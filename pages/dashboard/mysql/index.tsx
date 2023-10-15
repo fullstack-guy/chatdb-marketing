@@ -330,7 +330,7 @@ export default function Page() {
                             Databases
                         </Link>
                     </li>
-                    <li className="text-black">Mysql</li>
+                    <li className="text-black">MySQL</li>
                 </ul>
             </div>
 
