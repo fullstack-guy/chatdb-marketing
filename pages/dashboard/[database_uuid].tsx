@@ -128,13 +128,12 @@ export default function Page() {
   const refreshAndSaveDatabase = async () => {
     setRefreshing(true);
     const token = await auth.getToken();
-    const url = "/fastify/api/db/postgres/connect";
+    const url = `/fastify/api/db/${dbType}/connect`;
     const body = {
       database_uuid,
     };
 
     try {
-      console.log("token", token);
       const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -186,7 +185,7 @@ export default function Page() {
     ) {
       setIsDeleteDatabasesModalOpened(true);
     }
-  }, [isLoaded, isSignedIn, subscriptionStatus]);
+  }, [isLoaded, isSignedIn, subscriptionStatus, isDbTypeLoading]);
 
   function convertJsonToDataModel(json) {
     const dataModel = [];
