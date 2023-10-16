@@ -40,12 +40,12 @@ export default function Page() {
       selected: false,
       img: "/images/postgres-icon.png",
     },
-    {
-      name: "MySQL",
-      path: "/dashboard/mysql",
-      selected: false,
-      img: "/images/mysql-icon.svg",
-    }
+    // {
+    //   name: "MySQL",
+    //   path: "/dashboard/mysql",
+    //   selected: false,
+    //   img: "/images/mysql-icon.svg",
+    // }
   ]);
   const { isLoaded, isSignedIn, user } = useUser();
   const router = useRouter();

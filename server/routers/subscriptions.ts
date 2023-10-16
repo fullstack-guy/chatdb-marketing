@@ -431,8 +431,6 @@ export const subscriptionsRouter = router({
           ctx.user.userId
         );
 
-      console.log(ctx.user.userId);
-
       if (subError) {
         console.error("Error fetching subscription ID:", subError); // Log the error
         return {
