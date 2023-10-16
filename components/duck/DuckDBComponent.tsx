@@ -89,7 +89,6 @@ const DuckDBComponent = () => {
         }),
       });
       const data = await response.json();
-      console.log(data);
       setAssistantSQL(data.sql);
       setSqlGenerated(true);
     } catch (error) {
@@ -228,8 +227,8 @@ const DuckDBComponent = () => {
             cell == null
               ? "null"
               : !Array.isArray(cell)
-              ? cell
-              : "[" +
+                ? cell
+                : "[" +
                 cell
                   .map((value) => (value == null ? "null" : value))
                   .join(", ") +

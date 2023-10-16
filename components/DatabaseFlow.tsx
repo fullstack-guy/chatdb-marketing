@@ -26,7 +26,7 @@ interface ForeignKey {
 }
 
 interface Table {
-  [columnName: string]: TableColumn | ForeignKey[];
+  [columnName: string]: TableColumn | ForeignKey[] | undefined;
   foreignKeys?: ForeignKey[];
 }
 
