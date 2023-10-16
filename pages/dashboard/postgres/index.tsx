@@ -14,12 +14,13 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { trpc } from "../../../utils/trpc";
 import UpdateSubscriptionModal from "../../../components/UpdateSubscriptionModal";
+import { set } from "react-hook-form";
 
 export default function Page() {
   const auth = useAuth();
   const router = useRouter();
   const [
-    isUpdateSubscriptionModalOpeneded,
+    isUpdateSubscriptionModalOpened,
     setIsUpdateSubscriptionModalOpened,
   ] = useState(false);
   const [connected, setConnected] = useState(false);
@@ -129,6 +130,10 @@ export default function Page() {
   }, [connectionString]);
 
   const saveDatabase = async (connectionStr) => {
+    if (subscriptionStatus.remainingDatabases === null) {
+      setIsUpdateSubscriptionModalOpened(true);
+      return
+    }
     setSaving(true);
     try {
       await handleApiResponse(
@@ -276,7 +281,7 @@ export default function Page() {
     ) {
       return (
         <UpdateSubscriptionModal
-          open={isUpdateSubscriptionModalOpeneded}
+          open={isUpdateSubscriptionModalOpened}
           setOpen={setIsUpdateSubscriptionModalOpened}
           description={
             " You have reached the maximum number of databases allowed on your current plan. Please upgrade your plan to create more databases."
@@ -293,7 +298,7 @@ export default function Page() {
     } else if (subscriptionStatus.remainingDatabases === null) {
       return (
         <UpdateSubscriptionModal
-          open={isUpdateSubscriptionModalOpeneded}
+          open={isUpdateSubscriptionModalOpened}
           setOpen={setIsUpdateSubscriptionModalOpened}
           description={
             "You are not subscribed to any plan. Please choose a plan to start creating databases."
@@ -351,8 +356,8 @@ export default function Page() {
                     <div className="flex items-center justify-center rounded-lg bg-gray-100 px-2 py-2">
                       <button
                         className={`ml-3 mr-2 flex-1 rounded-lg px-4 py-2 text-center transition duration-300 ease-in-out ${activeTab === "url"
-                            ? "bg-[#3D4451] text-white"
-                            : "bg-white text-black hover:bg-gray-200"
+                          ? "bg-[#3D4451] text-white"
+                          : "bg-white text-black hover:bg-gray-200"
                           }`}
                         onClick={() => setActiveTab("url")}
                       >
@@ -360,8 +365,8 @@ export default function Page() {
                       </button>
                       <button
                         className={`ml-2 mr-3 flex-1 rounded-lg px-4 py-2 text-center transition duration-300 ease-in-out ${activeTab === "details"
-                            ? "bg-[#3D4451] text-white"
-                            : "bg-white text-black hover:bg-gray-200"
+                          ? "bg-[#3D4451] text-white"
+                          : "bg-white text-black hover:bg-gray-200"
                           }`}
                         onClick={() => setActiveTab("details")}
                       >
