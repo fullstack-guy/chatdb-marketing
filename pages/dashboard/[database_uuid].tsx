@@ -52,6 +52,14 @@ export default function Page() {
     retryOnMount: false,
   });
 
+  const {
+    isLoading: isDbTypeLoading,
+    data: dbType,
+  } = trpc.databases.getDbType.useQuery({
+    uuid: database_uuid as string || "",
+  }, {
+    notifyOnChangeProps: ["data"]
+  })
   useEffect(() => {
     setSearchQuery(""); // clear the searchQuery when activeTab changes
   }, [activeTab]);
@@ -65,6 +73,7 @@ export default function Page() {
         },
         body: JSON.stringify({
           database_uuid: database_uuid,
+          dbType
         }),
       });
 
@@ -119,13 +128,12 @@ export default function Page() {
   const refreshAndSaveDatabase = async () => {
     setRefreshing(true);
     const token = await auth.getToken();
-    const url = "/fastify/api/db/postgres/connect";
+    const url = `/fastify/api/db/${dbType}/connect`;
     const body = {
       database_uuid,
     };
 
     try {
-      console.log("token", token);
       const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -166,7 +174,7 @@ export default function Page() {
     ) {
       router.push("/pricing");
     }
-    if (isLoaded && isSignedIn) {
+    if (isLoaded && isSignedIn && !isDbTypeLoading) {
       fetchTables();
     }
 
@@ -177,7 +185,7 @@ export default function Page() {
     ) {
       setIsDeleteDatabasesModalOpened(true);
     }
-  }, [isLoaded, isSignedIn, subscriptionStatus]);
+  }, [isLoaded, isSignedIn, subscriptionStatus, isDbTypeLoading]);
 
   function convertJsonToDataModel(json) {
     const dataModel = [];
@@ -223,7 +231,7 @@ export default function Page() {
         <div className="border-0 border-b border-solid border-b-slate-200 py-4">
           <div className="flex flex-col items-start text-black sm:flex-row sm:justify-between">
             <div>
-              <div className="text-left">POSTGRESQL</div>
+              <div className="text-left uppercase">{dbType}</div>
               <div className="flex items-center justify-between text-black">
                 <div className="flex items-center">
                   <BsDatabase />
@@ -258,6 +266,7 @@ export default function Page() {
                 fetchedDatabase={fetchedDatabase}
                 setFetchedDatabase={setFetchedDatabase}
                 setTitle={setTitle}
+                dbType={dbType}
               />
             </div>
           </div>

@@ -5,7 +5,8 @@ import UpdateSubscriptionModal from "../UpdateSubscriptionModal";
 import { useRouter } from "next/router";
 import DeleteDatabasesModal from "./DeleteDatabasesModal";
 import DropDownMenu from "./DropDownMenu";
-export const Card = ({ logo, title, lastUpdated, uuid, refetch }) => {
+import { twMerge } from "tailwind-merge";
+export const Card = ({ type, logo, title, lastUpdated, uuid, refetch }) => {
   const {
     isLoading,
     isError,
@@ -47,7 +48,12 @@ export const Card = ({ logo, title, lastUpdated, uuid, refetch }) => {
         onClick={handleDatabaseCardClick}
       >
         <div className="flex-shrink-0 p-1 md:p-1 lg:p-1">
-          <div className="flex h-[8vh] w-[8vh] items-center justify-center rounded-lg bg-[#0fe0b6]">
+          <div className={
+            twMerge(
+              "flex h-[8vh] w-[8vh] items-center justify-center rounded-lg ",
+              type === "POSTGRES" ? "bg-[#0fe0b6]" : "bg-[#8cb4ff]"
+            )
+          }>
             <Image
               className="m-auto"
               width={40}

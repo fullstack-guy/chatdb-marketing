@@ -23,7 +23,7 @@ export const MemoizedReactMarkdown: FC<Options> = memo(
     prevProps.className === nextProps.className
 );
 
-const Chat = ({ database_uuid }) => {
+const Chat = ({ database_uuid, dbType }) => {
   const auth = useAuth();
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -90,7 +90,7 @@ const Chat = ({ database_uuid }) => {
     setIsLoading(true);
     try {
       const token = await auth.getToken();
-      const url = "/fastify/api/db/postgres/query";
+      const url = `/fastify/api/db/${dbType}/query`
       const response = await fetch(url, {
         method: "POST",
         headers: {

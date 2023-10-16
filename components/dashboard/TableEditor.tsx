@@ -12,7 +12,7 @@ import { useAuth } from "@clerk/nextjs";
 
 const roboto = Roboto_Mono({ subsets: ["latin"] });
 
-const TableEditor = ({ tableName, database_uuid }) => {
+const TableEditor = ({ dbType, tableName, database_uuid }) => {
   const auth = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [tableRows, setTableRows] = useState([]);
@@ -53,7 +53,7 @@ const TableEditor = ({ tableName, database_uuid }) => {
 
     try {
       const token = await auth.getToken();
-      const url = "/fastify/api/db/postgres/preview";
+      const url = `/fastify/api/db/${dbType}/preview`;
       const data = {
         database_uuid,
         table_name: tableName,
@@ -85,28 +85,28 @@ const TableEditor = ({ tableName, database_uuid }) => {
         const columns =
           responseData.length > 0
             ? Object.keys(responseData[0]).map((key) => ({
-                key: key,
-                name: key,
-                sortable: true,
-                editable: key === "id" ? false : true,
-                headerRenderer: (props) => (
-                  <div
-                    onClick={() =>
-                      handleSort(key, sortDirection === "asc" ? "desc" : "asc")
-                    }
-                  >
-                    {props.column.name}{" "}
-                    {sortDirection &&
-                      sortColumn === key &&
-                      (sortDirection === "asc" ? (
-                        <FaSortAmountDownAlt />
-                      ) : (
-                        <FaSortAmountUpAlt />
-                      ))}
-                  </div>
-                ),
-                resizable: true,
-              }))
+              key: key,
+              name: key,
+              sortable: true,
+              editable: key === "id" ? false : true,
+              headerRenderer: (props) => (
+                <div
+                  onClick={() =>
+                    handleSort(key, sortDirection === "asc" ? "desc" : "asc")
+                  }
+                >
+                  {props.column.name}{" "}
+                  {sortDirection &&
+                    sortColumn === key &&
+                    (sortDirection === "asc" ? (
+                      <FaSortAmountDownAlt />
+                    ) : (
+                      <FaSortAmountUpAlt />
+                    ))}
+                </div>
+              ),
+              resizable: true,
+            }))
             : [];
         setColumns(columns);
       }

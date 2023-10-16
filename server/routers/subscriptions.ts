@@ -134,39 +134,33 @@ const updateSubscriptionViaPaddleAPI = async (
 
     // Check if the response status is 200 (OK)
     if (response.status === 200) {
-      // Parse the JSON response
       const responseData = await response.json();
-
-      // Check if the response contains an error related to a declined payment
       if (
         responseData.error &&
         responseData.error.type === "request_error" &&
         responseData.error.code === "subscription_payment_declined"
       ) {
-        // Payment declined error
         return {
           data: null,
-          error: "Payment declined",
+          error: "Payment was declined. Please check your payment information.",
         };
       }
-
-      // Successful response
       return {
         data: responseData,
         error: null,
       };
     } else {
-      // Handle non-200 status codes (e.g., 404, 500) here if needed
+      // Handle non-200 status codes
       return {
         data: null,
-        error: "Request failed with status: " + response.status,
+        error: `Request failed with status code ${response.status}. ${response.statusText}. Response body: ${JSON.stringify(await response.json())}`,
       };
     }
   } catch (e) {
-    console.log(e);
+    console.log("An exception occurred:", e);
     return {
       data: null,
-      error: "Unable to update subscription",
+      error: `Unable to update subscription due to an exception: ${e.message}`,
     };
   }
 };
@@ -225,7 +219,6 @@ const getPaddlePriceId = (priceName) => {
 };
 
 const getUserRemainingDatabases = (subscription, dbs, plan) => {
-  console.log(subscription);
   if (
     subscription.data.status !== "active" ||
     (subscription.data.scheduled_change &&
@@ -375,6 +368,7 @@ export const subscriptionsRouter = router({
       );
 
       if (error) {
+        console.error(error)
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message:
@@ -436,8 +430,6 @@ export const subscriptionsRouter = router({
           ctx.userSupabase,
           ctx.user.userId
         );
-
-      console.log(ctx.user.userId);
 
       if (subError) {
         console.error("Error fetching subscription ID:", subError); // Log the error

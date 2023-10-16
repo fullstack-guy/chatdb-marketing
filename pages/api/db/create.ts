@@ -35,13 +35,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { schema_data, user, databaseString, name } = req.body;
+  const { type, schema_data, user, databaseString, name } = req.body;
 
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
 
-  if (!schema_data || !user || !name || !databaseString) {
+  if (!schema_data || !user || !name || !databaseString || !type) {
     return res.status(400).json({ message: "Missing fields" });
   }
 
@@ -106,6 +106,7 @@ export default async function handler(
           database_string: database_string.database_string,
           user_id: user.id,
           uuid: insertedSchemas.uuid,
+          db_type: type,
         },
       ])
       .select("uuid");

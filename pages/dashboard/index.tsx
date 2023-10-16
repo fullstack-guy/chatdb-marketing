@@ -9,6 +9,7 @@ import DeleteDatabasesModal from "../../components/dashboard/DeleteDatabasesModa
 import { trpc } from "../../utils/trpc";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import { DatabaseObjectArray } from "../../components/dashboard/Table";
+import { twMerge } from "tailwind-merge";
 
 export default function Page() {
   const {
@@ -39,6 +40,12 @@ export default function Page() {
       selected: false,
       img: "/images/postgres-icon.png",
     },
+    // {
+    //   name: "MySQL",
+    //   path: "/dashboard/mysql",
+    //   selected: false,
+    //   img: "/images/mysql-icon.svg",
+    // }
   ]);
   const { isLoaded, isSignedIn, user } = useUser();
   const router = useRouter();
@@ -124,11 +131,24 @@ export default function Page() {
                 <div
                   key={index}
                   onClick={() => selectDatabase(index)}
-                  className={`mb-4 flex cursor-pointer items-center rounded-lg p-4 shadow-md ${
-                    database.selected ? "border-4 border-[#0fe0b6]" : ""
-                  }`}
+                  // className={`mb-4 flex cursor-pointer items-center rounded-lg p-4 shadow-md ${database.selected ? "border-4 border-[#0fe0b6]" : ""
+                  //   }`}
+                  className={
+                    twMerge(
+                      "mb-4 flex cursor-pointer items-center rounded-lg p-4 shadow-md",
+                      database.selected && database.name === "PostgreSQL" && "border-4 border-[#0fe0b6]",
+                      database.selected && database.name === "MySQL" && "border-4 border-[#8cb4ff]",
+
+                    )
+                  }
                 >
-                  <div className="mr-4 flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg bg-[#0fe0b6]">
+                  <div className={
+                    twMerge(
+                      "mr-4 flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg bg-[#0fe0b6]",
+                      database.name === "MySQL" && "bg-[#8cb4ff]",
+                      database.name === "PostgreSQL" && "bg-[#0fe0b6]"
+                    )
+                  }>
                     <Image
                       className="m-auto"
                       width={40}
