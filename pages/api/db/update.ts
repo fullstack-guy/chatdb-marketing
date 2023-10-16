@@ -14,7 +14,7 @@ const updateSchemaInVault = async (
   const { data, error } = await supabase.rpc("update_schema_data", {
     secret_id: secret_id,
     new_schema: new_schema,
-    new_name: new_name,
+    new_name: `${new_name}-${new Date().getTime()}`,
     new_desc: new_desc,
   });
 
