@@ -129,6 +129,10 @@ export default function Page() {
     }, [connectionString]);
 
     const saveDatabase = async (connectionStr) => {
+        if (subscriptionStatus.remainingDatabases === null) {
+            setIsUpdateSubscriptionModalOpened(true);
+            return
+        }
         setSaving(true);
         try {
             await handleApiResponse(
