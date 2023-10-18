@@ -17,6 +17,7 @@ import { AiOutlineSetting } from "react-icons/ai";
 import useSupabase from "../../hooks/useSupabaseClient.js";
 import Modal from "react-modal";
 import Chart from "./Chart";
+import { useDebounce } from "usehooks-ts";
 
 export const MemoizedReactMarkdown: FC<Options> = memo(
   ReactMarkdown,
@@ -41,7 +42,11 @@ const Chat = ({ database_uuid, dbType }) => {
   const [categoryField, setCategoryField] = useState("");
   const [selectedChart, setSelectedChart] = useState("");
   const [isChartConfig, setIsChartConfig] = useState(false);
+
+  // likes + debounce
   const [isLiked, setIsLiked] = useState(false);
+  const [action, setAction] = useState<"like" | "dislike" | null>(null);
+  const debouncedAction = useDebounce(action, 500);
 
   const [showTable, setShowTable] = useState(true);
   const [selectedChartName, setSelectedChartName] = useState("");
@@ -92,55 +97,6 @@ const Chat = ({ database_uuid, dbType }) => {
     return { columns, rows };
   };
 
-  const toggleLike = async () => {
-    // Optimistically update UI
-    const newIsLiked = !isLiked;
-    setIsLiked(newIsLiked);
-
-    if (newIsLiked) { // If toggling to "Liked"
-      try {
-        const { data, error } = await supabase
-          .from('favorite_queries')
-          .insert([
-            {
-              sql: result.sql,
-              query: query,
-              database_uuid: database_uuid
-            },
-          ]);
-
-        if (error) {
-          console.error('Error saving to Supabase:', error);
-          // Revert optimistic update if saving fails
-          setIsLiked(!newIsLiked);
-        }
-      } catch (error) {
-        console.error('An unexpected error occurred:', error);
-        // Revert optimistic update if an exception is thrown
-        setIsLiked(!newIsLiked);
-      }
-    } else { // If toggling to "Unliked"
-      try {
-        const { data, error } = await supabase
-          .from('favorite_queries')
-          .delete()
-          .eq('sql', result.sql)
-          .eq('query', query)
-          .eq('database_uuid', database_uuid);
-
-        if (error) {
-          console.error('Error removing from Supabase:', error);
-          // Revert optimistic update if removing fails
-          setIsLiked(!newIsLiked);
-        }
-      } catch (error) {
-        console.error('An unexpected error occurred:', error);
-        // Revert optimistic update if an exception is thrown
-        setIsLiked(!newIsLiked);
-      }
-    }
-  };
-
   async function sendQueryToEndpoint(code) {
     setIsLoading(true);
     try {
@@ -176,6 +132,66 @@ const Chat = ({ database_uuid, dbType }) => {
       toast.error("Sorry, we had an issue running the query.");
     }
   }
+
+  const toggleLike = () => {
+    const newIsLiked = !isLiked;
+    setIsLiked(newIsLiked);
+    setAction(newIsLiked ? "like" : "dislike");
+  };
+
+  useEffect(() => {
+    if (debouncedAction) {
+      const performAction = async () => {
+        if (debouncedAction === "like") {
+          try {
+            const { data, error } = await supabase
+              .from("favorite_queries")
+              .insert([
+                {
+                  sql: result.sql,
+                  query: query,
+                  database_uuid: database_uuid,
+                },
+              ]);
+
+            if (error) {
+              console.error("Error saving to Supabase:", error);
+              // Revert optimistic update if saving fails
+              setIsLiked(!newIsLiked);
+            }
+          } catch (error) {
+            console.error("An unexpected error occurred:", error);
+            // Revert optimistic update if an exception is thrown
+            setIsLiked(!newIsLiked);
+          }
+        } else if (debouncedAction === "dislike") {
+          try {
+            const { data, error } = await supabase
+              .from("favorite_queries")
+              .delete()
+              .eq("sql", result.sql)
+              .eq("query", query)
+              .eq("database_uuid", database_uuid);
+
+            if (error) {
+              console.error("Error removing from Supabase:", error);
+              // Revert optimistic update if removing fails
+              setIsLiked(!newIsLiked);
+            }
+          } catch (error) {
+            console.error("An unexpected error occurred:", error);
+            // Revert optimistic update if an exception is thrown
+            setIsLiked(!newIsLiked);
+          }
+        }
+      };
+
+      performAction().catch((error) => {
+        console.error("An unexpected error occurred:", error);
+        setIsLiked(!isLiked); // Revert the optimistic UI update
+      });
+    }
+  }, [debouncedAction]);
 
   const handleKeyDown = async (e) => {
     if (isLoading) {
