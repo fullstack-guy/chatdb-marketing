@@ -8,7 +8,12 @@ interface Query {
     sql: string;
 }
 
-const SavedQueries: React.FC = ({ database_uuid }) => {
+interface SavedQueriesProps {
+    database_uuid: string;
+    runQuery: (query: string) => void;
+}
+
+const SavedQueries: React.FC = ({ database_uuid, runQuery }) => {
     const [queries, setQueries] = useState<Query[]>([]);
     const supabase = useSupabase();
 
@@ -38,6 +43,7 @@ const SavedQueries: React.FC = ({ database_uuid }) => {
                 <div
                     className="relative hover:scale-105 transform transition-all duration-300 inline-flex"
                     key={query.id}
+                    onClick={() => runQuery(query.sql)}
                 >
                     <div className="absolute w-full h-full opacity-0 hover:opacity-100 rounded-lg transition-all duration-300 z-0"></div>
                     <div

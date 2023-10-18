@@ -99,6 +99,7 @@ const Chat = ({ database_uuid, dbType }) => {
   };
 
   async function sendQueryToEndpoint(code) {
+    setQuery("");
     setIsLoading(true);
     try {
       const token = await auth.getToken();
@@ -562,7 +563,7 @@ const Chat = ({ database_uuid, dbType }) => {
               )}
             </div>
           )}
-          <SavedQueries database_uuid={database_uuid} />
+          <SavedQueries database_uuid={database_uuid} runQuery={sendQueryToEndpoint} />
           <Toaster position="top-right" />
         </div>
       )}
