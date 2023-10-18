@@ -52,14 +52,15 @@ export default function Page() {
     retryOnMount: false,
   });
 
-  const {
-    isLoading: isDbTypeLoading,
-    data: dbType,
-  } = trpc.databases.getDbType.useQuery({
-    uuid: database_uuid as string || "",
-  }, {
-    notifyOnChangeProps: ["data"]
-  })
+  const { isLoading: isDbTypeLoading, data: dbType } =
+    trpc.databases.getDbType.useQuery(
+      {
+        uuid: (database_uuid as string) || "",
+      },
+      {
+        notifyOnChangeProps: ["data"],
+      }
+    );
   useEffect(() => {
     setSearchQuery(""); // clear the searchQuery when activeTab changes
   }, [activeTab]);
@@ -73,7 +74,7 @@ export default function Page() {
         },
         body: JSON.stringify({
           database_uuid: database_uuid,
-          dbType
+          dbType,
         }),
       });
 

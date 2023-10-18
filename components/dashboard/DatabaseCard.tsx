@@ -48,12 +48,12 @@ export const Card = ({ type, logo, title, lastUpdated, uuid, refetch }) => {
         onClick={handleDatabaseCardClick}
       >
         <div className="flex-shrink-0 p-1 md:p-1 lg:p-1">
-          <div className={
-            twMerge(
+          <div
+            className={twMerge(
               "flex h-[8vh] w-[8vh] items-center justify-center rounded-lg ",
               type === "POSTGRES" ? "bg-[#0fe0b6]" : "bg-[#8cb4ff]"
-            )
-          }>
+            )}
+          >
             <Image
               className="m-auto"
               width={40}
