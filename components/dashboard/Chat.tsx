@@ -12,7 +12,9 @@ import { useAuth } from "@clerk/clerk-react";
 import CodeBlock from "./chat/CodeBlock";
 import { CSVLink } from "react-csv";
 import { BsCodeSlash, BsDownload } from "react-icons/bs";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { AiOutlineSetting } from "react-icons/ai";
+import useSupabase from "../../hooks/useSupabaseClient.js";
 import Modal from "react-modal";
 import Chart from "./Chart";
 
@@ -32,16 +34,20 @@ const Chat = ({ database_uuid, dbType }) => {
     result: "",
     data: null,
   });
+
   const [showSql, setShowSql] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [indexedField, setIndexedField] = useState("");
   const [categoryField, setCategoryField] = useState("");
   const [selectedChart, setSelectedChart] = useState("");
   const [isChartConfig, setIsChartConfig] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
 
   const [showTable, setShowTable] = useState(true);
   const [selectedChartName, setSelectedChartName] = useState("");
   const { getToken } = useAuth();
+
+  const supabase = useSupabase();
 
   const toggleSqlVisibility = () => {
     setShowSql((prevShowSql) => !prevShowSql);
@@ -84,6 +90,55 @@ const Chat = ({ database_uuid, dbType }) => {
     });
 
     return { columns, rows };
+  };
+
+  const toggleLike = async () => {
+    // Optimistically update UI
+    const newIsLiked = !isLiked;
+    setIsLiked(newIsLiked);
+
+    if (newIsLiked) { // If toggling to "Liked"
+      try {
+        const { data, error } = await supabase
+          .from('favorite_queries')
+          .insert([
+            {
+              sql: result.sql,
+              query: query,
+              database_uuid: database_uuid
+            },
+          ]);
+
+        if (error) {
+          console.error('Error saving to Supabase:', error);
+          // Revert optimistic update if saving fails
+          setIsLiked(!newIsLiked);
+        }
+      } catch (error) {
+        console.error('An unexpected error occurred:', error);
+        // Revert optimistic update if an exception is thrown
+        setIsLiked(!newIsLiked);
+      }
+    } else { // If toggling to "Unliked"
+      try {
+        const { data, error } = await supabase
+          .from('favorite_queries')
+          .delete()
+          .eq('sql', result.sql)
+          .eq('query', query)
+          .eq('database_uuid', database_uuid);
+
+        if (error) {
+          console.error('Error removing from Supabase:', error);
+          // Revert optimistic update if removing fails
+          setIsLiked(!newIsLiked);
+        }
+      } catch (error) {
+        console.error('An unexpected error occurred:', error);
+        // Revert optimistic update if an exception is thrown
+        setIsLiked(!newIsLiked);
+      }
+    }
   };
 
   async function sendQueryToEndpoint(code) {
@@ -361,6 +416,14 @@ const Chat = ({ database_uuid, dbType }) => {
                     <BsDownload />
                   </div>
                 </CSVLink>
+                <button
+                  className="mr-2 rounded px-4 py-2 text-black shadow"
+                  onClick={toggleLike}
+                >
+                  <div className="tooltip tooltip-bottom" data-tip="Save Query">
+                    {isLiked ? <AiFillHeart /> : <AiOutlineHeart />}
+                  </div>
+                </button>
               </div>
 
               <Modal
