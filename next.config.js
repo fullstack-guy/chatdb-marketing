@@ -11,7 +11,7 @@ const nextConfig = {
     return [
       {
         source: "/fastify/:path*",
-        destination: "https://chatdb-api.onrender.com/:path*",
+        destination: process.env.NODE_ENV === "production" ? "https://chatdb-api.onrender.com/:path*" : "http://localhost:8000/:path*",
       },
     ];
   },
