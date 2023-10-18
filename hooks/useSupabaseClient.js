@@ -14,7 +14,16 @@ const useSupabase = () => {
       );
       setClient(supabase);
     }
+
     initSupabase();
+
+    // Refresh token every 55 seconds
+    const intervalId = setInterval(() => {
+      initSupabase();
+    }, 55000); // 55 * 1000 ms
+
+    // Clear interval when the component is unmounted
+    return () => clearInterval(intervalId);
   }, [getToken]);
 
   return client;
