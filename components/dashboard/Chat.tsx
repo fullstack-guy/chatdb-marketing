@@ -17,6 +17,7 @@ import { AiOutlineSetting } from "react-icons/ai";
 import useSupabase from "../../hooks/useSupabaseClient.js";
 import Modal from "react-modal";
 import Chart from "./Chart";
+import SavedQueries from "./chat/SavedQueries";
 import { useDebounce } from "usehooks-ts";
 
 export const MemoizedReactMarkdown: FC<Options> = memo(
@@ -281,7 +282,7 @@ const Chat = ({ database_uuid, dbType }) => {
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Ask anything about your database..."
-          className="input-bordered input-primary input input-lg w-full flex-1 rounded-lg border px-4 py-6 text-lg text-black"
+          className="w-full flex-1 p-4 text-lg text-black rounded-lg border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 shadow-sm"
         />
         <label className="label">
           <span className="label-text-alt">
@@ -561,6 +562,7 @@ const Chat = ({ database_uuid, dbType }) => {
               )}
             </div>
           )}
+          <SavedQueries database_uuid={database_uuid} />
           <Toaster position="top-right" />
         </div>
       )}
