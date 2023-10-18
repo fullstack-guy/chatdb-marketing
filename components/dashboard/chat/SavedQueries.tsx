@@ -13,7 +13,7 @@ interface SavedQueriesProps {
     runQuery: (query: string) => void;
 }
 
-const SavedQueries: React.FC = ({ database_uuid, runQuery }) => {
+const SavedQueries: React.FC<SavedQueriesProps> = ({ database_uuid, runQuery }) => {
     const [queries, setQueries] = useState<Query[]>([]);
     const supabase = useSupabase();
 
@@ -36,6 +36,11 @@ const SavedQueries: React.FC = ({ database_uuid, runQuery }) => {
 
         fetchQueries();
     }, [supabase]);
+
+    // If there are no queries, return null 
+    if (queries.length === 0) {
+        return null;
+    }
 
     return (
         <div className="flex flex-col mt-5 items-center">

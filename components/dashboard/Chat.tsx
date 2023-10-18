@@ -101,6 +101,7 @@ const Chat = ({ database_uuid, dbType }) => {
   async function sendQueryToEndpoint(code) {
     setQuery("");
     setIsLoading(true);
+    setShowTable(true);
     try {
       const token = await auth.getToken();
       const url = `/fastify/api/db/${dbType}/query`;
