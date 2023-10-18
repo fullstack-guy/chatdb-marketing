@@ -281,6 +281,7 @@ const Chat = ({ database_uuid, dbType }) => {
         <input
           type="text"
           onChange={(e) => setQuery(e.target.value)}
+          value={query}
           onKeyDown={handleKeyDown}
           placeholder="Ask anything about your database..."
           className="w-full flex-1 p-4 text-lg text-black rounded-lg border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 shadow-sm"
