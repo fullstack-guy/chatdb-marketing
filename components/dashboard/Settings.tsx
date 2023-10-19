@@ -45,7 +45,6 @@ const Settings: React.FC<SettingsProps> = ({
   useEffect(() => {
     const fetchAndUpdateSetting = async () => {
       if (showSampleRef.current === null) {
-
         const result = await getDatabaseSampleSetting(database_uuid);
         setShowSample(result);
         showSampleRef.current = result;
@@ -62,7 +61,10 @@ const Settings: React.FC<SettingsProps> = ({
       await updateDatabaseSampleSetting(database_uuid, debouncedShowSample);
     };
 
-    if (showSampleRef.current !== null && debouncedShowSample !== showSampleRef.current) {
+    if (
+      showSampleRef.current !== null &&
+      debouncedShowSample !== showSampleRef.current
+    ) {
       update().catch((error) => {
         setShowSample(showSampleRef.current);
         toast.error(`We had an issue updating sample setting.`);

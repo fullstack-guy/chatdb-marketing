@@ -285,7 +285,7 @@ const Chat = ({ database_uuid, dbType }) => {
           value={query}
           onKeyDown={handleKeyDown}
           placeholder="Ask anything about your database..."
-          className="w-full flex-1 p-4 text-lg text-black rounded-lg border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 shadow-sm"
+          className="w-full flex-1 rounded-lg border border-gray-300 p-4 text-lg text-black shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
         />
         <label className="label">
           <span className="label-text-alt">
@@ -565,7 +565,10 @@ const Chat = ({ database_uuid, dbType }) => {
               )}
             </div>
           )}
-          <SavedQueries database_uuid={database_uuid} runQuery={sendQueryToEndpoint} />
+          <SavedQueries
+            database_uuid={database_uuid}
+            runQuery={sendQueryToEndpoint}
+          />
           <Toaster position="top-right" />
         </div>
       )}
