@@ -160,12 +160,12 @@ const Chat = ({ database_uuid, dbType }) => {
             if (error) {
               console.error("Error saving to Supabase:", error);
               // Revert optimistic update if saving fails
-              setIsLiked(!newIsLiked);
+              setIsLiked(!isLiked);
             }
           } catch (error) {
             console.error("An unexpected error occurred:", error);
             // Revert optimistic update if an exception is thrown
-            setIsLiked(!newIsLiked);
+            setIsLiked(!isLiked);
           }
         } else if (debouncedAction === "dislike") {
           try {
@@ -179,12 +179,12 @@ const Chat = ({ database_uuid, dbType }) => {
             if (error) {
               console.error("Error removing from Supabase:", error);
               // Revert optimistic update if removing fails
-              setIsLiked(!newIsLiked);
+              setIsLiked(!isLiked);
             }
           } catch (error) {
             console.error("An unexpected error occurred:", error);
             // Revert optimistic update if an exception is thrown
-            setIsLiked(!newIsLiked);
+            setIsLiked(!isLiked);
           }
         }
       };

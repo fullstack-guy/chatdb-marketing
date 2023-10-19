@@ -4,6 +4,7 @@ import { Toaster, toast } from "react-hot-toast";
 import { useRouter } from "next/router";
 import UsageChart from "./UsageChart";
 import useSupabase from "../../hooks/useSupabaseClient";
+import { useDebounce } from "usehooks-ts";
 
 interface SettingsProps {
   fetchedDatabase: {
@@ -31,6 +32,8 @@ const Settings: React.FC<SettingsProps> = ({
   );
   const [isModalOpen, setModalOpen] = useState(false);
   const [showSample, setShowSample] = useState(false);
+  const debouncedShowSample = useDebounce(showSample, 500);
+
   const supabase = useSupabase();
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,20 +45,32 @@ const Settings: React.FC<SettingsProps> = ({
   useEffect(() => {
     const fetchAndUpdateSetting = async () => {
       if (showSampleRef.current === null) {
-        // If it's the initial load
+
         const result = await getDatabaseSampleSetting(database_uuid);
         setShowSample(result);
-        showSampleRef.current = result; // Store the initial value in the ref
-      } else if (showSample !== showSampleRef.current) {
-        // If the value has changed after the initial load
-        await updateDatabaseSampleSetting(database_uuid, showSample);
+        showSampleRef.current = result;
       }
     };
 
     if (supabase) {
       fetchAndUpdateSetting();
     }
-  }, [database_uuid, showSample, supabase]);
+  }, [database_uuid, supabase]);
+
+  useEffect(() => {
+    const update = async () => {
+      await updateDatabaseSampleSetting(database_uuid, debouncedShowSample);
+    };
+
+    if (showSampleRef.current !== null && debouncedShowSample !== showSampleRef.current) {
+      update().catch((error) => {
+        setShowSample(showSampleRef.current);
+        toast.error(`We had an issue updating sample setting.`);
+      });
+
+      showSampleRef.current = debouncedShowSample;
+    }
+  }, [debouncedShowSample]);
 
   //fetch show_sample_rows field from user_databases table where uuid matches
   const getDatabaseSampleSetting = async (uuid) => {
@@ -160,7 +175,7 @@ const Settings: React.FC<SettingsProps> = ({
               type="checkbox"
               checked={showSample}
               className="checkbox"
-              onChange={() => setShowSample((prev) => !prev)}
+              onChange={() => setShowSample(!showSample)}
             />
           </label>
           <p className="text-md mt-1">
