@@ -171,7 +171,7 @@ export default function Page() {
           user: user,
           databaseString: database_string,
           name: name,
-          type: "POSTGRES"
+          type: "POSTGRES",
         }),
       });
 

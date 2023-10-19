@@ -153,7 +153,9 @@ const updateSubscriptionViaPaddleAPI = async (
       // Handle non-200 status codes
       return {
         data: null,
-        error: `Request failed with status code ${response.status}. ${response.statusText}. Response body: ${JSON.stringify(await response.json())}`,
+        error: `Request failed with status code ${response.status}. ${
+          response.statusText
+        }. Response body: ${JSON.stringify(await response.json())}`,
       };
     }
   } catch (e) {
@@ -368,7 +370,7 @@ export const subscriptionsRouter = router({
       );
 
       if (error) {
-        console.error(error)
+        console.error(error);
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message:
