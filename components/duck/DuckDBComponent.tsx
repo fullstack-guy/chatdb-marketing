@@ -227,8 +227,8 @@ const DuckDBComponent = () => {
             cell == null
               ? "null"
               : !Array.isArray(cell)
-                ? cell
-                : "[" +
+              ? cell
+              : "[" +
                 cell
                   .map((value) => (value == null ? "null" : value))
                   .join(", ") +

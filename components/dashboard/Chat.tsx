@@ -12,9 +12,13 @@ import { useAuth } from "@clerk/clerk-react";
 import CodeBlock from "./chat/CodeBlock";
 import { CSVLink } from "react-csv";
 import { BsCodeSlash, BsDownload } from "react-icons/bs";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { AiOutlineSetting } from "react-icons/ai";
+import useSupabase from "../../hooks/useSupabaseClient.js";
 import Modal from "react-modal";
 import Chart from "./Chart";
+import SavedQueries from "./chat/SavedQueries";
+import { useDebounce } from "usehooks-ts";
 
 export const MemoizedReactMarkdown: FC<Options> = memo(
   ReactMarkdown,
@@ -32,6 +36,7 @@ const Chat = ({ database_uuid, dbType }) => {
     result: "",
     data: null,
   });
+
   const [showSql, setShowSql] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [indexedField, setIndexedField] = useState("");
@@ -39,9 +44,16 @@ const Chat = ({ database_uuid, dbType }) => {
   const [selectedChart, setSelectedChart] = useState("");
   const [isChartConfig, setIsChartConfig] = useState(false);
 
+  // likes + debounce
+  const [isLiked, setIsLiked] = useState(false);
+  const [action, setAction] = useState<"like" | "dislike" | null>(null);
+  const debouncedAction = useDebounce(action, 500);
+
   const [showTable, setShowTable] = useState(true);
   const [selectedChartName, setSelectedChartName] = useState("");
   const { getToken } = useAuth();
+
+  const supabase = useSupabase();
 
   const toggleSqlVisibility = () => {
     setShowSql((prevShowSql) => !prevShowSql);
@@ -87,10 +99,12 @@ const Chat = ({ database_uuid, dbType }) => {
   };
 
   async function sendQueryToEndpoint(code) {
+    setQuery("");
     setIsLoading(true);
+    setShowTable(true);
     try {
       const token = await auth.getToken();
-      const url = `/fastify/api/db/${dbType}/query`
+      const url = `/fastify/api/db/${dbType}/query`;
       const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -121,6 +135,66 @@ const Chat = ({ database_uuid, dbType }) => {
       toast.error("Sorry, we had an issue running the query.");
     }
   }
+
+  const toggleLike = () => {
+    const newIsLiked = !isLiked;
+    setIsLiked(newIsLiked);
+    setAction(newIsLiked ? "like" : "dislike");
+  };
+
+  useEffect(() => {
+    if (debouncedAction) {
+      const performAction = async () => {
+        if (debouncedAction === "like") {
+          try {
+            const { data, error } = await supabase
+              .from("favorite_queries")
+              .insert([
+                {
+                  sql: result.sql,
+                  query: query,
+                  database_uuid: database_uuid,
+                },
+              ]);
+
+            if (error) {
+              console.error("Error saving to Supabase:", error);
+              // Revert optimistic update if saving fails
+              setIsLiked(!isLiked);
+            }
+          } catch (error) {
+            console.error("An unexpected error occurred:", error);
+            // Revert optimistic update if an exception is thrown
+            setIsLiked(!isLiked);
+          }
+        } else if (debouncedAction === "dislike") {
+          try {
+            const { data, error } = await supabase
+              .from("favorite_queries")
+              .delete()
+              .eq("sql", result.sql)
+              .eq("query", query)
+              .eq("database_uuid", database_uuid);
+
+            if (error) {
+              console.error("Error removing from Supabase:", error);
+              // Revert optimistic update if removing fails
+              setIsLiked(!isLiked);
+            }
+          } catch (error) {
+            console.error("An unexpected error occurred:", error);
+            // Revert optimistic update if an exception is thrown
+            setIsLiked(!isLiked);
+          }
+        }
+      };
+
+      performAction().catch((error) => {
+        console.error("An unexpected error occurred:", error);
+        setIsLiked(!isLiked); // Revert the optimistic UI update
+      });
+    }
+  }, [debouncedAction]);
 
   const handleKeyDown = async (e) => {
     if (isLoading) {
@@ -208,9 +282,10 @@ const Chat = ({ database_uuid, dbType }) => {
         <input
           type="text"
           onChange={(e) => setQuery(e.target.value)}
+          value={query}
           onKeyDown={handleKeyDown}
           placeholder="Ask anything about your database..."
-          className="input-bordered input-primary input input-lg w-full flex-1 rounded-lg border px-4 py-6 text-lg text-black"
+          className="w-full flex-1 rounded-lg border border-gray-300 p-4 text-lg text-black shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
         />
         <label className="label">
           <span className="label-text-alt">
@@ -361,6 +436,14 @@ const Chat = ({ database_uuid, dbType }) => {
                     <BsDownload />
                   </div>
                 </CSVLink>
+                <button
+                  className="mr-2 rounded px-4 py-2 text-black shadow"
+                  onClick={toggleLike}
+                >
+                  <div className="tooltip tooltip-bottom" data-tip="Save Query">
+                    {isLiked ? <AiFillHeart /> : <AiOutlineHeart />}
+                  </div>
+                </button>
               </div>
 
               <Modal
@@ -482,6 +565,10 @@ const Chat = ({ database_uuid, dbType }) => {
               )}
             </div>
           )}
+          <SavedQueries
+            database_uuid={database_uuid}
+            runQuery={sendQueryToEndpoint}
+          />
           <Toaster position="top-right" />
         </div>
       )}

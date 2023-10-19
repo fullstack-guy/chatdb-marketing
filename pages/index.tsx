@@ -61,16 +61,19 @@ export default function Page() {
           <div className="mx-auto max-w-7xl">
             <div className="flex flex-col items-center">
               <h1 className="mt-5 text-center text-5xl font-bold tracking-tighter text-heading md:max-w-4xl md:text-6xl xl:text-8xl">
-                Query your{" "} <span
+                Query your{" "}
+                <span
                   style={{
-                    background: "linear-gradient(90deg, #23a08a 0%, #23d5ab 100%)",
+                    background:
+                      "linear-gradient(90deg, #23a08a 0%, #23d5ab 100%)",
                     WebkitBackgroundClip: "text",
                     color: "transparent",
                     paddingRight: "0.2em",
                   }}
                 >
                   Postgres
-                </span>{" "}data{" "}
+                </span>{" "}
+                data{" "}
                 <span
                   style={{
                     background:
@@ -131,8 +134,9 @@ export default function Page() {
                 </video>
                 <button
                   onClick={toggleVideo}
-                  className={`${playing ? "hidden" : "absolute"
-                    } left-[calc(50%-30px)] top-[calc(50%-30px)] rounded-full bg-[black] p-2 shadow-lg`}
+                  className={`${
+                    playing ? "hidden" : "absolute"
+                  } left-[calc(50%-30px)] top-[calc(50%-30px)] rounded-full bg-[black] p-2 shadow-lg`}
                 >
                   <svg
                     className="h-14 w-14"

@@ -11,7 +11,7 @@ export default function DatabaseControl({
   fetchedDatabase,
   setFetchedDatabase,
   setTitle,
-  dbType
+  dbType,
 }) {
   const renderContent = () => {
     switch (activeTab) {
