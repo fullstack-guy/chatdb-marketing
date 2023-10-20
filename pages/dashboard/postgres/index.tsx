@@ -31,6 +31,7 @@ export default function Page() {
   const [connectionStringError, setConnectionStringError] = useState(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
+  const [hasDangerousPermissions, setHasDangerousPermissions] = useState(false);
 
   const [activeTab, setActiveTab] = useState("url");
 
@@ -227,6 +228,7 @@ export default function Page() {
     }
 
     setConnecting(true);
+    setHasDangerousPermissions(false);
     const token = await auth.getToken();
     const url = "/fastify/api/db/postgres/connect";
     const body = {
@@ -249,7 +251,8 @@ export default function Page() {
         setConnecting(false);
       } else {
         const data = await response.json();
-        setDatabaseInfo(data);
+        setDatabaseInfo(data.schema);
+        setHasDangerousPermissions(data.hasDangerousPermissions);
         setError(null);
 
         toast("Successfully Connected", {
@@ -624,19 +627,25 @@ export default function Page() {
                         {error}
                       </p>
                     )}
-                    <div className="mb-2 mt-10 rounded-md border-l-4 border-gray-50 bg-gray-300 p-2">
-                      <p className="text-sm font-semibold text-black">
-                        We recommend{" "}
-                        <Link
-                          href="/post/how-to-create-read-only-postgres-user"
-                          className="text-black underline"
-                          target="_blank"
-                        >
-                          creating a read-only account with specific permissions
-                        </Link>
-                        .
-                      </p>
-                    </div>
+                    {
+                      hasDangerousPermissions && (
+                        <div className="mb-2 mt-10 rounded-md border-l-4 border-yellow-200 bg-yellow-100 p-2">
+
+                          <p className="text-sm font-semibold text-black">
+                            Your current database account has elevated permissions that allow data modifications. We recommend{" "}
+                            <Link
+                              href="/post/how-to-create-read-only-postgres-user"
+                              className="text-yellow-600 underline"
+                              target="_blank"
+                            >
+                              transitioning to a read-only account
+                            </Link>
+                            .
+                          </p>
+                        </div>
+                      )
+                    }
+
                   </BasisTheoryProvider>
                 </div>
               </div>

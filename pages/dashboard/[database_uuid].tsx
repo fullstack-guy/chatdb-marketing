@@ -151,7 +151,7 @@ export default function Page() {
       } else {
         const data = await response.json();
         try {
-          await updateDatabase(data, user, toast);
+          await updateDatabase(data.schema, user, toast);
           await fetchTables();
           toast.success("Database refreshed!");
         } catch (error) {
