@@ -14,12 +14,13 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { trpc } from "../../../utils/trpc";
 import UpdateSubscriptionModal from "../../../components/UpdateSubscriptionModal";
+import { set } from "react-hook-form";
 
 export default function Page() {
   const auth = useAuth();
   const router = useRouter();
   const [
-    isUpdateSubscriptionModalOpeneded,
+    isUpdateSubscriptionModalOpened,
     setIsUpdateSubscriptionModalOpened,
   ] = useState(false);
   const [connected, setConnected] = useState(false);
@@ -130,6 +131,10 @@ export default function Page() {
   }, [connectionString]);
 
   const saveDatabase = async (connectionStr) => {
+    if (subscriptionStatus.remainingDatabases === null) {
+      setIsUpdateSubscriptionModalOpened(true);
+      return
+    }
     setSaving(true);
     try {
       await handleApiResponse(
@@ -279,7 +284,7 @@ export default function Page() {
     ) {
       return (
         <UpdateSubscriptionModal
-          open={isUpdateSubscriptionModalOpeneded}
+          open={isUpdateSubscriptionModalOpened}
           setOpen={setIsUpdateSubscriptionModalOpened}
           description={
             " You have reached the maximum number of databases allowed on your current plan. Please upgrade your plan to create more databases."
@@ -296,7 +301,7 @@ export default function Page() {
     } else if (subscriptionStatus.remainingDatabases === null) {
       return (
         <UpdateSubscriptionModal
-          open={isUpdateSubscriptionModalOpeneded}
+          open={isUpdateSubscriptionModalOpened}
           setOpen={setIsUpdateSubscriptionModalOpened}
           description={
             "You are not subscribed to any plan. Please choose a plan to start creating databases."
@@ -450,7 +455,7 @@ export default function Page() {
                         )}
                         <div className="my-2 w-full">
                           <button
-                            className={`btn ${connecting && "loading"
+                            className={`btn ${connecting && "btn-loading"
                               } mx-auto my-2 flex w-[75%] bg-success text-black hover:bg-success sm:hidden`}
                             onClick={
                               connected
